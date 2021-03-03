@@ -1,21 +1,25 @@
 <template>
   <div v-if="data.tableData">
     <v-chart
+      ref="vChart"
       theme="ovilia-green"
       :options="options"
       style="width:100%;"
     ></v-chart>
     <v-table
+      ref="vTable"
+      is-horizontal-resize
       row-hover-color="#eee"
       row-click-color="#edf7ff"
-      :height="200"
+      :row-height="tableRowHeight"
+      :height="tableHeight"
       style="width:100%"
       column-width-drag
       :columns="tableColumns"
       :table-data="tableData"
       :cell-edit-done="cellEditDone"
-      is-horizontal-resize
       :is-vertical-resize="true"
+      :vertical-resize-offset="5"
     ></v-table>
   </div>
 </template>
@@ -31,6 +35,14 @@ export default {
     data: {
       type: Object,
       required: true,
+    },
+    tableHeight: {
+      type: Number,
+      default: 300,
+    },
+    tableRowHeight: {
+      type: Number,
+      default: 34,
     },
   },
   data() {
@@ -113,6 +125,15 @@ export default {
         },
         series: data.seriesData,
       };
+      this.resize();
+    },
+    resize() {
+      if (this.$refs.vChart) {
+        this.$refs.vChart.resize();
+      }
+      if (this.$refs.vTable) {
+        this.$refs.vTable.resize();
+      }
     },
 
     //

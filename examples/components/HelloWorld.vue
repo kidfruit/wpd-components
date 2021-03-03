@@ -1,14 +1,14 @@
 <template>
   <div class="about">
-    <toast-2 :message="'yyy'" @clicked="clickedHello"></toast-2>
-    <characteristic-curve :currentKey="'sss'"></characteristic-curve>
+    <!-- <toast-2 :message="'yyy'" @clicked="clickedHello"></toast-2> -->
+    <table-chart-test></table-chart-test>
   </div>
 </template>
 
 <script>
-import CharacteristicCurve from '../../packages/CharacteristicCurve/src/CharacteristicCurve.vue'
+import TableChartTest from './TableChartTest'
 export default {
-  components: { CharacteristicCurve },
+  components: { TableChartTest },
   name: 'HelloWorld',
   methods:{
     clickedHello(){

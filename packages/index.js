@@ -2,6 +2,7 @@
 import toast2 from './toast2/src/toast2.vue'
 import ChartTable from './ChartTable/src/ChartTable.vue'
 import CharacteristicCurve from './CharacteristicCurve/src/CharacteristicCurve.vue'
+import TableChart from './TableChart/src/TableChart.vue'
 
 import testDirective from './testDirective/src/testDirective'
 
@@ -10,6 +11,7 @@ const components = [
     toast2,
     ChartTable,
     CharacteristicCurve,
+    TableChart,
 ]
 
 // 存储指令映射
@@ -38,6 +40,7 @@ export default {
     toast2,
     ChartTable,
     CharacteristicCurve,
+    TableChart,
     ...directives,
 }
 

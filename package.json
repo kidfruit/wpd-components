@@ -1,7 +1,7 @@
 {
   "name": "wpd-components",
   "description": "npm test",
-  "version": "0.1.4",
+  "version": "0.1.10",
   "author": "fkl",
   "private": false,
   "scripts": {
@@ -11,8 +11,11 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@handsontable/vue": "^5.1.0",
     "ant-design-vue": "^1.7.2",
     "core-js": "^3.6.5",
+    "handsontable": "^8.3.1",
+    "serve": "^11.3.2",
     "vue": "^2.6.11",
     "vue-easytable": "^1.7.2"
   },
