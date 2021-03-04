@@ -1,7 +1,7 @@
 {
   "name": "wpd-components",
-  "description": "npm test",
-  "version": "0.1.10",
+  "description": "npm wcp",
+  "version": "0.1.13",
   "author": "fkl",
   "private": false,
   "scripts": {
@@ -42,7 +42,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars":"off"
+    }
   },
   "browserslist": [
     "> 1%",

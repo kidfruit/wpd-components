@@ -1,20 +1,20 @@
 <template>
   <div style="width:100%;">
-    <table-chart
+    <table-chart-interactive
       ref="tableChart"
       :tableData="tableData"
       :tableColumns="tableColumns"
-    ></table-chart>
+    ></table-chart-interactive>
     <button @click="getData">获取数据</button>
     <button @click="reset">重置</button>
   </div>
 </template>
 <script>
-import TableChart from "../../packages/TableChart/src/TableChart.vue";
+import TableChartInteractive from "../../packages/TableChartInteractive/src/TableChartInteractive.vue";
 
 export default {
   name: "TableChartTest",
-  components: { TableChart },
+  components: { TableChartInteractive },
   data() {
     return {
       tableData: [
@@ -74,6 +74,7 @@ export default {
   methods: {
     getData() {
       console.log(this.$refs.tableChart.getTableData());
+      console.log(this.$refs.tableChart.getEditColumnField())
     },
     reset(){
         this.$refs.tableChart.reset()
