@@ -1,5 +1,6 @@
 <template>
-  <div style="width:100%;">
+  <div class="wrap">
+    <div id="echart"></div>
     <hot-table
       v-if="isRefresh"
       :settings="hotSettings"
@@ -21,6 +22,8 @@
 <script>
 import { HotTable, HotColumn } from "@handsontable/vue";
 import Handsontable from "handsontable";
+import utils from "./utils";
+import * as echarts from "echarts";
 export default {
   name: "TableChartInteractive",
   props: {
@@ -61,7 +64,11 @@ export default {
       },
       //   记录单元格修改记录，采用拼接方法:prop#row
       editCells: [],
+      echart: null,
     };
+  },
+  mounted() {
+    this.updataChart();
   },
   components: {
     HotTable,
@@ -74,9 +81,9 @@ export default {
     // 获取被编辑过的列名
     getEditColumnField() {
       if (this.editCells[0]) {
-        return this.editCells[0].split('#')[0];
-      }else{
-        return null
+        return this.editCells[0].split("#")[0];
+      } else {
+        return null;
       }
     },
     // 单元格修改触发器，
@@ -99,7 +106,8 @@ export default {
           const element = changes[i];
           this.editCells.push(element[1] + "#" + element[0]);
         }
-        this.updateTableShow();
+        this.updataChart();
+        this.updateShow();
       }
     },
     // 重置数据
@@ -107,14 +115,60 @@ export default {
       this.tableData_local = JSON.parse(JSON.stringify(this.tableData));
       this.tableColumns_local = JSON.parse(JSON.stringify(this.tableColumns));
       this.editCells = [];
-      this.updateTableShow();
+      this.updataChart();
+      this.updateShow();
     },
-    // 黑科技更新表格展示
-    updateTableShow() {
+    // 黑科技更新表格、图展示
+    updateShow() {
       this.isRefresh = false;
       this.$nextTick(() => {
         this.isRefresh = true;
+        if (this.echart) {
+          this.echart.resize();
+        }
       });
+    },
+    // 更新图数据
+    getChartsOptions() {
+      let data = utils.tableData2Charts(
+        this.tableData_local,
+        this.tableColumns_local
+      );
+      let options = {
+        tooltip: {
+          show: true,
+          trigger: "axis",
+          // confine: true,
+          // transitionDuration: 0,
+          // formatter(params) {
+          //   		return params[0] && params[0].dataIndex
+          //   			? `<span>
+          //   	${unit[attr][0]}：${params[0].value[1]}${unit[attr][1]}<br />
+          //   	${unit[attr][2]}：${params[0].value[0]}${unit[attr][3]}
+          //   </span>`
+          //   			: '';
+          // },
+        },
+        legend: { data: data.legendData },
+        xAxis: {
+          type: "category",
+          data: data.xAxisData,
+          max: (value) => value.max,
+          min: (value) => value.min,
+        },
+        yAxis: {
+          type: "value",
+          max: (value) => value.max,
+          min: (value) => value.min,
+        },
+        series: data.seriesData,
+      };
+      return options;
+    },
+    updataChart() {
+      this.echart = echarts.init(document.getElementById("echart"));
+      this.echart.setOption(this.getChartsOptions());
+      this.echart.resize();
     },
     // 单元格自定义渲染
     negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
@@ -168,9 +222,17 @@ export default {
   src="../../../node_modules/handsontable/dist/handsontable.full.css"
 ></style>
 <style scoped lang="scss">
+.wrap {
+  width: 100%;
+  height: 100%;
+}
 .tableStyle {
   width: 100%;
   height: 300px;
   overflow: hidden;
+}
+#echart {
+  width: 100%;
+  height: 300px;
 }
 </style>

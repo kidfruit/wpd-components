@@ -19,6 +19,7 @@ Vue.use(wpdComponents)
 
 Vue.config.productionTip = false
 
+
 new Vue({
   render: h => h(App),
 }).$mount('#app')
