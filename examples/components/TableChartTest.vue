@@ -69,6 +69,9 @@ export default {
           title: "地址",
         },
       ],
+      tmp:{
+        xxx:"nnn"
+      }
     };
   },
   methods: {

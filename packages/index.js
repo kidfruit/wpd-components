@@ -3,6 +3,7 @@ import toast2 from './toast2/src/toast2.vue'
 import ChartTable from './ChartTable/src/ChartTable.vue'
 import CharacteristicCurve from './CharacteristicCurve/src/CharacteristicCurve.vue'
 import TableChartInteractive from './TableChartInteractive/src/TableChartInteractive.vue'
+import SchemeTable from './SchemeTable/src/SchemeTable.vue'
 
 import testDirective from './testDirective/src/testDirective'
 
@@ -12,6 +13,7 @@ const components = [
     ChartTable,
     CharacteristicCurve,
     TableChartInteractive,
+    SchemeTable,
 ]
 
 // 存储指令映射
@@ -41,6 +43,8 @@ export default {
     ChartTable,
     CharacteristicCurve,
     TableChartInteractive,
+    SchemeTable,
+    
     ...directives,
 }
 
