@@ -39,6 +39,7 @@ export default {
   mounted() {
     window.showScheme = this.showScheme;
     window.openScheme = this.openScheme;
+    window.deleteScheme = this.deleteScheme;
   },
   data: function() {
     return {
@@ -48,9 +49,10 @@ export default {
         rowHeaders: false,
         colHeaders: true,
         autoColumnSize: true,
-        colWidths: "100px",
+        colWidths: [],
         stretchH: "all",
         licenseKey: "non-commercial-and-evaluation",
+        autoWrapRow: false,
         // contextMenu: true,
         // cells: function() {
         //   let cellProperties = {};
@@ -70,7 +72,8 @@ export default {
         let tmp = JSON.parse(JSON.stringify(this.tableData));
         tmp.forEach((element) => {
           element.action = `<button style="color: revert;" onClick="showScheme('${element.schemeId}')">查看</botton>
-          <button style="color: revert;" onClick="openScheme('${element.schemeId}')">打开</botton>`;
+          <button style="color: revert;" onClick="openScheme('${element.schemeId}')">打开</botton>
+          <button style="color: revert;" onClick="deleteScheme('${element.schemeId}')">删除</botton>`;
         });
         return tmp;
       },
@@ -88,6 +91,23 @@ export default {
       },
     },
   },
+  watch:{
+    tableColumns_local:{
+      handler(nValue){
+        if (this.hotSettings.colWidths) {
+          this.hotSettings.colWidths=[]
+          for (let i = 0; i < nValue.length; i++) {
+            const element = nValue[i];
+            this.hotSettings.colWidths.push(150)
+          }
+          // 最后一列宽一点
+          this.hotSettings.colWidths[this.hotSettings.colWidths.length-1]=200
+          this.updateShow()
+        }
+      },
+      immediate:true
+    }
+  },
   methods: {
     // 黑科技更新表格、图展示
     updateShow() {
@@ -101,6 +121,9 @@ export default {
     },
     openScheme(value) {
       this.$emit("openScheme", this.getTableRowBySchemeId(value));
+    },
+    deleteScheme(value) {
+      this.$emit("deleteScheme", this.getTableRowBySchemeId(value));
     },
     getTableRowBySchemeId(schemeId) {
       return this.tableData_local.find((element) => {
@@ -124,6 +147,6 @@ export default {
 </style>
 <style>
 .ht_master .wtHolder {
-    height: 100% !important;
+  height: 100% !important;
 }
 </style>

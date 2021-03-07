@@ -6,6 +6,7 @@
       :tableColumns="tableColumns"
       @openScheme="openScheme"
       @showScheme="showScheme"
+      @deleteScheme="deleteScheme"
     ></scheme-table>
     <button @click="reset">重置</button>
   </div>
@@ -83,6 +84,9 @@ export default {
       console.log(scheme);
     },
     showScheme(scheme) {
+      console.log(scheme);
+    },
+    deleteScheme(scheme) {
       console.log(scheme);
     },
   },

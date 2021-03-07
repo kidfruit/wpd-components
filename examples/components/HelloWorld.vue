@@ -1,8 +1,8 @@
 <template>
   <div class="about">
     <!-- <toast-2 :message="'yyy'" @clicked="clickedHello"></toast-2> -->
-    <table-chart-test></table-chart-test>
-    <scheme-table-test v-if="false"></scheme-table-test>
+    <table-chart-test v-if="false"></table-chart-test>
+    <scheme-table-test></scheme-table-test>
   </div>
 </template>
 

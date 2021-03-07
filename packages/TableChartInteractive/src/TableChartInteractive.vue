@@ -61,7 +61,7 @@ export default {
         rowHeaders: false,
         colHeaders: true,
         autoColumnSize: true,
-        colWidths: "100px",
+        colWidths: 100,
         stretchH: "all",
         width: "100%",
         height: 300,
