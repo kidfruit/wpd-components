@@ -1,22 +1,26 @@
 <template>
   <div class="wrap">
     <div id="echart"></div>
-    <hot-table
-      v-if="isRefresh"
-      :settings="hotSettings"
-      :data="tableData_local"
-      class="tableStyle"
-      ref="TableChartRef"
-    >
-      <hot-column
-        v-for="(item, index) in tableColumns_local"
-        :key="index"
-        :title="item.title"
-        :data="item.field"
-        :read-only="item.readOnly"
-      >
-      </hot-column>
-    </hot-table>
+    <div>
+      <div style="overflow: hidden;">
+        <hot-table
+          v-if="isRefresh"
+          :settings="hotSettings"
+          :data="tableData_local"
+          class="tableStyle"
+          ref="TableChartRef"
+        >
+          <hot-column
+            v-for="(item, index) in tableColumns_local"
+            :key="index"
+            :title="item.title"
+            :data="item.field"
+            :read-only="item.readOnly"
+          >
+          </hot-column>
+        </hot-table>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -49,13 +53,19 @@ export default {
       tableColumns_local: JSON.parse(JSON.stringify(this.tableColumns)),
       hotSettings: {
         // language: "zh-CN",
+        // manualColumnResize: true, //控制列的大小
+        // manualRowResize: true, //控制行的大小
+        // startCols: 5,//起始列数  数据data为null有效
+        // startRows: 5,//起始行数
+
         rowHeaders: false,
         colHeaders: true,
         autoColumnSize: true,
         colWidths: "100px",
         stretchH: "all",
+        width: "100%",
+        height: 300,
         licenseKey: "non-commercial-and-evaluation",
-        // contextMenu: true,
         cells: function() {
           let cellProperties = {};
           cellProperties.renderer = "negativeValueRenderer";
@@ -227,9 +237,8 @@ export default {
   height: 100%;
 }
 .tableStyle {
-  width: 100%;
-  height: 300px;
-  overflow: hidden;
+  //   // height: 300px;
+  overflow-y: scroll !important;
 }
 #echart {
   width: 100%;

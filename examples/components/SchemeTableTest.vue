@@ -89,8 +89,3 @@ export default {
 };
 </script>
 <style scoped></style>
-<style>
-.ht_master .wtHolder {
-    height: 100% !important;
-}
-</style>
