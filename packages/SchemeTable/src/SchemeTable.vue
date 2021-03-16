@@ -46,13 +46,14 @@ export default {
       isRefresh: true,
       hotSettings: {
         // language: "zh-CN",
-        rowHeaders: false,
+        rowHeaders: true,
         colHeaders: true,
-        autoColumnSize: true,
+        autoColumnSize: false,
         colWidths: [],
         stretchH: "all",
         licenseKey: "non-commercial-and-evaluation",
-        autoWrapRow: false,
+        autoWrapRow: true,
+        height:120,
         // contextMenu: true,
         // cells: function() {
         //   let cellProperties = {};
