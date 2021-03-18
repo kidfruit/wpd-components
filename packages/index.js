@@ -4,6 +4,7 @@ import ChartTable from './ChartTable/src/ChartTable.vue'
 import CharacteristicCurve from './CharacteristicCurve/src/CharacteristicCurve.vue'
 import TableChartInteractive from './TableChartInteractive/src/TableChartInteractive.vue'
 import SchemeTable from './SchemeTable/src/SchemeTable.vue'
+import SimpleTable from './SimpleTable/src/SimpleTable.vue'
 
 import testDirective from './testDirective/src/testDirective'
 
@@ -14,6 +15,7 @@ const components = [
     CharacteristicCurve,
     TableChartInteractive,
     SchemeTable,
+    SimpleTable
 ]
 
 // 存储指令映射
@@ -44,7 +46,8 @@ export default {
     CharacteristicCurve,
     TableChartInteractive,
     SchemeTable,
-    
+    SimpleTable,
+
     ...directives,
 }
 

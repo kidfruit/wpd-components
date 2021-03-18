@@ -1,105 +1,83 @@
 <template>
-  <div v-if="data.tableData">
-    <v-chart
+  <div v-if="tableData && isRefresh">
+    <!-- <v-chart
       ref="vChart"
       theme="ovilia-green"
       :options="options"
       style="width:100%;"
-    ></v-chart>
-    <v-table
-      ref="vTable"
-      is-horizontal-resize
-      row-hover-color="#eee"
-      row-click-color="#edf7ff"
-      :row-height="tableRowHeight"
-      :height="tableHeight"
-      style="width:100%"
-      column-width-drag
-      :columns="tableColumns"
-      :table-data="tableData"
-      :cell-edit-done="cellEditDone"
-      :is-vertical-resize="true"
-      :vertical-resize-offset="5"
-    ></v-table>
+    ></v-chart> -->
+    <simple-table
+      ref="simpleTable"
+      :tableData="tableData"
+      :tableColumns="tableColumns"
+      :setting="hotSettings"
+      :isVisible="isVisible"
+      @cellEditDone="cellEditDone"
+    ></simple-table>
   </div>
 </template>
 <script>
-import utils from "./utils";
+import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
+import utils from './utils'
 export default {
-  name: "ChartTable",
+  components: { SimpleTable },
+  name: 'ChartTable',
   props: {
-    editable: {
+    isVisible: {
       type: Boolean,
-      default: false,
+      default: true,
+      required: false,
     },
-    data: {
+    classNames: {
+      type: Array,
+      required: false,
+    },
+    setting: {
       type: Object,
-      required: true,
+      required: false,
     },
-    tableHeight: {
-      type: Number,
-      default: 300,
+    tableData: {
+      type: Array,
     },
-    tableRowHeight: {
-      type: Number,
-      default: 34,
+    tableColumns: {
+      type: Array,
     },
   },
   data() {
     return {
       options: {},
-    };
-  },
-  computed: {
-    tableData: {
-      get() {
-        return this.data.tableData;
-      },
-    },
-    tableColumns: {
-      get() {
-        if (!this.editable) {
-          this.data.tableColumns.forEach((element) => {
-            element.isEdit = false;
-          });
-        }
-        return this.data.tableColumns;
-      },
-    },
+      isRefresh: true,
+    }
   },
   watch: {
     tableData: {
       handler(nValue) {
         if (nValue) {
-          this.updateCharts();
+          this.updateCharts()
         }
       },
       deep: true,
       immediate: true,
     },
   },
-  mounted() {
-    console.log("--", this.data);
+  computed: {
+    hotSettings() {
+      return Object.assign({}, this.setting)
+    },
   },
+  mounted() {},
   methods: {
     // 单元格编辑回调
-    cellEditDone(newValue, oldValue, rowIndex, rowData, field) {
-      // 将编辑指令返回到父页面，再被动更新自身
-      this.$emit("cellEditDone", {
-        rowIndex: rowIndex,
-        field: field,
-        newValue: newValue,
-        oldValue: oldValue,
-        rowData: rowData,
-      });
+    cellEditDone(value) {
+      this.$emit('cellEditDone', value)
     },
     // 更新图
     updateCharts() {
-      let data = utils.tableData2Charts(this.tableData, this.tableColumns);
+      let data = utils.tableData2Charts(this.tableData, this.tableColumns)
       this.options = {
         tooltip: {
           show: true,
-          trigger: "axis",
+          trigger: 'axis',
           // confine: true,
           // transitionDuration: 0,
           // formatter(params) {
@@ -113,32 +91,32 @@ export default {
         },
         legend: { data: data.legendData },
         xAxis: {
-          type: "category",
+          type: 'category',
           data: data.xAxisData,
           max: (value) => value.max,
           min: (value) => value.min,
         },
         yAxis: {
-          type: "value",
+          type: 'value',
           max: (value) => value.max,
           min: (value) => value.min,
         },
         series: data.seriesData,
-      };
-      this.resize();
+      }
+      this.resize()
     },
     resize() {
       if (this.$refs.vChart) {
-        this.$refs.vChart.resize();
+        this.$refs.vChart.resize()
       }
       if (this.$refs.vTable) {
-        this.$refs.vTable.resize();
+        this.$refs.vTable.resize()
       }
     },
 
     //
   },
-};
+}
 </script>
 <style scoped lang="scss">
 .v-table-rightview {

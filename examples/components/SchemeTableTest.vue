@@ -4,6 +4,7 @@
       ref="schemeTable"
       :tableData="tableData"
       :tableColumns="tableColumns"
+      :setting="{height:200}"
       @openScheme="openScheme"
       @showScheme="showScheme"
       @deleteScheme="deleteScheme"

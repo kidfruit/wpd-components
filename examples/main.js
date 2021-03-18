@@ -17,6 +17,9 @@ Vue.use(Antd);
 import wpdComponents from '../packages/index'
 Vue.use(wpdComponents)
 
+// handsontable
+import './assets/handsontable.less'
+
 Vue.config.productionTip = false
 
 
