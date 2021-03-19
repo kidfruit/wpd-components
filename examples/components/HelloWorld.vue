@@ -1,10 +1,10 @@
 <template>
   <div class="about">
     <!-- <toast-2 :message="'yyy'" @clicked="clickedHello"></toast-2> -->
-    <table-chart-test v-if="false"></table-chart-test>
+    <table-chart-test v-if="true"></table-chart-test>
     <scheme-table-test v-if="false"></scheme-table-test>
     <simple-table-test v-if="false"></simple-table-test>
-    <char-table-test v-if="true"></char-table-test>
+    <char-table-test v-if="false"></char-table-test>
   </div>
 </template>
 
