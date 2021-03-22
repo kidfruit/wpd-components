@@ -5,6 +5,7 @@
     <scheme-table-test v-if="false"></scheme-table-test>
     <simple-table-test v-if="false"></simple-table-test>
     <char-table-test v-if="false"></char-table-test>
+    <simple-chart-test/>
   </div>
 </template>
 
@@ -13,12 +14,14 @@ import TableChartTest from './TableChartTest'
 import SchemeTableTest from './SchemeTableTest'
 import SimpleTableTest from "./SimpleTableTest";
 import CharTableTest from './CharTableTest.vue';
+import SimpleChartTest from './SimpleChartTest.vue';
 export default {
   components: {
     TableChartTest,
     SchemeTableTest,
     SimpleTableTest,
     CharTableTest,
+    SimpleChartTest
   },
   name: 'HelloWorld',
   methods: {
