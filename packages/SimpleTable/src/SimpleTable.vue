@@ -15,7 +15,8 @@
         :data="item.field"
         :read-only="item.readOnly"
         :renderer="item.renderer"
-      />
+      >
+      </hot-column>
     </hot-table>
   </div>
 </template>

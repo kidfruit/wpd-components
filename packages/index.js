@@ -17,7 +17,7 @@ const components = [
     TableChartInteractive,
     SchemeTable,
     SimpleTable,
-    SimpleChart
+    SimpleChart,
 ]
 
 // 存储指令映射
