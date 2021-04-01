@@ -6,6 +6,7 @@ import TableChartInteractive from './TableChartInteractive/src/TableChartInterac
 import SchemeTable from './SchemeTable/src/SchemeTable.vue'
 import SimpleTable from './SimpleTable/src/SimpleTable.vue'
 import SimpleChart from './SimpleChart/src/SimpleChart.vue'
+import StandardChart from './StandardChart/src/StandardChart.vue'
 
 import testDirective from './testDirective/src/testDirective'
 
@@ -18,6 +19,7 @@ const components = [
     SchemeTable,
     SimpleTable,
     SimpleChart,
+    StandardChart,
 ]
 
 // 存储指令映射
@@ -50,6 +52,7 @@ export default {
     SchemeTable,
     SimpleTable,
     SimpleChart,
+    StandardChart,
 
     ...directives,
 }
