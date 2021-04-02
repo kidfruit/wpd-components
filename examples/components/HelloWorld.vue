@@ -5,8 +5,9 @@
     <scheme-table-test v-if="false"></scheme-table-test>
     <char-table-test v-if="false"></char-table-test>
     <simple-chart-test v-if="false" />
-    <standard-chart-test v-if="true" />
-    <simple-table-test v-if="true" />
+    <standard-chart-test v-if="false" />
+    <simple-table-test v-if="false" />
+    <chart-table-group-test v-if="true" />
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import SimpleTableTest from "./SimpleTableTest";
 import CharTableTest from './CharTableTest.vue';
 import SimpleChartTest from './SimpleChartTest.vue';
 import StandardChartTest from './StandardChartTest.vue';
+import ChartTableGroupTest from './ChartTableGroupTest.vue';
 export default {
   components: {
     TableChartTest,
@@ -24,7 +26,8 @@ export default {
     SimpleTableTest,
     CharTableTest,
     SimpleChartTest,
-    StandardChartTest
+    StandardChartTest,
+    ChartTableGroupTest
   },
   name: 'HelloWorld',
   methods: {
