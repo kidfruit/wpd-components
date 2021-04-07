@@ -61,8 +61,8 @@ export default {
   data: function() {
     return {
       isRefresh: true,
-      tableData_local: JSON.parse(JSON.stringify(this.tableData)),
-      tableColumns_local: JSON.parse(JSON.stringify(this.tableColumns)),
+      tableData_local: [],
+      tableColumns_local: [],
       //   记录单元格修改记录，采用拼接方法:prop#row
       editCells: [],
       echart: null,
@@ -76,7 +76,7 @@ export default {
     )
   },
   mounted() {
-    this.addHandsonTableHooks()
+    this.reset()
   },
   computed: {
     hotSettings() {
@@ -221,7 +221,10 @@ export default {
         td.style.color = '#004fff'
       }
       // 样式:不可编辑
-      if (this.editCells[0] && cellProperties.prop != this.editCells[0].split('#')[0]) {
+      if (
+        this.editCells[0] &&
+        cellProperties.prop != this.editCells[0].split('#')[0]
+      ) {
         td.style.color = '#c00101'
       }
     },
