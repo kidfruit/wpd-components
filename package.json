@@ -1,8 +1,8 @@
 {
   "name": "wpd-components",
   "description": "npm wcp",
-  "version": "0.1.17",
-  "author": "fkl",
+  "version": "0.1.18",
+  "author": "cjwsjy",
   "private": false,
   "scripts": {
     "lib": "vue-cli-service build --target lib --name wpd --dest lib packages/index.js",
