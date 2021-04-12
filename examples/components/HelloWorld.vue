@@ -8,6 +8,7 @@
     <standard-chart-test v-if="false" />
     <simple-table-test v-if="false" />
     <result-hydro-dynamic-test v-if="true" />
+    <chart-table-group-test v-if="true" />
   </div>
 </template>
 
@@ -19,6 +20,7 @@ import CharTableTest from './CharTableTest.vue';
 import SimpleChartTest from './SimpleChartTest.vue';
 import StandardChartTest from './StandardChartTest.vue';
 import ResultHydroDynamicTest from './ResultHydroDynamicTest.vue';
+import ChartTableGroupTest from './ChartTableGroupTest.vue';
 export default {
   components: {
     TableChartTest,
@@ -27,7 +29,8 @@ export default {
     CharTableTest,
     SimpleChartTest,
     StandardChartTest,
-    ResultHydroDynamicTest
+    ResultHydroDynamicTest,
+    ChartTableGroupTest
   },
   name: 'HelloWorld',
   methods: {

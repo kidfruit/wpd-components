@@ -7,6 +7,7 @@ import SchemeTable from './SchemeTable/src/SchemeTable.vue'
 import SimpleTable from './SimpleTable/src/SimpleTable.vue'
 import SimpleChart from './SimpleChart/src/SimpleChart.vue'
 import StandardChart from './StandardChart/src/StandardChart.vue'
+import ChartTableGroup from './ChartTableGroup/src/ChartTableGroup.vue'
 
 import testDirective from './testDirective/src/testDirective'
 
@@ -20,6 +21,7 @@ const components = [
     SimpleTable,
     SimpleChart,
     StandardChart,
+    ChartTableGroup
 ]
 
 // 存储指令映射
@@ -53,6 +55,7 @@ export default {
     SimpleTable,
     SimpleChart,
     StandardChart,
+    ChartTableGroup,
 
     ...directives,
 }
