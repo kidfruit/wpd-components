@@ -25,8 +25,8 @@ export default {
       chartOption: {
         title: {
           text: "水位流量图",
-          left: "center"
-        }
+          left: "center",
+        },
       },
       chartAxis: {
         xAxis: "time",
@@ -39,7 +39,7 @@ export default {
           {
             title: "流量(m³/s)",
             yAxisIndex: 1,
-          }
+          },
         ],
         series: [
           {
@@ -119,9 +119,7 @@ export default {
       ],
     };
   },
-  methods: {
-
-  },
+  methods: {},
 };
 </script>
 <style>
