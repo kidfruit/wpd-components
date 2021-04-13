@@ -109,12 +109,29 @@ export default {
       let index = this.columns.findIndex((item) => item.field === el);
       this.columns.splice(index, 1);
     });
-    console.log(this.columns);
+    console.log(this.columns, regstrs, sections);
     // 自定义表头
     //  ["A", { label: "B", colspan: 8 }, "C"],
     //       ["D", { label: "E", colspan: 4 }, { label: "F", colspan: 4 }, "G"],
     //       ["H", "I", "J", "K", "L", "M", "N", "R", "S", "T"],
     let nestedHeaders = [];
+    let notFields = this.columns
+      .filter((el) => {
+        return (
+          regstrs.findIndex((item) => el.field.indexOf(item) !== -1) === -1
+        );
+      })
+      .map((el) => el.title);
+    let sectionFields = sections.map((el) => {
+      return { label: el, colspan: 2 };
+    });
+    this.setting.nestedHeaders.push(notFields.concat(sectionFields));
+    this.setting.nestedHeaders.push(
+      this.columns.map((el) => {
+        return { label: el.title, colspan: 1 };
+      })
+    );
+    console.log(nestedHeaders, this.setting.nestedHeaders);
   },
   beforeMount() {},
   mounted() {},
@@ -123,10 +140,25 @@ export default {
       newData: [],
       columns: [],
       setting: {
-        // nestedHeaders: [
-        //   ["A", "C", { label: "B", colspan: 2 }],
-        //   ["D", "G", { label: "E", colspan: 2 }, { label: "F", colspan: 2 }],
-        // ],
+        nestedHeaders: [
+          // [
+          //   "A",
+          //   "C",
+          //   { label: "B", colspan: 2 },
+          //   { label: "B", colspan: 2 },
+          //   { label: "B", colspan: 2 },
+          // ],
+          // [
+          //   { label: "中国", colspan: 1 },
+          //   { label: "应该", colspan: 1 },
+          //   { label: "密码", colspan: 1 },
+          //   { label: "F", colspan: 1 },
+          //   { label: "H", colspan: 1 },
+          //   { label: "E", colspan: 1 },
+          //   { label: "F", colspan: 1 },
+          //   { label: "H", colspan: 1 },
+          // ],
+        ],
       },
     };
   },
