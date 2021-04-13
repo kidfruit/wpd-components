@@ -37,7 +37,7 @@ export default {
           // padding: 100,
           // top: 30,
 
-          // bottom: -50,
+          bottom: -20,
           // zlevel: 10,
           // currentIndex: 2,
           playInterval: 1000,
@@ -45,9 +45,9 @@ export default {
           //     position: 'left'
           // },
           data: [
-            "2021-03-29T15:00:00",
-            "2021-03-29T21:00:00",
-            "2021-03-30T03:00:00",
+            // "2021-03-29T15:00:00",
+            // "2021-03-29T21:00:00",
+            // "2021-03-30T03:00:00",
           ],
           label: {
             formatter: function (s) {
@@ -94,7 +94,7 @@ export default {
         {
           field: "index",
           title: "序号",
-          width: 100,
+          width: 10,
           isResize: true,
           titleAlign: "center",
           columnAlign: "center",
@@ -103,7 +103,7 @@ export default {
         {
           field: "time",
           title: "断面时间",
-          width: 80,
+          width: 150,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
@@ -130,25 +130,46 @@ export default {
       ],
       data: [
         {
-          dim1: [374, 400, 450],
-          dim2: [0, 52.3, 681.7],
+          dim1: [374, 400, 450, 600, 700, 900],
+          dim2: [0, 52.3, 681.7, 781, 903, 1120],
           section: "JLJ36",
           time: "2021-03-29T15:00:00",
           index: 1,
         },
         {
-          dim1: [333, 567, 789],
-          dim2: [100, 300, 499],
+          dim1: [333, 567, 789, 1002, 1334, 1788],
+          dim2: [100, 300, 499, 676, 892, 976],
           section: "JLJ35",
           time: "2021-03-29T21:00:00",
           index: 2,
         },
         {
-          dim1: [1200, 1300, 1400],
-          dim2: [777, 789, 900],
+          dim1: [1200, 1300, 1400, 1678, 1890, 1999],
+          dim2: [777, 789, 900, 1111, 1230, 1450],
           section: "JLJ34",
           time: "2021-03-30T03:00:00",
           index: 3,
+        },
+        {
+          dim1: [374, 400, 450, 600, 700, 900],
+          dim2: [0, 52.3, 681.7, 781, 903, 1120],
+          section: "JLJ33",
+          time: "2021-03-30T12:00:00",
+          index: 4,
+        },
+        {
+          dim1: [333, 567, 789, 1002, 1334, 1788],
+          dim2: [100, 300, 499, 676, 892, 976],
+          section: "JLJ32",
+          time: "2021-03-30T21:00:00",
+          index: 5,
+        },
+        {
+          dim1: [1200, 1300, 1400, 1678, 1890, 1999],
+          dim2: [777, 789, 900, 1111, 1230, 1450],
+          section: "JLJ31",
+          time: "2021-03-31T03:00:00",
+          index: 6,
         },
       ],
     };
@@ -156,8 +177,11 @@ export default {
 };
 </script>
 <style>
-.chart {
+.result-hydro-dynamic.testChart >>> .chart-container {
+  color: #f00;
+}
+.result-hydro-dynamic.testChart >>> .chart {
   width: 100%;
-  height: 50vh;
+  height: 60vh;
 }
 </style>

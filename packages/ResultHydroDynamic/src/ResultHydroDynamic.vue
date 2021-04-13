@@ -55,10 +55,11 @@ export default {
   },
   computed: {
     classNames() {
-      return ["chart-table-group"].concat(this.classes);
+      return ["result-hydro-dynamic"].concat(this.classes).join(" ");
     },
   },
   created() {
+    this.chartOption.timeline.data = this.data.map((el) => el.time);
     // 将多个时间线的数据拆分
     let sections = this.data.map((el) => el.section);
     let fields = this.chartAxis.series.map((el) => el.field);
@@ -109,11 +110,7 @@ export default {
       let index = this.columns.findIndex((item) => item.field === el);
       this.columns.splice(index, 1);
     });
-    console.log(this.columns, regstrs, sections);
     // 自定义表头
-    //  ["A", { label: "B", colspan: 8 }, "C"],
-    //       ["D", { label: "E", colspan: 4 }, { label: "F", colspan: 4 }, "G"],
-    //       ["H", "I", "J", "K", "L", "M", "N", "R", "S", "T"],
     let nestedHeaders = [];
     let notFields = this.columns
       .filter((el) => {
@@ -121,7 +118,10 @@ export default {
           regstrs.findIndex((item) => el.field.indexOf(item) !== -1) === -1
         );
       })
-      .map((el) => el.title);
+      .map((el) => el.title)
+      .map((el) => {
+        return { label: "", colspan: 1 };
+      });
     let sectionFields = sections.map((el) => {
       return { label: el, colspan: 2 };
     });
@@ -131,7 +131,8 @@ export default {
         return { label: el.title, colspan: 1 };
       })
     );
-    console.log(nestedHeaders, this.setting.nestedHeaders);
+
+    console.log(this.columns, this.newData);
   },
   beforeMount() {},
   mounted() {},
@@ -140,30 +141,9 @@ export default {
       newData: [],
       columns: [],
       setting: {
-        nestedHeaders: [
-          // [
-          //   "A",
-          //   "C",
-          //   { label: "B", colspan: 2 },
-          //   { label: "B", colspan: 2 },
-          //   { label: "B", colspan: 2 },
-          // ],
-          // [
-          //   { label: "中国", colspan: 1 },
-          //   { label: "应该", colspan: 1 },
-          //   { label: "密码", colspan: 1 },
-          //   { label: "F", colspan: 1 },
-          //   { label: "H", colspan: 1 },
-          //   { label: "E", colspan: 1 },
-          //   { label: "F", colspan: 1 },
-          //   { label: "H", colspan: 1 },
-          // ],
-        ],
+        nestedHeaders: [],
       },
     };
   },
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

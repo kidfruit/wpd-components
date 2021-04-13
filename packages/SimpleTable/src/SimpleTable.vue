@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div v-if="isVisible && isRefresh">
     <hot-table
-      v-if="isVisible && isRefresh"
       :settings="hotSettings"
       :data="hotData"
       :class="classes"
