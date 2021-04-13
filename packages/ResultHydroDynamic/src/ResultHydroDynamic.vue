@@ -13,6 +13,7 @@
       <simple-table
         ref="tableRef"
         :tableData="data"
+        :setting="setting"
         :tableColumns="tableColumns"
       ></simple-table>
     </div>
@@ -57,10 +58,23 @@ export default {
       return ["chart-table-group"].concat(this.classes);
     },
   },
+  created() {
+    console.log(this.tableColumns);
+    //  ["A", { label: "B", colspan: 8 }, "C"],
+    //       ["D", { label: "E", colspan: 4 }, { label: "F", colspan: 4 }, "G"],
+    //       ["H", "I", "J", "K", "L", "M", "N", "R", "S", "T"],
+  },
   beforeMount() {},
   mounted() {},
   data() {
-    return {};
+    return {
+      setting: {
+        nestedHeaders: [
+          ["A", { label: "B", colspan: 2 }, "C"],
+          ["D", { label: "E", colspan: 2 }, { label: "F", colspan: 2 }, "G"],
+        ],
+      },
+    };
   },
 };
 </script>

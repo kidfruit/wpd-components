@@ -53,7 +53,7 @@ export default {
         },
       },
       chartAxis: {
-        xAxis: "time",
+        xAxis: "section",
         timeSeries: true,
         yAxis: [
           {
@@ -98,7 +98,7 @@ export default {
         },
         {
           field: "time",
-          title: "时间",
+          title: "断面时间",
           width: 80,
           titleAlign: "center",
           columnAlign: "center",
@@ -128,19 +128,22 @@ export default {
         {
           dim2: [0, 52.3, 681.7],
           dim1: [374, 400, 450],
-          time: "JLJ36",
+          section: "JLJ36",
+          time: "2021-03-29T15:00:00",
           index: 1,
         },
         {
           dim2: [52.3, 681.7, 2483],
           dim1: [400, 450, 500],
-          time: "JLJ35",
+          section: "JLJ35",
+          time: "2021-03-29T21:00:00",
           index: 2,
         },
         {
           dim2: [681.7, 2483, 4341.4],
           dim1: [450, 500, 530],
-          time: "JLJ34",
+          section: "JLJ34",
+          time: "2021-03-30T03:00:00",
           index: 3,
         },
       ],
