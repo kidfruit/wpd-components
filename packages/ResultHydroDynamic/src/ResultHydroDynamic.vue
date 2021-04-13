@@ -12,9 +12,9 @@
     <div class="table-container">
       <simple-table
         ref="tableRef"
-        :tableData="data"
+        :tableData="newData"
         :setting="setting"
-        :tableColumns="tableColumns"
+        :tableColumns="columns"
       ></simple-table>
     </div>
   </div>
@@ -59,20 +59,74 @@ export default {
     },
   },
   created() {
-    console.log(this.tableColumns);
+    // 将多个时间线的数据拆分
+    let sections = this.data.map((el) => el.section);
+    let fields = this.chartAxis.series.map((el) => el.field);
+    let deltaFields = [];
+    let regstrs = [];
+    this.newData = JSON.parse(JSON.stringify(this.data));
+    sections.forEach((element) => {
+      fields.forEach((item) => {
+        this.newData.forEach((el) => {
+          if (el[item]) {
+            if (deltaFields.indexOf(`${element}.${item}`) === -1) {
+              deltaFields.push(`${element}.${item}`);
+            }
+          }
+        });
+      });
+    });
+    this.newData.forEach((el) => {
+      fields.forEach((item) => {
+        if (el[item]) {
+          if (regstrs.indexOf(item) === -1) {
+            regstrs.push(item);
+          }
+          el[item].forEach((ele, index) => {
+            el[`${sections[index]}.${item}`] = ele;
+          });
+          delete el[item];
+        }
+      });
+    });
+
+    // 处理columns
+    this.columns = JSON.parse(JSON.stringify(this.tableColumns));
+    deltaFields.forEach((el) => {
+      let n = regstrs.find((item) => el.indexOf(item) != -1);
+      let m = this.columns.find((el) => el.field === n);
+      this.columns.push({
+        field: el,
+        title: m.title,
+        width: 100,
+        isResize: true,
+        titleAlign: "center",
+        columnAlign: "center",
+        readOnly: true,
+      });
+    });
+    regstrs.forEach((el) => {
+      let index = this.columns.findIndex((item) => item.field === el);
+      this.columns.splice(index, 1);
+    });
+    console.log(this.columns);
+    // 自定义表头
     //  ["A", { label: "B", colspan: 8 }, "C"],
     //       ["D", { label: "E", colspan: 4 }, { label: "F", colspan: 4 }, "G"],
     //       ["H", "I", "J", "K", "L", "M", "N", "R", "S", "T"],
+    let nestedHeaders = [];
   },
   beforeMount() {},
   mounted() {},
   data() {
     return {
+      newData: [],
+      columns: [],
       setting: {
-        nestedHeaders: [
-          ["A", { label: "B", colspan: 2 }, "C"],
-          ["D", { label: "E", colspan: 2 }, { label: "F", colspan: 2 }, "G"],
-        ],
+        // nestedHeaders: [
+        //   ["A", "C", { label: "B", colspan: 2 }],
+        //   ["D", "G", { label: "E", colspan: 2 }, { label: "F", colspan: 2 }],
+        // ],
       },
     };
   },
