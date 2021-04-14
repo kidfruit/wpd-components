@@ -12,11 +12,11 @@
 <script>
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { LineChart,BarChart,PieChart } from "echarts/charts";
+import { LineChart, BarChart, PieChart } from "echarts/charts";
 import {
   TitleComponent,
   TooltipComponent,
-  LegendComponent
+  LegendComponent,
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 
@@ -27,7 +27,7 @@ use([
   PieChart,
   TitleComponent,
   TooltipComponent,
-  LegendComponent
+  LegendComponent,
 ]);
 const defaultOption = {
   title: {
@@ -57,12 +57,12 @@ export default {
     },
     theme: {
       type: String,
-      default:"macarons",
+      default: "macarons",
       required: false,
     },
     chartOption: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   components: {
     VChart,
@@ -92,10 +92,10 @@ export default {
       }
     },
     resizeTheChart() {
-      if(this.$refs && this.$refs.chartRef){
+      if (this.$refs && this.$refs.chartRef) {
         this.$refs.chartRef.resize();
       }
-    }
+    },
   },
 };
 </script>

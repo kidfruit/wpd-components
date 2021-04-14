@@ -195,7 +195,30 @@ export default {
         seriesObj.data = this.chartData.map((cd) => cd[yax.field]);
         option.series.push(seriesObj);
       });
-      return option;
+      if (!option.timeline) {
+        return {
+          baseOption: option,
+        };
+      } else {
+        // 带有时间线的chart
+        let options = [];
+        let fields = this.chartAxis.series.map((el) => el.field);
+        this.chartData.forEach((cd) => {
+          let series = [];
+          fields.forEach((item) => {
+            if (cd[item]) {
+              series.push({ data: cd[item] });
+            }
+          });
+          options.push({
+            series,
+          });
+        });
+        return {
+          baseOption: option,
+          options,
+        };
+      }
     },
     sortTime(timeList) {
       return timeList.sort((a, b) => {

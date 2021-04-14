@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div v-if="isVisible && isRefresh">
     <hot-table
-      v-if="isVisible && isRefresh"
       :settings="hotSettings"
       :data="hotData"
       :class="classes"
@@ -31,7 +30,7 @@ const defaultHotSettings = {
   rowHeaders: false,
   colHeaders: true,
   autoColumnSize: true,
-  colWidths: "100px",
+  // colWidths: "100px",
   stretchH: "all",
   licenseKey: "non-commercial-and-evaluation",
   contextMenu: false,

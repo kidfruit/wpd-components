@@ -1,22 +1,23 @@
 <template>
   <div style="width: 100%">
-    <standard-chart
-      ref="chart"
+    <chart-table-group
+      ref="chartTable"
       :classes="classNames"
       :chartOption="chartOption"
       :isRefresh="isRefresh"
       :chartAxis="chartAxis"
-      :chartData="chartData"
+      :tableColumns="tableColumns"
+      :data="data"
     />
-    <button @click="fetchData">获取数据123</button>
+    <!-- <button @click="fetchData">获取数据123</button> -->
   </div>
 </template>
 <script>
-import StandardChart from "../../packages/StandardChart/src/StandardChart.vue";
+import ChartTableGroup from "../../packages/ChartTableGroup/src/ChartTableGroup.vue";
 
 export default {
-  name: "StandardChartTest",
-  components: { StandardChart },
+  name: "ChartTableGroupTest",
+  components: { ChartTableGroup },
   data() {
     return {
       classNames: ["testChart"],
@@ -61,7 +62,45 @@ export default {
           },
         ],
       },
-      chartData: [
+      tableColumns: [
+        {
+          field: "index",
+          title: "序号",
+          width: 100,
+          isResize: true,
+          titleAlign: "center",
+          columnAlign: "center",
+          readOnly: true,
+        },
+        {
+          field: "time",
+          title: "时间",
+          width: 80,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          readOnly: true,
+        },
+        {
+          field: "dim1",
+          title: "水位(m)",
+          width: 100,
+          isResize: true,
+          titleAlign: "center",
+          columnAlign: "center",
+          readOnly: true,
+        },
+        {
+          field: "dim2",
+          title: "流量(m³/s)",
+          width: 100,
+          isResize: true,
+          titleAlign: "center",
+          columnAlign: "center",
+          readOnly: true,
+        },
+      ],
+      data: [
         { dim2: 0, dim1: 374, time: "2021-03-29T15:00:00", index: 1 },
         { dim2: 52.3, dim1: 400, time: "2021-03-29T21:00:00", index: 2 },
         { dim2: 681.7, dim1: 450, time: "2021-03-30T03:00:00", index: 3 },
@@ -80,20 +119,11 @@ export default {
       ],
     };
   },
-  methods: {
-    changeData() {
-      this.chartInstance = this.$refs.chart.instance;
-      this.isRefresh = false;
-    },
-    fetchData() {
-      this.chartInstance = this.$refs.chart.instance;
-      console.log(this.chartInstance);
-    },
-  },
+  methods: {},
 };
 </script>
 <style>
-.testChart {
+.chart {
   width: 100%;
   height: 50vh;
 }

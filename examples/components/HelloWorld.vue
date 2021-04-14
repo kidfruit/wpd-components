@@ -8,18 +8,22 @@
     <standard-chart-test v-if="false" />
     <simple-table-test v-if="true" />
     <multi-option-table-text v-if="false" />
-    
+    <result-hydro-dynamic-test v-if="false" />
+    <chart-table-group-test v-if="false" />
   </div>
 </template>
 
 <script>
-import TableChartTest from './TableChartTest'
-import SchemeTableTest from './SchemeTableTest'
+import TableChartTest from "./TableChartTest";
+import SchemeTableTest from "./SchemeTableTest";
 import SimpleTableTest from "./SimpleTableTest";
+
 import CharTableTest from './CharTableTest.vue';
 import SimpleChartTest from './SimpleChartTest.vue';
 import StandardChartTest from './StandardChartTest.vue';
 import MultiOptionTableText from './MultiOptionTableText.vue';
+import ResultHydroDynamicTest from "./ResultHydroDynamicTest.vue";
+import ChartTableGroupTest from "./ChartTableGroupTest.vue";
 
 export default {
   components: {
@@ -29,15 +33,17 @@ export default {
     CharTableTest,
     SimpleChartTest,
     StandardChartTest,
+    ResultHydroDynamicTest,
+    ChartTableGroupTest,
     MultiOptionTableText
   },
-  name: 'HelloWorld',
+  name: "HelloWorld",
   methods: {
     clickedHello() {
-      alert('iii')
+      alert("iii");
     },
   },
-}
+};
 </script>
 <style src="../../node_modules/handsontable/dist/handsontable.full.css"></style>
 <style scoped></style>

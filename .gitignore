@@ -6,6 +6,7 @@ node_modules
 # local env files
 .env.local
 .env.*.local
+.prettierrc.json
 
 # Log files
 npm-debug.log*
@@ -22,3 +23,6 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
+
+# npm lock files
+package-lock.json
