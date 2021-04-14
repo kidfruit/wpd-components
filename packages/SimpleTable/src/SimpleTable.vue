@@ -15,6 +15,8 @@
         :source="item.source"
         :renderer="item.renderer"
         :type="item.type"
+        :width="item.width"
+        :readOnly="item.readOnly"
       >
       </hot-column>
     </hot-table>
@@ -30,6 +32,7 @@ const defaultHotSettings = {
   rowHeaders: false,
   colHeaders: true,
   autoColumnSize: true,
+  outsideClickDeselects: false,
   // colWidths: "100px",
   stretchH: "all",
   licenseKey: "non-commercial-and-evaluation",
@@ -250,6 +253,24 @@ export default {
         this.prepareData(data);
         this.isRefresh = true;
       }, 0);
+    },
+    add() {
+      this.$refs.hotTableRef.hotInstance.alter(
+        "insert_row",
+        this.$refs.hotTableRef.hotInstance.countRows()
+      );
+    },
+    deleted() {
+      let seleteds = this.$refs.hotTableRef.hotInstance.getSelected();
+      if (seleteds && seleteds.length > 0) {
+        seleteds.forEach((el) => {
+          this.$refs.hotTableRef.hotInstance.alter(
+            "remove_row",
+            el[0],
+            el[2] - el[0] + 1
+          );
+        });
+      }
     },
   },
 };
