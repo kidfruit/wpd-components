@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-chart
-      v-if="isVisible && isRefresh"
       :class="classNames"
       :option="option"
       :theme="theme"
@@ -116,6 +115,7 @@ export default {
   beforeMount() {},
   mounted() {
     this.getChartInstance();
+    // this.$emit("mergeOptions", this.$refs.chartRef.getDom());
     window.addEventListener("resize", this.resizeTheChart);
   },
   data() {
@@ -191,11 +191,15 @@ export default {
           type: "line",
           data: [],
           yAxisIndex: yax.yAxisIndex,
+          smooth: yax.smooth,
+          id: yax.id,
         };
         seriesObj.data = this.chartData.map((cd) => cd[yax.field]);
+        console.log("push");
         option.series.push(seriesObj);
       });
       if (!option.timeline) {
+        console.log("opt", option);
         return {
           baseOption: option,
         };
