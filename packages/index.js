@@ -11,6 +11,9 @@ import ChartTableGroup from './ChartTableGroup/src/ChartTableGroup.vue'
 
 import testDirective from './testDirective/src/testDirective'
 
+
+import MultiOptionTable from './MultiOptionTable/src/MultiOptionTable.vue'
+
 // 存储组件列表
 const components = [
     toast2,
@@ -20,6 +23,7 @@ const components = [
     SchemeTable,
     SimpleTable,
     SimpleChart,
+    MultiOptionTable,
     StandardChart,
     ChartTableGroup
 ]
@@ -53,6 +57,7 @@ export default {
     TableChartInteractive,
     SchemeTable,
     SimpleTable,
+    MultiOptionTable,
     SimpleChart,
     StandardChart,
     ChartTableGroup,

@@ -8,6 +8,7 @@
     ></simple-table>
     <button @click="getData">获取数据</button>
     <button @click="getChangedData">获取编辑数据</button>
+    <button @click="getSelectData">获取选中数据</button>
     <button @click="reset">重置</button>
     <button @click="add">新增</button>
     <button @click="deleted">删除</button>
@@ -31,6 +32,7 @@ export default {
           time: "2021-03-29T15:00:00",
           index: 1,
           funcType: "SYN_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 52.3,
@@ -38,6 +40,7 @@ export default {
           time: "2021-03-29T21:00:00",
           index: 2,
           funcType: "DSP_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 681.7,
@@ -45,6 +48,7 @@ export default {
           time: "2021-03-30T03:00:00",
           index: 3,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 2483,
@@ -52,6 +56,7 @@ export default {
           time: "2021-03-30T09:00:00",
           index: 4,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 4341.4,
@@ -59,6 +64,7 @@ export default {
           time: "2021-03-30T15:00:00",
           index: 5,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 5112.2,
@@ -66,6 +72,7 @@ export default {
           time: "2021-03-30T21:00:00",
           index: 6,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 5973.9,
@@ -73,6 +80,7 @@ export default {
           time: "2021-03-31T03:00:00",
           index: 7,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 6923,
@@ -80,6 +88,7 @@ export default {
           time: "2021-03-31T09:00:00",
           index: 8,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 7953.3,
@@ -87,6 +96,7 @@ export default {
           time: "2021-03-31T15:00:00",
           index: 9,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 9075.4,
@@ -94,6 +104,7 @@ export default {
           time: "2021-03-31T21:00:00",
           index: 10,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 10281.4,
@@ -101,6 +112,7 @@ export default {
           time: "2021-04-01T03:00:00",
           index: 11,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 11573.8,
@@ -108,6 +120,7 @@ export default {
           time: "2021-04-01T09:00:00",
           index: 12,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 12955.3,
@@ -115,6 +128,7 @@ export default {
           time: "2021-04-01T15:00:00",
           index: 13,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 14433.3,
@@ -122,6 +136,7 @@ export default {
           time: "2021-04-01T21:00:00",
           index: 14,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
         {
           dim2: 17699.7,
@@ -129,6 +144,7 @@ export default {
           time: "2021-04-02T03:00:00",
           index: 15,
           funcType: "FSA_FUNC_CONF",
+          checkbox:true
         },
       ],
       tableColumns: [
@@ -219,6 +235,16 @@ export default {
             },
           ],
         },
+        {
+          field: "checkbox",
+          title: "是否选择",
+          width: 100,
+          isResize: true,
+          titleAlign: "center",
+          columnAlign: "center",
+          readOnly: true,
+          type: "checkbox",
+        },
       ],
     };
   },
@@ -242,6 +268,25 @@ export default {
         this.$refs.tableChart.editCells,
         this.$refs.tableChart.editRows
       );
+    },
+    getSelectData(){
+        let columns=this.$refs.tableChart.columns
+        let data=this.$refs.tableChart.hotData
+        let Selectdata=[]
+        let field=""
+        for(let i=0;i<columns.length;i++){
+            if(columns[i].type && columns[i].type=='checkbox'){
+              field=columns[i].type
+                if(data.length>0){
+                    for(let j=0;j<data.length;j++){
+                        if(data[j][field]){
+                            Selectdata.push(data[j])
+                        }
+                    }
+                }
+            }
+        }
+        console.log("选中数据",Selectdata)
     },
     cellEditDone(value) {
       console.log("cellEditDone", value);

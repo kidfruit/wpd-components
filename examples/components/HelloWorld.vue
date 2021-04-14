@@ -7,6 +7,7 @@
     <simple-chart-test v-if="false" />
     <standard-chart-test v-if="false" />
     <simple-table-test v-if="true" />
+    <multi-option-table-text v-if="false" />
     <result-hydro-dynamic-test v-if="false" />
     <chart-table-group-test v-if="false" />
   </div>
@@ -16,11 +17,14 @@
 import TableChartTest from "./TableChartTest";
 import SchemeTableTest from "./SchemeTableTest";
 import SimpleTableTest from "./SimpleTableTest";
+
 import CharTableTest from "./CharTableTest.vue";
 import SimpleChartTest from "./SimpleChartTest.vue";
 import StandardChartTest from "./StandardChartTest.vue";
+import MultiOptionTableText from "./MultiOptionTableText.vue";
 import ResultHydroDynamicTest from "./ResultHydroDynamicTest.vue";
 import ChartTableGroupTest from "./ChartTableGroupTest.vue";
+
 export default {
   components: {
     TableChartTest,
@@ -31,6 +35,7 @@ export default {
     StandardChartTest,
     ResultHydroDynamicTest,
     ChartTableGroupTest,
+    MultiOptionTableText,
   },
   name: "HelloWorld",
   methods: {
