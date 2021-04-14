@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isVisible && isRefresh">
+  <div :key="randomKey">
     <hot-table
       :settings="hotSettings"
       :data="hotData"
@@ -94,9 +94,10 @@ export default {
       editRows: [],
       editCells: [],
       hotInstance: null,
-      isRefresh: true,
+      // isRefresh: true,
       dropdownHash: {},
       hotData: [],
+      randomKey: Math.random(),
     };
   },
   computed: {
@@ -222,9 +223,10 @@ export default {
     // 黑科技更新表格、图展示
     updateShow() {
       const { row, col } = this.getvisibleLocal();
-      this.isRefresh = false;
+      // this.isRefresh = false;
       this.$nextTick(() => {
-        this.isRefresh = true;
+        // this.isRefresh = true;
+        this.randomKey = Math.random();
         this.scrollViewportTo(row, col);
       });
     },
@@ -245,13 +247,14 @@ export default {
       });
     },
     reset() {
-      this.isRefresh = false;
+      // this.isRefresh = false;
       this.editCells = [];
       this.editRows = [];
       setTimeout(() => {
         const data = JSON.parse(JSON.stringify(this.tableData));
         this.prepareData(data);
-        this.isRefresh = true;
+        // this.isRefresh = true;
+        this.randomKey = Math.random();
       }, 0);
     },
     add() {
