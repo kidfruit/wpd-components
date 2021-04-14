@@ -12,7 +12,6 @@
     </div>
     <div class="table-container">
       <simple-table
-        :key="randomKey"
         ref="tableRef"
         :tableData="newData"
         :setting="setting"
@@ -140,7 +139,6 @@ export default {
   mounted() {},
   data() {
     return {
-      randomKey: Math.random(),
       newData: [],
       columns: [],
       setting: {
