@@ -82,19 +82,6 @@ export default {
     resize() {
       this.instance.resize();
     },
-    onPointDragging(dataIndex, pos) {
-      this.newData[dataIndex] = this.instance.convertFromPixel("grid", pos);
-
-      // Update data
-      this.instance.setOption({
-        series: [
-          {
-            id: "dim2",
-            data: this.newData,
-          },
-        ],
-      });
-    },
     mergeOptions(dom) {
       console.log("dom", dom);
       this.newData = this.data.map((el) => {
@@ -105,14 +92,12 @@ export default {
       dom.setOption({
         graphic: echarts.util.map(this.newData, (dataItem, dataIndex) => {
           const that = this; // because ondrag Functions must be used within callbacks this.position Get real-time coordinates, which must be used here that replace this
-          console.log(dataItem, dataIndex);
+          console.log(222, dataItem, dataIndex);
           return {
             // 'circle' Express this graphic element The type of dot is dot.
             type: "circle",
             shape: {
               // The radius of a circle.
-              cx: 0,
-              cy: 0,
               r: that.symbolSize / 2,
             },
             // use transform The method locates the dots. position: [x, y] Represents translating a dot to [x, y] Location.
@@ -124,10 +109,52 @@ export default {
             draggable: true,
             // hold z A larger value means that the circle is at the top and can cover the circle of the existing polyline graph.
             z: 100,
-            ondrag: function (dx, dy) {
-              console.log(dx, dy);
-              that.onPointDragging(dataIndex, [this.x, this.y]);
-            },
+            // ondrag: echarts.util.curry(function (dataIndex) {
+            //   // let origin = dom.convertToPixel("grid", that.data[dataIndex]);
+            //   console.log(dataIndex);
+            //   that.onPointDragging(dataIndex, [this.x, this.y]);
+            // }),
+            ondrag: echarts.util.curry(function (dataIndex, pos) {
+              // console.log(dataIndex, pos, this.position, 33333);
+              // that.newData[dataIndex] = that.instance.convertFromPixel(
+              //   "grid",
+              //   this.position
+              // );
+              // // Update data
+              // that.instance.setOption({
+              //   series: [
+              //     {
+              //       id: "dim2",
+              //       data: that.newData,
+              //     },
+              //   ],
+              // });
+              let origin = that.instance.convertToPixel(
+                "grid",
+                that.newData[dataIndex]
+              );
+              console.log("pos", this.position[1], this.position[0]);
+              // if (this.position[1] > 240) {
+              //   this.position[1] = 240;
+              // } else if (this.position[1] < 40) {
+              //   this.position[1] = 40;
+              // }
+              this.position[0] = origin[0]; // Controlling each point can only be in y Axis movement
+
+              that.newData[dataIndex] = that.instance.convertFromPixel(
+                "grid",
+                this.position
+              );
+              that.instance.setOption({
+                series: [
+                  {
+                    id: "dim2",
+                    data: that.newData,
+                  },
+                ],
+              });
+              that.$emit("updateData", that.newData);
+            }, dataIndex),
           };
         }),
       });

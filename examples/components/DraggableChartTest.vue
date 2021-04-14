@@ -8,6 +8,7 @@
       :chartAxis="chartAxis"
       :tableColumns="tableColumns"
       :data="data"
+      @updateData="handleUpdateData"
     />
   </div>
 </template>
@@ -69,6 +70,11 @@ export default {
         { dim2: [15, 17699.7], time: "2021-04-02T03:00:00", index: 15 },
       ],
     };
+  },
+  methods: {
+    handleUpdateData(data) {
+      console.log("data", data);
+    },
   },
 };
 </script>
