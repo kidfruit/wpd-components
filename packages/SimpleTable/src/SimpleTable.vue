@@ -30,7 +30,7 @@ const defaultHotSettings = {
   rowHeaders: false,
   colHeaders: true,
   autoColumnSize: true,
-  colWidths: "100px",
+  // colWidths: "100px",
   stretchH: "all",
   licenseKey: "non-commercial-and-evaluation",
   contextMenu: false,

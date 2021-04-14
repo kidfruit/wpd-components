@@ -37,7 +37,7 @@ export default {
           // padding: 100,
           // top: 30,
 
-          bottom: -20,
+          bottom: 0,
           // zlevel: 10,
           // currentIndex: 2,
           playInterval: 1000,
@@ -48,12 +48,19 @@ export default {
             // "2021-03-29T15:00:00",
             // "2021-03-29T21:00:00",
             // "2021-03-30T03:00:00",
+            // "2021-03-30T15:00:00",
+            // "2021-03-30T21:00:00",
+            // "2021-03-31T03:00:00",
           ],
           label: {
             formatter: function (s) {
-              return new Date(s).getFullYear();
+              return s;
+              // return new Date(s).getFullYear();
             },
           },
+        },
+        grid: {
+          bottom: 70,
         },
       },
       chartAxis: {
@@ -103,7 +110,7 @@ export default {
         {
           field: "time",
           title: "断面时间",
-          width: 150,
+          width: 200,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
@@ -176,12 +183,9 @@ export default {
   },
 };
 </script>
-<style>
-.result-hydro-dynamic.testChart >>> .chart-container {
-  color: #f00;
-}
-.result-hydro-dynamic.testChart >>> .chart {
+<style >
+.result-hydro-dynamic.chart {
   width: 100%;
-  height: 60vh;
+  height: 50vh;
 }
 </style>
