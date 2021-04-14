@@ -6,6 +6,7 @@
       :chartOption="chartOption"
       :isRefresh="isRefresh"
       :chartAxis="chartAxis"
+      :dragFields="dragFields"
       :tableColumns="tableColumns"
       :data="data"
       @updateData="handleUpdateData"
@@ -28,6 +29,17 @@ export default {
         title: {
           text: "水位流量图",
           left: "center",
+        },
+        tooltip: {
+          triggerOn: "none",
+          formatter: function (params) {
+            return (
+              "X: " +
+              params.data[0].toFixed(2) +
+              "<br>Y: " +
+              params.data[1].toFixed(2)
+            );
+          },
         },
       },
       chartAxis: {
@@ -61,6 +73,7 @@ export default {
         ],
       },
       tableColumns: [],
+      dragFields: ["dim1", "dim2"],
       data: [
         { dim1: [1, 3], dim2: [1, 0], time: "2021-03-29T15:00:00", index: 1 },
         {
@@ -151,8 +164,8 @@ export default {
     };
   },
   methods: {
-    handleUpdateData(data) {
-      console.log("data", data);
+    handleUpdateData(field, data) {
+      console.log("data", field, data);
     },
   },
 };
