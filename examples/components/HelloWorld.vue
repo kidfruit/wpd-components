@@ -5,8 +5,10 @@
     <scheme-table-test v-if="false"></scheme-table-test>
     <char-table-test v-if="false"></char-table-test>
     <simple-chart-test v-if="false" />
-    <standard-chart-test v-if="true" />
+    <standard-chart-test v-if="false" />
     <simple-table-test v-if="true" />
+    <multi-option-table-text v-if="false" />
+    
   </div>
 </template>
 
@@ -17,6 +19,8 @@ import SimpleTableTest from "./SimpleTableTest";
 import CharTableTest from './CharTableTest.vue';
 import SimpleChartTest from './SimpleChartTest.vue';
 import StandardChartTest from './StandardChartTest.vue';
+import MultiOptionTableText from './MultiOptionTableText.vue';
+
 export default {
   components: {
     TableChartTest,
@@ -24,7 +28,8 @@ export default {
     SimpleTableTest,
     CharTableTest,
     SimpleChartTest,
-    StandardChartTest
+    StandardChartTest,
+    MultiOptionTableText
   },
   name: 'HelloWorld',
   methods: {

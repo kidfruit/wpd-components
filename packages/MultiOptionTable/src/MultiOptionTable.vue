@@ -36,15 +36,17 @@ const defaultHotSettings = {
   licenseKey: "non-commercial-and-evaluation",
   contextMenu: false,
   language: zhCN.languageCode,
-  cells: (row, col, prop) => {
+  cells: (rowIndex, colIndex, prop,) => {
+    //   console.log(rowIndex, colIndex, prop,'row, col, prop')
     let cellProperties = {};
+    // if()
     cellProperties.renderer = "negativeValueRenderer";
     return cellProperties;
   },
 };
 
 export default {
-  name: "SimpleTable",
+  name: "MultiOptionTable",
   props: {
     isVisible: {
       type: Boolean,
@@ -78,9 +80,10 @@ export default {
     );
     const data = JSON.parse(JSON.stringify(this.tableData));
     this.prepareData(data);
+    
   },
   mounted() {
-    //console.log("mounted");
+    // console.log("columns",this.columns,this.hotData)
     this.getHotInstance();
   },
   updated() {
@@ -94,7 +97,6 @@ export default {
       hotInstance: null,
       isRefresh: true,
       dropdownHash: {},
-      checkbox: {},
       hotData: [],
     };
   },
@@ -111,18 +113,32 @@ export default {
         if (Object.prototype.hasOwnProperty.call(itemNew, "type")) {
           switch (itemNew.type) {
             case "checkbox":
-              this.checkbox[item.field] = item.checkbox;
-              // itemNew.source = item.source.map((item) => item.name);
               break;
             case "dropdown":
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
               this.dropdownHash[item.field] = item.source.slice(0);
               itemNew.source = item.source.map((item) => item.name);
               break;
+    //         case "dropdownRenderer":
+    //             itemNew = {
+    //                 ...itemNew,
+    //     renderer: customDropdownRenderer,
+    //     editor: "chosen",
+    //     // width: 150,
+    //     // chosenOptions: {
+    //     //     multiple: true,
+    //     //     data: productData
+    //     // }
+    // }
+              // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
+            //   this.dropdownHash[item.field] = item.source.slice(0);
+            //   itemNew.source = item.source.map((item) => item.name);
+            //   break;
           }
         }
         return itemNew;
       });
+      
     },
   },
   methods: {
@@ -131,6 +147,8 @@ export default {
         for (let k in item) {
           const list = this.tableColumns.filter((cl) => cl.field === k)[0];
           if (list && list.type === "dropdown") {
+            list.source=item[list.field].options
+            // console.log(list)
             let filterItem = list.source.find((s) => s.id === item[k]);
             if (filterItem) item[k] = filterItem.name;
           }
@@ -139,6 +157,7 @@ export default {
       });
     },
     afterChange(changes, source) {
+        // console.log(changes,source)
       if (changes == null) {
         return;
       }
@@ -201,27 +220,51 @@ export default {
     },
     // 单元格自定义渲染
     negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
+    //   console.log(instance, td, row, col, prop, value, cellProperties)
+      console.log(Handsontable,"Handsontable")
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
-        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
-      }else if(Object.prototype.hasOwnProperty.call(this.checkbox, prop)){
-        //判断是否是checkbox类型
-        Handsontable.renderers.CheckboxRenderer.apply(this, arguments)
-      }else {
+        //  console.log(row, col,prop,this.tableColumns,this.tableData)
+        //  console.log(this.tableData[row][prop],"this.tableData[prop]")
+         if(this.tableData[row][prop]){
+            console.log(prop,this.tableData[row][prop].options)
+            var selectedId;
+            var optionsList = this.tableData[row][prop].options;
+
+            // if(typeof optionsList === "undefined" || typeof optionsList.length === "undefined" || !optionsList.length) {
+            //     Handsontable.TextCell.renderer(instance, td, row, col, prop, value, cellProperties);
+            //     return td;
+            // }
+
+            var values = (value + "").split(",");
+            value = [];
+            for (var index = 0; index < optionsList.length; index++) {
+
+                if (values.indexOf(optionsList[index].id + "") > -1) {
+                    selectedId = optionsList[index].id;
+                    value.push(optionsList[index].label);
+                }
+            }
+            value = value.join(", ");
+
+            Handsontable.TextCell.renderer(instance, td, row, col, prop, value, cellProperties);
+            return td;
+         }
+        // Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+      } else {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
-        
       }
-      // 样式：编辑
-      if (this.editCells.includes(prop + "#" + row)) {
-        //修改字体颜色
-        td.style.color = "#004fff";
-      }
-      // 样式:不可编辑
-      // if (
-      //   this.editCells[0] &&
-      //   cellProperties.prop != this.editCells[0].split('#')[0]
-      // ) {
-      //   td.style.color = '#c00101'
-      // }
+    //   // 样式：编辑
+    //   if (this.editCells.includes(prop + "#" + row)) {
+    //     //修改字体颜色
+    //     td.style.color = "#004fff";
+    //   }
+    //   样式:不可编辑
+    //   if (
+    //     this.editCells[0] &&
+    //     cellProperties.prop != this.editCells[0].split('#')[0]
+    //   ) {
+    //     td.style.color = '#c00101'
+    //   }
     },
 
     // 黑科技更新表格、图展示

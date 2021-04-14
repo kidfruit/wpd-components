@@ -10,6 +10,9 @@ import StandardChart from './StandardChart/src/StandardChart.vue'
 
 import testDirective from './testDirective/src/testDirective'
 
+
+import MultiOptionTable from './MultiOptionTable/src/MultiOptionTable.vue'
+
 // 存储组件列表
 const components = [
     toast2,
@@ -19,6 +22,7 @@ const components = [
     SchemeTable,
     SimpleTable,
     SimpleChart,
+    MultiOptionTable,
     StandardChart,
 ]
 
@@ -51,6 +55,7 @@ export default {
     TableChartInteractive,
     SchemeTable,
     SimpleTable,
+    MultiOptionTable,
     SimpleChart,
     StandardChart,
 
