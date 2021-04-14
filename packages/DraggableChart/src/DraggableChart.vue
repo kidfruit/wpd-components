@@ -139,6 +139,13 @@ export default {
               // } else if (this.position[1] < 40) {
               //   this.position[1] = 40;
               // }
+              if (this.position[1] > 340) {
+                //控制上下拖动范围 跟ref高度有关
+                this.position[1] = 340;
+              } else if (this.position[1] < 60) {
+                this.position[1] = 60;
+              }
+
               this.position[0] = origin[0]; // Controlling each point can only be in y Axis movement
 
               that.newData[dataIndex] = that.instance.convertFromPixel(
