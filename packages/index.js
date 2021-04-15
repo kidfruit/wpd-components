@@ -6,8 +6,14 @@ import TableChartInteractive from './TableChartInteractive/src/TableChartInterac
 import SchemeTable from './SchemeTable/src/SchemeTable.vue'
 import SimpleTable from './SimpleTable/src/SimpleTable.vue'
 import SimpleChart from './SimpleChart/src/SimpleChart.vue'
+import StandardChart from './StandardChart/src/StandardChart.vue'
+import ChartTableGroup from './ChartTableGroup/src/ChartTableGroup.vue'
+import TreeTableGroup from './TreeTableGroup/src/TreeTableGroup.vue'
 
 import testDirective from './testDirective/src/testDirective'
+
+
+import MultiOptionTable from './MultiOptionTable/src/MultiOptionTable.vue'
 
 // 存储组件列表
 const components = [
@@ -18,6 +24,10 @@ const components = [
     SchemeTable,
     SimpleTable,
     SimpleChart,
+    MultiOptionTable,
+    StandardChart,
+    ChartTableGroup,
+    TreeTableGroup
 ]
 
 // 存储指令映射
@@ -49,7 +59,12 @@ export default {
     TableChartInteractive,
     SchemeTable,
     SimpleTable,
+    MultiOptionTable,
     SimpleChart,
+    StandardChart,
+    ChartTableGroup,
+    TreeTableGroup,
+
 
     ...directives,
 }

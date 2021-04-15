@@ -1,6 +1,11 @@
 <template>
   <div style="width: 100%">
-    <simple-chart ref="chart" :classes="classNames" :chartOption="option" :isRefresh="isRefresh"/>
+    <simple-chart
+      ref="chart"
+      :classes="classNames"
+      :chartOption="option"
+      :isRefresh="isRefresh"
+    />
     <button @click="changeData">获取数据123</button>
   </div>
 </template>
@@ -72,7 +77,7 @@ export default {
     changeData() {
       this.chartInstance = this.$refs.chart.instance;
       this.isRefresh = false;
-      this.refreshData()
+      this.refreshData();
     },
     async refreshData() {
       setTimeout(() => {
