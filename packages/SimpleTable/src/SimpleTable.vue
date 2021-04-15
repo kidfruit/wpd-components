@@ -129,6 +129,25 @@ export default {
     },
   },
   methods: {
+    _getSelectData(field){
+        if(typeof field=='string' && field!=''){
+            let Selectdata=[]
+            for(let i=0;i<this.hotData.length;i++){
+                if(this.hotData[i][field]){
+                Selectdata.push(this.hotData[i])
+                }
+            }
+            return Selectdata
+        }else{
+            return Error("field为必填参数！")
+        }
+    },
+
+    updateWidth(newWidth) {
+      this.hotInstance.updateSettings({
+        width: newWidth,
+      });
+    },
     prepareData(data) {
       this.hotData = data.map((item, index) => {
         for (let k in item) {
@@ -206,12 +225,11 @@ export default {
     negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
-      }else if(Object.prototype.hasOwnProperty.call(this.checkbox, prop)){
+      } else if (Object.prototype.hasOwnProperty.call(this.checkbox, prop)) {
         //判断是否是checkbox类型
-        Handsontable.renderers.CheckboxRenderer.apply(this, arguments)
-      }else {
+        Handsontable.renderers.CheckboxRenderer.apply(this, arguments);
+      } else {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
-        
       }
       // 样式：编辑
       if (this.editCells.includes(prop + "#" + row)) {

@@ -242,7 +242,6 @@ export default {
           isResize: true,
           titleAlign: "center",
           columnAlign: "center",
-          readOnly: true,
           type: "checkbox",
         },
       ],
@@ -270,23 +269,8 @@ export default {
       );
     },
     getSelectData(){
-        let columns=this.$refs.tableChart.columns
-        let data=this.$refs.tableChart.hotData
-        let Selectdata=[]
-        let field=""
-        for(let i=0;i<columns.length;i++){
-            if(columns[i].type && columns[i].type=='checkbox'){
-              field=columns[i].type
-                if(data.length>0){
-                    for(let j=0;j<data.length;j++){
-                        if(data[j][field]){
-                            Selectdata.push(data[j])
-                        }
-                    }
-                }
-            }
-        }
-        console.log("选中数据",Selectdata)
+        console.log(this.$refs['tableChart']._getSelectData('checkbox'))
+      
     },
     cellEditDone(value) {
       console.log("cellEditDone", value);

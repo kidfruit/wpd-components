@@ -4,9 +4,7 @@
       <a-tree v-model="checkedNode" :treeData="treeData" defaultExpandAll checkable @check="_onTreeCheck" />
     </div>
     <div class="table-container" :style="tableStyle">
-      <div class="table-box">
-        <MultiOptionTable ref="tableRef" :tableData="m_tableData" :tableColumns="tableColumns" @cellEditDone="_cellEditDone" />
-      </div>
+      <MultiOptionTable ref="tableRef" :tableData="m_tableData" :tableColumns="tableColumns" @cellEditDone="_cellEditDone" />
     </div>
   </div>
 </template>
@@ -132,11 +130,6 @@ export default {
     width: 80%;
     overflow: hidden;
     height: 100%;
-    .table-box {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
   }
 }
 </style>
