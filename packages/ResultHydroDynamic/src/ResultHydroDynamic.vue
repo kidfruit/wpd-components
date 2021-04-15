@@ -1,5 +1,5 @@
 <template>
-  <div :classes="classNames">
+  <div :class="classNames">
     <div class="chart-container">
       <standard-chart
         ref="chartRef"
