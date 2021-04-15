@@ -1,5 +1,5 @@
 <template>
-  <div :classes="classNames">
+  <div :class="classNames">
     <!-- <div class="chart-container">
       <standard-chart
         ref="chartRef"
@@ -67,10 +67,10 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.tree-container{
-    width: 500px;
-    float: left;
+.tree-container {
+  width: 500px;
+  float: left;
 }
-.table-container{
+.table-container {
 }
 </style>

@@ -1,24 +1,27 @@
 <template>
   <div :class="classNames">
-    <div class="chart-container">
-      <standard-chart
-        ref="chartRef"
-        :chartOption="chartOption"
-        :isRefresh="isRefresh"
-        :chartAxis="chartAxis"
-        :sections="sections"
-        :classes="['result-hydro-dynamic']"
-        :chartData="data"
-      />
+    <div class="left-box">
+      <div class="chart-container">
+        <standard-chart
+          ref="chartRef"
+          :chartOption="chartOption"
+          :isRefresh="isRefresh"
+          :chartAxis="chartAxis"
+          :classes="['result-hydro-dynamic']"
+          :chartData="data"
+        />
+      </div>
+      <div class="table-container">
+        <simple-table
+          ref="tableRef"
+          class="custom-tree-table"
+          :tableData="newData"
+          :setting="setting"
+          :tableColumns="columns"
+        ></simple-table>
+      </div>
     </div>
-    <div class="table-container">
-      <simple-table
-        ref="tableRef"
-        :tableData="newData"
-        :setting="setting"
-        :tableColumns="columns"
-      ></simple-table>
-    </div>
+    <div class="right-box"></div>
   </div>
 </template>
 
@@ -26,7 +29,7 @@
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 export default {
-  name: "ResultHydroDynamic",
+  name: "TreeChartTable",
   components: {
     StandardChart,
     SimpleTable,
@@ -54,23 +57,21 @@ export default {
     data: {
       type: Array,
     },
-    sections: {
-      type: Array,
-    },
   },
   computed: {
     classNames() {
-      return ["result-hydro-dynamic"].concat(this.classes).join(" ");
+      return ["tree-chart-table"].concat(this.classes).join(" ");
     },
   },
   created() {
     this.chartOption.timeline.data = this.data.map((el) => el.time);
     // 将多个时间线的数据拆分
+    let sections = this.data.map((el) => el.section);
     let fields = this.chartAxis.series.map((el) => el.field);
     let deltaFields = [];
     let regstrs = [];
     this.newData = JSON.parse(JSON.stringify(this.data));
-    this.sections.forEach((element) => {
+    sections.forEach((element) => {
       fields.forEach((item) => {
         this.newData.forEach((el) => {
           if (el[item]) {
@@ -81,14 +82,14 @@ export default {
         });
       });
     });
-    this.newData.forEach((el, index) => {
+    this.newData.forEach((el) => {
       fields.forEach((item) => {
         if (el[item]) {
           if (regstrs.indexOf(item) === -1) {
             regstrs.push(item);
           }
           el[item].forEach((ele, index) => {
-            el[`${this.sections[index]}.${item}`] = ele;
+            el[`${sections[index]}.${item}`] = ele;
           });
           delete el[item];
         }
@@ -103,7 +104,7 @@ export default {
       this.columns.push({
         field: el,
         title: m.title,
-        width: 100,
+        // width: 100,
         isResize: true,
         titleAlign: "center",
         columnAlign: "center",
@@ -126,7 +127,7 @@ export default {
       .map((el) => {
         return { label: "", colspan: 1 };
       });
-    let sectionFields = this.sections.map((el) => {
+    let sectionFields = sections.map((el) => {
       return { label: el, colspan: 2 };
     });
     this.setting.nestedHeaders.push(notFields.concat(sectionFields));
@@ -139,7 +140,10 @@ export default {
     console.log(this.columns, this.newData);
   },
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    // 也可以动态设置handsontable的宽度
+    // this.$refs.tableRef.updateWidth("70vw");
+  },
   data() {
     return {
       newData: [],
@@ -151,8 +155,28 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-.chart-container {
-  margin-bottom: 24px;
+
+<style lang="scss" scoped>
+.tree-chart-table {
+  display: flex;
+  .left-box {
+    width: 70vw;
+    .chart-container,
+    .table-container {
+      width: 100%;
+    }
+  }
+  .right-box {
+    flex: 1;
+  }
+}
+</style>
+<style>
+.tree-chart-table
+  .table-container
+  .custom-tree-table
+  .tableStyle.handsontable
+  .wtHider {
+  width: 70vw !important;
 }
 </style>
