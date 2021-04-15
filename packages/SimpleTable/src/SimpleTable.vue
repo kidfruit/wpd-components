@@ -129,6 +129,20 @@ export default {
     },
   },
   methods: {
+    _getSelectData(field){
+        if(typeof field=='string' && field!=''){
+            let Selectdata=[]
+            for(let i=0;i<this.hotData.length;i++){
+                if(this.hotData[i][field]){
+                Selectdata.push(this.hotData[i])
+                }
+            }
+            return Selectdata
+        }else{
+            return Error("field为必填参数！")
+        }
+        
+    },
     prepareData(data) {
       this.hotData = data.map((item, index) => {
         for (let k in item) {
