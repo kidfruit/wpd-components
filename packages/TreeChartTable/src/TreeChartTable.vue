@@ -14,6 +14,7 @@
       <div class="table-container">
         <simple-table
           ref="tableRef"
+          class="custom-tree-table"
           :tableData="newData"
           :setting="setting"
           :tableColumns="columns"
@@ -103,7 +104,7 @@ export default {
       this.columns.push({
         field: el,
         title: m.title,
-        width: 100,
+        // width: 100,
         isResize: true,
         titleAlign: "center",
         columnAlign: "center",
@@ -140,7 +141,8 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.$refs.tableRef.updateWidth("70%");
+    // 也可以动态设置handsontable的宽度
+    // this.$refs.tableRef.updateWidth("70vw");
   },
   data() {
     return {
@@ -158,20 +160,23 @@ export default {
 .tree-chart-table {
   display: flex;
   .left-box {
-    width: 70%;
+    width: 70vw;
     .chart-container,
     .table-container {
       width: 100%;
     }
   }
   .right-box {
-    // width: ;
+    flex: 1;
   }
 }
 </style>
 <style>
-.tree-chart-table .table-container >>> .handsontable {
-  /* width: 70%; */
-  color: #f00;
+.tree-chart-table
+  .table-container
+  .custom-tree-table
+  .tableStyle.handsontable
+  .wtHider {
+  width: 70vw !important;
 }
 </style>
