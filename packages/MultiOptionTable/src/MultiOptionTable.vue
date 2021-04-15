@@ -59,7 +59,7 @@ export default {
     Handsontable.renderers.registerRenderer('negativeValueRenderer', this.negativeValueRenderer);
     const data = JSON.parse(JSON.stringify(this.tableData));
     this.prepareData(data);
-    console.log(this.hotData, 'this.hotData');
+    // console.log(this.hotData, 'this.hotData');
   },
   mounted() {
     //console.log("mounted");
@@ -208,7 +208,7 @@ export default {
     },
     // 单元格自定义渲染
     negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
-        console.log(this.dropdownHash)
+        // console.log(this.dropdownHash)
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
       } else if (Object.prototype.hasOwnProperty.call(this.checkbox, prop)) {
