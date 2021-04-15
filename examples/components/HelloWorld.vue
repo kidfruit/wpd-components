@@ -18,10 +18,10 @@ import TableChartTest from "./TableChartTest";
 import SchemeTableTest from "./SchemeTableTest";
 import SimpleTableTest from "./SimpleTableTest";
 
-import CharTableTest from './CharTableTest.vue';
-import SimpleChartTest from './SimpleChartTest.vue';
-import StandardChartTest from './StandardChartTest.vue';
-import MultiOptionTableText from './MultiOptionTableText.vue';
+import CharTableTest from "./CharTableTest.vue";
+import SimpleChartTest from "./SimpleChartTest.vue";
+import StandardChartTest from "./StandardChartTest.vue";
+import MultiOptionTableText from "./MultiOptionTableText.vue";
 import ResultHydroDynamicTest from "./ResultHydroDynamicTest.vue";
 import ChartTableGroupTest from "./ChartTableGroupTest.vue";
 
@@ -35,7 +35,7 @@ export default {
     StandardChartTest,
     ResultHydroDynamicTest,
     ChartTableGroupTest,
-    MultiOptionTableText
+    MultiOptionTableText,
   },
   name: "HelloWorld",
   methods: {

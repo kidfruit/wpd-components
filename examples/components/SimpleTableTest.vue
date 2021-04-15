@@ -10,6 +10,8 @@
     <button @click="getChangedData">获取编辑数据</button>
     <button @click="getSelectData">获取选中数据</button>
     <button @click="reset">重置</button>
+    <button @click="add">新增</button>
+    <button @click="deleted">删除</button>
   </div>
 </template>
 <script>
@@ -254,8 +256,18 @@ export default {
     reset() {
       this.$refs.tableChart.reset();
     },
+    add() {
+      this.$refs.tableChart.add();
+    },
+    deleted() {
+      this.$refs.tableChart.deleted();
+    },
     getChangedData() {
-      console.log("按钮点击", this.$refs.tableChart.editCells,this.$refs.tableChart.editRows);
+      console.log(
+        "按钮点击",
+        this.$refs.tableChart.editCells,
+        this.$refs.tableChart.editRows
+      );
     },
     getSelectData(){
         let columns=this.$refs.tableChart.columns
@@ -277,8 +289,8 @@ export default {
         console.log("选中数据",Selectdata)
     },
     cellEditDone(value) {
-      console.log("cellEditDone",value)
-    }
+      console.log("cellEditDone", value);
+    },
   },
 };
 </script>
