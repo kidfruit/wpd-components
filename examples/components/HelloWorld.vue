@@ -7,7 +7,7 @@
     <simple-chart-test v-if="false" />
     <standard-chart-test v-if="false" />
     <simple-table-test v-if="false" />
-    <multi-option-table-text v-if="false" />
+    <multi-option-table-text v-if="true" />
     <result-hydro-dynamic-test v-if="false" />
     <chart-table-group-test v-if="false" />
     <draggable-chart-test v-if="true" />

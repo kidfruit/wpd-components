@@ -50,12 +50,12 @@ export default {
                 options: [
                 {
                     id: "RD_DISQCTRL",
-                    name: "调洪演算模型1",
+                    name: "调洪演算模型",
                     modelParamId: null
                 },
                 {
                     id: "RD_CTRLDSP",
-                    name: "混合控制1",
+                    name: "混合控制",
                     modelParamId: null
                 }
                 ]
@@ -101,12 +101,12 @@ export default {
                 options: [
                 {
                     id: "FR_RHLAGTM",
-                    name: "滞时演算模型2",
+                    name: "滞时演算模型",
                     modelParamId: null
                 },
                 {
                     id: "FR_RHMSK",
-                    name: "马斯京根模型2",
+                    name: "马斯京根模型",
                     modelParamId: null
                 }
                 ]
@@ -139,7 +139,7 @@ export default {
             options: [
             {
                 id: "RD_DISQCTRL",
-                name: "调洪演算模型3",
+                name: "调洪演算模型",
                 modelParamId: null
             },
             {
@@ -182,7 +182,7 @@ export default {
             isResize: true,
             titleAlign: "center",
             columnAlign: "center",
-            type: "dropdown"
+            type: "customDropdown"
           },
           {
             field: "flow2",
@@ -191,7 +191,7 @@ export default {
             isResize: true,
             titleAlign: "center",
             columnAlign: "center",
-            type: "dropdown"
+            type: "customDropdown"
           },
           {
             field: "flow3",
@@ -200,7 +200,7 @@ export default {
             isResize: true,
             titleAlign: "center",
             columnAlign: "center",
-            type: "dropdown"
+            type: "customDropdown"
           }
         ],
     };

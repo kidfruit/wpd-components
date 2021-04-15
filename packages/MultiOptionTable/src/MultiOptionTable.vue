@@ -1,89 +1,68 @@
 <template>
-  <div>
-    <hot-table
-      v-if="isVisible && isRefresh"
-      :settings="hotSettings"
-      :data="hotData"
-      :class="classes"
-      :after-change="afterChange"
-      ref="hotTableRef"
-    >
-      <hot-column
-        v-for="(item, index) in columns"
-        :key="index"
-        :title="item.title"
-        :data="item.field"
-        :source="item.source"
-        :renderer="item.renderer"
-        :type="item.type"
-      >
-      </hot-column>
+  <div v-if="isVisible && isRefresh">
+    <hot-table :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
+      <hot-column v-for="(item, index) in columns" :key="index" :title="item.title" :data="item.field" :source="item.source" :renderer="item.renderer" :type="item.type"> </hot-column>
     </hot-table>
   </div>
 </template>
 <script>
-import { HotTable, HotColumn } from "@handsontable/vue";
-import Handsontable from "handsontable";
-import { registerLanguageDictionary, zhCN } from "handsontable/i18n";
+import { HotTable, HotColumn } from '@handsontable/vue';
+import Handsontable from 'handsontable';
+import { registerLanguageDictionary, zhCN } from 'handsontable/i18n';
 registerLanguageDictionary(zhCN);
 
 const defaultHotSettings = {
   rowHeaders: false,
   colHeaders: true,
   autoColumnSize: true,
-  colWidths: "100px",
-  stretchH: "all",
-  licenseKey: "non-commercial-and-evaluation",
+  // colWidths: "100px",
+  stretchH: 'all',
+  licenseKey: 'non-commercial-and-evaluation',
   contextMenu: false,
   language: zhCN.languageCode,
-  cells: (rowIndex, colIndex, prop,) => {
-    //   console.log(rowIndex, colIndex, prop,'row, col, prop')
+  cells: (row, col, prop) => {
     let cellProperties = {};
-    // if()
-    cellProperties.renderer = "negativeValueRenderer";
+    cellProperties.renderer = 'negativeValueRenderer';
     return cellProperties;
-  },
+  }
 };
 
 export default {
-  name: "MultiOptionTable",
+  name: 'MultiOptionTable',
   props: {
     isVisible: {
       type: Boolean,
       default: true,
-      required: false,
+      required: false
     },
     classNames: {
       type: Array,
-      required: false,
+      required: false
     },
     setting: {
       type: Object,
-      required: false,
+      required: false
     },
     tableData: {
-      type: Array,
+      type: Array
     },
     tableColumns: {
-      type: Array,
-    },
+      type: Array
+    }
   },
   components: {
     HotTable,
-    HotColumn,
+    HotColumn
   },
   beforeMount() {
     // 单元格自定义渲染
-    Handsontable.renderers.registerRenderer(
-      "negativeValueRenderer",
-      this.negativeValueRenderer
-    );
+    Handsontable.renderers.registerRenderer('negativeValueRenderer', this.negativeValueRenderer);
     const data = JSON.parse(JSON.stringify(this.tableData));
     this.prepareData(data);
-    
+    console.log(this.hotData, 'this.hotData');
   },
   mounted() {
-    // console.log("columns",this.columns,this.hotData)
+    //console.log("mounted");
     this.getHotInstance();
   },
   updated() {
@@ -97,86 +76,97 @@ export default {
       hotInstance: null,
       isRefresh: true,
       dropdownHash: {},
-      hotData: [],
+      checkbox: {},
+      hotData: []
     };
   },
   computed: {
     classes() {
-      return ["tableStyle"].concat(this.classNames);
+      return ['tableStyle'].concat(this.classNames);
     },
     hotSettings() {
-      return Object.assign({}, defaultHotSettings, this.setting);
+      const _this = this;
+      return Object.assign({}, defaultHotSettings, this.setting, {
+        cells: (row, col, prop) => {
+          let cellProperties = {};
+          if (_this.dropdownHash[prop + '-row' + row]) {
+            cellProperties.source = _this.dropdownHash[prop + '-row' + row].map(i => i.name);
+          }
+          cellProperties.renderer = 'negativeValueRenderer';
+          return cellProperties;
+        }
+      });
     },
     columns() {
       return this.tableColumns.map((item, index) => {
         let itemNew = Object.assign({}, item);
-        if (Object.prototype.hasOwnProperty.call(itemNew, "type")) {
+        if (Object.prototype.hasOwnProperty.call(itemNew, 'type')) {
           switch (itemNew.type) {
-            case "checkbox":
+            case 'checkbox':
+              this.checkbox[item.field] = item.checkbox;
+              // itemNew.source = item.source.map((item) => item.name);
               break;
-            case "dropdown":
+            case 'dropdown':
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
               this.dropdownHash[item.field] = item.source.slice(0);
-              itemNew.source = item.source.map((item) => item.name);
+              itemNew.source = item.source.map(item => item.name);
               break;
-    //         case "dropdownRenderer":
-    //             itemNew = {
-    //                 ...itemNew,
-    //     renderer: customDropdownRenderer,
-    //     editor: "chosen",
-    //     // width: 150,
-    //     // chosenOptions: {
-    //     //     multiple: true,
-    //     //     data: productData
-    //     // }
-    // }
+            case 'customDropdown':
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
-            //   this.dropdownHash[item.field] = item.source.slice(0);
-            //   itemNew.source = item.source.map((item) => item.name);
-            //   break;
+              this.tableData.forEach((d, i) => {
+                if (d[item.field] && d[item.field].selectedId && d[item.field].options) {
+                  this.dropdownHash[item.field + '-row' + i] = d[item.field].options;
+                }
+                itemNew.source = [];
+              });
+              itemNew.type = 'dropdown';
+              break;
           }
         }
         return itemNew;
       });
-      
-    },
+    }
   },
   methods: {
     prepareData(data) {
       this.hotData = data.map((item, index) => {
         for (let k in item) {
-          const list = this.tableColumns.filter((cl) => cl.field === k)[0];
-          if (list && list.type === "dropdown") {
-            list.source=item[list.field].options
-            // console.log(list)
-            let filterItem = list.source.find((s) => s.id === item[k]);
-            if (filterItem) item[k] = filterItem.name;
+          const list = this.tableColumns.filter(cl => cl.field === k)[0];
+          if (list && list.type === 'dropdown') {
+            if (list.source instanceof Array) {
+              let filterItem = list.source.find(s => s.id === item[k]);
+              if (filterItem) item[k] = filterItem.name;
+            }
+          } else if (list && list.type === 'customDropdown') {
+            if (item[k].options instanceof Array) {
+              let filterItem = item[k].options.find(s => s.id === item[k]['selectedId']);
+              if (filterItem) item[k] = filterItem.name;
+            }
           }
         }
         return item;
       });
     },
     afterChange(changes, source) {
-        // console.log(changes,source)
       if (changes == null) {
         return;
       }
-      if (source !== "loadData") {
+      if (source !== 'loadData') {
         // 添加修改触发
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {
             let element = changes[i];
-            this.$emit("cellEditDone", {
+            this.$emit('cellEditDone', {
               rowIndex: element[0],
               field: element[1],
               newValue: element[3],
-              oldValue: element[2],
+              oldValue: element[2]
             });
-            this.editCells.push(element[1] + "#" + element[0]);
+            this.editCells.push(element[1] + '#' + element[0]);
           }
         }
         let changedRows = [];
-        changes.forEach((change) => {
+        changes.forEach(change => {
           this.getHotInstance();
           const [row, prop, oldV, newV] = change;
           const changedRow = this.hotInstance.getDataAtRow(row);
@@ -187,10 +177,10 @@ export default {
           changedRows.push(rowObj);
         });
         //将更新的数据推送到editRows
-        changedRows = this.processOptionColumn(changedRows, "name", "id");
-        changedRows.forEach((r) => {
+        changedRows = this.processOptionColumn(changedRows, 'name', 'id');
+        changedRows.forEach(r => {
           const cr = Object.assign({}, r);
-          let idx = this.editRows.findIndex((er) => er && er.row === r.row);
+          let idx = this.editRows.findIndex(er => er && er.row === r.row);
           if (this.editRows.length > 0 && this.editRows[idx]) {
             this.editRows[idx] = cr;
           } else {
@@ -201,12 +191,10 @@ export default {
       }
     },
     processOptionColumn(item, fromV, toV) {
-      item.forEach((value) => {
+      item.forEach(value => {
         for (let k in this.dropdownHash) {
           if (Object.prototype.hasOwnProperty.call(value, k)) {
-            const list = this.dropdownHash[k].filter(
-              (item) => item[fromV] === value[k]
-            )[0];
+            const list = this.dropdownHash[k].filter(item => item[fromV] === value[k])[0];
             list && (value[k] = list[toV]);
           }
         }
@@ -220,51 +208,30 @@ export default {
     },
     // 单元格自定义渲染
     negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
-    //   console.log(instance, td, row, col, prop, value, cellProperties)
-      console.log(Handsontable,"Handsontable")
+        console.log(this.dropdownHash)
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
-        //  console.log(row, col,prop,this.tableColumns,this.tableData)
-        //  console.log(this.tableData[row][prop],"this.tableData[prop]")
-         if(this.tableData[row][prop]){
-            console.log(prop,this.tableData[row][prop].options)
-            var selectedId;
-            var optionsList = this.tableData[row][prop].options;
-
-            // if(typeof optionsList === "undefined" || typeof optionsList.length === "undefined" || !optionsList.length) {
-            //     Handsontable.TextCell.renderer(instance, td, row, col, prop, value, cellProperties);
-            //     return td;
-            // }
-
-            var values = (value + "").split(",");
-            value = [];
-            for (var index = 0; index < optionsList.length; index++) {
-
-                if (values.indexOf(optionsList[index].id + "") > -1) {
-                    selectedId = optionsList[index].id;
-                    value.push(optionsList[index].label);
-                }
-            }
-            value = value.join(", ");
-
-            Handsontable.TextCell.renderer(instance, td, row, col, prop, value, cellProperties);
-            return td;
-         }
-        // Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+      } else if (Object.prototype.hasOwnProperty.call(this.checkbox, prop)) {
+        //判断是否是checkbox类型
+        Handsontable.renderers.CheckboxRenderer.apply(this, arguments);
+      } else if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop+'-row'+row)) {
+        //判断是否是customDropdown类型
+         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
       } else {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
       }
-    //   // 样式：编辑
-    //   if (this.editCells.includes(prop + "#" + row)) {
-    //     //修改字体颜色
-    //     td.style.color = "#004fff";
-    //   }
-    //   样式:不可编辑
-    //   if (
-    //     this.editCells[0] &&
-    //     cellProperties.prop != this.editCells[0].split('#')[0]
-    //   ) {
-    //     td.style.color = '#c00101'
-    //   }
+      // 样式：编辑
+      if (this.editCells.includes(prop + '#' + row)) {
+        //修改字体颜色
+        td.style.color = '#004fff';
+      }
+      // 样式:不可编辑
+      // if (
+      //   this.editCells[0] &&
+      //   cellProperties.prop != this.editCells[0].split('#')[0]
+      // ) {
+      //   td.style.color = '#c00101'
+      // }
     },
 
     // 黑科技更新表格、图展示
@@ -277,12 +244,8 @@ export default {
       });
     },
     getvisibleLocal() {
-      const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin(
-        "autoRowSize"
-      );
-      const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin(
-        "autoColumnSize"
-      );
+      const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin('autoRowSize');
+      const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin('autoColumnSize');
       const col = pluginCol.getFirstVisibleColumn();
       const row = pluginRow.getFirstVisibleRow();
       return { row, col };
@@ -301,7 +264,7 @@ export default {
         this.prepareData(data);
         this.isRefresh = true;
       }, 0);
-    },
-  },
+    }
+  }
 };
 </script>
