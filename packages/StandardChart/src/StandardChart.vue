@@ -108,6 +108,9 @@ export default {
     chartData: {
       type: Array,
     },
+    sections: {
+      type: Array,
+    },
   },
   components: {
     VChart,
@@ -148,6 +151,9 @@ export default {
       option.xAxis.data = this.chartData.map((cd) => cd[this.chartAxis.xAxis]);
       if (this.chartAxis.timeSeries) {
         option.xAxis.data = this.sortTime(option.xAxis.data);
+      }
+      if (option.timeline) {
+        option.xAxis.data = this.sections;
       }
 
       //y轴
@@ -218,6 +224,10 @@ export default {
           options.push({
             series,
           });
+        });
+        console.log({
+          baseOption: option,
+          options,
         });
         return {
           baseOption: option,
