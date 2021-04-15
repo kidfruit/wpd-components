@@ -7,10 +7,11 @@
     <simple-chart-test v-if="false" />
     <standard-chart-test v-if="false" />
     <simple-table-test v-if="false" />
-    <multi-option-table-test v-if="true" />
+    <multi-option-table-test v-if="false" />
     <result-hydro-dynamic-test v-if="false" />
     <chart-table-group-test v-if="false" />
-    <draggable-chart-test v-if="true" />
+    <draggable-chart-test v-if="false" />
+    <tree-chart-table-test v-if="true" />
   </div>
 </template>
 
@@ -26,6 +27,7 @@ import MultiOptionTableTest from "./MultiOptionTableTest.vue";
 import ResultHydroDynamicTest from "./ResultHydroDynamicTest.vue";
 import ChartTableGroupTest from "./ChartTableGroupTest.vue";
 import DraggableChartTest from "./DraggableChartTest.vue";
+import TreeChartTableTest from "./TreeChartTableTest.vue";
 
 export default {
   components: {
@@ -39,6 +41,7 @@ export default {
     ChartTableGroupTest,
     MultiOptionTableTest,
     DraggableChartTest,
+    TreeChartTableTest,
   },
   name: "HelloWorld",
   methods: {
