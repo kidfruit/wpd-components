@@ -1,0 +1,215 @@
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "type": "WPStationRR",
+            "title": "乌东德",
+            "key": "11"
+          },
+          {
+            "type": "WPRiverReach",
+            "title": "乌东德-白鹤滩",
+            "key": "RCH301"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "白鹤滩",
+            "key": "12"
+          },
+          {
+            "type": "WPRiverReach",
+            "title": "白鹤滩-溪洛渡",
+            "key": "RCH302"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "溪洛渡",
+            "key": "13"
+          },
+          {
+            "type": "WPRiverReach",
+            "title": "溪洛渡-向家坝",
+            "key": "RCH303"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "向家坝",
+            "key": "14"
+          },
+          {
+            "type": "WPNodeInterval",
+            "title": "向家坝-李庄",
+            "key": "ITV100"
+          }
+        ],
+        "type": "WPRiver",
+        "title": "金沙江下游",
+        "key": "3"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "李庄",
+        "key": "103038"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "李庄-朱沱",
+        "key": "RCH101"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "朱沱",
+        "key": "103001"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "朱沱-寸滩",
+        "key": "RCH102"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "寸滩",
+        "key": "103002"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "寸滩-三峡",
+        "key": "RCH103"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "三峡",
+        "key": "18"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "三峡-葛洲坝",
+        "key": "RCH104"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "葛洲坝",
+        "key": "19"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "葛洲坝-宜昌",
+        "key": "RCH105"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "宜昌",
+        "key": "103032"
+      },
+      {
+        "children": [
+          {
+            "type": "WPStationRR",
+            "title": "水布垭",
+            "key": "16"
+          },
+          {
+            "type": "WPRiverReach",
+            "title": "水布垭-隔河岩",
+            "key": "RCH201"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "隔河岩",
+            "key": "17"
+          },
+          {
+            "type": "WPRiverReach",
+            "title": "隔河岩-高坝洲",
+            "key": "RCH202"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "高坝洲",
+            "key": "15"
+          },
+          {
+            "type": "WPNodeInterval",
+            "title": "高坝洲-枝城",
+            "key": "ITV101"
+          }
+        ],
+        "type": "WPRiver",
+        "title": "清江",
+        "key": "2"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "宜昌-枝城",
+        "key": "RCH106"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "枝城",
+        "key": "103033"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "枝城-沙市",
+        "key": "RCH107"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "沙市",
+        "key": "103034"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "沙市-监利",
+        "key": "RCH108"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "监利",
+        "key": "103036"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "监利-城陵矶",
+        "key": "RCH109"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "城陵矶",
+        "key": "103037"
+      },
+      {
+        "children": [
+          {
+            "type": "WPStationZQ",
+            "title": "仙桃",
+            "key": "103090"
+          },
+          {
+            "type": "WPNodeInterval",
+            "title": "仙桃-汉口",
+            "key": "ITV102"
+          }
+        ],
+        "type": "WPRiver",
+        "title": "汉江",
+        "key": "9"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "城陵矶-汉口",
+        "key": "RCH110"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "汉口",
+        "key": "103039"
+      }
+    ],
+    "type": "WPRiver",
+    "title": "长江",
+    "key": "1"
+  }
+]

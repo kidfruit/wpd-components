@@ -1,76 +1,135 @@
 <template>
   <div :class="classNames">
-    <!-- <div class="chart-container">
-      <standard-chart
-        ref="chartRef"
-        :chartOption="chartOption"
-        :isRefresh="isRefresh"
-        :chartAxis="chartAxis"
-        :chartData="data"
-      />
-    </div> -->
-    <div class="tree-container">444545</div>
-    <div class="table-container">
-      <simple-table
-        ref="tableRef"
-        :tableData="data"
-        :tableColumns="tableColumns"
-      ></simple-table>
+    <div class="tree-container" :style="treeStyle">
+      <a-tree v-model="checkedNode" :treeData="treeData" defaultExpandAll checkable @check="_onTreeCheck" />
+    </div>
+    <div class="table-container" :style="tableStyle">
+      <MultiOptionTable ref="tableRef" :tableData="m_tableData" :tableColumns="tableColumns" @cellEditDone="_cellEditDone" />
     </div>
   </div>
 </template>
 <script>
-import StandardChart from "../../StandardChart/src/StandardChart.vue";
-import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
-
+import MultiOptionTable from '../../MultiOptionTable/src/MultiOptionTable.vue';
+const treeToList = (tree, list) => {
+  if (tree instanceof Array) {
+    for (let i = 0; i < tree.length; i++) {
+      const element = tree[i];
+      list.push(element);
+      if (element.children instanceof Array && element.children.length > 0) {
+        treeToList(element.children, list);
+      }
+    }
+  } else {
+    return [];
+  }
+};
 export default {
-  name: "ChartTableGroup",
+  components: {
+    // StandardChart,
+    MultiOptionTable
+  },
+  name: 'TreeTableGroup',
   props: {
     classes: {
+      type: Array
+    },
+    treeData: {
       type: Array,
-      required: false,
+      required: true
     },
     isRefresh: {
       type: Boolean,
-      default: true,
-      required: false,
-    },
-    chartOption: {
-      type: Object,
-      required: false,
-    },
-    chartAxis: {
-      type: Object,
+      default() {
+        return true;
+      }
     },
     tableColumns: {
-      type: Array,
+      type: Array
     },
-    data: {
-      type: Array,
+    tableData: {
+      type: Array
     },
+    treeStyle: {
+      type: Object || String,
+      default() {
+        return undefined;
+      }
+    },
+    tableStyle: {
+      type: Object || String,
+      default() {
+        return undefined;
+      }
+    }
   },
-  components: {
-    // StandardChart,
-    SimpleTable,
-  },
-  beforeMount() {},
-  mounted() {},
   data() {
-    return {};
+    return { checkedNode: [], defaultTableData: [] };
+  },
+
+  created() {
+    /**
+     * 初始化进来先选中所有 treeNode
+     */
+    let list = [];
+    treeToList(this.treeData, list);
+    this.checkedNode = list.map(i => i.key);
+    /**
+     * 讲数据备份一次并加入selected参数
+     */
+    this.defaultTableData = JSON.parse(JSON.stringify(this.tableData)).map(i => ({
+      ...i,
+      selected: true
+    }));
   },
   computed: {
     classNames() {
-      return ["tree-table-group"].concat(this.classes);
+      return ['tree-table-group'].concat(this.classes);
     },
+    m_tableData() {
+      return this.defaultTableData.filter(i => i.selected);
+    }
   },
-  methods: {},
+  methods: {
+    _cellEditDone(value) {
+      const { field, newValue, oldValue, rowIndex } = value;
+      if (this.defaultTableData[rowIndex][field] instanceof Object && this.defaultTableData[rowIndex][field].selectedId) {
+        this.defaultTableData[rowIndex][field].selectedId = this.defaultTableData[rowIndex][field].options.find(i => i.name === newValue).id;
+      } else {
+        this.defaultTableData[rowIndex][field] = newValue;
+      }
+    },
+    _onTreeCheck(checkedKeys, { checked, checkedNodes, node, event }) {
+      this.defaultTableData.map(i => {
+        i.selected = checkedKeys.includes(i.nodeId);
+        return i;
+      });
+    },
+    /**
+     * 暴露的方法
+     */
+    getTableData() {
+      return this.m_tableData;
+    }
+  }
 };
 </script>
 <style scoped lang="scss">
-.tree-container {
-  width: 500px;
-  float: left;
-}
-.table-container {
+.tree-table-group {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  text-align: left;
+  .tree-container {
+    flex: 0 0 auto;
+    width: 20%;
+    overflow: auto;
+  }
+  .table-container {
+    flex: 0 0 auto;
+    width: 80%;
+    overflow: hidden;
+    height: 100%;
+  }
 }
 </style>
