@@ -193,6 +193,7 @@ export default {
           yAxisIndex: yax.yAxisIndex,
           smooth: yax.smooth,
           id: yax.id,
+          symbolSize: yax.symbolSize,
         };
         seriesObj.data = this.chartData.map((cd) => cd[yax.field]);
         console.log("push");

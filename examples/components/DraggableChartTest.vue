@@ -48,7 +48,7 @@ export default {
             selected: true,
             yAxisIndex: 0,
             smooth: true,
-            symbolSize: 5,
+            symbolSize: 10,
           },
           {
             id: "dim1",
@@ -57,7 +57,7 @@ export default {
             selected: true,
             yAxisIndex: 0,
             smooth: true,
-            symbolSize: 5,
+            symbolSize: 10,
           },
         ],
       },
