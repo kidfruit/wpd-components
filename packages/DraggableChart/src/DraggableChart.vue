@@ -18,7 +18,6 @@
 import * as echarts from "echarts";
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 
-let arr = [];
 function reduceDimension(arr) {
   return Array.prototype.concat.apply([], arr); //数据降维
 }
@@ -58,6 +57,8 @@ export default {
       instance: null,
       symbolSize: 10,
       dom: null,
+      arr: [],
+      timer: null,
     };
   },
   computed: {
@@ -71,7 +72,7 @@ export default {
       document.getElementsByClassName("chart draggable-chart")[0]
     );
     this.dragFields.forEach((item) => {
-      arr.push(
+      this.arr.push(
         this.data.map((el) => {
           return el[item];
         })
@@ -80,7 +81,7 @@ export default {
     function updatePosition() {
       this.instance.setOption({
         graphic: reduceDimension(
-          arr.map((el, i) =>
+          this.arr.map((el, i) =>
             echarts.util.map(el, function (item, dataIndex) {
               return {
                 position: this.instance.convertToPixel("grid", item),
@@ -99,13 +100,22 @@ export default {
     window.removeEventListener("resize", this.resize);
   },
   methods: {
+    useTimer(cb, time) {
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+      this.timer = setTimeout(() => {
+        cb && cb();
+        this.timer = null;
+      }, time);
+    },
     resize() {
       this.instance.resize();
     },
     mergeOptions(dom) {
       dom.setOption({
         graphic: reduceDimension(
-          arr.map((el, i) => {
+          this.arr.map((el, i) => {
             if (i > 10) {
               //筛选拖动线的条件，可自行配置
               return;
@@ -116,6 +126,8 @@ export default {
                 // 'circle' Express this graphic element The type of dot is dot.
                 type: "circle",
                 shape: {
+                  cx: 0,
+                  cy: 0,
                   // The radius of a circle.
                   r: that.symbolSize / 2,
                 },
@@ -133,25 +145,9 @@ export default {
                 //   console.log(dataIndex);
                 //   that.onPointDragging(dataIndex, [this.x, this.y]);
                 // }),
-                onmousemove: echarts.util.curry(
-                  function (dataIndex, i) {
-                    that.instance.dispatchAction({
-                      type: "showTip",
-                      seriesIndex: i,
-                      dataIndex: dataIndex,
-                    });
-                  },
-                  dataIndex,
-                  i
-                ),
-                onmouseout: echarts.util.curry(function (dataIndex) {
-                  that.instance.dispatchAction({
-                    type: "hideTip",
-                  });
-                }, dataIndex),
                 ondragend: echarts.util.curry(
                   function (dataIndex, i) {
-                    arr[i][dataIndex] = that.instance.convertFromPixel(
+                    that.arr[i][dataIndex] = that.instance.convertFromPixel(
                       "grid",
                       this.position
                     );
@@ -164,7 +160,7 @@ export default {
                   function (dataIndex, dx) {
                     let origin = that.instance.convertToPixel(
                       "grid",
-                      arr[dx][dataIndex]
+                      that.arr[dx][dataIndex]
                     );
                     if (this.position[1] > 340) {
                       //控制上下拖动范围 跟ref高度有关
@@ -173,7 +169,7 @@ export default {
                       this.position[1] = 60;
                     }
                     this.position[0] = origin[0];
-                    arr[dx][dataIndex] = that.instance.convertFromPixel(
+                    that.arr[dx][dataIndex] = that.instance.convertFromPixel(
                       "grid",
                       this.position
                     );
@@ -181,11 +177,17 @@ export default {
                       series: [
                         {
                           id: that.dragFields[dx],
-                          data: arr[dx],
+                          data: that.arr[dx],
                         },
                       ],
                     });
-                    that.$emit("updateData", that.dragFields[dx], arr[dx]);
+                    that.useTimer(() => {
+                      that.$emit(
+                        "updateData",
+                        that.dragFields[dx],
+                        that.arr[dx]
+                      );
+                    }, 300);
                   },
                   dataIndex,
                   i

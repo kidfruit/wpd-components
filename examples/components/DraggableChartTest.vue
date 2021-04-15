@@ -30,17 +30,6 @@ export default {
           text: "水位流量图",
           left: "center",
         },
-        tooltip: {
-          triggerOn: "none",
-          formatter: function (params) {
-            return (
-              "X: " +
-              params.data[0].toFixed(2) +
-              "<br>Y: " +
-              params.data[1].toFixed(2)
-            );
-          },
-        },
       },
       chartAxis: {
         xAxis: "time",
