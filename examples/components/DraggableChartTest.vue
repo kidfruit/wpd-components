@@ -62,7 +62,7 @@ export default {
         ],
       },
       tableColumns: [],
-      dragFields: ["dim1", "dim2"],
+      dragFields: ["dim1", "dim2"], // 配置可拖拽的线
       data: [
         { dim1: [1, 3], dim2: [1, 0], time: "2021-03-29T15:00:00", index: 1 },
         {
@@ -153,6 +153,7 @@ export default {
     };
   },
   methods: {
+    // 将最新的拖拽后的数据传到业务层
     handleUpdateData(field, data) {
       console.log("data", field, data);
     },
