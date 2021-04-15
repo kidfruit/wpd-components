@@ -102,7 +102,6 @@ export default {
           field: "index",
           title: "序号",
           width: 20,
-          isResize: true,
           titleAlign: "center",
           columnAlign: "center",
           readOnly: true,
@@ -110,7 +109,6 @@ export default {
         {
           field: "time",
           title: "断面时间",
-          width: 140,
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
@@ -119,7 +117,6 @@ export default {
         {
           field: "dim1",
           title: "水位(m)",
-          width: 100,
           isResize: true,
           titleAlign: "center",
           columnAlign: "center",
@@ -128,7 +125,6 @@ export default {
         {
           field: "dim2",
           title: "流量(m³/s)",
-          width: 100,
           isResize: true,
           titleAlign: "center",
           columnAlign: "center",

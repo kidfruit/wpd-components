@@ -6,6 +6,7 @@
         :chartOption="chartOption"
         :isRefresh="isRefresh"
         :chartAxis="chartAxis"
+        :sections="sections"
         :classes="['result-hydro-dynamic']"
         :chartData="data"
       />
@@ -53,6 +54,9 @@ export default {
     data: {
       type: Array,
     },
+    sections: {
+      type: Array,
+    },
   },
   computed: {
     classNames() {
@@ -62,12 +66,11 @@ export default {
   created() {
     this.chartOption.timeline.data = this.data.map((el) => el.time);
     // 将多个时间线的数据拆分
-    let sections = this.data.map((el) => el.section);
     let fields = this.chartAxis.series.map((el) => el.field);
     let deltaFields = [];
     let regstrs = [];
     this.newData = JSON.parse(JSON.stringify(this.data));
-    sections.forEach((element) => {
+    this.sections.forEach((element) => {
       fields.forEach((item) => {
         this.newData.forEach((el) => {
           if (el[item]) {
@@ -78,14 +81,14 @@ export default {
         });
       });
     });
-    this.newData.forEach((el) => {
+    this.newData.forEach((el, index) => {
       fields.forEach((item) => {
         if (el[item]) {
           if (regstrs.indexOf(item) === -1) {
             regstrs.push(item);
           }
           el[item].forEach((ele, index) => {
-            el[`${sections[index]}.${item}`] = ele;
+            el[`${this.sections[index]}.${item}`] = ele;
           });
           delete el[item];
         }
@@ -123,7 +126,7 @@ export default {
       .map((el) => {
         return { label: "", colspan: 1 };
       });
-    let sectionFields = sections.map((el) => {
+    let sectionFields = this.sections.map((el) => {
       return { label: el, colspan: 2 };
     });
     this.setting.nestedHeaders.push(notFields.concat(sectionFields));
