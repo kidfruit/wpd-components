@@ -8,6 +8,7 @@ import SimpleTable from './SimpleTable/src/SimpleTable.vue'
 import SimpleChart from './SimpleChart/src/SimpleChart.vue'
 import StandardChart from './StandardChart/src/StandardChart.vue'
 import ChartTableGroup from './ChartTableGroup/src/ChartTableGroup.vue'
+import TreeTableGroup from './TreeTableGroup/src/TreeTableGroup.vue'
 
 import testDirective from './testDirective/src/testDirective'
 
@@ -25,7 +26,8 @@ const components = [
     SimpleChart,
     MultiOptionTable,
     StandardChart,
-    ChartTableGroup
+    ChartTableGroup,
+    TreeTableGroup
 ]
 
 // 存储指令映射
@@ -61,6 +63,8 @@ export default {
     SimpleChart,
     StandardChart,
     ChartTableGroup,
+    TreeTableGroup,
+
 
     ...directives,
 }
