@@ -1,7 +1,7 @@
 <template>
-  <div v-if="isVisible && isRefresh">
-    <hot-table :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
-      <hot-column v-for="(item, index) in columns" :key="index" :title="item.title" :data="item.field" :source="item.source" :renderer="item.renderer" :type="item.type"> </hot-column>
+  <div class="multi-option-table" v-if="isVisible && isRefresh">
+    <hot-table class="hot-table" :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
+      <hot-column v-for="(item, index) in columns" :readOnly="item.readOnly" :key="index" :title="item.title" :data="item.field" :source="item.source" :renderer="item.renderer" :type="item.type"> </hot-column>
     </hot-table>
   </div>
 </template>
@@ -57,8 +57,6 @@ export default {
   beforeMount() {
     // 单元格自定义渲染
     Handsontable.renderers.registerRenderer('negativeValueRenderer', this.negativeValueRenderer);
-    const data = JSON.parse(JSON.stringify(this.tableData));
-    this.prepareData(data);
     // console.log(this.hotData, 'this.hotData');
   },
   mounted() {
@@ -208,15 +206,15 @@ export default {
     },
     // 单元格自定义渲染
     negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
-        // console.log(this.dropdownHash)
+      // console.log(this.dropdownHash)
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
       } else if (Object.prototype.hasOwnProperty.call(this.checkbox, prop)) {
         //判断是否是checkbox类型
         Handsontable.renderers.CheckboxRenderer.apply(this, arguments);
-      } else if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop+'-row'+row)) {
+      } else if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop + '-row' + row)) {
         //判断是否是customDropdown类型
-         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
       } else {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
       }
@@ -265,6 +263,31 @@ export default {
         this.isRefresh = true;
       }, 0);
     }
+  },
+  watch: {
+    tableData: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.isRefresh = false;
+        const data = JSON.parse(JSON.stringify(val));
+        this.prepareData(data);
+        this.$nextTick(() => {
+          this.isRefresh = true;
+        });
+      }
+    }
   }
 };
 </script>
+<style lang="scss" scoped>
+.multi-option-table {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .hot-table {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
