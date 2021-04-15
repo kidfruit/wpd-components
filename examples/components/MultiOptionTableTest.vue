@@ -15,7 +15,7 @@
 import MultiOptionTable from "../../packages/MultiOptionTable/src/MultiOptionTable.vue";
 
 export default {
-  name: "MultiOptionTableText",
+  name: "MultiOptionTableTest",
   components: { MultiOptionTable },
   data() {
     return {

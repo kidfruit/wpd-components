@@ -7,7 +7,7 @@
     <simple-chart-test v-if="false" />
     <standard-chart-test v-if="false" />
     <simple-table-test v-if="false" />
-    <multi-option-table-text v-if="true" />
+    <multi-option-table-test v-if="true" />
     <result-hydro-dynamic-test v-if="false" />
     <chart-table-group-test v-if="false" />
     <draggable-chart-test v-if="true" />
@@ -22,7 +22,7 @@ import SimpleTableTest from "./SimpleTableTest";
 import CharTableTest from "./CharTableTest.vue";
 import SimpleChartTest from "./SimpleChartTest.vue";
 import StandardChartTest from "./StandardChartTest.vue";
-import MultiOptionTableText from "./MultiOptionTableText.vue";
+import MultiOptionTableTest from "./MultiOptionTableTest.vue";
 import ResultHydroDynamicTest from "./ResultHydroDynamicTest.vue";
 import ChartTableGroupTest from "./ChartTableGroupTest.vue";
 import DraggableChartTest from "./DraggableChartTest.vue";
@@ -37,7 +37,7 @@ export default {
     StandardChartTest,
     ResultHydroDynamicTest,
     ChartTableGroupTest,
-    MultiOptionTableText,
+    MultiOptionTableTest,
     DraggableChartTest,
   },
   name: "HelloWorld",
