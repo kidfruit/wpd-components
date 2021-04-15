@@ -6,9 +6,9 @@
     <char-table-test v-if="false"></char-table-test>
     <simple-chart-test v-if="false" />
     <standard-chart-test v-if="false" />
-    <simple-table-test v-if="false" />
+    <simple-table-test v-if="true" />
     <multi-option-table-test v-if="false" />
-    <result-hydro-dynamic-test v-if="true" />
+    <result-hydro-dynamic-test v-if="false" />
     <chart-table-group-test v-if="false" />
     <draggable-chart-test v-if="false" />
     <tree-chart-table-test v-if="false" />
