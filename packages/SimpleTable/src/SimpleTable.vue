@@ -92,6 +92,8 @@ export default {
   data: function () {
     return {
       editRows: [],
+      addRows: [],
+      deletedRows: [],
       editCells: [],
       hotInstance: null,
       // isRefresh: true,
@@ -129,6 +131,20 @@ export default {
     },
   },
   methods: {
+    _getSelectData(field) {
+      if (typeof field == "string" && field != "") {
+        let Selectdata = [];
+        for (let i = 0; i < this.hotData.length; i++) {
+          if (this.hotData[i][field]) {
+            Selectdata.push(this.hotData[i]);
+          }
+        }
+        return Selectdata;
+      } else {
+        return Error("field为必填参数！");
+      }
+    },
+
     updateWidth(newWidth) {
       this.hotInstance.updateSettings({
         width: newWidth,
@@ -147,6 +163,7 @@ export default {
       });
     },
     afterChange(changes, source) {
+      console.log("afterchange", changes, source);
       if (changes == null) {
         return;
       }
@@ -183,7 +200,14 @@ export default {
           if (this.editRows.length > 0 && this.editRows[idx]) {
             this.editRows[idx] = cr;
           } else {
-            this.editRows.push(cr);
+            let n = parseInt(cr.row) + 1;
+            let index = this.addRows.findIndex((el) => el.index === n);
+            if (index === -1) {
+              this.editRows.push(cr);
+            } else {
+              this.addRows[index] = cr;
+              this.addRows[index]["index"] = n;
+            }
           }
         });
         this.updateShow();
@@ -269,15 +293,36 @@ export default {
       }, 0);
     },
     add() {
-      this.$refs.hotTableRef.hotInstance.alter(
-        "insert_row",
-        this.$refs.hotTableRef.hotInstance.countRows()
-      );
+      let index = this.$refs.hotTableRef.hotInstance.countRows();
+      this.$refs.hotTableRef.hotInstance.alter("insert_row", index);
+      let row = this.hotInstance.getDataAtRow(index);
+      // 更新新增行数组
+      let obj = {};
+      row.forEach((el, i) => {
+        if (this.columns[i].field !== "index") {
+          obj[this.columns[i].field] = el;
+        } else {
+          obj[this.columns[i].field] = index + 1;
+        }
+      });
+      this.addRows.push(obj);
     },
     deleted() {
       let seleteds = this.$refs.hotTableRef.hotInstance.getSelected();
       if (seleteds && seleteds.length > 0) {
         seleteds.forEach((el) => {
+          for (let i = 0; i < el[2] - el[0] + 1; i++) {
+            let row = this.hotInstance.getDataAtRow(el[0] + i);
+            let ret = row.every((item) => item);
+            // 如果删除的每一行有数据，才保存这一行到deletedRows
+            if (ret && row.length > 0) {
+              let obj = {};
+              row.forEach((el, i) => {
+                obj[this.columns[i].field] = el;
+              });
+              this.deletedRows.push(obj);
+            }
+          }
           this.$refs.hotTableRef.hotInstance.alter(
             "remove_row",
             el[0],
