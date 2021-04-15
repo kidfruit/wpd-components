@@ -71,6 +71,7 @@ export default {
     this.instance = echarts.getInstanceByDom(
       document.getElementsByClassName("chart draggable-chart")[0]
     );
+    // 根据传入的可拖拽线的选项，动态生成一条或者多条线的arr数组
     this.dragFields.forEach((item) => {
       this.arr.push(
         this.data.map((el) => {
@@ -78,25 +79,30 @@ export default {
         })
       );
     });
+    const that = this;
+    // resize事件的回调，实时更新图表的显示数据
     function updatePosition() {
-      this.instance.setOption({
+      that.instance.setOption({
         graphic: reduceDimension(
-          this.arr.map((el, i) =>
+          that.arr.map((el, i) =>
             echarts.util.map(el, function (item, dataIndex) {
               return {
-                position: this.instance.convertToPixel("grid", item),
+                position: that.instance.convertToPixel("grid", item),
               };
             })
           )
         ),
       });
     }
-    // 合并拖拽相关的option
-    this.mergeOptions(this.instance);
+    setTimeout(() => {
+      // 动态设置拖拽相关的options
+      this.mergeOptions(this.instance);
+    }, 0);
 
     window.addEventListener("resize", updatePosition);
   },
   beforeDestroy() {
+    this.timer = null;
     window.removeEventListener("resize", this.resize);
   },
   methods: {
@@ -181,6 +187,7 @@ export default {
                         },
                       ],
                     });
+                    // 这里做了一个事件的节流
                     that.useTimer(() => {
                       that.$emit(
                         "updateData",
