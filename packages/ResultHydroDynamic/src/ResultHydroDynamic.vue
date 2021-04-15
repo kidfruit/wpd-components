@@ -112,7 +112,7 @@ export default {
       this.columns.splice(index, 1);
     });
     // 自定义表头
-    let nestedHeaders = [];
+    // let nestedHeaders = [];
     let notFields = this.columns
       .filter((el) => {
         return (
