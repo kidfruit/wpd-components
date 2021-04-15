@@ -214,7 +214,7 @@ export default {
         // 带有时间线的chart
         let options = [];
         let fields = this.chartAxis.series.map((el) => el.field);
-        this.chartData.forEach((cd) => {
+        this.chartData.forEach((cd, index) => {
           let series = [];
           fields.forEach((item) => {
             if (cd[item]) {
@@ -223,11 +223,10 @@ export default {
           });
           options.push({
             series,
+            title: {
+              text: `${this.chartOption.title.text}    ${this.chartOption.timeline.data[index]}`,
+            },
           });
-        });
-        console.log({
-          baseOption: option,
-          options,
         });
         return {
           baseOption: option,
