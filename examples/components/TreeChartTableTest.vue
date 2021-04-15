@@ -186,15 +186,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-</style>
-<style >
-.result-hydro-dynamic.chart {
-  width: 100%;
-  height: 50vh;
-}
-.tree-chart-table {
-  display: flex;
-}
-</style>

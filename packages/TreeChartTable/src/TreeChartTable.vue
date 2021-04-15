@@ -139,7 +139,9 @@ export default {
     console.log(this.columns, this.newData);
   },
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.$refs.tableRef.updateWidth("70%");
+  },
   data() {
     return {
       newData: [],
@@ -152,8 +154,24 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tree-chart-table {
   display: flex;
+  .left-box {
+    width: 70%;
+    .chart-container,
+    .table-container {
+      width: 100%;
+    }
+  }
+  .right-box {
+    // width: ;
+  }
+}
+</style>
+<style>
+.tree-chart-table .table-container >>> .handsontable {
+  /* width: 70%; */
+  color: #f00;
 }
 </style>
