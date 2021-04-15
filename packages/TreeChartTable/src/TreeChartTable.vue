@@ -1,23 +1,26 @@
 <template>
   <div :class="classNames">
-    <div class="chart-container">
-      <standard-chart
-        ref="chartRef"
-        :chartOption="chartOption"
-        :isRefresh="isRefresh"
-        :chartAxis="chartAxis"
-        :classes="['result-hydro-dynamic']"
-        :chartData="data"
-      />
+    <div class="left-box">
+      <div class="chart-container">
+        <standard-chart
+          ref="chartRef"
+          :chartOption="chartOption"
+          :isRefresh="isRefresh"
+          :chartAxis="chartAxis"
+          :classes="['result-hydro-dynamic']"
+          :chartData="data"
+        />
+      </div>
+      <div class="table-container">
+        <simple-table
+          ref="tableRef"
+          :tableData="newData"
+          :setting="setting"
+          :tableColumns="columns"
+        ></simple-table>
+      </div>
     </div>
-    <div class="table-container">
-      <simple-table
-        ref="tableRef"
-        :tableData="newData"
-        :setting="setting"
-        :tableColumns="columns"
-      ></simple-table>
-    </div>
+    <div class="right-box"></div>
   </div>
 </template>
 
@@ -25,7 +28,7 @@
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 export default {
-  name: "ResultHydroDynamic",
+  name: "TreeChartTable",
   components: {
     StandardChart,
     SimpleTable,
@@ -56,7 +59,7 @@ export default {
   },
   computed: {
     classNames() {
-      return ["result-hydro-dynamic"].concat(this.classes).join(" ");
+      return ["tree-chart-table"].concat(this.classes).join(" ");
     },
   },
   created() {
@@ -136,7 +139,9 @@ export default {
     console.log(this.columns, this.newData);
   },
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.$refs.tableRef.updateWidth("70%");
+  },
   data() {
     return {
       newData: [],
@@ -148,8 +153,25 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-.chart-container {
-  margin-bottom: 24px;
+
+<style lang="scss" scoped>
+.tree-chart-table {
+  display: flex;
+  .left-box {
+    width: 70%;
+    .chart-container,
+    .table-container {
+      width: 100%;
+    }
+  }
+  .right-box {
+    // width: ;
+  }
+}
+</style>
+<style>
+.tree-chart-table .table-container >>> .handsontable {
+  /* width: 70%; */
+  color: #f00;
 }
 </style>

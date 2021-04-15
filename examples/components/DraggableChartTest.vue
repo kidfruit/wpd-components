@@ -47,7 +47,7 @@ export default {
             title: "入库流量(m³/s)",
             selected: true,
             yAxisIndex: 0,
-            smooth: true,
+            // smooth: true,
             symbolSize: 10,
           },
           {
@@ -56,7 +56,7 @@ export default {
             title: "水位(m)",
             selected: true,
             yAxisIndex: 0,
-            smooth: true,
+            // smooth: true,
             symbolSize: 10,
           },
         ],

@@ -1,6 +1,6 @@
 <template>
-  <div :classes="classNames">
-    <div class="chart-container">
+  <div :class="classNames">
+    <!-- <div class="chart-container">
       <standard-chart
         ref="chartRef"
         :chartOption="chartOption"
@@ -8,7 +8,8 @@
         :chartAxis="chartAxis"
         :chartData="data"
       />
-    </div>
+    </div> -->
+    <div class="tree-container">444545</div>
     <div class="table-container">
       <simple-table
         ref="tableRef"
@@ -49,7 +50,7 @@ export default {
     },
   },
   components: {
-    StandardChart,
+    // StandardChart,
     SimpleTable,
   },
   beforeMount() {},
@@ -59,9 +60,17 @@ export default {
   },
   computed: {
     classNames() {
-      return ["chart-table-group"].concat(this.classes);
+      return ["tree-table-group"].concat(this.classes);
     },
   },
   methods: {},
 };
 </script>
+<style scoped lang="scss">
+.tree-container {
+  width: 500px;
+  float: left;
+}
+.table-container {
+}
+</style>
