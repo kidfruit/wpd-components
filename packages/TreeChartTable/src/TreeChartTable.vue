@@ -36,7 +36,7 @@ import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 import SimpleTree from "../../SimpleTree/src/SimpleTree.vue";
 import * as echarts from "echarts";
-var rCols = [
+let rCols = [
   {
     field: "sectionCode",
     title: "断面编码",
@@ -78,7 +78,7 @@ var rCols = [
     readOnly: true,
   },
 ];
-var qCols = [
+let qCols = [
   {
     field: "diArray",
     title: "起点距",
@@ -95,12 +95,12 @@ var qCols = [
     readOnly: true,
   },
 ];
-var rAxis = {
+let rAxis = {
   xAxis: [
     {
       gridIndex: 0,
       type: "category",
-      // show: false,
+      show: false,
       data: [],
     },
     {
@@ -142,7 +142,7 @@ var rAxis = {
   ],
 };
 
-var qAxis = {
+let qAxis = {
   xAxis: "diArray",
   timeSeries: true,
   yAxis: [
@@ -251,10 +251,13 @@ export default {
           this.$refs.tableRef.updateShow();
         }
       } else {
-        this.newOption = Object.assign({}, this.chartOption, { grid: qGrid });
         this.instance = echarts.getInstanceByDom(
           document.getElementsByClassName("chart tree-chart")[0]
         );
+        // 清除殘留的圖表數據
+        this.instance.clear();
+        this.newOption = Object.assign({}, this.chartOption, { grid: qGrid });
+
         this.columns = qCols;
         this.newAxis = qAxis;
         let item = this.rawData.sectionDataList.find(
@@ -269,7 +272,6 @@ export default {
         this.$refs.tableRef.reset();
         this.$refs.tableRef.updateShow();
       }
-      // console.log(this.newData, this.columns, "newData");
     },
   },
   data() {

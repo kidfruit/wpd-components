@@ -27,15 +27,6 @@ export default {
           text: "水位流量图",
           left: "center",
         },
-        // grid: {
-        //   bottom: 70,
-        // },
-        // grid: [
-        //   //0降雨
-        //   { x: "7%", y: "7%", height: "35%", left: "10%" },
-        //   //1水位流量
-        //   { x: "7%", y2: "7%", height: "35%", left: "10%", bottom: "7%" },
-        // ],
       },
       treeData: [],
       rawData: [],
