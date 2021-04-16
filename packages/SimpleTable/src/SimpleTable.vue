@@ -33,6 +33,7 @@ const defaultHotSettings = {
   colHeaders: true,
   autoColumnSize: true,
   outsideClickDeselects: false,
+  columnSorting: true,
   // colWidths: "100px",
   stretchH: "all",
   licenseKey: "non-commercial-and-evaluation",
@@ -163,7 +164,7 @@ export default {
       });
     },
     afterChange(changes, source) {
-      console.log("afterchange", changes, source);
+      //console.log("afterchange", changes, source);
       if (changes == null) {
         return;
       }

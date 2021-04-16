@@ -164,7 +164,6 @@ export default {
           titleAlign: "center",
           columnAlign: "center",
           isResize: true,
-          readOnly: true,
         },
         {
           field: "dim1",
@@ -173,7 +172,6 @@ export default {
           isResize: true,
           titleAlign: "center",
           columnAlign: "center",
-          readOnly: true,
         },
         {
           field: "dim2",
@@ -182,7 +180,6 @@ export default {
           isResize: true,
           titleAlign: "center",
           columnAlign: "center",
-          readOnly: true,
         },
         {
           field: "funcType",
@@ -265,10 +262,10 @@ export default {
       console.log(
         "按钮点击",
         this.$refs.tableChart.editCells,
-        this.$refs.tableChart.editRows,
-        this.$refs.tableChart.addRows,
-        this.$refs.tableChart.deletedRows
+        this.$refs.tableChart.editRows
       );
+      console.log("增加行",this.$refs.tableChart.addRows)
+
     },
     getSelectData() {
       console.log(this.$refs["tableChart"]._getSelectData("checkbox"));
