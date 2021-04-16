@@ -223,7 +223,9 @@ export default {
   methods: {
     handleSelect(keys) {
       this.selectedKeys = keys;
-      this.handleData();
+      this.$nextTick(() => {
+        this.handleData();
+      });
     },
     handleData() {
       this.newData = [];
