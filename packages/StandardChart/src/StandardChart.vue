@@ -155,6 +155,9 @@ export default {
       if (option.timeline) {
         option.xAxis.data = this.sections;
       }
+      if (Array.isArray(option.grid) && option.grid.length > 0) {
+        option.xAxis = this.chartAxis.xAxis;
+      }
 
       //y轴
       //按照yAxisIndex排序
@@ -170,7 +173,10 @@ export default {
       }
 
       option.yAxis = this.chartAxis.yAxis.map((ax) => {
-        return Object.assign({}, yAxisOption, { name: ax.title });
+        return Object.assign({}, yAxisOption, {
+          name: ax.title,
+          gridIndex: ax.gridIndex,
+        });
       });
 
       //legend
@@ -191,22 +197,23 @@ export default {
           new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
         );
       });
+      option.series = [];
       this.chartAxis.series.forEach((yax) => {
         let seriesObj = {
           name: yax.title,
           type: "line",
           data: [],
           yAxisIndex: yax.yAxisIndex,
+          xAxisIndex: yax.xAxisIndex,
           smooth: yax.smooth,
           id: yax.id,
           symbolSize: yax.symbolSize,
         };
         seriesObj.data = this.chartData.map((cd) => cd[yax.field]);
-        console.log("push");
         option.series.push(seriesObj);
       });
       if (!option.timeline) {
-        console.log("opt", option);
+        console.log("option", option);
         return {
           baseOption: option,
         };

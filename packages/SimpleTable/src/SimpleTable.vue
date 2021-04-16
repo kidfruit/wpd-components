@@ -201,13 +201,13 @@ export default {
           if (this.editRows.length > 0 && this.editRows[idx]) {
             this.editRows[idx] = cr;
           } else {
-            let n = parseInt(cr.row) + 1;
-            let index = this.addRows.findIndex((el) => el.index === n);
+            let n = parseInt(cr.row);
+            let index = this.addRows.findIndex((el) => el.tag === n);
             if (index === -1) {
               this.editRows.push(cr);
             } else {
               this.addRows[index] = cr;
-              this.addRows[index]["index"] = n;
+              this.addRows[index]["tag"] = n;
             }
           }
         });
@@ -300,12 +300,9 @@ export default {
       // 更新新增行数组
       let obj = {};
       row.forEach((el, i) => {
-        if (this.columns[i].field !== "index") {
-          obj[this.columns[i].field] = el;
-        } else {
-          obj[this.columns[i].field] = index + 1;
-        }
+        obj[this.columns[i].field] = el;
       });
+      obj["tag"] = index;
       this.addRows.push(obj);
     },
     deleted() {
