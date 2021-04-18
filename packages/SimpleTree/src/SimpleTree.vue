@@ -24,12 +24,17 @@ export default {
       type: Array,
     },
   },
-  mounted() {
-    if (this.treeData && this.treeData.length > 0) {
-      this.expandedKeys = [this.treeData[0].key];
-      this.selectedKeys = [this.treeData[0].key];
-    }
+  watch: {
+    treeData: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.expandedKeys = [val[0].key];
+        this.selectedKeys = [val[0].key];
+      },
+    },
   },
+  mounted() {},
   methods: {
     onExpand(expandedKeys) {
       console.log("onExpand", expandedKeys);
