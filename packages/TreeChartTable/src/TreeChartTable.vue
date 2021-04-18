@@ -4,7 +4,7 @@
       <div class="chart-container box-border">
         <standard-chart
           ref="chartRef"
-          id="standard-chart"
+          :id="id"
           :chartOption="newOption"
           :isRefresh="isRefresh"
           :chartAxis="newAxis"
@@ -205,6 +205,9 @@ export default {
     },
     rawData: {
       type: Object,
+    },
+    id: {
+      type: String,
     },
   },
   computed: {
