@@ -1,10 +1,31 @@
 <template>
   <div>
-    <div ref="chartRef" :class="classNames" id="standard-echart"></div>
+    <v-chart
+      :class="classNames"
+      :option="option"
+      :theme="theme"
+      ref="chartRef"
+    />
   </div>
 </template>
 <script>
-import * as echarts from "echarts";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { LineChart } from "echarts/charts";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+} from "echarts/components";
+import VChart, { THEME_KEY } from "vue-echarts";
+
+use([
+  CanvasRenderer,
+  LineChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+]);
 const defaultOption = {
   title: {
     text: "",
@@ -54,7 +75,7 @@ const yAxisOption = {
     return minV >= 0 ? minV : 0;
   },
 };
-let echartsInstance = null;
+
 export default {
   name: "StandardChart",
   props: {
@@ -92,13 +113,12 @@ export default {
     },
   },
   components: {
-    // VChart,
+    VChart,
   },
-  created() {},
   beforeMount() {},
   mounted() {
-    this.drawChart();
     this.getChartInstance();
+    // this.$emit("mergeOptions", this.$refs.chartRef.getDom());
     window.addEventListener("resize", this.resizeTheChart);
   },
   data() {
@@ -110,32 +130,19 @@ export default {
     classNames() {
       return ["chart"].concat(this.classes);
     },
-    // option() {
-    //   return this.prepareSeries();
-    // },
+    option() {
+      return this.prepareSeries();
+    },
   },
   methods: {
-    drawChart() {
-      echartsInstance = echarts.init(
-        document.getElementById("standard-echart")
-      );
-      this.setDynamicOption();
-    },
     getChartInstance() {
       if (this.$refs.chartRef) {
         this.instance = this.$refs.chartRef;
       }
     },
-    clear() {
-      echartsInstance.clear();
-    },
-    setDynamicOption() {
-      let option = this.prepareSeries();
-      echartsInstance.setOption(option);
-    },
     resizeTheChart() {
       if (this.$refs && this.$refs.chartRef) {
-        echartsInstance.resize();
+        this.$refs.chartRef.resize();
       }
     },
     prepareSeries() {
@@ -239,10 +246,6 @@ export default {
         return new Date(a).getTime() - new Date(b).getTime();
       });
     },
-  },
-  beforeDestroy() {
-    echarts.dispose(echartsInstance);
-    window.removeEventListener("resize", this.resizeTheChart);
   },
 };
 </script>

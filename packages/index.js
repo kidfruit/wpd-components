@@ -10,6 +10,8 @@ import StandardChart from "./StandardChart/src/StandardChart.vue";
 import ChartTableGroup from "./ChartTableGroup/src/ChartTableGroup.vue";
 import TreeTableGroup from "./TreeTableGroup/src/TreeTableGroup.vue";
 import ResultHydroDynamic from "./ResultHydroDynamic/src/ResultHydroDynamic.vue";
+import TreeChartTable from "./TreeChartTable/src/TreeChartTable.vue";
+
 import testDirective from "./testDirective/src/testDirective";
 import MultiOptionTable from "./MultiOptionTable/src/MultiOptionTable.vue";
 import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGroup.vue";
@@ -29,7 +31,8 @@ const components = [
   ChartTableGroup,
   TreeTableGroup,
   ResultHydroDynamic,
-  TreeSimpleTableGroup
+  TreeSimpleTableGroup,
+  TreeChartTable
 ];
 
 // 存储指令映射
@@ -70,6 +73,7 @@ export default {
   TreeTableGroup,
   ResultHydroDynamic,
   TreeSimpleTableGroup,
+  TreeChartTable,
 
   ...directives
 };
