@@ -8,9 +8,9 @@
     <standard-chart-test v-if="false" />
     <simple-table-test v-if="false" />
     <multi-option-table-test v-if="false" />
-    <result-hydro-dynamic-test v-if="true" />
+    <result-hydro-dynamic-test v-if="false" />
     <chart-table-group-test v-if="false" />
-    <draggable-chart-test v-if="false" />
+    <draggable-chart-test v-if="true" />
     <tree-chart-table-test v-if="false" />
     <tree-table-group-test v-if="false" />
   </div>

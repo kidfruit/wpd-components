@@ -21,6 +21,7 @@ import StandardChart from "../../StandardChart/src/StandardChart.vue";
 function reduceDimension(arr) {
   return Array.prototype.concat.apply([], arr); //数据降维
 }
+let echartsInstance = null;
 export default {
   props: {
     classes: {
@@ -68,7 +69,7 @@ export default {
   },
   mounted() {
     //获取echart实例对象
-    this.instance = echarts.getInstanceByDom(
+    echartsInstance = echarts.getInstanceByDom(
       document.getElementsByClassName("chart draggable-chart")[0]
     );
     // 根据传入的可拖拽线的选项，动态生成一条或者多条线的arr数组
@@ -82,12 +83,12 @@ export default {
     const that = this;
     // resize事件的回调，实时更新图表的显示数据
     function updatePosition() {
-      that.instance.setOption({
+      echartsInstance.setOption({
         graphic: reduceDimension(
           that.arr.map((el, i) =>
             echarts.util.map(el, function (item, dataIndex) {
               return {
-                position: that.instance.convertToPixel("grid", item),
+                position: echartsInstance.convertToPixel("grid", item),
               };
             })
           )
@@ -96,13 +97,13 @@ export default {
     }
     setTimeout(() => {
       // 动态设置拖拽相关的options
-      this.mergeOptions(this.instance);
+      this.mergeOptions(echartsInstance);
     }, 0);
 
     window.addEventListener("resize", updatePosition);
 
     const _self = this;
-    const myChart = this.instance;
+    const myChart = echartsInstance;
     const itemEidt = null;
     let divContainer = document.querySelector(`.draggable-chart div`);
 
@@ -750,7 +751,7 @@ export default {
       }, time);
     },
     resize() {
-      this.instance.resize();
+      echartsInstance.resize();
     },
     mergeOptions(dom) {
       dom.setOption({
@@ -787,7 +788,7 @@ export default {
                 // }),
                 ondragend: echarts.util.curry(
                   function (dataIndex, i) {
-                    that.arr[i][dataIndex] = that.instance.convertFromPixel(
+                    that.arr[i][dataIndex] = echartsInstance.convertFromPixel(
                       "grid",
                       this.position
                     );
@@ -798,7 +799,7 @@ export default {
                 ),
                 ondrag: echarts.util.curry(
                   function (dataIndex, dx) {
-                    let origin = that.instance.convertToPixel(
+                    let origin = echartsInstance.convertToPixel(
                       "grid",
                       that.arr[dx][dataIndex]
                     );
@@ -809,11 +810,11 @@ export default {
                       this.position[1] = 60;
                     }
                     this.position[0] = origin[0];
-                    that.arr[dx][dataIndex] = that.instance.convertFromPixel(
+                    that.arr[dx][dataIndex] = echartsInstance.convertFromPixel(
                       "grid",
                       this.position
                     );
-                    that.instance.setOption({
+                    echartsInstance.setOption({
                       series: [
                         {
                           id: that.dragFields[dx],
