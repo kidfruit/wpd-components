@@ -1,5 +1,5 @@
 <template>
-  <div :key="randomKey">
+  <div class="SimpleTable" :key="randomKey" v-if="isVisible && isRefresh">
     <hot-table
       :settings="hotSettings"
       :data="hotData"
@@ -96,7 +96,7 @@ export default {
       deletedRows: [],
       editCells: [],
       hotInstance: null,
-      // isRefresh: true,
+      isRefresh: true,
       dropdownHash: {},
       checkbox: {},
       hotData: [],
@@ -163,7 +163,7 @@ export default {
       });
     },
     afterChange(changes, source) {
-      console.log("afterchange", changes, source);
+    //   console.log("afterchange", changes, source);
       if (changes == null) {
         return;
       }
@@ -258,9 +258,9 @@ export default {
     // 黑科技更新表格、图展示
     updateShow() {
       const { row, col } = this.getvisibleLocal();
-      // this.isRefresh = false;
+      this.isRefresh = false;
       this.$nextTick(() => {
-        // this.isRefresh = true;
+        this.isRefresh = true;
         this.randomKey = Math.random();
         this.scrollViewportTo(row, col);
       });
@@ -282,13 +282,13 @@ export default {
       });
     },
     reset() {
-      // this.isRefresh = false;
+      this.isRefresh = false;
       this.editCells = [];
       this.editRows = [];
       setTimeout(() => {
         const data = JSON.parse(JSON.stringify(this.tableData));
         this.prepareData(data);
-        // this.isRefresh = true;
+        this.isRefresh = true;
         this.randomKey = Math.random();
       }, 0);
     },
@@ -332,5 +332,30 @@ export default {
       }
     },
   },
+  watch: {
+    tableData: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.isRefresh = false;
+        const data = JSON.parse(JSON.stringify(val));
+        this.prepareData(data);
+        this.$nextTick(() => {
+          this.isRefresh = true;
+        });
+      }
+    }
+  }
 };
 </script>
+<style lang="scss" scoped>
+.multi-option-table {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .hot-table {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>
