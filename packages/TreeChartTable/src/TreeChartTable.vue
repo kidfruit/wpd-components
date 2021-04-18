@@ -206,6 +206,9 @@ export default {
     rawData: {
       type: Object,
     },
+    setting: {
+      type: Object,
+    },
     id: {
       type: String,
     },
@@ -296,7 +299,6 @@ export default {
     return {
       newData: [],
       columns: [],
-      setting: {},
       newAxis: {},
       selectedKeys: [],
       instance: null,
