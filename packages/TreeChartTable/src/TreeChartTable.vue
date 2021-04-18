@@ -223,7 +223,9 @@ export default {
   methods: {
     handleSelect(keys) {
       this.selectedKeys = keys;
-      this.handleData();
+      this.$nextTick(() => {
+        this.handleData();
+      });
     },
     handleData() {
       this.newData = [];
@@ -246,17 +248,24 @@ export default {
             rough: el.rough,
           });
         });
+        setTimeout(() => {
+          this.$refs.chartRef.setDynamicOption();
+        }, 10);
         if (this.selectedKeys[0] === this.rawData.riverReachId) {
           this.$refs.tableRef.reset();
           this.$refs.tableRef.updateShow();
         }
       } else {
-        this.instance = echarts.getInstanceByDom(
-          document.getElementsByClassName("chart tree-chart")[0]
-        );
+        // this.instance = echarts.getInstanceByDom(
+        //   document.getElementsByClassName("chart tree-chart")[0]
+        // );
         // 清除殘留的圖表數據
-        this.instance.clear();
+        this.$refs.chartRef.clear();
+
         this.newOption = Object.assign({}, this.chartOption, { grid: qGrid });
+        setTimeout(() => {
+          this.$refs.chartRef.setDynamicOption();
+        }, 10);
 
         this.columns = qCols;
         this.newAxis = qAxis;
