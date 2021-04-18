@@ -29,7 +29,7 @@ export default {
       immediate: true,
       deep: true,
       handler(val) {
-        if (val) {
+        if (val.length > 0) {
           this.expandedKeys = [val[0].key];
           this.selectedKeys = [val[0].key];
         }

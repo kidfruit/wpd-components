@@ -206,6 +206,9 @@ export default {
     rawData: {
       type: Object,
     },
+    setting: {
+      type: Object,
+    },
     id: {
       type: String,
     },
@@ -221,9 +224,9 @@ export default {
   beforeMount() {},
   mounted() {
     this.handleData();
-    // setTimeout(() => {
-    //   this.setTableWidth("50vw");
-    // }, 10);
+    setTimeout(() => {
+      this.setTableWidth("100%");
+    }, 10);
   },
   methods: {
     setTableWidth(width) {
@@ -296,7 +299,6 @@ export default {
     return {
       newData: [],
       columns: [],
-      setting: {},
       newAxis: {},
       selectedKeys: [],
       instance: null,
