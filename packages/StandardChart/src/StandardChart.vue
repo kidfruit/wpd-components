@@ -1,34 +1,10 @@
 <template>
   <div>
-    <!-- <v-chart
-      :class="classNames"
-      :option="option"
-      :theme="theme"
-      ref="chartRef"
-    /> -->
     <div ref="chartRef" :class="classNames" id="standard-echart"></div>
   </div>
 </template>
 <script>
-// import { use } from "echarts/core";
-// import { CanvasRenderer } from "echarts/renderers";
-// import { LineChart } from "echarts/charts";
-// import {
-//   TitleComponent,
-//   TooltipComponent,
-//   LegendComponent,
-// } from "echarts/components";
-// import VChart, { THEME_KEY } from "vue-echarts";
-
-// use([
-//   CanvasRenderer,
-//   LineChart,
-//   TitleComponent,
-//   TooltipComponent,
-//   LegendComponent,
-// ]);
 import * as echarts from "echarts";
-
 const defaultOption = {
   title: {
     text: "",
@@ -123,7 +99,6 @@ export default {
   mounted() {
     this.drawChart();
     this.getChartInstance();
-    // this.$emit("mergeOptions", this.$refs.chartRef.getDom());
     window.addEventListener("resize", this.resizeTheChart);
   },
   data() {
@@ -267,6 +242,7 @@ export default {
   },
   beforeDestroy() {
     echarts.dispose(echartsInstance);
+    window.removeEventListener("resize", this.resizeTheChart);
   },
 };
 </script>
