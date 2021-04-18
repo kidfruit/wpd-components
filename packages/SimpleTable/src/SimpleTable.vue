@@ -164,7 +164,7 @@ export default {
         return item;
       });
     },
-    afterChange(changes, source) {
+    afterChange(changes, source) {console.log(changes, source)
       if (changes == null) {
         return;
       }
