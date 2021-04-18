@@ -6,6 +6,7 @@
         :chartOption="chartOption"
         :isRefresh="isRefresh"
         :chartAxis="chartAxis"
+        :id="id"
         :sections="sections"
         :classes="['result-hydro-dynamic']"
         :chartData="data"
@@ -56,6 +57,9 @@ export default {
     },
     sections: {
       type: Array,
+    },
+    id: {
+      type: String,
     },
   },
   computed: {
