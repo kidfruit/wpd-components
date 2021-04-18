@@ -218,7 +218,9 @@ export default {
   beforeMount() {},
   mounted() {
     this.handleData();
-    this.setTableWidth("50vw");
+    setTimeout(() => {
+      this.setTableWidth("50vw");
+    }, 10);
   },
   methods: {
     setTableWidth(width) {

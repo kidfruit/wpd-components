@@ -13,7 +13,7 @@
     <draggable-chart-test v-if="false" />
     <tree-chart-table-test v-if="true" />
     <tree-table-group-test v-if="false" />
-    <tree-simple-table-group-test v-if="true" />
+    <tree-simple-table-group-test v-if="false" />
   </div>
 </template>
 
@@ -33,7 +33,6 @@ import TreeChartTableTest from "./TreeChartTableTest.vue";
 import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
 
-
 export default {
   components: {
     TableChartTest,
@@ -48,7 +47,7 @@ export default {
     DraggableChartTest,
     TreeChartTableTest,
     TreeTableGroupTest,
-    TreeSimpleTableGroupTest
+    TreeSimpleTableGroupTest,
   },
   name: "HelloWorld",
   methods: {

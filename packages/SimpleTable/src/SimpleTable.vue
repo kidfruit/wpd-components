@@ -147,6 +147,7 @@ export default {
     },
 
     updateWidth(newWidth) {
+      console.log(this.hotInstance, newWidth);
       this.hotInstance.updateSettings({
         width: newWidth,
       });
@@ -164,7 +165,6 @@ export default {
       });
     },
     afterChange(changes, source) {
-
       if (changes == null) {
         return;
       }
@@ -341,9 +341,9 @@ export default {
         this.$nextTick(() => {
           this.isRefresh = true;
         });
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
