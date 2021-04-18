@@ -25,9 +25,10 @@ export default {
     },
   },
   mounted() {
-    if (this.treeData && this.treeData.length > 0)
+    if (this.treeData && this.treeData.length > 0) {
       this.expandedKeys = [this.treeData[0].key];
-    this.selectedKeys = [this.treeData[0].key];
+      this.selectedKeys = [this.treeData[0].key];
+    }
   },
   methods: {
     onExpand(expandedKeys) {
