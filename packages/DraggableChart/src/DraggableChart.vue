@@ -108,6 +108,7 @@ export default {
     let divContainer = document.querySelector(`.draggable-chart div`);
 
     function moveDownListener(e) {
+      // console.log("222");
       let controlIndex = _self.getGridIndex(e, myChart);
       if (controlIndex < 0) {
         if (myChart.editingSeriesIndex < 0) {
@@ -187,6 +188,7 @@ export default {
     }
 
     function moveMoveListener(e) {
+      // console.log("111", this);
       let canvasContainer = document.querySelector(".draggable-chart canvas");
       //设置全局鼠标移动坐标点
       const mousePosi = _self.getEventPosition(e);
@@ -412,6 +414,7 @@ export default {
       myChart.setOption(myChart.getOption());
     }
     function moveUpListener(e) {
+      // console.log("333");
       myChart.startEidtIndex = -1;
       myChart.lastEditDataIndex = -1;
       if (this.gridEditDatas && this.gridEditDatas.length > 0) {
@@ -423,6 +426,7 @@ export default {
 
     //设置拖动线
     function dblClickListener(e) {
+      // console.log("444");
       _self._showDragLine = !_self._showDragLine;
     }
     const moveDownFunc = moveDownListener.bind(this);
@@ -605,6 +609,168 @@ export default {
         }
       }
       return null;
+    },
+    organizeXAxis(plotOrder, plotType, timeList) {
+      let tempArrOrder = [];
+      let tempPlotType = [];
+      for (let i = 0; i < plotOrder.length; i++) {
+        if (!tempArrOrder.includes(plotOrder[i])) {
+          let tempIndex = tempArrOrder.length;
+          tempArrOrder[tempIndex] = plotOrder[i];
+          tempPlotType[tempIndex] = plotType[i];
+        }
+      }
+      let tempXAxisArr = [];
+      for (let i = 0; i < tempArrOrder.length; i++) {
+        if (tempPlotType[i] == "RainBar") {
+          if (tempArrOrder.length != 1) {
+            tempXAxisArr.push({
+              type: "category",
+              gridIndex: i,
+              boundaryGap: true,
+              axisLine: {
+                onZero: true,
+              },
+              axisTick: {
+                show: false,
+              },
+              splitLine: {
+                show: false,
+              },
+              axisLabel: {
+                show: i == tempArrOrder.length - 1 ? true : false,
+              },
+              data: timeList,
+              position: "top",
+            });
+          } else {
+            tempXAxisArr.push({
+              type: "category",
+              gridIndex: i,
+              boundaryGap: true,
+              axisLine: {
+                onZero: true,
+              },
+              axisTick: {
+                show: false,
+              },
+              splitLine: {
+                show: false,
+              },
+              axisLabel: {
+                show: i == tempArrOrder.length - 1 ? true : false,
+              },
+              data: timeList,
+              position: "bottom",
+            });
+          }
+        }
+        if (tempPlotType[i] == "Bar") {
+          tempXAxisArr.push({
+            type: "category",
+            gridIndex: i,
+            boundaryGap: true,
+            axisLine: {
+              onZero: true,
+            },
+            axisTick: {
+              show: false,
+            },
+            splitLine: {
+              show: false,
+            },
+            axisLabel: {
+              show: i == tempArrOrder.length - 1 ? true : false,
+            },
+            data: timeList,
+            position: "bottom",
+          });
+        } else if (
+          tempPlotType[i] == "BrokenLine" ||
+          tempPlotType[i] == "DashedLine" ||
+          tempPlotType[i] == "StepLine"
+        ) {
+          tempXAxisArr.push({
+            type: "category",
+            gridIndex: i,
+            boundaryGap: false,
+            axisLine: {
+              onZero: true,
+            },
+            axisTick: {
+              show: i == tempArrOrder.length - 1 ? true : false,
+            },
+            axisLabel: {
+              show: i == tempArrOrder.length - 1 ? true : false,
+            },
+            data: timeList,
+            position: "bottom",
+          });
+        }
+      }
+      return tempXAxisArr;
+    },
+
+    organizeYAxis(plotOrder, plotType, itemUnit) {
+      let tempArrOrder = [];
+      let tempPlotType = [];
+      let tempItemUnit = [];
+      let tempYAxisArr = [];
+      for (let i = 0; i < plotOrder.length; i++) {
+        if (!tempArrOrder.includes(plotOrder[i])) {
+          let tempIndex = tempArrOrder.length;
+          tempArrOrder[tempIndex] = plotOrder[i];
+          tempPlotType[tempIndex] = plotType[i];
+          if (itemUnit == null || itemUnit.length == 0) {
+            tempItemUnit[tempIndex] = "";
+          } else {
+            tempItemUnit[tempIndex] = itemUnit[i];
+          }
+        }
+      }
+      for (let i = 0; i < tempArrOrder.length; i++) {
+        if (tempPlotType[i] == "RainBar") {
+          tempYAxisArr.push({
+            gridIndex: i,
+            name: tempItemUnit[i],
+            nameLocation: "start",
+            nameGap: 5,
+            type: "value",
+            inverse: true,
+            max: function (value) {
+              return value.max + 10;
+            },
+          });
+        }
+        if (tempPlotType[i] == "Bar") {
+          tempYAxisArr.push({
+            gridIndex: i,
+            name: tempItemUnit[i],
+            nameLocation: "end",
+            nameGap: 5,
+            type: "value",
+            inverse: false,
+            max: function (value) {
+              return value.max + 10;
+            },
+          });
+        } else if (
+          tempPlotType[i] == "BrokenLine" ||
+          tempPlotType[i] == "DashedLine" ||
+          tempPlotType[i] == "StepLine"
+        ) {
+          tempYAxisArr.push({
+            gridIndex: i,
+            name: tempItemUnit[i],
+            nameLocation: "end",
+            nameGap: 5,
+            type: "value",
+            max: (value) => Math.ceil(value.max + 1),
+            min: (value) => Math.floor(value.min - 1),
+          });
+        }
+      }
+      return tempYAxisArr;
     },
     //获得排序后值等于原索引的索引
     getChangeSoftIndex(plotOrder, index) {
@@ -823,13 +989,13 @@ export default {
                       ],
                     });
                     // 这里做了一个事件的节流
-                    that.useTimer(() => {
-                      that.$emit(
-                        "updateData",
-                        that.dragFields[dx],
-                        that.arr[dx]
-                      );
-                    }, 300);
+                    // that.useTimer(() => {
+                    //   that.$emit(
+                    //     "updateData",
+                    //     that.dragFields[dx],
+                    //     that.arr[dx]
+                    //   );
+                    // }, 300);
                   },
                   dataIndex,
                   i
