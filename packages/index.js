@@ -13,8 +13,9 @@ import ResultHydroDynamic from "./ResultHydroDynamic/src/ResultHydroDynamic.vue"
 import TreeChartTable from "./TreeChartTable/src/TreeChartTable.vue";
 
 import testDirective from "./testDirective/src/testDirective";
-
 import MultiOptionTable from "./MultiOptionTable/src/MultiOptionTable.vue";
+import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGroup.vue";
+
 
 // 存储组件列表
 const components = [
@@ -30,6 +31,7 @@ const components = [
   ChartTableGroup,
   TreeTableGroup,
   ResultHydroDynamic,
+  TreeSimpleTableGroup,
   TreeChartTable
 ];
 
@@ -70,6 +72,7 @@ export default {
   ChartTableGroup,
   TreeTableGroup,
   ResultHydroDynamic,
+  TreeSimpleTableGroup,
   TreeChartTable,
 
   ...directives

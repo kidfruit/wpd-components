@@ -4,6 +4,7 @@
       <div class="chart-container box-border">
         <standard-chart
           ref="chartRef"
+          id="standard-chart"
           :chartOption="newOption"
           :isRefresh="isRefresh"
           :chartAxis="newAxis"
@@ -217,10 +218,15 @@ export default {
   beforeMount() {},
   mounted() {
     this.handleData();
-    // 也可以动态设置handsontable的宽度
-    // this.$refs.tableRef.updateWidth("70vw");
+    setTimeout(() => {
+      this.setTableWidth("50vw");
+    }, 10);
   },
   methods: {
+    setTableWidth(width) {
+      // 也可以动态设置handsontable的宽度
+      this.$refs.tableRef.updateWidth(width);
+    },
     handleSelect(keys) {
       this.selectedKeys = keys;
       this.$nextTick(() => {

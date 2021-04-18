@@ -24,10 +24,10 @@ export default {
       type: Array,
     },
   },
-  created() {
-    this.expandedKeys = [this.treeData[0].key];
+  mounted() {
+    if (this.treeData && this.treeData.length > 0)
+      this.expandedKeys = [this.treeData[0].key];
     this.selectedKeys = [this.treeData[0].key];
-    // this.$emit("select", this.selectedKeys);
   },
   methods: {
     onExpand(expandedKeys) {

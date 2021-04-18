@@ -21,6 +21,7 @@ import StandardChart from "../../StandardChart/src/StandardChart.vue";
 function reduceDimension(arr) {
   return Array.prototype.concat.apply([], arr); //数据降维
 }
+let echartsInstance = null;
 export default {
   props: {
     classes: {
@@ -68,7 +69,7 @@ export default {
   },
   mounted() {
     //获取echart实例对象
-    this.instance = echarts.getInstanceByDom(
+    echartsInstance = echarts.getInstanceByDom(
       document.getElementsByClassName("chart draggable-chart")[0]
     );
     // 根据传入的可拖拽线的选项，动态生成一条或者多条线的arr数组
@@ -82,12 +83,12 @@ export default {
     const that = this;
     // resize事件的回调，实时更新图表的显示数据
     function updatePosition() {
-      that.instance.setOption({
+      echartsInstance.setOption({
         graphic: reduceDimension(
           that.arr.map((el, i) =>
             echarts.util.map(el, function (item, dataIndex) {
               return {
-                position: that.instance.convertToPixel("grid", item),
+                position: echartsInstance.convertToPixel("grid", item),
               };
             })
           )
@@ -96,17 +97,18 @@ export default {
     }
     setTimeout(() => {
       // 动态设置拖拽相关的options
-      this.mergeOptions(this.instance);
+      this.mergeOptions(echartsInstance);
     }, 0);
 
     window.addEventListener("resize", updatePosition);
 
     const _self = this;
-    const myChart = this.instance;
+    const myChart = echartsInstance;
     const itemEidt = null;
     let divContainer = document.querySelector(`.draggable-chart div`);
 
     function moveDownListener(e) {
+      // console.log("222");
       let controlIndex = _self.getGridIndex(e, myChart);
       if (controlIndex < 0) {
         if (myChart.editingSeriesIndex < 0) {
@@ -186,6 +188,7 @@ export default {
     }
 
     function moveMoveListener(e) {
+      // console.log("111", this);
       let canvasContainer = document.querySelector(".draggable-chart canvas");
       //设置全局鼠标移动坐标点
       const mousePosi = _self.getEventPosition(e);
@@ -411,6 +414,7 @@ export default {
       myChart.setOption(myChart.getOption());
     }
     function moveUpListener(e) {
+      // console.log("333");
       myChart.startEidtIndex = -1;
       myChart.lastEditDataIndex = -1;
       if (this.gridEditDatas && this.gridEditDatas.length > 0) {
@@ -422,6 +426,7 @@ export default {
 
     //设置拖动线
     function dblClickListener(e) {
+      // console.log("444");
       _self._showDragLine = !_self._showDragLine;
     }
     const moveDownFunc = moveDownListener.bind(this);
@@ -605,6 +610,168 @@ export default {
       }
       return null;
     },
+    organizeXAxis(plotOrder, plotType, timeList) {
+      let tempArrOrder = [];
+      let tempPlotType = [];
+      for (let i = 0; i < plotOrder.length; i++) {
+        if (!tempArrOrder.includes(plotOrder[i])) {
+          let tempIndex = tempArrOrder.length;
+          tempArrOrder[tempIndex] = plotOrder[i];
+          tempPlotType[tempIndex] = plotType[i];
+        }
+      }
+      let tempXAxisArr = [];
+      for (let i = 0; i < tempArrOrder.length; i++) {
+        if (tempPlotType[i] == "RainBar") {
+          if (tempArrOrder.length != 1) {
+            tempXAxisArr.push({
+              type: "category",
+              gridIndex: i,
+              boundaryGap: true,
+              axisLine: {
+                onZero: true,
+              },
+              axisTick: {
+                show: false,
+              },
+              splitLine: {
+                show: false,
+              },
+              axisLabel: {
+                show: i == tempArrOrder.length - 1 ? true : false,
+              },
+              data: timeList,
+              position: "top",
+            });
+          } else {
+            tempXAxisArr.push({
+              type: "category",
+              gridIndex: i,
+              boundaryGap: true,
+              axisLine: {
+                onZero: true,
+              },
+              axisTick: {
+                show: false,
+              },
+              splitLine: {
+                show: false,
+              },
+              axisLabel: {
+                show: i == tempArrOrder.length - 1 ? true : false,
+              },
+              data: timeList,
+              position: "bottom",
+            });
+          }
+        }
+        if (tempPlotType[i] == "Bar") {
+          tempXAxisArr.push({
+            type: "category",
+            gridIndex: i,
+            boundaryGap: true,
+            axisLine: {
+              onZero: true,
+            },
+            axisTick: {
+              show: false,
+            },
+            splitLine: {
+              show: false,
+            },
+            axisLabel: {
+              show: i == tempArrOrder.length - 1 ? true : false,
+            },
+            data: timeList,
+            position: "bottom",
+          });
+        } else if (
+          tempPlotType[i] == "BrokenLine" ||
+          tempPlotType[i] == "DashedLine" ||
+          tempPlotType[i] == "StepLine"
+        ) {
+          tempXAxisArr.push({
+            type: "category",
+            gridIndex: i,
+            boundaryGap: false,
+            axisLine: {
+              onZero: true,
+            },
+            axisTick: {
+              show: i == tempArrOrder.length - 1 ? true : false,
+            },
+            axisLabel: {
+              show: i == tempArrOrder.length - 1 ? true : false,
+            },
+            data: timeList,
+            position: "bottom",
+          });
+        }
+      }
+      return tempXAxisArr;
+    },
+
+    organizeYAxis(plotOrder, plotType, itemUnit) {
+      let tempArrOrder = [];
+      let tempPlotType = [];
+      let tempItemUnit = [];
+      let tempYAxisArr = [];
+      for (let i = 0; i < plotOrder.length; i++) {
+        if (!tempArrOrder.includes(plotOrder[i])) {
+          let tempIndex = tempArrOrder.length;
+          tempArrOrder[tempIndex] = plotOrder[i];
+          tempPlotType[tempIndex] = plotType[i];
+          if (itemUnit == null || itemUnit.length == 0) {
+            tempItemUnit[tempIndex] = "";
+          } else {
+            tempItemUnit[tempIndex] = itemUnit[i];
+          }
+        }
+      }
+      for (let i = 0; i < tempArrOrder.length; i++) {
+        if (tempPlotType[i] == "RainBar") {
+          tempYAxisArr.push({
+            gridIndex: i,
+            name: tempItemUnit[i],
+            nameLocation: "start",
+            nameGap: 5,
+            type: "value",
+            inverse: true,
+            max: function (value) {
+              return value.max + 10;
+            },
+          });
+        }
+        if (tempPlotType[i] == "Bar") {
+          tempYAxisArr.push({
+            gridIndex: i,
+            name: tempItemUnit[i],
+            nameLocation: "end",
+            nameGap: 5,
+            type: "value",
+            inverse: false,
+            max: function (value) {
+              return value.max + 10;
+            },
+          });
+        } else if (
+          tempPlotType[i] == "BrokenLine" ||
+          tempPlotType[i] == "DashedLine" ||
+          tempPlotType[i] == "StepLine"
+        ) {
+          tempYAxisArr.push({
+            gridIndex: i,
+            name: tempItemUnit[i],
+            nameLocation: "end",
+            nameGap: 5,
+            type: "value",
+            max: (value) => Math.ceil(value.max + 1),
+            min: (value) => Math.floor(value.min - 1),
+          });
+        }
+      }
+      return tempYAxisArr;
+    },
     //获得排序后值等于原索引的索引
     getChangeSoftIndex(plotOrder, index) {
       let newPlotOrder = [...plotOrder];
@@ -750,7 +917,7 @@ export default {
       }, time);
     },
     resize() {
-      this.instance.resize();
+      echartsInstance.resize();
     },
     mergeOptions(dom) {
       dom.setOption({
@@ -787,7 +954,7 @@ export default {
                 // }),
                 ondragend: echarts.util.curry(
                   function (dataIndex, i) {
-                    that.arr[i][dataIndex] = that.instance.convertFromPixel(
+                    that.arr[i][dataIndex] = echartsInstance.convertFromPixel(
                       "grid",
                       this.position
                     );
@@ -798,7 +965,7 @@ export default {
                 ),
                 ondrag: echarts.util.curry(
                   function (dataIndex, dx) {
-                    let origin = that.instance.convertToPixel(
+                    let origin = echartsInstance.convertToPixel(
                       "grid",
                       that.arr[dx][dataIndex]
                     );
@@ -809,11 +976,11 @@ export default {
                       this.position[1] = 60;
                     }
                     this.position[0] = origin[0];
-                    that.arr[dx][dataIndex] = that.instance.convertFromPixel(
+                    that.arr[dx][dataIndex] = echartsInstance.convertFromPixel(
                       "grid",
                       this.position
                     );
-                    that.instance.setOption({
+                    echartsInstance.setOption({
                       series: [
                         {
                           id: that.dragFields[dx],
@@ -822,13 +989,13 @@ export default {
                       ],
                     });
                     // 这里做了一个事件的节流
-                    that.useTimer(() => {
-                      that.$emit(
-                        "updateData",
-                        that.dragFields[dx],
-                        that.arr[dx]
-                      );
-                    }, 300);
+                    // that.useTimer(() => {
+                    //   that.$emit(
+                    //     "updateData",
+                    //     that.dragFields[dx],
+                    //     that.arr[dx]
+                    //   );
+                    // }, 300);
                   },
                   dataIndex,
                   i
