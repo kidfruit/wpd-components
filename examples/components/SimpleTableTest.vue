@@ -262,10 +262,11 @@ export default {
       console.log(
         "按钮点击",
         this.$refs.tableChart.editCells,
-        this.$refs.tableChart.editRows
+        this.$refs.tableChart.editRows,
+        this.$refs.tableChart.addRows,
+        this.$refs.tableChart.deletedRows
       );
-      console.log("增加行",this.$refs.tableChart.addRows)
-
+      console.log("增加行", this.$refs.tableChart.addRows);
     },
     getSelectData() {
       console.log(this.$refs["tableChart"]._getSelectData("checkbox"));
