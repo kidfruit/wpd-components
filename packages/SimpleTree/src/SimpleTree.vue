@@ -29,8 +29,10 @@ export default {
       immediate: true,
       deep: true,
       handler(val) {
-        this.expandedKeys = [val[0].key];
-        this.selectedKeys = [val[0].key];
+        if (val) {
+          this.expandedKeys = [val[0].key];
+          this.selectedKeys = [val[0].key];
+        }
       },
     },
   },

@@ -5,6 +5,7 @@
       :classes="classNames"
       :chartOption="chartOption"
       :isRefresh="isRefresh"
+      id="result-hydro"
       :chartAxis="chartAxis"
       :sections="sections"
       :tableColumns="tableColumns"
