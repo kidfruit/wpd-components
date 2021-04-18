@@ -221,9 +221,9 @@ export default {
   beforeMount() {},
   mounted() {
     this.handleData();
-    // setTimeout(() => {
-    //   this.setTableWidth("50vw");
-    // }, 10);
+    setTimeout(() => {
+      this.setTableWidth("100%");
+    }, 10);
   },
   methods: {
     setTableWidth(width) {
