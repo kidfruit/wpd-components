@@ -12,9 +12,9 @@
     <chart-table-group-test v-if="false" />
     <draggable-chart-test v-if="false" />
     <tree-chart-table-test v-if="false" />
+    <curve-chart-test v-if="false"/>
     <tree-table-group-test v-if="true" />
     <tree-simple-table-group-test v-if="false" />
-    <curve-chart-test v-if="false"/>
   </div>
 </template>
 
@@ -34,7 +34,6 @@ import TreeChartTableTest from "./TreeChartTableTest.vue";
 import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
 import CurveChartTest from "./CurveChartTest.vue";
-
 
 
 export default {

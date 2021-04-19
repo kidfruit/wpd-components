@@ -5,6 +5,7 @@
       :classes="classNames"
       :chartOption="chartOption"
       :isRefresh="isRefresh"
+      id="result-hydro"
       :chartAxis="chartAxis"
       :sections="sections"
       :tableColumns="tableColumns"
@@ -26,7 +27,7 @@ export default {
       isRefresh: true,
       chartOption: {
         title: {
-          text: "水位流量图",
+          text: "断面流量图",
           left: "center",
         },
         timeline: {
@@ -86,14 +87,8 @@ export default {
           },
           {
             field: "dim2",
-            title: "入库流量(m³/s)",
+            title: "流量(m³/s)",
             selected: true,
-            yAxisIndex: 1,
-          },
-          {
-            field: "dim3",
-            title: "出库流量(m³/s)",
-            selected: false,
             yAxisIndex: 1,
           },
         ],

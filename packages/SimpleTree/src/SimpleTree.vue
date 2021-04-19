@@ -24,11 +24,19 @@ export default {
       type: Array,
     },
   },
-  created() {
-    this.expandedKeys = [this.treeData[0].key];
-    this.selectedKeys = [this.treeData[0].key];
-    // this.$emit("select", this.selectedKeys);
+  watch: {
+    treeData: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        if (val.length > 0) {
+          this.expandedKeys = [val[0].key];
+          this.selectedKeys = [val[0].key];
+        }
+      },
+    },
   },
+  mounted() {},
   methods: {
     onExpand(expandedKeys) {
       console.log("onExpand", expandedKeys);

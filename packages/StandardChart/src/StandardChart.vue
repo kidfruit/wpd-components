@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="chartRef" :class="classNames" id="standard-echart"></div>
+    <div ref="chartRef" :class="classNames" :id="id"></div>
   </div>
 </template>
 <script>
@@ -90,6 +90,10 @@ export default {
     sections: {
       type: Array,
     },
+    id: {
+      type: String,
+      default: "standard-chart",
+    },
   },
   components: {
     // VChart,
@@ -116,9 +120,7 @@ export default {
   },
   methods: {
     drawChart() {
-      echartsInstance = echarts.init(
-        document.getElementById("standard-echart")
-      );
+      echartsInstance = echarts.init(document.getElementById(this.id));
       this.setDynamicOption();
     },
     getChartInstance() {
@@ -246,3 +248,9 @@ export default {
   },
 };
 </script>
+<style>
+.chart {
+  width: 100%;
+  height: 300px;
+}
+</style>

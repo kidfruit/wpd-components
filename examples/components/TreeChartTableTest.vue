@@ -3,6 +3,8 @@
     <tree-chart-table
       ref="TreeChartTable"
       :classes="classNames"
+      id="standard-chart"
+      :setting="{ rowHeaders: true }"
       :isRefresh="isRefresh"
       :treeData="treeData"
       :chartOption="chartOption"
