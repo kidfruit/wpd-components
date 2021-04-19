@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%">
     <div style="width: 100%; height: 700px">
-      <tree-table-group ref="chartTable" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns" :tableData="data" />
+      <tree-table-group ref="chartTable" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns" :tableData="data" @checkedKeys="checkedKeys" />
     </div>
     <button @click="getData">获取表格数据</button>
     <!-- <button @click="fetchData">获取数据123</button> -->
@@ -102,6 +102,9 @@ export default {
     };
   },
   methods: {
+      checkedKeys(val){
+          console.log("选中的key",val)
+      },
     getData() {
       console.log(this.$refs['chartTable'].getTableData());
     }

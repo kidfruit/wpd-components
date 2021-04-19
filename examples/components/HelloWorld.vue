@@ -8,12 +8,13 @@
     <standard-chart-test v-if="false" />
     <simple-table-test v-if="false" />
     <multi-option-table-test v-if="false" />
-    <result-hydro-dynamic-test v-if="true" />
+    <result-hydro-dynamic-test v-if="false" />
     <chart-table-group-test v-if="false" />
     <draggable-chart-test v-if="false" />
     <tree-chart-table-test v-if="false" />
-    <tree-table-group-test v-if="false" />
-    <tree-simple-table-group-test v-if="true" />
+    <tree-table-group-test v-if="true" />
+    <tree-simple-table-group-test v-if="false" />
+    <curve-chart-test v-if="false"/>
   </div>
 </template>
 
@@ -32,6 +33,8 @@ import DraggableChartTest from "./DraggableChartTest.vue";
 import TreeChartTableTest from "./TreeChartTableTest.vue";
 import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
+import CurveChartTest from "./CurveChartTest.vue";
+
 
 
 export default {
@@ -48,7 +51,8 @@ export default {
     DraggableChartTest,
     TreeChartTableTest,
     TreeTableGroupTest,
-    TreeSimpleTableGroupTest
+    TreeSimpleTableGroupTest,
+    CurveChartTest
   },
   name: "HelloWorld",
   methods: {
