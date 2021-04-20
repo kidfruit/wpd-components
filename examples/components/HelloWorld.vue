@@ -10,7 +10,8 @@
     <multi-option-table-test v-if="false" />
     <result-hydro-dynamic-test v-if="false" />
     <chart-table-group-test v-if="false" />
-    <draggable-chart-test v-if="true" />
+    <draggable-chart-test v-if="false" />
+    <coherent-draggable-chart-test v-if="true" />
     <tree-chart-table-test v-if="false" />
     <curve-chart-test v-if="false" />
     <tree-table-group-test v-if="false" />
@@ -30,6 +31,7 @@ import MultiOptionTableTest from "./MultiOptionTableTest.vue";
 import ResultHydroDynamicTest from "./ResultHydroDynamicTest.vue";
 import ChartTableGroupTest from "./ChartTableGroupTest.vue";
 import DraggableChartTest from "./DraggableChartTest.vue";
+import CoherentDraggableChartTest from "./CoherentDraggableChartTest.vue";
 import TreeChartTableTest from "./TreeChartTableTest.vue";
 import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
@@ -47,6 +49,7 @@ export default {
     ChartTableGroupTest,
     MultiOptionTableTest,
     DraggableChartTest,
+    CoherentDraggableChartTest,
     TreeChartTableTest,
     TreeTableGroupTest,
     TreeSimpleTableGroupTest,
