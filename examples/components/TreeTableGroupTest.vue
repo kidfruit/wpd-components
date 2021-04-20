@@ -1,9 +1,11 @@
 <template>
   <div style="width: 100%">
     <div style="width: 100%; height: 700px">
-      <tree-table-group ref="chartTable" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns" :tableData="data" @checkedKeys="checkedKeys" />
+      <tree-table-group ref="treeTableGroup" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns"
+                        :tableData="data" @checkedKeys="checkedKeys"/>
     </div>
     <button @click="getData">获取表格数据</button>
+    <button @click="highlightRow('13')">高亮</button>
     <!-- <button @click="fetchData">获取数据123</button> -->
   </div>
 </template>
@@ -11,9 +13,10 @@
 import TreeTableGroup from '../../packages/TreeTableGroup/src/TreeTableGroup.vue';
 import mock_Tree from '../assets/mock/RD_SYNSIM_Tree.json';
 import mock_Table from '../assets/mock/RD_SYNSIM_Table.json';
+
 export default {
   name: 'TreeTableGroupTest',
-  components: { TreeTableGroup },
+  components: {TreeTableGroup},
   data() {
     return {
       mock_Tree,
@@ -102,11 +105,14 @@ export default {
     };
   },
   methods: {
-      checkedKeys(val){
-          console.log("选中的key",val)
-      },
+    checkedKeys(val) {
+      console.log("选中的key", val)
+    },
     getData() {
-      console.log(this.$refs['chartTable'].getTableData());
+      console.log(this.$refs['treeTableGroup'].getTableData());
+    },
+    highlightRow(value) {
+      this.$refs['treeTableGroup'].$refs['tableRef'].highlightRow(value)
     }
   }
 };
