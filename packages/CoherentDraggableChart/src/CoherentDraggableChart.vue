@@ -14,11 +14,16 @@ import "echarts/lib/component/title";
 import "echarts/lib/component/toolbox";
 import "echarts/lib/component/dataZoom";
 import "echarts/lib/component/legendScroll";
-// import { MinMaxFunction } from "@/libs/utils";
 import "echarts/theme/macarons.js";
 export default {
   name: "Chart",
-  props: ["options", "ogridLinkListener", "ogridEditListener", "data"],
+  props: [
+    "options",
+    "ogridLinkListener",
+    "ogridEditListener",
+    "data",
+    "dragFields",
+  ],
   data() {
     return {
       initOnceEvent: true,
@@ -71,7 +76,18 @@ export default {
             const { value } = params;
             const nowVal = value * 1;
             let color = "";
-            let colorList = ["#FEFEFE", "#D0FDB9", "#A5F28C", "#38A20F", "#5FBAFO", "#0002FB", "#0E6A49", "#FE00F7", "#DC4E01", "#710200"];
+            let colorList = [
+              "#FEFEFE",
+              "#D0FDB9",
+              "#A5F28C",
+              "#38A20F",
+              "#5FBAFO",
+              "#0002FB",
+              "#0E6A49",
+              "#FE00F7",
+              "#DC4E01",
+              "#710200",
+            ];
             if (nowVal == 0) {
               color = colorList[0];
             } else if (0 < nowVal && nowVal <= 1) {
@@ -259,7 +275,11 @@ export default {
             data: timeList,
             position: "bottom",
           });
-        } else if (tempPlotType[i] == "BrokenLine" || tempPlotType[i] == "DashedLine" || tempPlotType[i] == "StepLine") {
+        } else if (
+          tempPlotType[i] == "BrokenLine" ||
+          tempPlotType[i] == "DashedLine" ||
+          tempPlotType[i] == "StepLine"
+        ) {
           tempXAxisArr.push({
             type: "category",
             gridIndex: i,
@@ -324,7 +344,11 @@ export default {
               return value.max + 10;
             },
           });
-        } else if (tempPlotType[i] == "BrokenLine" || tempPlotType[i] == "DashedLine" || tempPlotType[i] == "StepLine") {
+        } else if (
+          tempPlotType[i] == "BrokenLine" ||
+          tempPlotType[i] == "DashedLine" ||
+          tempPlotType[i] == "StepLine"
+        ) {
           tempYAxisArr.push({
             gridIndex: i,
             name: tempItemUnit[i],
@@ -375,7 +399,14 @@ export default {
           symbolSize: 5,
           data: dataList[i],
           edit: itemEdit == null ? true : itemEdit[i],
-          itemStyle: plotType[i] == "RainBar" ? this.rainItemStyle() : plotType[i] == "Bar" ? this.barItemStyle() : plotType[i] == "DashedLine" ? this.DashedLineItemStyle() : null,
+          itemStyle:
+            plotType[i] == "RainBar"
+              ? this.rainItemStyle()
+              : plotType[i] == "Bar"
+              ? this.barItemStyle()
+              : plotType[i] == "DashedLine"
+              ? this.DashedLineItemStyle()
+              : null,
         });
       }
       return tempSeriesArr;
@@ -415,7 +446,10 @@ export default {
     executeGridEditListener(editDatas, options) {
       if (this.gridEditListener == null) return;
       for (let i = 0; i < this.gridEditListener.length; i++) {
-        this.gridEditListener[i](this.getSeriesChangeVal(editDatas), options.series);
+        this.gridEditListener[i](
+          this.getSeriesChangeVal(editDatas),
+          options.series
+        );
       }
     },
     //获取指定索引映射的数据源
@@ -532,7 +566,13 @@ export default {
     },
     getTransform(el) {
       var st = window.getComputedStyle(el, null);
-      var tr = st.getPropertyValue("-webkit-transform") || st.getPropertyValue("-moz-transform") || st.getPropertyValue("-ms-transform") || st.getPropertyValue("-o-transform") || st.getPropertyValue("transform") || "FAIL";
+      var tr =
+        st.getPropertyValue("-webkit-transform") ||
+        st.getPropertyValue("-moz-transform") ||
+        st.getPropertyValue("-ms-transform") ||
+        st.getPropertyValue("-o-transform") ||
+        st.getPropertyValue("transform") ||
+        "FAIL";
       // var values = tr.split('(')[1].split(')')[0].split(', ')
       // var a = values[0]
       // var b = values[1]
@@ -578,13 +618,33 @@ export default {
       }
       return -1;
     },
-    isOnSeries(myChart, pointArr, dataPoint, editGirdIndex, dataSeries, seriesType) {
-      let viewBPoint = myChart.convertToPixel({ gridIndex: editGirdIndex }, [dataPoint[0], dataSeries[dataPoint[0]]]);
+    isOnSeries(
+      myChart,
+      pointArr,
+      dataPoint,
+      editGirdIndex,
+      dataSeries,
+      seriesType
+    ) {
+      let viewBPoint = myChart.convertToPixel({ gridIndex: editGirdIndex }, [
+        dataPoint[0],
+        dataSeries[dataPoint[0]],
+      ]);
       let viewYValue = null;
       if (seriesType == "BrokenLine") {
-        let viewEPoint = myChart.convertToPixel({ gridIndex: editGirdIndex }, [dataPoint[0] + 1, dataSeries[dataPoint[0] + 1]]);
-        viewYValue = viewBPoint[1] + ((pointArr[0] - viewBPoint[0]) * (viewEPoint[1] - viewBPoint[1])) / (viewEPoint[0] - viewBPoint[0]);
-      } else if (seriesType == "StepLine" || seriesType == "Bar" || seriesType == "RainBar") {
+        let viewEPoint = myChart.convertToPixel({ gridIndex: editGirdIndex }, [
+          dataPoint[0] + 1,
+          dataSeries[dataPoint[0] + 1],
+        ]);
+        viewYValue =
+          viewBPoint[1] +
+          ((pointArr[0] - viewBPoint[0]) * (viewEPoint[1] - viewBPoint[1])) /
+            (viewEPoint[0] - viewBPoint[0]);
+      } else if (
+        seriesType == "StepLine" ||
+        seriesType == "Bar" ||
+        seriesType == "RainBar"
+      ) {
         viewYValue = viewBPoint[1];
       }
       if (Math.abs(viewYValue - pointArr[1]) < 6) {
@@ -623,17 +683,32 @@ export default {
       }
       let tempSeries = option.series;
       for (let i = 0; i < tempSeries.length; i++) {
-        if (tempSeries[i].yAxisIndex != editGirdIndex || (tempSeries[i].edit != null && !tempSeries[i].edit)) {
+        if (
+          tempSeries[i].yAxisIndex != editGirdIndex ||
+          (tempSeries[i].edit != null && !tempSeries[i].edit)
+        ) {
           continue;
         }
         let dataSeries = tempSeries[i].data;
         let tempYAxis = this.getYAxis(myChart, editGirdIndex);
         let seriesType = "BrokenLine";
-        if (tempSeries[i].step != null && tempSeries[i].step == "end") seriesType = "StepLine";
-        else if (tempSeries[i].type == "bar" && tempYAxis.inverse == true) seriesType = "RainBar";
-        else if (tempSeries[i].type == "bar" && tempYAxis.inverse == false) seriesType = "Bar";
+        if (tempSeries[i].step != null && tempSeries[i].step == "end")
+          seriesType = "StepLine";
+        else if (tempSeries[i].type == "bar" && tempYAxis.inverse == true)
+          seriesType = "RainBar";
+        else if (tempSeries[i].type == "bar" && tempYAxis.inverse == false)
+          seriesType = "Bar";
 
-        if (this.isOnSeries(myChart, pointArr, dataPoint, editGirdIndex, dataSeries, seriesType)) {
+        if (
+          this.isOnSeries(
+            myChart,
+            pointArr,
+            dataPoint,
+            editGirdIndex,
+            dataSeries,
+            seriesType
+          )
+        ) {
           return i;
         }
       }
@@ -720,7 +795,9 @@ export default {
       let showVal = "";
       if (/e[+0-9]*/g.test(showValStr)) {
         const scale = showValStr.substring(showValStr.indexOf("+") + 1) * 1;
-        showVal = showValStr.substring(0, showValStr.indexOf("+") - 1) * Math.pow(10, scale);
+        showVal =
+          showValStr.substring(0, showValStr.indexOf("+") - 1) *
+          Math.pow(10, scale);
       } else {
         showVal = showValStr;
       }
@@ -749,7 +826,12 @@ export default {
       );
 
       if (xAxisVal < 0 && seriesArr.length - 1 < xAxisVal) return;
-      if (lrRange[0] <= xPosi && xPosi <= lrRange[1] && tbRange[0] <= yPosi && yPosi <= tbRange[1]) {
+      if (
+        lrRange[0] <= xPosi &&
+        xPosi <= lrRange[1] &&
+        tbRange[0] <= yPosi &&
+        yPosi <= tbRange[1]
+      ) {
         const textObjArr = [],
           cacheYaxisArr = [],
           cacheXaxisArr = [];
@@ -764,7 +846,9 @@ export default {
             },
             [xAxisVal, yVal]
           );
-          i === 0 ? cacheYaxisArr.push(pointArr[1]) : cacheYaxisArr.push(pointArr[1] - 15);
+          i === 0
+            ? cacheYaxisArr.push(pointArr[1])
+            : cacheYaxisArr.push(pointArr[1] - 15);
           cacheXaxisArr.push(pointArr[0]);
           textObjArr.push({
             type: "text",
@@ -775,7 +859,11 @@ export default {
             $action: action,
             bounding: "all",
             style: {
-              text: [`${legendList[i]}: ${showVal} ${yAxisList[item.yAxisIndex].name}`].join("\n"),
+              text: [
+                `${legendList[i]}: ${showVal} ${
+                  yAxisList[item.yAxisIndex].name
+                }`,
+              ].join("\n"),
               textAlign: "center",
               textVerticalAlign: "middle",
               fill: i == 0 ? "blue" : colorList[i - 1], //面雨量有color有回调，通过获取getcolor获取
@@ -835,8 +923,19 @@ export default {
       }
     },
     showChart(options) {
-      let { itemTitle, itemUnit, plotType, itemEidt, plotOrder, plotSize, dataList, setEndLine } = options;
+      let {
+        itemTitle,
+        itemUnit,
+        plotType,
+        itemEidt,
+        plotOrder,
+        plotSize,
+        setEndLine,
+      } = options;
       let timeList = this.data.map((el) => el.time);
+      let dataList = this.dragFields.map((el) => {
+        return this.data.map((item) => item[el]);
+      });
       const _self = this;
       // 基于准备好的dom，初始化echarts实例
       let boxContainer = document.querySelector(`.${this.containerDom}`);
@@ -888,10 +987,29 @@ export default {
             end: 100,
           },
         ],
-        grid: this.organizeGrid(divContainer.clientHeight, myChart, this.recombinedData(plotOrder, plotOrder), plotSize),
-        xAxis: this.organizeXAxis(this.recombinedData(plotOrder, plotOrder), this.recombinedData(plotOrder, plotType), timeList),
-        yAxis: this.organizeYAxis(this.recombinedData(plotOrder, plotOrder), this.recombinedData(plotOrder, plotType), this.recombinedData(plotOrder, itemUnit)),
-        series: this.organizeSeries(this.recombinedData(plotOrder, plotOrder), this.recombinedData(plotOrder, itemTitle), this.recombinedData(plotOrder, plotType), this.recombinedData(plotOrder, dataList), this.recombinedData(plotOrder, itemEidt)),
+        grid: this.organizeGrid(
+          divContainer.clientHeight,
+          myChart,
+          this.recombinedData(plotOrder, plotOrder),
+          plotSize
+        ),
+        xAxis: this.organizeXAxis(
+          this.recombinedData(plotOrder, plotOrder),
+          this.recombinedData(plotOrder, plotType),
+          timeList
+        ),
+        yAxis: this.organizeYAxis(
+          this.recombinedData(plotOrder, plotOrder),
+          this.recombinedData(plotOrder, plotType),
+          this.recombinedData(plotOrder, itemUnit)
+        ),
+        series: this.organizeSeries(
+          this.recombinedData(plotOrder, plotOrder),
+          this.recombinedData(plotOrder, itemTitle),
+          this.recombinedData(plotOrder, plotType),
+          this.recombinedData(plotOrder, dataList),
+          this.recombinedData(plotOrder, itemEidt)
+        ),
       };
 
       function moveDownListener(e) {
@@ -931,11 +1049,19 @@ export default {
         }
         myChart.editGirdIndex = controlIndex;
         let tempPlotOrder = myChart.plotOrder;
-        let editSeriesIndex = _self.getEidtSeriesIndex(e, myChart, controlIndex);
+        let editSeriesIndex = _self.getEidtSeriesIndex(
+          e,
+          myChart,
+          controlIndex
+        );
 
         if (itemEidt == null) return;
         let tempItemEdit = _self.recombinedData(tempPlotOrder, itemEidt);
-        if (editSeriesIndex < 0 || tempItemEdit == null || tempItemEdit[editSeriesIndex] == false) {
+        if (
+          editSeriesIndex < 0 ||
+          tempItemEdit == null ||
+          tempItemEdit[editSeriesIndex] == false
+        ) {
           editSeriesIndex = -1;
         }
 
@@ -979,21 +1105,40 @@ export default {
         //设置拖动线start
         if (showDragFlag) {
           this._cacheNodeValCount = 0;
-          _self.setDragLiner(this.mousePosiArr, myChart, divContainer.clientHeight, "merge");
+          _self.setDragLiner(
+            this.mousePosiArr,
+            myChart,
+            divContainer.clientHeight,
+            "merge"
+          );
           _self.setShowNodeVal(this.mousePosiArr, myChart, "merge");
         } else {
           this._cacheNodeValCount++;
           if (this._cacheNodeValCount <= 1) {
-            _self.setDragLiner(this.mousePosiArr, myChart, divContainer.clientHeight, "remove");
+            _self.setDragLiner(
+              this.mousePosiArr,
+              myChart,
+              divContainer.clientHeight,
+              "remove"
+            );
             _self.setShowNodeVal(this.mousePosiArr, myChart, "remove");
           }
         }
         // end
 
-        if (myChart.editGirdIndex == null || myChart.editGirdIndex < 0 || myChart.editingSeriesIndex == null || myChart.editingSeriesIndex < 0) {
+        if (
+          myChart.editGirdIndex == null ||
+          myChart.editGirdIndex < 0 ||
+          myChart.editingSeriesIndex == null ||
+          myChart.editingSeriesIndex < 0
+        ) {
           return;
         }
-        if (e.buttons == 1 && myChart.startEidtIndex != null && myChart.startEidtIndex >= 0) {
+        if (
+          e.buttons == 1 &&
+          myChart.startEidtIndex != null &&
+          myChart.startEidtIndex >= 0
+        ) {
           let mousePos = _self.getEventPosition(e);
           let pointArr = [mousePos.x, mousePos.y];
 
@@ -1028,7 +1173,10 @@ export default {
           let tempPlotOrder = myChart.plotOrder;
           //设置数据方法
           tempOption.setSeriesData = function (seriesIndex, index, value) {
-            const mappingIndex = _self.getChangeSoftIndex(tempPlotOrder, seriesIndex);
+            const mappingIndex = _self.getChangeSoftIndex(
+              tempPlotOrder,
+              seriesIndex
+            );
             mappingIndex && (this.series[mappingIndex].data[index] = value);
             _self.gridEditDatas.push({
               seriesIndex: mappingIndex,
@@ -1037,41 +1185,68 @@ export default {
             });
           };
 
-          let tempDataSeries = tempOption.series[myChart.editingSeriesIndex].data;
+          let tempDataSeries =
+            tempOption.series[myChart.editingSeriesIndex].data;
           if (myChart.editingSeriesIndex === 0) {
             dataPoint[1] = Math.max(0, dataPoint[1]);
           }
           tempDataSeries[dataPoint[0]] = dataPoint[1];
           _self.executeLinkListener(
             {
-              seriesIndex: _self.transIndexToOut(tempPlotOrder, myChart.editingSeriesIndex),
+              seriesIndex: _self.transIndexToOut(
+                tempPlotOrder,
+                myChart.editingSeriesIndex
+              ),
               index: dataPoint[0],
               value: dataPoint[1],
             },
             tempOption
           );
           _self.gridEditDatas.push({
-            seriesIndex: _self.transIndexToOut(tempPlotOrder, myChart.editingSeriesIndex),
+            seriesIndex: _self.transIndexToOut(
+              tempPlotOrder,
+              myChart.editingSeriesIndex
+            ),
             index: dataPoint[0],
             value: dataPoint[1],
           });
           //中间没有发生事件的点的处理
-          let minLastDataIndex = Math.min(dataPoint[0], myChart.lastEditDataIndex);
-          let maxLastDataIndex = Math.max(dataPoint[0], myChart.lastEditDataIndex);
-          if (minLastDataIndex >= 0 && maxLastDataIndex - minLastDataIndex > 1) {
+          let minLastDataIndex = Math.min(
+            dataPoint[0],
+            myChart.lastEditDataIndex
+          );
+          let maxLastDataIndex = Math.max(
+            dataPoint[0],
+            myChart.lastEditDataIndex
+          );
+          if (
+            minLastDataIndex >= 0 &&
+            maxLastDataIndex - minLastDataIndex > 1
+          ) {
             for (let i = minLastDataIndex; i <= maxLastDataIndex; i++) {
               if (i == dataPoint[0]) continue;
-              tempDataSeries[i] = tempDataSeries[minLastDataIndex] + ((i - minLastDataIndex) * (tempDataSeries[maxLastDataIndex] - tempDataSeries[minLastDataIndex])) / (maxLastDataIndex - minLastDataIndex);
+              tempDataSeries[i] =
+                tempDataSeries[minLastDataIndex] +
+                ((i - minLastDataIndex) *
+                  (tempDataSeries[maxLastDataIndex] -
+                    tempDataSeries[minLastDataIndex])) /
+                  (maxLastDataIndex - minLastDataIndex);
               _self.executeLinkListener(
                 {
-                  seriesIndex: _self.transIndexToOut(tempPlotOrder, myChart.editingSeriesIndex),
+                  seriesIndex: _self.transIndexToOut(
+                    tempPlotOrder,
+                    myChart.editingSeriesIndex
+                  ),
                   index: i,
                   value: tempDataSeries[i],
                 },
                 tempOption
               );
               _self.gridEditDatas.push({
-                seriesIndex: this.transIndexToOut(tempPlotOrder, myChart.editingSeriesIndex),
+                seriesIndex: this.transIndexToOut(
+                  tempPlotOrder,
+                  myChart.editingSeriesIndex
+                ),
                 index: i,
                 value: tempDataSeries[i],
               });
@@ -1088,7 +1263,10 @@ export default {
           if (_self.gridEditDatas && _self.gridEditDatas.length > 0) {
             let tempGridEditDatas = _self.gridEditDatas;
             _self.gridEditDatas = [];
-            _self.executeGridEditListener(tempGridEditDatas, myChart.getOption());
+            _self.executeGridEditListener(
+              tempGridEditDatas,
+              myChart.getOption()
+            );
           }
         }
         let mousePos = _self.getEventPosition(e);
@@ -1117,10 +1295,28 @@ export default {
         //获取echarts的容器
         let seriesType = "BrokenLine";
         let tempYAxis = _self.getYAxis(myChart, myChart.editGirdIndex);
-        if (tempSeries[myChart.editingSeriesIndex].step == "end") seriesType = "StepLine";
-        else if (tempSeries[myChart.editingSeriesIndex].type == "bar" && tempYAxis.inverse == true) seriesType = "RainBar";
-        else if (tempSeries[myChart.editingSeriesIndex].type == "bar" && tempYAxis.inverse == false) seriesType = "Bar";
-        if (_self.isOnSeries(myChart, pointArr, dataPoint, myChart.editGirdIndex, dataSeries, seriesType)) {
+        if (tempSeries[myChart.editingSeriesIndex].step == "end")
+          seriesType = "StepLine";
+        else if (
+          tempSeries[myChart.editingSeriesIndex].type == "bar" &&
+          tempYAxis.inverse == true
+        )
+          seriesType = "RainBar";
+        else if (
+          tempSeries[myChart.editingSeriesIndex].type == "bar" &&
+          tempYAxis.inverse == false
+        )
+          seriesType = "Bar";
+        if (
+          _self.isOnSeries(
+            myChart,
+            pointArr,
+            dataPoint,
+            myChart.editGirdIndex,
+            dataSeries,
+            seriesType
+          )
+        ) {
           myChart.canDrag = true;
           canvasContainer.style.cursor = "n-resize";
         } else {
@@ -1160,7 +1356,8 @@ export default {
       }
       myChart.setOption(option, true);
       console.log(myChart.getOption());
-      setEndLine && this.setEndLine(dataList, myChart, boxContainer.clientHeight);
+      setEndLine &&
+        this.setEndLine(dataList, myChart, boxContainer.clientHeight);
     },
   },
 };
