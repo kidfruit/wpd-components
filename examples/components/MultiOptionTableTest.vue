@@ -1,6 +1,8 @@
 <template>
   <div style="width: 100%">
-    <multiOption-Table ref="tableChart" :tableData="tableData" :tableColumns="tableColumns" @cellEditDone="cellEditDone"></multiOption-Table>
+    <div class="table">
+      <multiOption-Table ref="tableChart" :tableData="tableData" :tableColumns="tableColumns" @cellEditDone="cellEditDone"></multiOption-Table>
+    </div>
     <button @click="getData">获取数据</button>
     <button @click="getChangedData">获取编辑数据</button>
     <button @click="reset">重置</button>
@@ -217,9 +219,14 @@ export default {
       } else {
         this.tableData[rowIndex][field] = newValue;
       }
-      console.log(this.tableData)
+      console.log(this.tableData);
     }
   }
 };
 </script>
-<style scoped></style>
+<style scoped lang="scss">
+.table {
+  width: 100%;
+  height: 300px;
+}
+</style>
