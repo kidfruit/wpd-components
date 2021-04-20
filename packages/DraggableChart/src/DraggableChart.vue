@@ -78,17 +78,20 @@ export default {
       );
     });
     function updatePosition() {
-      this.instance.setOption({
-        graphic: reduceDimension(
-          arr.map((el, i) =>
-            echarts.util.map(el, function (item, dataIndex) {
-              return {
-                position: this.instance.convertToPixel("grid", item),
-              };
-            })
-          )
-        ),
-      });
+      setTimeout(() => {
+        this.instance &&
+          this.instance.setOption({
+            graphic: reduceDimension(
+              arr.map((el, i) =>
+                echarts.util.map(el, function (item, dataIndex) {
+                  return {
+                    position: this.instance.convertToPixel("grid", item),
+                  };
+                })
+              )
+            ),
+          });
+      }, 100);
     }
     // 合并拖拽相关的option
     this.mergeOptions(this.instance);

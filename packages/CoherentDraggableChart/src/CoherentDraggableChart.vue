@@ -1341,7 +1341,9 @@ export default {
       function moveUpListener(e) {
         console.log("moveUpListener");
         let sI = myChart.getOption().series[myChart.editingSeriesIndex];
-        this.$emit("updateData", sI.field, sI.data);
+        if (sI) {
+          this.$emit("updateData", sI.field, sI.data);
+        }
         myChart.startEidtIndex = -1;
         myChart.lastEditDataIndex = -1;
         if (this.gridEditDatas && this.gridEditDatas.length > 0) {
