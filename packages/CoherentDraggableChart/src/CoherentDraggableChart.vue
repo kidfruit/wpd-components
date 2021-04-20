@@ -302,11 +302,18 @@ export default {
     },
 
     organizeYAxis(plotOrder, plotType, itemUnit) {
+      // console.log(222, plotOrder, plotType, itemUnit);
       let tempArrOrder = [];
       let tempPlotType = [];
       let tempItemUnit = [];
       let tempYAxisArr = [];
       for (let i = 0; i < plotOrder.length; i++) {
+        console.log(
+          !tempArrOrder.includes(plotOrder[i]),
+          tempArrOrder,
+          plotOrder[i],
+          99
+        );
         if (!tempArrOrder.includes(plotOrder[i])) {
           let tempIndex = tempArrOrder.length;
           tempArrOrder[tempIndex] = plotOrder[i];
@@ -360,6 +367,7 @@ export default {
           });
         }
       }
+      console.log("temp", tempYAxisArr, tempArrOrder);
       return tempYAxisArr;
     },
     getTimeData(timeList, tempData) {
@@ -392,6 +400,7 @@ export default {
           step: plotType[i] == "StepLine" ? "end" : null,
           animation: false,
           offset: 100,
+          field: this.dragFields[i],
           xAxisIndex: tempMap.get(itemTitle[i]),
           yAxisIndex: tempMap.get(itemTitle[i]),
           showSymbol: false,
@@ -1013,6 +1022,7 @@ export default {
       };
 
       function moveDownListener(e) {
+        console.log("moveDownListener");
         let controlIndex = _self.getGridIndex(e, myChart);
         if (controlIndex < 0) {
           if (myChart.editingSeriesIndex < 0) {
@@ -1096,6 +1106,7 @@ export default {
       }
 
       function moveMoveListener(e) {
+        console.log("moveMoveListener");
         let canvasContainer = document.querySelector(".drag-wrapper canvas");
         //设置全局鼠标移动坐标点
         const mousePosi = _self.getEventPosition(e);
@@ -1328,6 +1339,9 @@ export default {
         myChart.setOption(myChart.getOption());
       }
       function moveUpListener(e) {
+        console.log("moveUpListener");
+        let sI = myChart.getOption().series[myChart.editingSeriesIndex];
+        this.$emit("updateData", sI.field, sI.data);
         myChart.startEidtIndex = -1;
         myChart.lastEditDataIndex = -1;
         if (this.gridEditDatas && this.gridEditDatas.length > 0) {
