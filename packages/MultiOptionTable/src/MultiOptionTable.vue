@@ -3,6 +3,7 @@
     <hot-table class="hot-table" :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
       <hot-column v-for="(item, index) in columns" :readOnly="item.readOnly" :key="index" :title="item.title" :data="item.field" :source="item.source" :renderer="item.renderer" :type="item.type"> </hot-column>
     </hot-table>
+    <div><button @click="dianji('RCH301')">点击</button></div>
   </div>
 </template>
 <script>
@@ -75,7 +76,8 @@ export default {
       isRefresh: true,
       dropdownHash: {},
       checkbox: {},
-      hotData: []
+      hotData: [],
+      currentRowClassName: 'currentRow'
     };
   },
   computed: {
@@ -126,6 +128,17 @@ export default {
     }
   },
   methods: {
+      dianji(item){
+          let list=this.$refs.hotTableRef.hotInstance.getSourceData()
+          let rows=""
+          for(let i=0;i<list.length;i++){
+              if(item==list[i].key){
+                  rows=i
+              }
+          }
+     console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows,rows))
+           
+      },
     prepareData(data) {
       this.hotData = data.map((item, index) => {
         for (let k in item) {
@@ -281,6 +294,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.currentRow{
+    background-color: aqua;
+}
 .multi-option-table {
   width: 100%;
   height: 100%;
