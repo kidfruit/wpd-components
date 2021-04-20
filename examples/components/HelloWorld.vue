@@ -4,17 +4,50 @@
     <table-chart-test v-if="false"></table-chart-test>
     <scheme-table-test v-if="false"></scheme-table-test>
     <char-table-test v-if="false"></char-table-test>
-    <simple-chart-test v-if="false" />
-    <standard-chart-test v-if="false" />
-    <simple-table-test v-if="false" />
-    <multi-option-table-test v-if="false" />
-    <result-hydro-dynamic-test v-if="false" />
-    <chart-table-group-test v-if="false" />
-    <draggable-chart-test v-if="true" />
-    <tree-chart-table-test v-if="false" />
-    <curve-chart-test v-if="false" />
-    <tree-table-group-test v-if="false" />
-    <tree-simple-table-group-test v-if="false" />
+    <div v-if="false">
+      <h2>SimpleChart：数据格式为echarts标准格式（V-Chart封装，打包未成功！！）</h2>
+      <simple-chart-test/>
+    </div>
+    <div v-if="true">
+      <h2>StandardChart：数据格式与SimpleTable通用</h2>
+      <standard-chart-test/>
+    </div>
+    <div v-if="false">
+      <h2>SimpleTable：handsontable基础表格组件</h2>
+      <simple-table-test/>
+    </div>
+    <div v-if="false">
+      <h2>MultiOptionTable：流程模型选择专用表组件</h2>
+      <multi-option-table-test/>
+    </div>
+    <div v-if="false">
+      <h2>ResultHydroDynamic：水动力成果展示组件</h2>
+      <result-hydro-dynamic-test/>
+    </div>
+    <div v-if="false">
+      <h2>ChartTableGroup：图表联动组件</h2>
+      <chart-table-group-test/>
+    </div>
+    <div v-if="false">
+      <h2>DraggableChart：可拖拽的echarts图组件</h2>
+      <draggable-chart-test/>
+    </div>
+    <div v-if="false">
+      <h2>TreeChartTable：????</h2>
+      <tree-chart-table-test/>
+    </div>
+    <div v-if="false">
+      <h2>CurveChart：通用二维曲线</h2>
+      <curve-chart-test/>
+    </div>
+    <div v-if="false">
+      <h2>TreeTableGroup：树表联动组件</h2>
+      <tree-table-group-test/>
+    </div>
+    <div v-if="false">
+      <h2>TreeSimpleTableGroup：树表联动组件</h2>
+      <tree-simple-table-group-test/>
+    </div>
   </div>
 </template>
 
@@ -61,4 +94,8 @@ export default {
 };
 </script>
 <style src="../../node_modules/handsontable/dist/handsontable.full.css"></style>
-<style scoped></style>
+<style scoped>
+h2 {
+  color: orange;
+}
+</style>
