@@ -68,7 +68,6 @@ import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
 import CurveChartTest from "./CurveChartTest.vue";
 
-
 export default {
   components: {
     TableChartTest,
@@ -84,7 +83,7 @@ export default {
     TreeChartTableTest,
     TreeTableGroupTest,
     TreeSimpleTableGroupTest,
-    CurveChartTest
+    CurveChartTest,
   },
   name: "HelloWorld",
   methods: {
