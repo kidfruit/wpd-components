@@ -10,10 +10,10 @@
     <multi-option-table-test v-if="false" />
     <result-hydro-dynamic-test v-if="false" />
     <chart-table-group-test v-if="false" />
-    <draggable-chart-test v-if="false" />
+    <draggable-chart-test v-if="true" />
     <tree-chart-table-test v-if="false" />
-    <curve-chart-test v-if="false"/>
-    <tree-table-group-test v-if="true" />
+    <curve-chart-test v-if="false" />
+    <tree-table-group-test v-if="false" />
     <tree-simple-table-group-test v-if="false" />
   </div>
 </template>
@@ -35,7 +35,6 @@ import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
 import CurveChartTest from "./CurveChartTest.vue";
 
-
 export default {
   components: {
     TableChartTest,
@@ -51,7 +50,7 @@ export default {
     TreeChartTableTest,
     TreeTableGroupTest,
     TreeSimpleTableGroupTest,
-    CurveChartTest
+    CurveChartTest,
   },
   name: "HelloWorld",
   methods: {
