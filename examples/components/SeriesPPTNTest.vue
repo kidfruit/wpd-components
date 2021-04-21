@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%">
-    <curve-chart ref="curvechart"
-                 :interpolateCalcShow="interpolateCalcShow"
+    <seriesPPTN ref="Seriespptn"
+                 :calculationshow="calculationshow"
                  :tableShow="tableShow"
                  :classes="classNames"
                  :chartOption="chartOption"
@@ -14,14 +14,14 @@
   </div>
 </template>
 <script>
-import CurveChart from '../../packages/CurveChart/src/CurveChart.vue'
+import SeriesPPTN from '../../packages/SeriesPPTNTest/src/SeriesPPTN.vue'
 
 export default {
-  name: 'CurveChartTest',
-  components: { CurveChart },
+  name: 'SeriesPPTNTest',
+  components: { SeriesPPTN },
   data() {
     return {
-      interpolateCalcShow: false,
+      calculationshow: false,
       tableShow: false,
       classNames: ['testChart'],
       isRefresh: true,
@@ -32,14 +32,9 @@ export default {
         },
       },
       chartAxis: {
-          xAxis:{
-              id:'dim2',
-              title:'泄流能力(m³/s)'
-          },
-          yAxis:{
-              id:'dim1',
-              title:'水位(m)'
-          }
+        xAxis: 'dim2',
+        yAxis: 'dim1',
+        ytitle: '水位(m)',
       },
       tableColumns: [
         {
@@ -151,16 +146,16 @@ export default {
   },
   methods: {
     compute(data) {
-    //   console.log(data)
-      this.$refs['curvechart']._calculationresults('100')
+      console.log(data)
+      this.$refs['Seriespptn']._calculationresults('100')
     },
     changeData() {
-      this.chartInstance = this.$refs.curvechart.instance
+      this.chartInstance = this.$refs.Seriespptn.instance
       this.isRefresh = false
     },
     fetchData() {
-      this.chartInstance = this.$refs.curvechart.instance
-    //   console.log(this.chartInstance)
+      this.chartInstance = this.$refs.Seriespptn.instance
+      console.log(this.chartInstance)
     },
   },
 }

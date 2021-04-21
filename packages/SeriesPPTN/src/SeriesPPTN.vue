@@ -2,12 +2,12 @@
   <div>
     <div ref="chartRef"
          :class="classNames"
-         id="curve-chart"></div>
+         id="series-pptn"></div>
     <simple-table v-if="tableShow"
                   ref="tableChart"
                   :tableData="chartData"
                   :tableColumns="tableColumns"></simple-table>
-    <div v-if="interpolateCalcShow">
+    <!-- <div>
       <a-row type="flex"
              justify="center"
              :gutter="16">
@@ -40,7 +40,7 @@
 
       </a-row>
 
-    </div>
+    </div> -->
     <!-- @cellEditDone="cellEditDone" -->
   </div>
 </template>
@@ -99,7 +99,7 @@ const yAxisOption = {
 }
 let echartsInstance = null
 export default {
-  name: 'CurveChart',
+  name: 'SeriesPPTN',
   props: {
     isVisible: {
       type: Boolean,
@@ -116,11 +116,6 @@ export default {
       default: true,
       required: false,
     },
-    interpolateCalcShow: {
-      type: Boolean,
-      default: true,
-      required: false,
-    }, 
     classes: {
       type: Array,
       required: false,
@@ -139,7 +134,6 @@ export default {
     },
     tableColumns: {
       type: Array,
-      required: false,
     },
     chartData: {
       type: Array,
@@ -159,12 +153,12 @@ export default {
     let yAxis = []
     let series = []
     yAxis.push({
-      title: this.chartAxis.yAxis.title,
+      title: this.chartAxis.ytitle,
       yAxisIndex: 0,
     })
     series.push({
-      field: this.chartAxis.yAxis.id,
-      title: this.chartAxis.yAxis.title,
+      field: this.chartAxis.yAxis,
+      title: this.chartAxis.ytitle,
       selected: true,
       yAxisIndex: 0,
     })
@@ -201,16 +195,21 @@ export default {
       this.$emit('compute', { options: this.options, value: this.value })
     },
     dropdowndata() {
-      this.handleselect = this.chartAxis.xAxis.id
+      this.handleselect = this.chartAxis.xAxis
       for (let i = 0; i < this.tableColumns.length; i++) {
+        console.log(
+          this.tableColumns[i].field,
+          this.chartAxis.yAxis,
+          this.chartAxis.xAxis
+        )
         if (
-          this.tableColumns[i].field == this.chartAxis.yAxis.id ||
-          this.tableColumns[i].field == this.chartAxis.xAxis.id
+          this.tableColumns[i].field == this.chartAxis.yAxis ||
+          this.tableColumns[i].field == this.chartAxis.xAxis
         ) {
           this.dropdown.push(this.tableColumns[i])
         }
       }
-    //   console.log('this.dropdown', this.dropdown)
+      console.log('this.dropdown', this.dropdown)
     },
     handleChange(value) {
       this.options = value
@@ -218,7 +217,7 @@ export default {
       this.value2 = ''
     },
     drawChart() {
-      echartsInstance = echarts.init(document.getElementById('curve-chart'))
+      echartsInstance = echarts.init(document.getElementById('series-pptn'))
       this.setDynamicOption()
     },
     getChartInstance() {
@@ -231,7 +230,6 @@ export default {
     },
     setDynamicOption() {
       let option = this.prepareSeries()
-    //   console.log("option",option)
       echartsInstance.setOption(option)
     },
     resizeTheChart() {
@@ -242,8 +240,7 @@ export default {
     prepareSeries() {
       let option = Object.assign({}, defaultOption, this.chartOption)
       //x轴
-      option.xAxis.name=this.chartAxis.xAxis.title
-      option.xAxis.data = this.chartData.map((cd) => cd[this.chartAxis.xAxis.id])
+      option.xAxis.data = this.chartData.map((cd) => cd[this.chartAxis.xAxis])
       if (this.chartAxis.timeSeries) {
         option.xAxis.data = this.sortTime(option.xAxis.data)
       }
@@ -251,11 +248,12 @@ export default {
         option.xAxis.data = this.sections
       }
       if (Array.isArray(option.grid) && option.grid.length > 0) {
-        option.xAxis = this.chartAxis.xAxis.id
+        option.xAxis = this.chartAxis.xAxis
       }
-      
+
       //y轴
       //按照yAxisIndex排序
+
       if (
         Object.prototype.hasOwnProperty.call(
           this.chartAxis.yAxis[0],
@@ -308,7 +306,7 @@ export default {
         option.series.push(seriesObj)
       })
       if (!option.timeline) {
-        // console.log('option', option)
+        console.log('option', option)
         return {
           baseOption: option,
         }
