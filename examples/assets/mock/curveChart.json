@@ -1,0 +1,29 @@
+{
+  "chartAxis": {
+    "xAxis": {
+      "title": "水位(m)",
+      "id": "dim1"
+    },
+    "yAxis": {
+      "title": "库容(百万m³)",
+      "id": "dim2"
+    }
+  },
+  "chartData": [
+    {
+      "dim2": 44,
+      "dim1": 945,
+      "index": 1
+    },
+    {
+      "dim2": 50,
+      "dim1": 952,
+      "index": 2
+    },
+    {
+      "dim2": 58.63,
+      "dim1": 975,
+      "index": 3
+    }
+  ]
+}
