@@ -1,39 +1,45 @@
 <template>
   <div>
-    <div ref="chartRef"
-         :class="classNames"
-         id="curve-chart"></div>
-    <simple-table v-if="tableShow"
-                  ref="tableChart"
-                  :tableData="chartData"
-                  :tableColumns="tableColumns"></simple-table>
-    <div>
-      <a-row type="flex"
-             justify="center">
+    <div
+        ref="chartRef"
+        :class="classNames"
+        id="curve-chart"
+    ></div>
+    <simple-table
+        v-if="tableShow"
+        ref="tableChart"
+        :tableData="chartData"
+        :tableColumns="tableColumns"
+    ></simple-table>
+    <div v-if="interpolateCalcShow">
+      <a-row
+          type="flex"
+          justify="center"
+      >
         <a-col :span="1.5">
-          <a-select :default-value="handleselect"
-                    style="width: 120px"
-                    @change="handleChange">
+          <a-select
+              :default-value="handleselect"
+              style="width: 120px"
+              @change="handleChange"
+          >
             <a-select-option value="jack">
               Jack
             </a-select-option>
           </a-select>
         </a-col>
         <a-col :span="1.5">
-          <a-input />
+          <a-input/>
         </a-col>
         <a-col :span="1.5">
           <span>插值结果：</span>
         </a-col>
         <a-col :span="1.5">
-          <a-input disabled />
+          <a-input disabled/>
         </a-col>
         <a-col :span="1.5">
           <button>计算</button>
         </a-col>
-
       </a-row>
-
     </div>
     <!-- @cellEditDone="cellEditDone" -->
   </div>
@@ -70,7 +76,7 @@ const defaultOption = {
 const yAxisOption = {
   type: 'value',
   splitNumber: 5,
-  axisLine: { show: true },
+  axisLine: {show: true},
   splitLine: {
     show: true,
     lineStyle: {
@@ -107,7 +113,12 @@ export default {
     },
     tableShow: {
       type: Boolean,
-      default: true,
+      default: false,
+      required: false,
+    },
+    interpolateCalcShow: {
+      type: Boolean,
+      default: false,
       required: false,
     },
     classes: {
@@ -140,8 +151,10 @@ export default {
     SimpleTable,
     // VChart,
   },
-  created() {},
-  beforeMount() {},
+  created() {
+  },
+  beforeMount() {
+  },
   mounted() {
     this.drawChart()
     this.getChartInstance()
@@ -202,12 +215,12 @@ export default {
 
       //y轴
       //按照yAxisIndex排序
-      console.log("this.chartAxis.yAxis",this.chartAxis.yAxis)
+      console.log("this.chartAxis.yAxis", this.chartAxis.yAxis)
       if (
-        Object.prototype.hasOwnProperty.call(
-          this.chartAxis.yAxis[0],
-          'yAxisIndex'
-        )
+          Object.prototype.hasOwnProperty.call(
+              this.chartAxis.yAxis[0],
+              'yAxisIndex'
+          )
       ) {
         this.chartAxis.yAxis = this.chartAxis.yAxis.sort((a, b) => {
           return a['yAxisIndex'] - b['yAxisIndex']
@@ -224,18 +237,18 @@ export default {
       this.chartAxis.series.forEach((yx) => {
         option.legend.data.push(yx.title)
         option.legend.selected[yx.title] = Object.prototype.hasOwnProperty.call(
-          yx,
-          'selected'
+            yx,
+            'selected'
         )
-          ? yx.selected
-          : true
+            ? yx.selected
+            : true
       })
 
       //data
       this.chartData = this.chartData.sort((a, b) => {
         let timeField = this.chartAxis.xAxis
         return (
-          new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
+            new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
         )
       })
       option.series = []
@@ -266,7 +279,7 @@ export default {
           let series = []
           fields.forEach((item) => {
             if (cd[item]) {
-              series.push({ data: cd[item] })
+              series.push({data: cd[item]})
             }
           })
           options.push({

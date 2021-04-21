@@ -1,21 +1,24 @@
 <template>
   <div class="multi-option-table" v-if="isVisible && isRefresh">
-    <hot-table class="hot-table" :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
-      <hot-column v-for="(item, index) in columns" :readOnly="item.readOnly" :key="index" :title="item.title" :data="item.field" :source="item.source" :renderer="item.renderer" :type="item.type"> </hot-column>
+    <hot-table class="hot-table" :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange"
+               ref="hotTableRef">
+      <hot-column v-for="(item, index) in columns" :readOnly="item.readOnly" :key="index" :title="item.title"
+                  :data="item.field" :source="item.source" :renderer="item.renderer" :type="item.type"></hot-column>
     </hot-table>
-    <!-- <div><button @click="dianji('RCH301')">点击</button></div> -->
   </div>
 </template>
 <script>
-import { HotTable, HotColumn } from '@handsontable/vue';
+import {HotTable, HotColumn} from '@handsontable/vue';
 import Handsontable from 'handsontable';
-import { registerLanguageDictionary, zhCN } from 'handsontable/i18n';
+import {registerLanguageDictionary, zhCN} from 'handsontable/i18n';
+
 registerLanguageDictionary(zhCN);
 
 const defaultHotSettings = {
   rowHeaders: false,
   colHeaders: true,
   autoColumnSize: true,
+  outsideClickDeselects: false,
   // colWidths: "100px",
   stretchH: 'all',
   licenseKey: 'non-commercial-and-evaluation',
@@ -128,17 +131,17 @@ export default {
     }
   },
   methods: {
-      _selectkey(item){
-          let list=this.$refs.hotTableRef.hotInstance.getSourceData()
-          let rows=""
-          for(let i=0;i<list.length;i++){
-              if(item==list[i].key){
-                  rows=i
-              }
-          }
-     console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows,rows))
-           
-      },
+    highlightRow(item) {
+      let list = this.$refs.hotTableRef.hotInstance.getSourceData()
+      let rows = ""
+      for (let i = 0; i < list.length; i++) {
+        if (item === list[i].key) {
+          rows = i
+        }
+      }
+      console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows, rows))
+
+    },
     prepareData(data) {
       this.hotData = data.map((item, index) => {
         for (let k in item) {
@@ -181,7 +184,7 @@ export default {
           this.getHotInstance();
           const [row, prop, oldV, newV] = change;
           const changedRow = this.hotInstance.getDataAtRow(row);
-          let rowObj = { row: row.toString() };
+          let rowObj = {row: row.toString()};
           this.tableColumns.forEach((cl, idx) => {
             rowObj[cl.field] = changedRow[idx];
           });
@@ -247,7 +250,7 @@ export default {
 
     // 黑科技更新表格、图展示
     updateShow() {
-      const { row, col } = this.getvisibleLocal();
+      const {row, col} = this.getvisibleLocal();
       this.isRefresh = false;
       this.$nextTick(() => {
         this.isRefresh = true;
@@ -259,7 +262,7 @@ export default {
       const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin('autoColumnSize');
       const col = pluginCol.getFirstVisibleColumn();
       const row = pluginRow.getFirstVisibleRow();
-      return { row, col };
+      return {row, col};
     },
     scrollViewportTo(row, col) {
       this.$nextTick(() => {
@@ -294,13 +297,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.currentRow{
-    background-color: aqua;
+.currentRow {
+  background-color: aqua;
 }
+
 .multi-option-table {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
   .hot-table {
     width: 100%;
     height: 100%;

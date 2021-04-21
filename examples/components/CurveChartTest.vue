@@ -19,7 +19,7 @@ export default {
   components: { CurveChart },
   data() {
     return {
-      tableShow:true,
+      tableShow:false,
       classNames: ['testChart'],
       isRefresh: true,
       chartOption: {

@@ -208,7 +208,8 @@ export default {
   },
   methods: {
     selecData() {
-      this.$refs['tableChart']._selectkey('RCH301')
+        this.$refs['tableChart'].highlightRow('RCH301')
+    //   this.$refs['tableChart']._selectkey('RCH301')
     },
     getData() {
       console.log(this.$refs.tableChart.hotInstance.getData())
