@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     classNames() {
-      return ["draggable-chart"].concat(this.classes).join(" ");
+      return ["draggable-chart"].concat(this.classes);
     },
   },
   mounted() {
