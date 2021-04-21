@@ -7,15 +7,17 @@
                   ref="tableChart"
                   :tableData="chartData"
                   :tableColumns="tableColumns"></simple-table>
-    <div>
+    <!-- <div>
       <a-row type="flex"
              justify="center">
         <a-col :span="1.5">
           <a-select :default-value="handleselect"
                     style="width: 120px"
-                    @change="handleChange">
-            <a-select-option value="jack">
-              Jack
+                    @change="handleChange"
+                   >
+            <a-select-option v-for="i in dropdown"
+                             :key="i">
+              {{i.title}}
             </a-select-option>
           </a-select>
         </a-col>
@@ -34,7 +36,7 @@
 
       </a-row>
 
-    </div>
+    </div> -->
     <!-- @cellEditDone="cellEditDone" -->
   </div>
 </template>
@@ -143,12 +145,29 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
+    this.dropdowndata()
+    let yAxis = []
+    let series = []
+    yAxis.push({
+      title: this.chartAxis.ytitle,
+      yAxisIndex: 0,
+    })
+    series.push({
+      field: this.chartAxis.yAxis,
+      title: this.chartAxis.ytitle,
+      selected: true,
+      yAxisIndex: 0,
+    })
+    this.chartAxis.yAxis = yAxis
+    this.chartAxis.series = series
+
     this.drawChart()
     this.getChartInstance()
     window.addEventListener('resize', this.resizeTheChart)
   },
   data() {
     return {
+      dropdown: [],
       handleselect: '',
       instance: null,
     }
@@ -162,6 +181,22 @@ export default {
     // },
   },
   methods: {
+    dropdowndata() {
+      for (let i = 0; i < this.tableColumns.length; i++) {
+        console.log(
+          this.tableColumns[i].field,
+          this.chartAxis.yAxis,
+          this.chartAxis.xAxis
+        )
+        if (
+          this.tableColumns[i].field == this.chartAxis.yAxis ||
+          this.tableColumns[i].field == this.chartAxis.xAxis
+        ) {
+          this.dropdown.push(this.tableColumns[i])
+        }
+      }
+      console.log('this.dropdown', this.dropdown)
+    },
     handleChange(value) {
       console.log(`selected ${value}`)
     },
@@ -202,7 +237,7 @@ export default {
 
       //y轴
       //按照yAxisIndex排序
-      console.log("this.chartAxis.yAxis",this.chartAxis.yAxis)
+
       if (
         Object.prototype.hasOwnProperty.call(
           this.chartAxis.yAxis[0],
@@ -213,6 +248,7 @@ export default {
           return a['yAxisIndex'] - b['yAxisIndex']
         })
       }
+
       option.yAxis = this.chartAxis.yAxis.map((ax) => {
         return Object.assign({}, yAxisOption, {
           name: ax.title,

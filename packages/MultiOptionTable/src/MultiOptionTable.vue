@@ -74,6 +74,8 @@ export default {
       hotInstance: null,
       isRefresh: true,
       dropdownHash: {},
+      dropdownHeaders: {},
+      selectionColumns: [],
       checkbox: {},
       hotData: []
     };
@@ -92,12 +94,42 @@ export default {
           }
           cellProperties.renderer = 'negativeValueRenderer';
           return cellProperties;
+        },
+        afterSelection: (rowIndex, columnIndex, row2, column2, preventScrolling, selectionLayerLevel) => {
+          if (rowIndex >= 0) {
+            const taregtData = _this.tableData[rowIndex];
+            let tempColumns = [];
+            _this.columns.forEach(item => {
+              if (taregtData[item.field] instanceof Object && taregtData[item.field].options && taregtData[item.field].title) {
+                tempColumns.push(taregtData[item.field].title);
+              } else {
+                tempColumns.push(null);
+              }
+            });
+            _this.selectionColumns = tempColumns;
+            _this.$nextTick(() => {
+              _this.refreshColumn();
+            });
+          }
+          preventScrolling.value = true;
+        },
+        afterDeselect() {
+          _this.selectionColumns = [];
+          _this.$nextTick(() => {
+            _this.refreshColumn();
+          });
         }
       });
     },
     columns() {
-      return this.tableColumns.map((item, index) => {
-        let itemNew = Object.assign({}, item);
+      let result = this.tableColumns.map((item, index) => {
+        let itemNew = Object.assign(
+          {},
+          {
+            ...item,
+            data: item.field
+          }
+        );
         if (Object.prototype.hasOwnProperty.call(itemNew, 'type')) {
           switch (itemNew.type) {
             case 'checkbox':
@@ -114,6 +146,10 @@ export default {
               this.tableData.forEach((d, i) => {
                 if (d[item.field] && d[item.field].selectedId && d[item.field].options) {
                   this.dropdownHash[item.field + '-row' + i] = d[item.field].options;
+                  this.dropdownHeaders[item.field + '-row' + i] = {
+                    title: d[item.field].title,
+                    key: d[item.field].key
+                  };
                 }
                 itemNew.source = [];
               });
@@ -123,9 +159,33 @@ export default {
         }
         return itemNew;
       });
+      if (this.selectionColumns.length > 0) {
+        result.forEach((item, i) => {
+          if (this.selectionColumns[i]) {
+            item.title = this.selectionColumns[i];
+          }
+        });
+      }
+      return result;
     }
   },
   methods: {
+      highlightRow(item) {
+      let list = this.$refs.hotTableRef.hotInstance.getSourceData()
+      let rows = ""
+      for (let i = 0; i < list.length; i++) {
+        if (item === list[i].key) {
+          rows = i
+        }
+      }
+      console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows, rows))
+
+    },
+    refreshColumn() {
+      this.$refs['hotTableRef']['hotInstance'].updateSettings({
+        columns: this.columns
+      });
+    },
     prepareData(data) {
       this.hotData = data.map((item, index) => {
         for (let k in item) {

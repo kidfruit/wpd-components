@@ -42,7 +42,7 @@
       <h2>TreeChartTable：????</h2>
       <tree-chart-table-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
