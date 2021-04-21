@@ -1,15 +1,20 @@
 <template>
   <div style="width: 100%">
     <div class="table">
-      <multiOption-Table ref="tableChart" :tableData="tableData" :tableColumns="tableColumns" @cellEditDone="cellEditDone"></multiOption-Table>
+      <multiOption-Table ref="tableChart"
+                         :tableData="tableData"
+                         :tableColumns="tableColumns"
+                         @cellEditDone="cellEditDone"></multiOption-Table>
     </div>
+
+    <button @click="selecData">点击选中</button>
     <button @click="getData">获取数据</button>
     <button @click="getChangedData">获取编辑数据</button>
     <button @click="reset">重置</button>
   </div>
 </template>
 <script>
-import MultiOptionTable from '../../packages/MultiOptionTable/src/MultiOptionTable.vue';
+import MultiOptionTable from '../../packages/MultiOptionTable/src/MultiOptionTable.vue'
 
 export default {
   name: 'MultiOptionTableText',
@@ -35,9 +40,9 @@ export default {
               {
                 id: 'FD_NULL',
                 name: '——',
-                modelParamId: null
-              }
-            ]
+                modelParamId: null,
+              },
+            ],
           },
           flow2: {
             key: 'RR-dsp-NORMAL',
@@ -48,14 +53,14 @@ export default {
               {
                 id: 'RD_DISQCTRL',
                 name: '调洪演算模型1',
-                modelParamId: null
+                modelParamId: null,
               },
               {
                 id: 'RD_CTRLDSP',
                 name: '混合控制1',
-                modelParamId: null
-              }
-            ]
+                modelParamId: null,
+              },
+            ],
           },
           flow3: {
             key: 'RR-assess-NORMAL',
@@ -66,10 +71,10 @@ export default {
               {
                 id: 'FD_DSPASS',
                 name: '调度评估',
-                modelParamId: null
-              }
-            ]
-          }
+                modelParamId: null,
+              },
+            ],
+          },
         },
         {
           nodeId: 'RCH301',
@@ -86,9 +91,9 @@ export default {
               {
                 id: 'FD_NULL',
                 name: '——',
-                modelParamId: null
-              }
-            ]
+                modelParamId: null,
+              },
+            ],
           },
           flow2: {
             key: 'RCH-flow-NORMAL',
@@ -99,15 +104,15 @@ export default {
               {
                 id: 'FR_RHLAGTM',
                 name: '滞时演算模型2',
-                modelParamId: null
+                modelParamId: null,
               },
               {
                 id: 'FR_RHMSK',
                 name: '马斯京根模型2',
-                modelParamId: null
-              }
-            ]
-          }
+                modelParamId: null,
+              },
+            ],
+          },
         },
         {
           nodeId: '12',
@@ -124,9 +129,9 @@ export default {
               {
                 id: 'FD_NULL',
                 name: '——',
-                modelParamId: null
-              }
-            ]
+                modelParamId: null,
+              },
+            ],
           },
           flow2: {
             key: 'RR-dsp-NORMAL',
@@ -137,14 +142,14 @@ export default {
               {
                 id: 'RD_DISQCTRL',
                 name: '调洪演算模型3',
-                modelParamId: null
+                modelParamId: null,
               },
               {
                 id: 'RD_CTRLDSP',
                 name: '混合控制',
-                modelParamId: null
-              }
-            ]
+                modelParamId: null,
+              },
+            ],
           },
           flow3: {
             key: 'RR-assess-NORMAL',
@@ -155,11 +160,11 @@ export default {
               {
                 id: 'FD_DSPASS',
                 name: '调度评估',
-                modelParamId: null
-              }
-            ]
-          }
-        }
+                modelParamId: null,
+              },
+            ],
+          },
+        },
       ],
       tableColumns: [
         {
@@ -169,7 +174,7 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          readOnly: true
+          readOnly: true,
         },
         {
           field: 'flow1',
@@ -178,7 +183,7 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          type: 'customDropdown'
+          type: 'customDropdown',
         },
         {
           field: 'flow2',
@@ -187,7 +192,7 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          type: 'customDropdown'
+          type: 'customDropdown',
         },
         {
           field: 'flow3',
@@ -196,33 +201,45 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          type: 'customDropdown'
-        }
-      ]
-    };
+          type: 'customDropdown',
+        },
+      ],
+    }
   },
   methods: {
+    selecData() {
+      this.$refs['tableChart']._selectkey('RCH301')
+    },
     getData() {
-      console.log(this.$refs.tableChart.hotInstance.getData());
+      console.log(this.$refs.tableChart.hotInstance.getData())
       //console.log(this.$refs.tableChart.getEditColumnField());
     },
     reset() {
-      this.$refs.tableChart.reset();
+      this.$refs.tableChart.reset()
     },
     getChangedData() {
-      console.log('按钮点击', this.$refs.tableChart.editCells, this.$refs.tableChart.editRows);
+      console.log(
+        '按钮点击',
+        this.$refs.tableChart.editCells,
+        this.$refs.tableChart.editRows
+      )
     },
     cellEditDone(value) {
-      const { field, newValue, oldValue, rowIndex } = value;
-      if (this.tableData[rowIndex][field] instanceof Object && this.tableData[rowIndex][field].selectedId) {
-        this.tableData[rowIndex][field].selectedId = this.tableData[rowIndex][field].options.find(i => i.name === newValue).id;
+      const { field, newValue, oldValue, rowIndex } = value
+      if (
+        this.tableData[rowIndex][field] instanceof Object &&
+        this.tableData[rowIndex][field].selectedId
+      ) {
+        this.tableData[rowIndex][field].selectedId = this.tableData[rowIndex][
+          field
+        ].options.find((i) => i.name === newValue).id
       } else {
-        this.tableData[rowIndex][field] = newValue;
+        this.tableData[rowIndex][field] = newValue
       }
-      console.log(this.tableData);
-    }
-  }
-};
+      console.log(this.tableData)
+    },
+  },
+}
 </script>
 <style scoped lang="scss">
 .table {

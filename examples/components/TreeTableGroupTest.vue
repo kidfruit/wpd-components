@@ -1,16 +1,21 @@
 <template>
   <div style="width: 100%">
     <div style="width: 100%; height: 700px">
-      <tree-table-group ref="chartTable" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns" :tableData="data" @checkedKeys="checkedKeys" />
+      <tree-table-group ref="chartTable"
+                        :classes="classNames"
+                        :treeData="mock_Tree"
+                        :tableColumns="tableColumns"
+                        :tableData="data"
+                        @checkedKeys="checkedKeys" />
     </div>
     <button @click="getData">获取表格数据</button>
-    <!-- <button @click="fetchData">获取数据123</button> -->
+    <button @click="selecData">点击选中</button>
   </div>
 </template>
 <script>
-import TreeTableGroup from '../../packages/TreeTableGroup/src/TreeTableGroup.vue';
-import mock_Tree from '../assets/mock/RD_SYNSIM_Tree.json';
-import mock_Table from '../assets/mock/RD_SYNSIM_Table.json';
+import TreeTableGroup from '../../packages/TreeTableGroup/src/TreeTableGroup.vue'
+import mock_Tree from '../assets/mock/RD_SYNSIM_Tree.json'
+import mock_Table from '../assets/mock/RD_SYNSIM_Table.json'
 export default {
   name: 'TreeTableGroupTest',
   components: { TreeTableGroup },
@@ -22,8 +27,8 @@ export default {
       chartOption: {
         title: {
           text: '水位流量图',
-          left: 'center'
-        }
+          left: 'center',
+        },
       },
       chartAxis: {
         xAxis: 'time',
@@ -31,33 +36,33 @@ export default {
         yAxis: [
           {
             title: '水位(m)',
-            yAxisIndex: 0
+            yAxisIndex: 0,
           },
           {
             title: '流量(m³/s)',
-            yAxisIndex: 1
-          }
+            yAxisIndex: 1,
+          },
         ],
         series: [
           {
             field: 'dim1',
             title: '水位(m)',
             selected: true,
-            yAxisIndex: 0
+            yAxisIndex: 0,
           },
           {
             field: 'dim2',
             title: '入库流量(m³/s)',
             selected: true,
-            yAxisIndex: 1
+            yAxisIndex: 1,
           },
           {
             field: 'dim2',
             title: '出库流量(m³/s)',
             selected: false,
-            yAxisIndex: 1
-          }
-        ]
+            yAxisIndex: 1,
+          },
+        ],
       },
       tableColumns: [
         {
@@ -67,7 +72,7 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          readOnly: true
+          readOnly: true,
         },
         {
           field: 'flow1',
@@ -76,7 +81,7 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          type: 'customDropdown'
+          type: 'customDropdown',
         },
         {
           field: 'flow2',
@@ -85,7 +90,7 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          type: 'customDropdown'
+          type: 'customDropdown',
         },
         {
           field: 'flow3',
@@ -94,22 +99,26 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          type: 'customDropdown'
-        }
+          type: 'customDropdown',
+        },
       ],
       data: mock_Table,
-      pickedModels: []
-    };
+      pickedModels: [],
+    }
   },
   methods: {
-      checkedKeys(val){
-          console.log("选中的key",val)
-      },
+    selecData() {
+      //传入表格key选中当前行
+      this.$refs['chartTable']._selecData('RCH301')
+    },
+    checkedKeys(val) {
+      console.log('选中的key', val)
+    },
     getData() {
-      console.log(this.$refs['chartTable'].getTableData());
-    }
-  }
-};
+      console.log(this.$refs['chartTable'].getTableData())
+    },
+  },
+}
 </script>
 <style>
 .chart {

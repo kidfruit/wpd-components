@@ -90,6 +90,9 @@ export default {
     }
   },
   methods: {
+      _selecData(value){
+          this.$refs['tableRef']._selectkey(value)
+      },
     _cellEditDone(value) {
       const { field, newValue, oldValue, rowIndex } = value;
       if (this.defaultTableData[rowIndex][field] instanceof Object && this.defaultTableData[rowIndex][field].selectedId) {

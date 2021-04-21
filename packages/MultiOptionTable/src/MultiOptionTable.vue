@@ -3,7 +3,7 @@
     <hot-table class="hot-table" :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
       <hot-column v-for="(item, index) in columns" :readOnly="item.readOnly" :key="index" :title="item.title" :data="item.field" :source="item.source" :renderer="item.renderer" :type="item.type"> </hot-column>
     </hot-table>
-    <div><button @click="dianji('RCH301')">点击</button></div>
+    <!-- <div><button @click="dianji('RCH301')">点击</button></div> -->
   </div>
 </template>
 <script>
@@ -128,7 +128,7 @@ export default {
     }
   },
   methods: {
-      dianji(item){
+      _selectkey(item){
           let list=this.$refs.hotTableRef.hotInstance.getSourceData()
           let rows=""
           for(let i=0;i<list.length;i++){
