@@ -31,6 +31,7 @@ export default {
       gridLinkListener: [],
       gridEditListener: [],
       gridEditDatas: [],
+      thresholds: [],
     };
   },
   mounted() {
@@ -67,6 +68,7 @@ export default {
       }
     },
     rainItemStyle() {
+      const that = this;
       return {
         normal: {
           borderWidth: 0,
@@ -90,23 +92,23 @@ export default {
             ];
             if (nowVal == 0) {
               color = colorList[0];
-            } else if (0 < nowVal && nowVal <= 1) {
+            } else if (0 < nowVal && nowVal <= that.thresholds[0]) {
               color = colorList[1];
-            } else if (1 < nowVal && nowVal <= 2) {
+            } else if (1 < nowVal && nowVal <= that.thresholds[1]) {
               color = colorList[2];
-            } else if (2 < nowVal && nowVal <= 4) {
+            } else if (2 < nowVal && nowVal <= that.thresholds[2]) {
               color = colorList[3];
-            } else if (4 < nowVal && nowVal <= 6) {
+            } else if (4 < nowVal && nowVal <= that.thresholds[3]) {
               color = colorList[4];
-            } else if (6 < nowVal && nowVal <= 8) {
+            } else if (6 < nowVal && nowVal <= that.thresholds[4]) {
               color = colorList[5];
-            } else if (8 < nowVal && nowVal <= 10) {
+            } else if (8 < nowVal && nowVal <= that.thresholds[5]) {
               color = colorList[6];
-            } else if (10 < nowVal && nowVal <= 20) {
+            } else if (10 < nowVal && nowVal <= that.thresholds[6]) {
               color = colorList[7];
-            } else if (20 < nowVal && nowVal <= 50) {
+            } else if (20 < nowVal && nowVal <= that.thresholds[7]) {
               color = colorList[8];
-            } else if (nowVal > 50) {
+            } else if (nowVal > that.thresholds[7]) {
               color = colorList[9];
             }
             return color;
@@ -940,12 +942,14 @@ export default {
         plotOrder,
         plotSize,
         setEndLine,
+        thresholds,
       } = options;
       let timeList = this.data.map((el) => el.time);
       let dataList = this.dragFields.map((el) => {
         return this.data.map((item) => item[el]);
       });
       const _self = this;
+      this.thresholds = thresholds;
       // 基于准备好的dom，初始化echarts实例
       let boxContainer = document.querySelector(`.${this.containerDom}`);
       let myChart = echarts.init(boxContainer, "macarons");

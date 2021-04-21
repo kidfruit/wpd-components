@@ -122,6 +122,7 @@ export default {
         plotSize: [5, 5, 5],
         plotType: ["BrokenLine", "BrokenLine", "RainBar"],
         sendEndLine: false,
+        thresholds: [200, 500, 1000, 1500, 1700, 2000, 2500, 3000],
       },
       data: [
         {
