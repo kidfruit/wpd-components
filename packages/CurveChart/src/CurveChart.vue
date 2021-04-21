@@ -167,9 +167,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
+    console.log("88888")
     this.dropdowndata()
-    
-
     this.drawChart()
     this.getChartInstance()
     window.addEventListener('resize', this.resizeTheChart)
