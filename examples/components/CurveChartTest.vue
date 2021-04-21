@@ -30,37 +30,8 @@ export default {
       },
       chartAxis: {
         xAxis: 'dim2',
-        timeSeries: true,
-        yAxis: [
-          {
-            title: '水位(m)',
-            yAxisIndex: 0,
-          },
-            // {
-            //   title: "流量(m³/s)",
-            //   yAxisIndex: 1,
-            // },
-        ],
-        series: [
-          {
-            field: 'dim1',
-            title: '水位(m)',
-            selected: true,
-            yAxisIndex: 0,
-          },
-            // {
-            //   field: "dim2",
-            //   title: "入库流量(m³/s)",
-            //   selected: true,
-            //   yAxisIndex: 1,
-            // },
-            // {
-            //   field: "dim2",
-            //   title: "出库流量(m³/s)",
-            //   selected: false,
-            //   yAxisIndex: 1,
-            // },
-        ],
+        yAxis: 'dim1',
+        ytitle:'水位(m)'
       },
       tableColumns: [
         {
