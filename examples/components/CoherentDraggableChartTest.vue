@@ -5,17 +5,18 @@
       :classes="classNames"
       :chartOption="chartOption"
       :isRefresh="isRefresh"
+      :setting="{ rowHeaders: true }"
       :data="data"
       :chartAxis="chartAxis"
       :dragFields="dragFields"
+      :tableColumns="tableColumns"
       :options="options"
-      @updateData="handleUpdateData"
     />
   </div>
 </template>
  
 <script>
-import CoherentDraggableChart from "../../packages/CoherentDraggableChart/src/CoherentDraggableChart.vue";
+import CoherentDraggableChart from "../../packages/CoherentDraggableChart/src/index.vue";
 export default {
   name: "DraggableChartTest",
   components: {
@@ -72,6 +73,53 @@ export default {
           },
         ],
       },
+      tableColumns: [
+        {
+          field: "index",
+          title: "序号",
+          width: 20,
+          isResize: true,
+          titleAlign: "center",
+          columnAlign: "center",
+          readOnly: true,
+        },
+        {
+          field: "time",
+          title: "断面时间",
+          width: 140,
+          titleAlign: "center",
+          columnAlign: "center",
+          isResize: true,
+          readOnly: true,
+        },
+        {
+          field: "dim1",
+          title: "水位(m)",
+          width: 100,
+          isResize: true,
+          titleAlign: "center",
+          columnAlign: "center",
+          readOnly: false,
+        },
+        {
+          field: "dim2",
+          title: "流量(m³/s)",
+          width: 100,
+          isResize: true,
+          titleAlign: "center",
+          columnAlign: "center",
+          readOnly: false,
+        },
+        {
+          field: "dim3",
+          title: "入库流量(m³/s)",
+          width: 100,
+          isResize: true,
+          titleAlign: "center",
+          columnAlign: "center",
+          readOnly: false,
+        },
+      ],
       dragFields: ["dim1", "dim2", "dim3"],
       options: {
         itemTitle: ["水位", "流量", "入库流量"],
@@ -197,11 +245,6 @@ export default {
         },
       ],
     };
-  },
-  methods: {
-    handleUpdateData(field, data) {
-      console.log("data", field, data);
-    },
   },
 };
 </script>
