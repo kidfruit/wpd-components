@@ -102,6 +102,7 @@ export default {
       } else {
         this.defaultTableData[rowIndex][field] = newValue;
       }
+      this.$emit("cellEditDone", this.defaultTableData)
     },
     _onTreeCheck(checkedKeys, {checked, checkedNodes, node, event}) {
       this.$emit("checkedKeys", checkedKeys)
