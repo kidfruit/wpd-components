@@ -7,36 +7,40 @@
                   ref="tableChart"
                   :tableData="chartData"
                   :tableColumns="tableColumns"></simple-table>
-    <!-- <div>
+    <div>
       <a-row type="flex"
-             justify="center">
+             justify="center"
+             :gutter="16">
         <a-col :span="1.5">
           <a-select :default-value="handleselect"
                     style="width: 120px"
-                    @change="handleChange"
-                   >
+                    @change="handleChange">
             <a-select-option v-for="i in dropdown"
-                             :key="i">
+                             :key="i.field"
+                             :value="i.field">
               {{i.title}}
             </a-select-option>
           </a-select>
         </a-col>
         <a-col :span="1.5">
-          <a-input />
+          <a-input v-model="value" />
+        </a-col>
+        <a-col :span="1.5"
+               style="padding-top: 5px">
+          <span style="margin-top: 5px;">插值结果：</span>
         </a-col>
         <a-col :span="1.5">
-          <span>插值结果：</span>
+          <a-input v-model="value2"
+                   disabled />
         </a-col>
-        <a-col :span="1.5">
-          <a-input disabled />
-        </a-col>
-        <a-col :span="1.5">
-          <button>计算</button>
+        <a-col :span="1.5"
+               style="padding-top: 3px">
+          <button @click="calculation">计算</button>
         </a-col>
 
       </a-row>
 
-    </div> -->
+    </div>
     <!-- @cellEditDone="cellEditDone" -->
   </div>
 </template>
@@ -167,6 +171,9 @@ export default {
   },
   data() {
     return {
+      value2: '',
+      options: '',
+      value: '',
       dropdown: [],
       handleselect: '',
       instance: null,
@@ -181,7 +188,14 @@ export default {
     // },
   },
   methods: {
+    _calculationresults(value) {
+      this.value2 = value
+    },
+    calculation() {
+      this.$emit('compute', { options: this.options, value: this.value })
+    },
     dropdowndata() {
+      this.handleselect = this.chartAxis.xAxis
       for (let i = 0; i < this.tableColumns.length; i++) {
         console.log(
           this.tableColumns[i].field,
@@ -198,7 +212,9 @@ export default {
       console.log('this.dropdown', this.dropdown)
     },
     handleChange(value) {
-      console.log(`selected ${value}`)
+      this.options = value
+      this.value = ''
+      this.value2 = ''
     },
     drawChart() {
       echartsInstance = echarts.init(document.getElementById('curve-chart'))
