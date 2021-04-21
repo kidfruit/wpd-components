@@ -32,6 +32,7 @@ export default {
       gridEditListener: [],
       gridEditDatas: [],
       thresholds: [],
+      colorList: [],
     };
   },
   mounted() {
@@ -78,38 +79,26 @@ export default {
             const { value } = params;
             const nowVal = value * 1;
             let color = "";
-            let colorList = [
-              "#FEFEFE",
-              "#D0FDB9",
-              "#A5F28C",
-              "#38A20F",
-              "#5FBAFO",
-              "#0002FB",
-              "#0E6A49",
-              "#FE00F7",
-              "#DC4E01",
-              "#710200",
-            ];
             if (nowVal == 0) {
-              color = colorList[0];
+              color = that.colorList[0];
             } else if (0 < nowVal && nowVal <= that.thresholds[0]) {
-              color = colorList[1];
+              color = that.colorList[1];
             } else if (1 < nowVal && nowVal <= that.thresholds[1]) {
-              color = colorList[2];
+              color = that.colorList[2];
             } else if (2 < nowVal && nowVal <= that.thresholds[2]) {
-              color = colorList[3];
+              color = that.colorList[3];
             } else if (4 < nowVal && nowVal <= that.thresholds[3]) {
-              color = colorList[4];
+              color = that.colorList[4];
             } else if (6 < nowVal && nowVal <= that.thresholds[4]) {
-              color = colorList[5];
+              color = that.colorList[5];
             } else if (8 < nowVal && nowVal <= that.thresholds[5]) {
-              color = colorList[6];
+              color = that.colorList[6];
             } else if (10 < nowVal && nowVal <= that.thresholds[6]) {
-              color = colorList[7];
+              color = that.colorList[7];
             } else if (20 < nowVal && nowVal <= that.thresholds[7]) {
-              color = colorList[8];
+              color = that.colorList[8];
             } else if (nowVal > that.thresholds[7]) {
-              color = colorList[9];
+              color = that.colorList[9];
             }
             return color;
           },
@@ -943,6 +932,7 @@ export default {
         plotSize,
         setEndLine,
         thresholds,
+        colorList,
       } = options;
       let timeList = this.data.map((el) => el.time);
       let dataList = this.dragFields.map((el) => {
@@ -950,6 +940,7 @@ export default {
       });
       const _self = this;
       this.thresholds = thresholds;
+      this.colorList = colorList;
       // 基于准备好的dom，初始化echarts实例
       let boxContainer = document.querySelector(`.${this.containerDom}`);
       let myChart = echarts.init(boxContainer, "macarons");
