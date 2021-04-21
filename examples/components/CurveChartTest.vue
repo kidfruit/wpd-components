@@ -1,12 +1,13 @@
 <template>
   <div style="width: 100%">
-    <curve-chart ref="chart"
-                  :tableShow="tableShow"
+    <curve-chart ref="curvechart"
+                 :tableShow="tableShow"
                  :classes="classNames"
                  :chartOption="chartOption"
                  :isRefresh="isRefresh"
                  :chartAxis="chartAxis"
                  :tableColumns="tableColumns"
+                 @compute="compute"
                  :chartData="chartData" />
     <button @click="fetchData">获取数据123</button>
   </div>
@@ -19,7 +20,7 @@ export default {
   components: { CurveChart },
   data() {
     return {
-      tableShow:false,
+      tableShow: false,
       classNames: ['testChart'],
       isRefresh: true,
       chartOption: {
@@ -31,7 +32,7 @@ export default {
       chartAxis: {
         xAxis: 'dim2',
         yAxis: 'dim1',
-        ytitle:'水位(m)'
+        ytitle: '水位(m)',
       },
       tableColumns: [
         {
@@ -142,12 +143,16 @@ export default {
     }
   },
   methods: {
+    compute(data) {
+      console.log(data)
+      this.$refs['curvechart']._calculationresults('100')
+    },
     changeData() {
-      this.chartInstance = this.$refs.chart.instance
+      this.chartInstance = this.$refs.curvechart.instance
       this.isRefresh = false
     },
     fetchData() {
-      this.chartInstance = this.$refs.chart.instance
+      this.chartInstance = this.$refs.curvechart.instance
       console.log(this.chartInstance)
     },
   },
