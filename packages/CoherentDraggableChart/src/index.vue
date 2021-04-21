@@ -1,5 +1,5 @@
 <template>
-  <div class="draggable-chart-table">
+  <div :class="['draggable-chart-table'].concat(layout)">
     <div class="chart-container">
       <coherent-draggable-chart
         :data="newData"
@@ -62,6 +62,9 @@ export default {
     setting: {
       type: Object,
     },
+    layout: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -90,4 +93,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.draggable-chart-table.horizontal {
+  display: flex;
+  flex-direction: row;
+  .chart-container {
+    width: 50%;
+  }
+  .table-container {
+    flex: 1;
+  }
+}
+.draggable-chart-table.vertical {
+  display: flex;
+  flex-direction: column;
+  .chart-container {
+    width: 100%;
+  }
+  .table-container {
+    width: 100%;
+  }
+}
 </style>

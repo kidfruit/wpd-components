@@ -9,6 +9,7 @@
       :data="data"
       :chartAxis="chartAxis"
       :dragFields="dragFields"
+      :layout="layout"
       :tableColumns="tableColumns"
       :options="options"
     />
@@ -25,6 +26,7 @@ export default {
   data() {
     return {
       classNames: ["testChart"],
+      layout: "horizontal", // vertical | horizontal
       isRefresh: true,
       chartOption: {
         title: {
