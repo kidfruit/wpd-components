@@ -122,6 +122,19 @@ export default {
         plotSize: [5, 5, 5],
         plotType: ["BrokenLine", "BrokenLine", "RainBar"],
         sendEndLine: false,
+        thresholds: [200, 500, 1000, 1500, 1700, 2000, 2500, 3000],
+        colorList: [
+          "#FEFEFE",
+          "#D0FDB9",
+          "#A5F28C",
+          "#38A20F",
+          "#5FBAFO",
+          "#0002FB",
+          "#0E6A49",
+          "#FE00F7",
+          "#DC4E01",
+          "#710200",
+        ],
       },
       data: [
         {
