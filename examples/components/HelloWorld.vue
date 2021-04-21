@@ -5,48 +5,54 @@
     <scheme-table-test v-if="false"></scheme-table-test>
     <char-table-test v-if="false"></char-table-test>
     <div v-if="false">
-      <h2>SimpleChart：数据格式为echarts标准格式（V-Chart封装，打包未成功！！）</h2>
-      <simple-chart-test/>
+      <h2>
+        SimpleChart：数据格式为echarts标准格式（V-Chart封装，打包未成功！！）
+      </h2>
+      <simple-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
-      <standard-chart-test/>
+      <standard-chart-test />
     </div>
     <div v-if="false">
       <h2>SimpleTable：handsontable基础表格组件</h2>
-      <simple-table-test/>
+      <simple-table-test />
     </div>
     <div v-if="false">
       <h2>MultiOptionTable：流程模型选择专用表组件</h2>
-      <multi-option-table-test/>
+      <multi-option-table-test />
     </div>
     <div v-if="false">
       <h2>ResultHydroDynamic：水动力成果展示组件</h2>
-      <result-hydro-dynamic-test/>
+      <result-hydro-dynamic-test />
     </div>
     <div v-if="false">
       <h2>ChartTableGroup：图表联动组件</h2>
-      <chart-table-group-test/>
+      <chart-table-group-test />
     </div>
     <div v-if="false">
-      <h2>DraggableChart：可拖拽的echarts图组件</h2>
-      <draggable-chart-test/>
-    </div>
-    <div v-if="false">
-      <h2>TreeChartTable：????</h2>
-      <tree-chart-table-test/>
+      <h2>DraggableChart：可拖拽的echarts图组件(不支持连贯拖拽)</h2>
+      <draggable-chart-test />
     </div>
     <div v-if="true">
+      <h2>DraggableChart：可连贯拖拽，图表联动的echarts图组件</h2>
+      <coherent-draggable-chart-test />
+    </div>
+    <div v-if="false">
+      <h2>TreeChartTable：树表图组件(动态展示不同树节点的图表和表格数据)</h2>
+      <tree-chart-table-test />
+    </div>
+    <div v-if="false">
       <h2>CurveChart：通用二维曲线</h2>
-      <curve-chart-test/>
+      <curve-chart-test />
     </div>
     <div v-if="false">
       <h2>TreeTableGroup：树表联动组件</h2>
-      <tree-table-group-test/>
+      <tree-table-group-test />
     </div>
     <div v-if="false">
       <h2>TreeSimpleTableGroup：树表联动组件</h2>
-      <tree-simple-table-group-test/>
+      <tree-simple-table-group-test />
     </div>
   </div>
 </template>
@@ -63,6 +69,7 @@ import MultiOptionTableTest from "./MultiOptionTableTest.vue";
 import ResultHydroDynamicTest from "./ResultHydroDynamicTest.vue";
 import ChartTableGroupTest from "./ChartTableGroupTest.vue";
 import DraggableChartTest from "./DraggableChartTest.vue";
+import CoherentDraggableChartTest from "./CoherentDraggableChartTest.vue";
 import TreeChartTableTest from "./TreeChartTableTest.vue";
 import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
@@ -80,6 +87,7 @@ export default {
     ChartTableGroupTest,
     MultiOptionTableTest,
     DraggableChartTest,
+    CoherentDraggableChartTest,
     TreeChartTableTest,
     TreeTableGroupTest,
     TreeSimpleTableGroupTest,

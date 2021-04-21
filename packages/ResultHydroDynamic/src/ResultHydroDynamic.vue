@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     classNames() {
-      return ["result-hydro-dynamic"].concat(this.classes).join(" ");
+      return ["result-hydro-dynamic"].concat(this.classes);
     },
   },
   created() {
