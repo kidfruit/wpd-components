@@ -77,15 +77,6 @@ export default {
       },
       tableColumns: [
         {
-          field: "index",
-          title: "序号",
-          width: 20,
-          isResize: true,
-          titleAlign: "center",
-          columnAlign: "center",
-          readOnly: true,
-        },
-        {
           field: "time",
           title: "断面时间",
           width: 140,
