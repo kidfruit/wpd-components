@@ -16,8 +16,8 @@
                     style="width: 120px"
                     @change="handleChange">
             <a-select-option v-for="i in dropdown"
-                             :key="i.field"
-                             :value="i.field">
+                             :key="i.id"
+                             :value="i.id">
               {{i.title}}
             </a-select-option>
           </a-select>
@@ -57,6 +57,8 @@ const defaultOption = {
   },
   grid: {
     bottom: 50,
+    right: 100,
+    left:100
   },
   legend: {
     data: [],
@@ -202,15 +204,17 @@ export default {
     },
     dropdowndata() {
       this.handleselect = this.chartAxis.xAxis.id
-      for (let i = 0; i < this.tableColumns.length; i++) {
-        if (
-          this.tableColumns[i].field == this.chartAxis.yAxis.id ||
-          this.tableColumns[i].field == this.chartAxis.xAxis.id
-        ) {
-          this.dropdown.push(this.tableColumns[i])
-        }
-      }
+    //   for (let i = 0; i < this.tableColumns.length; i++) {
+    //     if (
+    //       this.tableColumns[i].field == this.chartAxis.yAxis.id ||
+    //       this.tableColumns[i].field == this.chartAxis.xAxis.id
+    //     ) {
+    //       this.dropdown.push(this.tableColumns[i])
+    //     }
+    //   }
     //   console.log('this.dropdown', this.dropdown)
+     this.dropdown.push(this.chartAxis.xAxis)
+     this.dropdown.push(this.chartAxis.yAxis)
     },
     handleChange(value) {
       this.options = value
@@ -275,15 +279,15 @@ export default {
       })
 
       //legend
-      this.chartAxis.series.forEach((yx) => {
-        option.legend.data.push(yx.title)
-        option.legend.selected[yx.title] = Object.prototype.hasOwnProperty.call(
-          yx,
-          'selected'
-        )
-          ? yx.selected
-          : true
-      })
+    //   this.chartAxis.series.forEach((yx) => {
+    //     option.legend.data.push(yx.title)
+    //     option.legend.selected[yx.title] = Object.prototype.hasOwnProperty.call(
+    //       yx,
+    //       'selected'
+    //     )
+    //       ? yx.selected
+    //       : true
+    //   })
 
       //data
       this.chartData = this.chartData.sort((a, b) => {
