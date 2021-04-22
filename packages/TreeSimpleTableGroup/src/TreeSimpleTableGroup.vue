@@ -100,6 +100,7 @@ export default {
       }
     },
     _onTreeCheck(checkedKeys, { checked, checkedNodes, node, event }) {
+        this.$emit("checkedKeys", checkedKeys)
       this.defaultTableData.map(i => {
         i.selected = checkedKeys.includes(i.nodeId);
         return i;

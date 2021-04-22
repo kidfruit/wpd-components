@@ -42,7 +42,7 @@
       <h2>TreeChartTable：树表图组件(动态展示不同树节点的图表和表格数据)</h2>
       <tree-chart-table-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
@@ -50,10 +50,15 @@
       <h2>TreeTableGroup：树表联动组件</h2>
       <tree-table-group-test />
     </div>
-    <div v-if="false">
-      <h2>TreeSimpleTableGroup：树表联动组件</h2>
+    <div v-if="true">
+      <h2>TreeSimpleTableGroup：树表联动组件(SimpleTable基础表)</h2>
       <tree-simple-table-group-test />
     </div>
+    <div v-if="false">
+      <h2>SeriesPPTNTest：通用柱状图表</h2>
+      <seriesPPTNTest />
+    </div>
+   
   </div>
 </template>
 
@@ -74,6 +79,7 @@ import TreeChartTableTest from "./TreeChartTableTest.vue";
 import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
 import CurveChartTest from "./CurveChartTest.vue";
+import SeriesPPTNTest from "./SeriesPPTNTest.vue";
 
 export default {
   components: {
@@ -92,6 +98,8 @@ export default {
     TreeTableGroupTest,
     TreeSimpleTableGroupTest,
     CurveChartTest,
+    SeriesPPTNTest,
+    
   },
   name: "HelloWorld",
   methods: {

@@ -12,6 +12,8 @@ import TreeTableGroup from "./TreeTableGroup/src/TreeTableGroup.vue";
 import ResultHydroDynamic from "./ResultHydroDynamic/src/ResultHydroDynamic.vue";
 import TreeChartTable from "./TreeChartTable/src/TreeChartTable.vue";
 import CurveChart from "./CurveChart/src/CurveChart.vue";
+import SeriesPPTN from "./SeriesPPTN/src/SeriesPPTN.vue";
+
 
 
 import testDirective from "./testDirective/src/testDirective";
@@ -35,7 +37,8 @@ const components = [
   ResultHydroDynamic,
   TreeSimpleTableGroup,
   TreeChartTable,
-  CurveChart
+  CurveChart,
+  SeriesPPTN
 ];
 
 // 存储指令映射
@@ -78,6 +81,7 @@ export default {
   TreeSimpleTableGroup,
   TreeChartTable,
   CurveChart,
+  SeriesPPTN,
 
   ...directives
 };
