@@ -50,13 +50,17 @@
       <h2>TreeTableGroup：树表联动组件</h2>
       <tree-table-group-test />
     </div>
-    <div v-if="false">
-      <h2>TreeSimpleTableGroup：树表联动组件</h2>
+    <div v-if="true">
+      <h2>TreeSimpleTableGroup：树表联动组件(SimpleTable基础表)</h2>
       <tree-simple-table-group-test />
     </div>
     <div v-if="true">
       <h2>SeriesQZTest：通用过程线表过程组件</h2>
       <series-q-z-test />
+    </div>
+    <div v-if="false">
+      <h2>SeriesPPTNTest：通用柱状图表</h2>
+      <seriesPPTNTest />
     </div>
   </div>
 </template>
@@ -79,6 +83,7 @@ import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
 import CurveChartTest from "./CurveChartTest.vue";
 import SeriesQZTest from "./SeriesQZTest.vue";
+import SeriesPPTNTest from "./SeriesPPTNTest.vue";
 
 export default {
   components: {
@@ -98,6 +103,7 @@ export default {
     TreeSimpleTableGroupTest,
     CurveChartTest,
     SeriesQZTest,
+    SeriesPPTNTest,
   },
   name: "HelloWorld",
   methods: {

@@ -1,52 +1,13 @@
 <template>
   <div>
-      <!-- 上下结构 -->
-    <div v-if="this.structure == 'Upanddown'||!tableShow">
-      <a-row type="flex"
-             justify="center"
-             :gutter="16">
-        <a-col :span="24">
-          <div ref="chartRef"
-               v-if="chartShow"
-               :class="classNames"
-               id="curve-chart"></div>
-        </a-col>
-      </a-row>
-      <a-row type="flex"
-             justify="center"
-             :gutter="16">
-        <a-col :span="24">
-          <simple-table v-if="tableShow"
-                        ref="tableChart"
-                        :tableData="chartData"
-                        :tableColumns="tableColumns"></simple-table>
-        </a-col>
-      </a-row>
-    </div>
-    <div v-if="this.structure == 'about' && tableShow">
-      <a-row type="flex"
-             justify="center"
-             >
-        <a-col :span="12">
-          <div ref="chartRef"
-               v-if="chartShow"
-               :class="classNames"
-               id="curve-chart"></div>
-        </a-col>
-        <a-col :span="12">
-          <simple-table v-if="tableShow"
-                        style="margin-top: 40px;"
-                        ref="tableChart"
-                        :tableData="chartData"
-                        :tableColumns="tableColumns"></simple-table>
-        </a-col>
-      </a-row>
-      <!-- <a-row type="flex"
-             justify="center"
-             >
-        
-      </a-row> -->
-    </div>
+    <div ref="chartRef"
+         v-if="chartShow"
+         :class="classNames"
+         id="series-pptn"></div>
+    <simple-table v-if="tableShow"
+                  ref="tableChart"
+                  :tableData="chartData"
+                  :tableColumns="tableColumns"></simple-table>
     <div v-if="interpolateCalcShow">
       <a-row type="flex"
              justify="center"
@@ -81,7 +42,6 @@
       </a-row>
       <!-- <button @click="qiehuan">切换</button> -->
     </div>
-    <!-- @cellEditDone="cellEditDone" -->
   </div>
 </template>
 <script>
@@ -102,7 +62,6 @@ const defaultOption = {
     bottom: 50,
     right: 100,
     left: 100,
-    top:40
   },
   legend: {
     data: [],
@@ -112,7 +71,7 @@ const defaultOption = {
   },
   xAxis: {
     type: 'category',
-    boundaryGap: false,
+    // boundaryGap: false,
     data: [],
   },
   yAxis: [],
@@ -145,7 +104,7 @@ const yAxisOption = {
 }
 let echartsInstance = null
 export default {
-  name: 'CurveChart',
+  name: 'SeriesPPTN',
   props: {
     isVisible: {
       type: Boolean,
@@ -182,9 +141,6 @@ export default {
       default: 'macarons',
       required: false,
     },
-    structure: {
-      type: String,
-    },
     chartOption: {
       type: Object,
       required: false,
@@ -210,7 +166,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    console.log(this.structure)
+    console.log("88888")
     this.dropdowndata()
     this.drawChart()
     this.getChartInstance()
@@ -242,12 +198,8 @@ export default {
       this.$emit('compute', { options: this.options, value: this.value })
     },
     dropdowndata() {
-      if (this.structure == 'Upanddown') {
-        this.span = 24
-      } else if (this.structure == 'about') {
-        this.span = 12
-      }
       this.handleselect = this.chartAxis.xAxis.id
+     
       this.dropdown.push(this.chartAxis.xAxis)
       this.dropdown.push(this.chartAxis.yAxis)
     },
@@ -257,7 +209,7 @@ export default {
       this.value2 = ''
     },
     drawChart() {
-      echartsInstance = echarts.init(document.getElementById('curve-chart'))
+      echartsInstance = echarts.init(document.getElementById('series-pptn'))
       this.setDynamicOption()
     },
     getChartInstance() {
@@ -270,7 +222,7 @@ export default {
     },
     setDynamicOption() {
       let option = this.prepareSeries()
-
+  
       echartsInstance.setOption(option)
     },
     resizeTheChart() {
@@ -293,6 +245,7 @@ export default {
       })
       let option = Object.assign({}, defaultOption, this.chartOption)
 
+   
       //x轴
       option.xAxis.name = this.chartAxis.xAxis.title
       option.xAxis.data = this.chartData.map(
@@ -307,7 +260,7 @@ export default {
       if (Array.isArray(option.grid) && option.grid.length > 0) {
         option.xAxis = this.chartAxis.xAxis.id
       }
-
+     
       //y轴
       //按照yAxisIndex排序
       if (Object.prototype.hasOwnProperty.call(yAxis[0], 'yAxisIndex')) {
@@ -325,7 +278,7 @@ export default {
           gridIndex: ax.gridIndex,
         })
       })
-
+     
       //legend
       //   this.chartAxis.series.forEach((yx) => {
       //     option.legend.data.push(yx.title)
@@ -348,7 +301,8 @@ export default {
       series.forEach((yax) => {
         let seriesObj = {
           name: yax.title,
-          type: 'line',
+          type: 'bar',
+          barWidth: '60%',
           data: [],
           yAxisIndex: yax.yAxisIndex,
           xAxisIndex: yax.xAxisIndex,

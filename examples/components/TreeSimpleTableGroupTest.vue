@@ -6,9 +6,10 @@
                                :classes="classNames"
                                :treeData="mock_Tree"
                                :tableColumns="tableColumns"
-                               :tableData="data" />
+                               :tableData="data" @checkedKeys="checkedKeys" />
     </div>
     <button @click="getData">获取表格数据</button>
+    <button @click="highlightRow('13')">高亮</button>
   </div>
 </template>
 <script>
@@ -177,6 +178,12 @@ export default {
     }
   },
   methods: {
+      highlightRow(value) {
+      this.$refs['chartTable'].$refs['tableRef'].highlightRow(value)
+    },
+      checkedKeys(val) {
+      console.log("选中的key", val)
+    },
     getData() {
       console.log(this.$refs['chartTable'].getTableData())
     },

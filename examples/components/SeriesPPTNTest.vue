@@ -1,8 +1,7 @@
 <template>
   <div style="width: 100%">
-    <curve-chart ref="curvechart"
+    <seriesPPTN ref="seriesPPTN"
                  v-if="chartshow"
-                 :structure="structure"
                  :interpolateCalcShow="interpolateCalcShow"
                  :tableShow="tableShow"
                  :classes="classNames"
@@ -12,20 +11,19 @@
                  :tableColumns="tableColumns"
                  @compute="compute"
                  :chartData="chartData" />
-    <!-- <button @click="changing_over">切换</button> -->
     <button @click="fetchData">获取数据123</button>
     <button @click="Refresh">刷新数据</button>
   </div>
 </template>
 <script>
-import CurveChart from '../../packages/CurveChart/src/CurveChart.vue'
+// SeriesPPTNTest
+import SeriesPPTN from '../../packages/SeriesPPTN/src/SeriesPPTN.vue'
 
 export default {
-  name: 'CurveChartTest',
-  components: { CurveChart },
+  name: 'SeriesPPTNTest',
+  components: { SeriesPPTN },
   data() {
     return {
-      structure: 'Upanddown', //Upanddown上下结构，about左右结构
       chartshow: true,
       interpolateCalcShow: false,
       tableShow: false,
@@ -158,21 +156,12 @@ export default {
   methods: {
     compute(data) {
       //   console.log(data)
-      this.$refs['curvechart']._calculationresults('100')
+      this.$refs['seriesPPTN']._calculationresults('100')
     },
     changeData() {
-      this.chartInstance = this.$refs.curvechart.instance
+      this.chartInstance = this.$refs.seriesPPTN.instance
       this.isRefresh = false
     },
-    // changing_over() {
-    //   if (this.structure == 'Upanddown') {
-    //     this.$nextTick(() => (this.chartshow = true))
-    //   } else if (this.structure == 'about') {
-    //     this.$nextTick(() => (this.chartshow = true))
-    //   }
-    //   this.structure = 'Upanddown'
-    //   this.chartshow = false
-    // },
     Refresh() {
       this.chartData = [
         {
@@ -255,7 +244,7 @@ export default {
       this.$nextTick(() => (this.chartshow = true))
     },
     fetchData() {
-      this.chartInstance = this.$refs.curvechart.instance
+      this.chartInstance = this.$refs.seriesPPTN.instance
       //   console.log(this.chartInstance)
     },
   },
