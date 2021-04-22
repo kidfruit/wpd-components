@@ -34,7 +34,7 @@
       <h2>DraggableChart：可拖拽的echarts图组件(不支持连贯拖拽)</h2>
       <draggable-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>DraggableChart：可连贯拖拽，图表联动的echarts图组件</h2>
       <coherent-draggable-chart-test />
     </div>
@@ -53,6 +53,10 @@
     <div v-if="false">
       <h2>TreeSimpleTableGroup：树表联动组件</h2>
       <tree-simple-table-group-test />
+    </div>
+    <div v-if="true">
+      <h2>SeriesQZTest：通用过程线表过程组件</h2>
+      <series-q-z-test />
     </div>
   </div>
 </template>
@@ -74,6 +78,7 @@ import TreeChartTableTest from "./TreeChartTableTest.vue";
 import TreeTableGroupTest from "./TreeTableGroupTest.vue";
 import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
 import CurveChartTest from "./CurveChartTest.vue";
+import SeriesQZTest from "./SeriesQZTest.vue";
 
 export default {
   components: {
@@ -92,6 +97,7 @@ export default {
     TreeTableGroupTest,
     TreeSimpleTableGroupTest,
     CurveChartTest,
+    SeriesQZTest,
   },
   name: "HelloWorld",
   methods: {

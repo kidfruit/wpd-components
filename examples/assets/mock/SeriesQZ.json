@@ -1,0 +1,314 @@
+{
+  "realtimeData": {
+    "tableColumns": [
+      {
+        "field": "time",
+        "title": "时间",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "readOnly": true
+      },
+      {
+        "field": "INQ",
+        "title": "实际入库流量(m³/s)",
+        "showType": "1-R",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "isEdit": true
+      },
+      {
+        "field": "OUTQ",
+        "title": "实际出库流量(m³/s)",
+        "showType": "1-R",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "isEdit": true
+      },
+      {
+        "field": "RZ",
+        "title": "实际库水位(m)",
+        "showType": "1-L",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "isEdit": true
+      }
+    ],
+    "tableData": [
+      {
+        "id": 1,
+        "time": "2021-04-29 20:00:00",
+        "INQ": 0,
+        "OUTQ": 0,
+        "RZ": 144
+      },
+      {
+        "id": 1,
+        "time": "2021-04-20 02:00:00",
+        "INQ": 0,
+        "OUTQ": 0,
+        "RZ": 122
+      },
+      {
+        "id": 1,
+        "time": "2021-04-20 08:00:00",
+        "INQ": 0,
+        "OUTQ": 0,
+        "RZ": 133
+      },
+      {
+        "id": 1,
+        "time": "2021-04-20 14:00:00",
+        "INQ": 0,
+        "OUTQ": 0,
+        "RZ": 134
+      }
+    ]
+  },
+  "resultData": {
+    "tableColumns": [
+      {
+        "field": "id",
+        "title": "序号",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "readOnly": true
+      },
+      {
+        "field": "time",
+        "title": "时间",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "readOnly": true
+      },
+      {
+        "field": "RD_RR_AVGINQ_P",
+        "title": "入库流量(m³/s)",
+        "showType": "1-R",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "isEdit": true
+      },
+      {
+        "field": "RD_RR_AVGOUTQ_P",
+        "title": "出库流量(m³/s)",
+        "showType": "1-R",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "isEdit": true
+      },
+      {
+        "field": "RD_RR_UPZ_P",
+        "title": "坝上水位(m)",
+        "showType": "1-L",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "isEdit": true
+      },
+      {
+        "field": "RD_RR_AVGSTORQ_P",
+        "title": "蓄水过程(m³/s)",
+        "showType": "2-L",
+        "width": 80,
+        "titleAlign": "center",
+        "columnAlign": "center",
+        "isResize": true,
+        "isEdit": true
+      }
+    ],
+    "tableData": [
+      {
+        "id": 1,
+        "time": "2021-04-20 20:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 0,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 2,
+        "time": "2021-04-21 02:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 0,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 3,
+        "time": "2021-04-21 08:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 0,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 4,
+        "time": "2021-04-21 14:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 0,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 5,
+        "time": "2021-04-21 20:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 6,
+        "time": "2021-04-22 02:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 7,
+        "time": "2021-04-22 08:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 8,
+        "time": "2021-04-22 14:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 9,
+        "time": "2021-04-22 20:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 10,
+        "time": "2021-04-23 02:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 11,
+        "time": "2021-04-23 08:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 12,
+        "time": "2021-04-23 14:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 13,
+        "time": "2021-04-23 20:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 14,
+        "time": "2021-04-24 02:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 15,
+        "time": "2021-04-24 08:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 16,
+        "time": "2021-04-24 14:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      },
+      {
+        "id": 17,
+        "time": "2021-04-24 20:00:00",
+        "RD_RR_AVGINQ_P": 0,
+        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_UPZ_P": 145,
+        "RD_RR_AVGSTORQ_P": 0
+      }
+    ]
+  },
+  "chartAxis": {
+    "xAxis": "time",
+    "timeSeries": true,
+    "yAxis": [
+      {
+        "title": "水位(m)",
+        "yAxisIndex": 0,
+        "group": [
+          {
+            "set": [
+              "RZ",
+              "RD_RR_UPZ_P"
+            ],
+            "color": "blue"
+          }
+        ]
+      },
+      {
+        "title": "流量(m³/s)",
+        "yAxisIndex": 1,
+        "group": [
+          {
+            "set": [
+              "INQ",
+              "RD_RR_AVGINQ_P"
+            ],
+            "color": "orange"
+          },
+          {
+            "set": [
+              "OUTQ",
+              "RD_RR_AVGOUTQ_P"
+            ],
+            "color": "green"
+          }
+        ]
+      }
+    ]
+  }
+}

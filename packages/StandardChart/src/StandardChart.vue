@@ -203,6 +203,7 @@ export default {
           smooth: yax.smooth,
           id: yax.id,
           symbolSize: yax.symbolSize,
+          itemStyle: yax.itemStyle,
         };
         seriesObj.data = this.chartData.map((cd) => cd[yax.field]);
         option.series.push(seriesObj);
