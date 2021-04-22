@@ -24,6 +24,7 @@
 <script>
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
+let flag = false;
 export default {
   components: {
     StandardChart,
@@ -103,8 +104,8 @@ export default {
         return el !== "id" && el != "time";
       });
       this.columns = [];
-      this.dynamicCols(this.newResultData.tableColumns);
       this.dynamicCols(this.newRealtimeData.tableColumns);
+      this.dynamicCols(this.newResultData.tableColumns);
       console.log("this.cols", this.columns);
       this.columns.forEach((el) => {
         if (el.field != "time") {
@@ -125,6 +126,27 @@ export default {
                 },
               },
             });
+            if (!flag) {
+              obj = Object.assign({}, obj, {
+                markLine: {
+                  symbol: "none",
+                  data: [
+                    {
+                      name: "标记线",
+                      xAxis: firstTime,
+                      lineStyle: {
+                        //警戒线的样式  ，虚实  颜色
+                        type: "solid",
+                        color: "#000",
+                      },
+                    },
+                  ],
+                  label: { show: false, position: "middle" },
+                  silent: true,
+                },
+              });
+              flag = true;
+            }
           }
           this.chartAxis.series.push(obj);
         }
@@ -133,11 +155,22 @@ export default {
       this.newData = this.newRealtimeData.tableData.concat(
         this.newResultData.tableData
       );
-      // this.chartAxis.series.forEach((el) => {
-      //   console.log(el, 111);
-      // });
-      console.log(firstTime, resultFields);
 
+      let groups = this.chartAxis.yAxis.map((el) => el.group).flat(Infinity);
+      console.log(firstTime, resultFields, groups);
+      this.chartAxis.series.forEach((el) => {
+        let one = groups.find((item) => item.set.indexOf(el.field) !== -1);
+        if (one) {
+          if (resultFields.indexOf(el.field) !== -1) {
+            el.itemStyle.normal.lineStyle.color = one.color;
+          } else {
+            el.lineStyle = {};
+            el.lineStyle.color = one.color;
+          }
+        }
+      });
+      console.log(this.chartAxis.xAxis, 111);
+      // this.chartAxis.xAxis = {};
       // this.chartAxis.xAxis.axisLabel = {
       //   interval: 0,
       //   show: true,

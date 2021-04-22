@@ -45,22 +45,22 @@
       {
         "id": 1,
         "time": "2021-04-29 20:00:00",
-        "INQ": 0,
-        "OUTQ": 0,
+        "INQ": 90,
+        "OUTQ": 40,
         "RZ": 144
       },
       {
         "id": 1,
         "time": "2021-04-20 02:00:00",
-        "INQ": 0,
-        "OUTQ": 0,
+        "INQ": 90,
+        "OUTQ": 40,
         "RZ": 122
       },
       {
         "id": 1,
         "time": "2021-04-20 08:00:00",
-        "INQ": 0,
-        "OUTQ": 0,
+        "INQ": 90,
+        "OUTQ": 40,
         "RZ": 133
       },
       {
@@ -138,25 +138,25 @@
         "id": 1,
         "time": "2021-04-20 20:00:00",
         "RD_RR_AVGINQ_P": 0,
-        "RD_RR_AVGOUTQ_P": 0,
-        "RD_RR_UPZ_P": 0,
-        "RD_RR_AVGSTORQ_P": 0
+        "RD_RR_AVGOUTQ_P": 30,
+        "RD_RR_UPZ_P": 60,
+        "RD_RR_AVGSTORQ_P": 70
       },
       {
         "id": 2,
         "time": "2021-04-21 02:00:00",
         "RD_RR_AVGINQ_P": 0,
-        "RD_RR_AVGOUTQ_P": 0,
-        "RD_RR_UPZ_P": 0,
-        "RD_RR_AVGSTORQ_P": 0
+        "RD_RR_AVGOUTQ_P": 30,
+        "RD_RR_UPZ_P": 60,
+        "RD_RR_AVGSTORQ_P": 70
       },
       {
         "id": 3,
         "time": "2021-04-21 08:00:00",
         "RD_RR_AVGINQ_P": 0,
-        "RD_RR_AVGOUTQ_P": 0,
-        "RD_RR_UPZ_P": 0,
-        "RD_RR_AVGSTORQ_P": 0
+        "RD_RR_AVGOUTQ_P": 30,
+        "RD_RR_UPZ_P": 60,
+        "RD_RR_AVGSTORQ_P": 70
       },
       {
         "id": 4,
@@ -193,34 +193,34 @@
       {
         "id": 8,
         "time": "2021-04-22 14:00:00",
-        "RD_RR_AVGINQ_P": 0,
-        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_AVGINQ_P": 20,
+        "RD_RR_AVGOUTQ_P": 10,
         "RD_RR_UPZ_P": 145,
         "RD_RR_AVGSTORQ_P": 0
       },
       {
         "id": 9,
         "time": "2021-04-22 20:00:00",
-        "RD_RR_AVGINQ_P": 0,
-        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_AVGINQ_P": 20,
+        "RD_RR_AVGOUTQ_P": 10,
         "RD_RR_UPZ_P": 145,
         "RD_RR_AVGSTORQ_P": 0
       },
       {
         "id": 10,
         "time": "2021-04-23 02:00:00",
-        "RD_RR_AVGINQ_P": 0,
-        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_AVGINQ_P": 20,
+        "RD_RR_AVGOUTQ_P": 112,
         "RD_RR_UPZ_P": 145,
-        "RD_RR_AVGSTORQ_P": 0
+        "RD_RR_AVGSTORQ_P": 40
       },
       {
         "id": 11,
         "time": "2021-04-23 08:00:00",
-        "RD_RR_AVGINQ_P": 0,
-        "RD_RR_AVGOUTQ_P": 0,
+        "RD_RR_AVGINQ_P": 20,
+        "RD_RR_AVGOUTQ_P": 10,
         "RD_RR_UPZ_P": 145,
-        "RD_RR_AVGSTORQ_P": 0
+        "RD_RR_AVGSTORQ_P": 40
       },
       {
         "id": 12,
@@ -228,7 +228,7 @@
         "RD_RR_AVGINQ_P": 0,
         "RD_RR_AVGOUTQ_P": 0,
         "RD_RR_UPZ_P": 145,
-        "RD_RR_AVGSTORQ_P": 0
+        "RD_RR_AVGSTORQ_P": 40
       },
       {
         "id": 13,
