@@ -215,7 +215,7 @@ export default {
   },
   computed: {
     classNames() {
-      return ["tree-chart-table"].concat(this.classes).join(" ");
+      return ["tree-chart-table"].concat(this.classes);
     },
   },
   created() {

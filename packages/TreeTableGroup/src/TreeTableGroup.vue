@@ -1,15 +1,17 @@
 <template>
   <div :class="classNames">
     <div class="tree-container" :style="treeStyle">
-      <a-tree v-model="checkedNode" :treeData="treeData" defaultExpandAll checkable @check="_onTreeCheck" />
+      <a-tree v-model="checkedNode" :treeData="treeData" defaultExpandAll checkable @check="_onTreeCheck"/>
     </div>
     <div class="table-container" :style="tableStyle">
-      <MultiOptionTable ref="tableRef" :tableData="m_tableData" :tableColumns="tableColumns" @cellEditDone="_cellEditDone" />
+      <MultiOptionTable ref="tableRef" :tableData="m_tableData" :tableColumns="tableColumns"
+                        @cellEditDone="_cellEditDone"/>
     </div>
   </div>
 </template>
 <script>
 import MultiOptionTable from '../../MultiOptionTable/src/MultiOptionTable.vue';
+
 const treeToList = (tree, list) => {
   if (tree instanceof Array) {
     for (let i = 0; i < tree.length; i++) {
@@ -63,7 +65,7 @@ export default {
     }
   },
   data() {
-    return { checkedNode: [], defaultTableData: [] };
+    return {checkedNode: [], defaultTableData: []};
   },
 
   created() {
@@ -90,15 +92,19 @@ export default {
     }
   },
   methods: {
+      _selecData(value){
+          this.$refs['tableRef']._selectkey(value)
+      },
     _cellEditDone(value) {
-      const { field, newValue, oldValue, rowIndex } = value;
+      const {field, newValue, oldValue, rowIndex} = value;
       if (this.defaultTableData[rowIndex][field] instanceof Object && this.defaultTableData[rowIndex][field].selectedId) {
         this.defaultTableData[rowIndex][field].selectedId = this.defaultTableData[rowIndex][field].options.find(i => i.name === newValue).id;
       } else {
         this.defaultTableData[rowIndex][field] = newValue;
       }
     },
-    _onTreeCheck(checkedKeys, { checked, checkedNodes, node, event }) {
+    _onTreeCheck(checkedKeys, {checked, checkedNodes, node, event}) {
+      this.$emit("checkedKeys", checkedKeys)
       this.defaultTableData.map(i => {
         i.selected = checkedKeys.includes(i.nodeId);
         return i;
@@ -120,11 +126,13 @@ export default {
   overflow: hidden;
   display: flex;
   text-align: left;
+
   .tree-container {
     flex: 0 0 auto;
     width: 20%;
     overflow: auto;
   }
+
   .table-container {
     flex: 0 0 auto;
     width: 80%;

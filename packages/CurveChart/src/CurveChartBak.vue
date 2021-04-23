@@ -1,10 +1,31 @@
 <template>
   <div>
-    <div ref="chartRef" :class="classNames" :id="id"></div>
+    <v-chart
+      :class="classNames"
+      :option="option"
+      :theme="theme"
+      ref="chartRef"
+    />
   </div>
 </template>
 <script>
-import * as echarts from "echarts";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { LineChart } from "echarts/charts";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+} from "echarts/components";
+import VChart, { THEME_KEY } from "vue-echarts";
+
+use([
+  CanvasRenderer,
+  LineChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+]);
 const defaultOption = {
   title: {
     text: "",
@@ -54,9 +75,9 @@ const yAxisOption = {
     return minV >= 0 ? minV : 0;
   },
 };
-let echartsInstance = null;
+
 export default {
-  name: "StandardChart",
+  name: "CurveChart",
   props: {
     isVisible: {
       type: Boolean,
@@ -90,19 +111,14 @@ export default {
     sections: {
       type: Array,
     },
-    id: {
-      type: String,
-      default: "standard-chart",
-    },
   },
   components: {
-    // VChart,
+    VChart,
   },
-  created() {},
   beforeMount() {},
   mounted() {
-    this.drawChart();
     this.getChartInstance();
+    // this.$emit("mergeOptions", this.$refs.chartRef.getDom());
     window.addEventListener("resize", this.resizeTheChart);
   },
   data() {
@@ -114,37 +130,25 @@ export default {
     classNames() {
       return ["chart"].concat(this.classes);
     },
-    // option() {
-    //   return this.prepareSeries();
-    // },
+    option() {
+      return this.prepareSeries();
+    },
   },
   methods: {
-    drawChart() {
-      echartsInstance = echarts.init(document.getElementById(this.id));
-      this.setDynamicOption();
-    },
     getChartInstance() {
       if (this.$refs.chartRef) {
         this.instance = this.$refs.chartRef;
       }
     },
-    clear() {
-      echartsInstance.clear();
-    },
-    setDynamicOption() {
-      let option = this.prepareSeries();
-      echartsInstance.setOption(option);
-    },
     resizeTheChart() {
       if (this.$refs && this.$refs.chartRef) {
-        echartsInstance.resize();
+        this.$refs.chartRef.resize();
       }
     },
     prepareSeries() {
       let option = Object.assign({}, defaultOption, this.chartOption);
       //x轴
       option.xAxis.data = this.chartData.map((cd) => cd[this.chartAxis.xAxis]);
-      // console.log(option.xAxis.data);
       if (this.chartAxis.timeSeries) {
         option.xAxis.data = this.sortTime(option.xAxis.data);
       }
@@ -204,9 +208,6 @@ export default {
           smooth: yax.smooth,
           id: yax.id,
           symbolSize: yax.symbolSize,
-          lineStyle: yax.lineStyle,
-          markLine: yax.markLine,
-          itemStyle: yax.itemStyle,
         };
         seriesObj.data = this.chartData.map((cd) => cd[yax.field]);
         option.series.push(seriesObj);
@@ -246,15 +247,5 @@ export default {
       });
     },
   },
-  beforeDestroy() {
-    echarts.dispose(echartsInstance);
-    window.removeEventListener("resize", this.resizeTheChart);
-  },
 };
 </script>
-<style>
-.chart {
-  width: 100%;
-  height: 300px;
-}
-</style>

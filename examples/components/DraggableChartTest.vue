@@ -13,7 +13,7 @@
     />
   </div>
 </template>
-
+ 
 <script>
 import DraggableChart from "../../packages/DraggableChart/src/DraggableChart.vue";
 export default {
@@ -29,6 +29,17 @@ export default {
         title: {
           text: "水位流量图",
           left: "center",
+        },
+        tooltip: {
+          triggerOn: "none",
+          formatter: function (params) {
+            return (
+              "X: " +
+              params.data[0].toFixed(2) +
+              "<br>Y: " +
+              params.data[1].toFixed(2)
+            );
+          },
         },
       },
       chartAxis: {
@@ -47,8 +58,8 @@ export default {
             title: "入库流量(m³/s)",
             selected: true,
             yAxisIndex: 0,
-            // smooth: true,
-            symbolSize: 10,
+            smooth: true,
+            symbolSize: 5,
           },
           {
             id: "dim1",
@@ -56,13 +67,13 @@ export default {
             title: "水位(m)",
             selected: true,
             yAxisIndex: 0,
-            // smooth: true,
-            symbolSize: 10,
+            smooth: true,
+            symbolSize: 5,
           },
         ],
       },
       tableColumns: [],
-      dragFields: ["dim1", "dim2"], // 配置可拖拽的线
+      dragFields: ["dim1", "dim2"],
       data: [
         { dim1: [1, 3], dim2: [1, 0], time: "2021-03-29T15:00:00", index: 1 },
         {
@@ -153,14 +164,13 @@ export default {
     };
   },
   methods: {
-    // 将最新的拖拽后的数据传到业务层
     handleUpdateData(field, data) {
       console.log("data", field, data);
     },
   },
 };
 </script>
-
+ 
 <style >
 .draggable-chart.chart {
   width: 100%;

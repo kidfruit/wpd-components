@@ -1,23 +1,21 @@
 <template>
-  <div class="SimpleTable" :key="randomKey" v-if="isVisible && isRefresh">
-    <hot-table
-      :settings="hotSettings"
-      :data="hotData"
-      :class="classes"
-      :after-change="afterChange"
-      ref="hotTableRef"
-    >
-      <hot-column
-        v-for="(item, index) in columns"
-        :key="index"
-        :title="item.title"
-        :data="item.field"
-        :source="item.source"
-        :renderer="item.renderer"
-        :type="item.type"
-        :width="item.width"
-        :readOnly="item.readOnly"
-      >
+  <div class="SimpleTable"
+       :key="randomKey"
+       v-if="isVisible && isRefresh">
+    <hot-table :settings="hotSettings"
+               :data="hotData"
+               :class="classes"
+               :after-change="afterChange"
+               ref="hotTableRef">
+      <hot-column v-for="(item, index) in columns"
+                  :key="index"
+                  :title="item.title"
+                  :data="item.field"
+                  :source="item.source"
+                  :renderer="item.renderer"
+                  :type="item.type"
+                  :width="item.width"
+                  :readOnly="item.readOnly">
       </hot-column>
     </hot-table>
   </div>
@@ -90,7 +88,7 @@ export default {
     //console.log("updated");
     this.getHotInstance()
   },
-  data: function() {
+  data: function () {
     return {
       editRows: [],
       addRows: [],
@@ -132,6 +130,16 @@ export default {
     },
   },
   methods: {
+    highlightRow(item) {
+      let list = this.$refs.hotTableRef.hotInstance.getSourceData()
+      let rows = ''
+      for (let i = 0; i < list.length; i++) {
+        if (item === list[i].key) {
+          rows = i
+        }
+      }
+      console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows, rows))
+    },
     _getSelectData(field) {
       if (typeof field == 'string' && field != '') {
         let Selectdata = []
