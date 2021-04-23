@@ -175,12 +175,12 @@ export default {
       for (let i = 0; i < tempArrOrder.length; i++) {
         let tempH = (canUseHeight * tempArrSize[i]) / totalHeight;
         tempGrid.push({
-          left: 50,
+          // left: 50,
           right: 50,
           height: tempH,
           top: tempTop,
         });
-        tempTop += 30 + tempH;
+        tempTop += 50 + tempH;
       }
       //设置组件实例的容器可用范围
       this.containerRange = {
@@ -219,7 +219,8 @@ export default {
                 show: false,
               },
               axisLabel: {
-                show: i == tempArrOrder.length - 1 ? true : false,
+                // show: i == tempArrOrder.length - 1 ? true : false,
+                show: true,
               },
               data: timeList,
               position: "top",
@@ -239,7 +240,8 @@ export default {
                 show: false,
               },
               axisLabel: {
-                show: i == tempArrOrder.length - 1 ? true : false,
+                // show: i == tempArrOrder.length - 1 ? true : false,
+                show: true,
               },
               data: timeList,
               position: "bottom",
@@ -261,7 +263,8 @@ export default {
               show: false,
             },
             axisLabel: {
-              show: i == tempArrOrder.length - 1 ? true : false,
+              // show: i == tempArrOrder.length - 1 ? true : false,
+              show: true,
             },
             data: timeList,
             position: "bottom",
@@ -282,7 +285,8 @@ export default {
               show: i == tempArrOrder.length - 1 ? true : false,
             },
             axisLabel: {
-              show: i == tempArrOrder.length - 1 ? true : false,
+              // show: i == tempArrOrder.length - 1 ? true : false,
+              show: true,
             },
             data: timeList,
             position: "bottom",
@@ -1375,12 +1379,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 .drag-chart-container {
-  height: 70vh;
+  min-height: 70vh;
   width: 100%;
 
   .drag-wrapper {
     width: 100%;
-    height: 50vh;
+    min-height: 70vh;
   }
 }
 </style>
