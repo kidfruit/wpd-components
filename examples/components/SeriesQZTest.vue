@@ -6,6 +6,7 @@
       :chartOption="chartOption"
       id="series-qz"
       :realtimeData="realtimeData"
+      :treeData="treeData"
       :resultData="resultData"
       :setting="{ rowHeaders: true }"
     />
@@ -25,6 +26,25 @@ export default {
     this.chartAxis.series = [];
     this.realtimeData = fakeData.realtimeData;
     this.resultData = fakeData.resultData;
+
+    this.treeData = [
+      {
+        key: "rootA",
+        title: "A流域",
+        children: [
+          { key: "a1", title: "水文站1" },
+          { key: "a2", title: "水文站2" },
+          { key: "a3", title: "水文站3" },
+          { key: "a4", title: "水文站4" },
+          { key: "a5", title: "水文站5" },
+        ],
+      },
+      {
+        key: "rootB",
+        title: "b流域",
+        children: [{ key: "b1", title: "水文站3" }],
+      },
+    ];
   },
   data() {
     return {
@@ -40,6 +60,7 @@ export default {
       chartAxis: {},
       realtimeData: [],
       resultData: [],
+      treeData: [],
     };
   },
 };

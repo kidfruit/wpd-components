@@ -1,34 +1,46 @@
 <template>
   <div :class="classNames">
-    <div class="chart-container">
-      <standard-chart
-        ref="chartRef"
-        :chartOption="chartOption"
-        :chartAxis="chartAxis"
-        :id="id"
-        :classes="['result-hydro-dynamic']"
-        :chartData="newData"
-      />
+    <div class="left-box">
+      <div class="chart-container">
+        <standard-chart
+          ref="chartRef"
+          :chartOption="chartOption"
+          :chartAxis="chartAxis"
+          :id="id"
+          :classes="['result-hydro-dynamic']"
+          :chartData="newData"
+        />
+      </div>
+      <div class="table-container">
+        <simple-table
+          ref="tableRef"
+          :tableData="newData"
+          :setting="setting"
+          :tableColumns="columns"
+        ></simple-table>
+      </div>
     </div>
-    <div class="table-container">
-      <simple-table
-        ref="tableRef"
-        :tableData="newData"
-        :setting="setting"
-        :tableColumns="columns"
-      ></simple-table>
+    <div class="right-box box-border">
+      <simple-tree
+        ref="treeRef"
+        :treeData="treeData"
+        @select="handleSelect"
+      ></simple-tree>
     </div>
   </div>
 </template>
 
 <script>
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
+xAxisc;
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
+import SimpleTree from "../../SimpleTree/src/SimpleTree.vue";
 let flag = false;
 export default {
   components: {
     StandardChart,
     SimpleTable,
+    SimpleTree,
   },
   props: {
     classes: {
@@ -43,6 +55,9 @@ export default {
     },
     realtimeData: {
       type: Object,
+    },
+    treeData: {
+      type: Array,
     },
     resultData: {
       type: Object,
@@ -85,6 +100,7 @@ export default {
         }
       });
     },
+    handleSelect() {},
     handleData() {
       this.newRealtimeData = JSON.parse(JSON.stringify(this.realtimeData));
       this.newResultData = JSON.parse(JSON.stringify(this.resultData));
@@ -197,4 +213,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.series-qz {
+  display: flex;
+  .left-box {
+    width: 80vw;
+    margin-right: 24px;
+    .chart-container,
+    .table-container {
+      width: 100%;
+    }
+  }
+  .right-box {
+    flex: 1;
+    padding: 8px 10px;
+    .ant-tree {
+      height: 100%;
+      max-height: 76vh;
+      overflow: auto;
+      ::v-deep > li {
+        text-align: left;
+      }
+    }
+  }
+  .box-border {
+    border: 1px solid #096dd9;
+  }
+}
 </style>
