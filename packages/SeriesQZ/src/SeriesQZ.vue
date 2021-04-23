@@ -32,7 +32,6 @@
 
 <script>
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
-xAxisc;
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 import SimpleTree from "../../SimpleTree/src/SimpleTree.vue";
 let flag = false;
