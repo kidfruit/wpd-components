@@ -321,7 +321,7 @@ export default {
           tempYAxisArr.push({
             gridIndex: i,
             name: tempItemUnit[i],
-            nameLocation: "start",
+            nameLocation: "end",
             nameGap: 5,
             type: "value",
             inverse: true,
@@ -1375,7 +1375,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .drag-chart-container {
-  height: 50vh;
+  height: 70vh;
   width: 100%;
 
   .drag-wrapper {

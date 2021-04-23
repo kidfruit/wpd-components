@@ -34,7 +34,7 @@ export default {
           left: "center",
         },
         grid: {
-          bottom: 70,
+          bottom: 24,
         },
       },
       chartAxis: {},
