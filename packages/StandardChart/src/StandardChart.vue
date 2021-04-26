@@ -206,6 +206,7 @@ export default {
           symbolSize: yax.symbolSize,
           lineStyle: yax.lineStyle,
           markLine: yax.markLine,
+          color: yax.color,
           itemStyle: yax.itemStyle,
         };
         seriesObj.data = this.chartData.map((cd) => cd[yax.field]);

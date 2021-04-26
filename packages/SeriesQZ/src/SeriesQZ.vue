@@ -168,15 +168,17 @@ export default {
       );
 
       let groups = this.chartAxis.yAxis.map((el) => el.group).flat(Infinity);
-      console.log(firstTime, resultFields, groups);
+      // console.log(firstTime, resultFields, groups);
       this.chartAxis.series.forEach((el) => {
         let one = groups.find((item) => item.set.indexOf(el.field) !== -1);
         if (one) {
           if (resultFields.indexOf(el.field) !== -1) {
             el.itemStyle.normal.lineStyle.color = one.color;
+            el.itemStyle.normal.color = one.color;
           } else {
             el.lineStyle = {};
             el.lineStyle.color = one.color;
+            el.color = one.color;
           }
         }
       });
