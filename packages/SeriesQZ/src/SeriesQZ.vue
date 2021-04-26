@@ -6,6 +6,7 @@
           ref="chartRef"
           :chartOption="chartOption"
           :chartAxis="chartAxis"
+          :key="randomKey"
           :id="id"
           :classes="['result-hydro-dynamic']"
           :chartData="newData"
@@ -34,7 +35,6 @@
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 import SimpleTree from "../../SimpleTree/src/SimpleTree.vue";
-let flag = false;
 export default {
   components: {
     StandardChart,
@@ -77,6 +77,7 @@ export default {
       newRealtimeData: [],
       resultFields: [],
       realtimeFields: [],
+      randomKey: Math.random(),
     };
   },
   created() {
@@ -99,8 +100,22 @@ export default {
         }
       });
     },
-    handleSelect() {},
+    handleSelect(key) {
+      this.$emit("select", key);
+    },
+    clearData() {
+      this.newData = [];
+      this.columns = [];
+      this.newResultData = [];
+      this.newRealtimeData = [];
+      this.resultFields = [];
+      this.realtimeFields = [];
+      if (this.$refs.tableRef) {
+        this.$refs.tableRef.reset();
+      }
+    },
     handleData() {
+      this.clearData();
       this.newRealtimeData = JSON.parse(JSON.stringify(this.realtimeData));
       this.newResultData = JSON.parse(JSON.stringify(this.resultData));
       this.newRealtimeData.tableData = this.newRealtimeData.tableData.sort(
@@ -141,27 +156,24 @@ export default {
                 },
               },
             });
-            if (!flag) {
-              obj = Object.assign({}, obj, {
-                markLine: {
-                  symbol: "none",
-                  data: [
-                    {
-                      name: "标记线",
-                      xAxis: firstTime,
-                      lineStyle: {
-                        //警戒线的样式  ，虚实  颜色
-                        type: "solid",
-                        color: "#000",
-                      },
+            obj = Object.assign({}, obj, {
+              markLine: {
+                symbol: "none",
+                data: [
+                  {
+                    name: "标记线",
+                    xAxis: firstTime,
+                    lineStyle: {
+                      //警戒线的样式  ，虚实  颜色
+                      type: "solid",
+                      color: "#000",
                     },
-                  ],
-                  label: { show: false, position: "middle" },
-                  silent: true,
-                },
-              });
-              flag = true;
-            }
+                  },
+                ],
+                label: { show: false, position: "middle" },
+                silent: true,
+              },
+            });
           }
           this.chartAxis.series.push(obj);
         }
@@ -172,15 +184,17 @@ export default {
       );
 
       let groups = this.chartAxis.yAxis.map((el) => el.group).flat(Infinity);
-      console.log(firstTime, resultFields, groups);
+      // console.log(firstTime, resultFields, groups);
       this.chartAxis.series.forEach((el) => {
         let one = groups.find((item) => item.set.indexOf(el.field) !== -1);
         if (one) {
           if (resultFields.indexOf(el.field) !== -1) {
             el.itemStyle.normal.lineStyle.color = one.color;
+            el.itemStyle.normal.color = one.color;
           } else {
             el.lineStyle = {};
             el.lineStyle.color = one.color;
+            el.color = one.color;
           }
         }
       });
@@ -206,6 +220,10 @@ export default {
       //   showMinLabel: true, //显示最小值
       //   showMaxLabel: true, //显示最大值
       // };
+      this.randomKey = Math.random();
+      setTimeout(() => {
+        this.$refs.tableRef.updateShow();
+      }, 500);
     },
   },
 };
