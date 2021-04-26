@@ -56,6 +56,38 @@ export default {
         grid: {
           bottom: 24,
         },
+        tooltip: {
+          trigger: "axis",
+          formatter: function (params) {
+            console.log("params", params);
+            var htmlStr =
+              '<div style="height: auto;max-height: 240px;overflow-y: auto;"><p style="color: #666;font-weight:700;font-size:14px;">' +
+              params[0].axisValue +
+              "</p>";
+            let arr = params.filter((el) => el.value);
+            arr = arr.sort((a, b) => b.value - a.value);
+            for (var i = 0; i < arr.length; i++) {
+              if (arr[i].value) {
+                htmlStr +=
+                  '<div style="display:flex;justify-content:space-between;"><p style="color: #000;textAlign:left;">' +
+                  arr[i].marker +
+                  arr[i].seriesName +
+                  ":&nbsp;&nbsp;" +
+                  "<span>" +
+                  arr[i].value +
+                  "</span>" +
+                  "</p></div>";
+              }
+            }
+            htmlStr += "</div>";
+            return htmlStr;
+          },
+          extraCssText: "box-shadow: 0 0 3px rgba(150,150,150, 0.7);",
+          textStyle: {
+            fontSize: 14,
+            color: "#000",
+          },
+        },
       },
       chartAxis: {},
       realtimeData: [],
