@@ -6,6 +6,7 @@
           ref="chartRef"
           :chartOption="chartOption"
           :chartAxis="chartAxis"
+          :key="randomKey"
           :id="id"
           :classes="['result-hydro-dynamic']"
           :chartData="newData"
@@ -76,6 +77,7 @@ export default {
       newRealtimeData: [],
       resultFields: [],
       realtimeFields: [],
+      randomKey: Math.random(),
     };
   },
   created() {
@@ -98,8 +100,22 @@ export default {
         }
       });
     },
-    handleSelect() {},
+    handleSelect(key) {
+      this.$emit("select", key);
+    },
+    clearData() {
+      this.newData = [];
+      this.columns = [];
+      this.newResultData = [];
+      this.newRealtimeData = [];
+      this.resultFields = [];
+      this.realtimeFields = [];
+      if (this.$refs.tableRef) {
+        this.$refs.tableRef.reset();
+      }
+    },
     handleData() {
+      this.clearData();
       this.newRealtimeData = JSON.parse(JSON.stringify(this.realtimeData));
       this.newResultData = JSON.parse(JSON.stringify(this.resultData));
       this.newRealtimeData.tableData = this.newRealtimeData.tableData.sort(
@@ -204,6 +220,10 @@ export default {
       //   showMinLabel: true, //显示最小值
       //   showMaxLabel: true, //显示最大值
       // };
+      this.randomKey = Math.random();
+      setTimeout(() => {
+        this.$refs.tableRef.updateShow();
+      }, 500);
     },
   },
 };
