@@ -34,7 +34,6 @@
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 import SimpleTree from "../../SimpleTree/src/SimpleTree.vue";
-let flag = false;
 export default {
   components: {
     StandardChart,
@@ -141,27 +140,24 @@ export default {
                 },
               },
             });
-            if (!flag) {
-              obj = Object.assign({}, obj, {
-                markLine: {
-                  symbol: "none",
-                  data: [
-                    {
-                      name: "标记线",
-                      xAxis: firstTime,
-                      lineStyle: {
-                        //警戒线的样式  ，虚实  颜色
-                        type: "solid",
-                        color: "#000",
-                      },
+            obj = Object.assign({}, obj, {
+              markLine: {
+                symbol: "none",
+                data: [
+                  {
+                    name: "标记线",
+                    xAxis: firstTime,
+                    lineStyle: {
+                      //警戒线的样式  ，虚实  颜色
+                      type: "solid",
+                      color: "#000",
                     },
-                  ],
-                  label: { show: false, position: "middle" },
-                  silent: true,
-                },
-              });
-              flag = true;
-            }
+                  },
+                ],
+                label: { show: false, position: "middle" },
+                silent: true,
+              },
+            });
           }
           this.chartAxis.series.push(obj);
         }
