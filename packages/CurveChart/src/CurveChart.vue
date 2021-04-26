@@ -1,13 +1,52 @@
 <template>
   <div>
-    <div ref="chartRef"
-         v-if="chartShow"
-         :class="classNames"
-         id="curve-chart"></div>
-    <simple-table v-if="tableShow"
-                  ref="tableChart"
-                  :tableData="chartData"
-                  :tableColumns="tableColumns"></simple-table>
+      <!-- 上下结构 -->
+    <div v-if="this.structure == 'Upanddown'||!tableShow">
+      <a-row type="flex"
+             justify="center"
+             :gutter="16">
+        <a-col :span="24">
+          <div ref="chartRef"
+               v-if="chartShow"
+               :class="classNames"
+               id="curve-chart"></div>
+        </a-col>
+      </a-row>
+      <a-row type="flex"
+             justify="center"
+             :gutter="16">
+        <a-col :span="24">
+          <simple-table v-if="tableShow"
+                        ref="tableChart"
+                        :tableData="chartData"
+                        :tableColumns="tableColumns"></simple-table>
+        </a-col>
+      </a-row>
+    </div>
+    <div v-if="this.structure == 'about' && tableShow">
+      <a-row type="flex"
+             justify="center"
+             >
+        <a-col :span="12">
+          <div ref="chartRef"
+               v-if="chartShow"
+               :class="classNames"
+               id="curve-chart"></div>
+        </a-col>
+        <a-col :span="12">
+          <simple-table v-if="tableShow"
+                        style="margin-top: 40px;"
+                        ref="tableChart"
+                        :tableData="chartData"
+                        :tableColumns="tableColumns"></simple-table>
+        </a-col>
+      </a-row>
+      <!-- <a-row type="flex"
+             justify="center"
+             >
+        
+      </a-row> -->
+    </div>
     <div v-if="interpolateCalcShow">
       <a-row type="flex"
              justify="center"
@@ -63,6 +102,7 @@ const defaultOption = {
     bottom: 50,
     right: 100,
     left: 100,
+    top:40
   },
   legend: {
     data: [],
@@ -142,6 +182,9 @@ export default {
       default: 'macarons',
       required: false,
     },
+    structure: {
+      type: String,
+    },
     chartOption: {
       type: Object,
       required: false,
@@ -167,7 +210,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    console.log("88888")
+    console.log(this.structure)
     this.dropdowndata()
     this.drawChart()
     this.getChartInstance()
@@ -199,8 +242,12 @@ export default {
       this.$emit('compute', { options: this.options, value: this.value })
     },
     dropdowndata() {
+      if (this.structure == 'Upanddown') {
+        this.span = 24
+      } else if (this.structure == 'about') {
+        this.span = 12
+      }
       this.handleselect = this.chartAxis.xAxis.id
-     
       this.dropdown.push(this.chartAxis.xAxis)
       this.dropdown.push(this.chartAxis.yAxis)
     },
@@ -223,7 +270,7 @@ export default {
     },
     setDynamicOption() {
       let option = this.prepareSeries()
-  
+
       echartsInstance.setOption(option)
     },
     resizeTheChart() {
@@ -246,7 +293,6 @@ export default {
       })
       let option = Object.assign({}, defaultOption, this.chartOption)
 
-   
       //x轴
       option.xAxis.name = this.chartAxis.xAxis.title
       option.xAxis.data = this.chartData.map(
@@ -261,7 +307,7 @@ export default {
       if (Array.isArray(option.grid) && option.grid.length > 0) {
         option.xAxis = this.chartAxis.xAxis.id
       }
-     
+
       //y轴
       //按照yAxisIndex排序
       if (Object.prototype.hasOwnProperty.call(yAxis[0], 'yAxisIndex')) {
@@ -279,7 +325,7 @@ export default {
           gridIndex: ax.gridIndex,
         })
       })
-     
+
       //legend
       //   this.chartAxis.series.forEach((yx) => {
       //     option.legend.data.push(yx.title)

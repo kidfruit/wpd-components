@@ -144,6 +144,7 @@ export default {
       let option = Object.assign({}, defaultOption, this.chartOption);
       //x轴
       option.xAxis.data = this.chartData.map((cd) => cd[this.chartAxis.xAxis]);
+      // console.log(option.xAxis.data);
       if (this.chartAxis.timeSeries) {
         option.xAxis.data = this.sortTime(option.xAxis.data);
       }
@@ -203,6 +204,9 @@ export default {
           smooth: yax.smooth,
           id: yax.id,
           symbolSize: yax.symbolSize,
+          lineStyle: yax.lineStyle,
+          markLine: yax.markLine,
+          itemStyle: yax.itemStyle,
         };
         seriesObj.data = this.chartData.map((cd) => cd[yax.field]);
         option.series.push(seriesObj);

@@ -1,13 +1,14 @@
 <template>
   <div>
     <div ref="chartRef"
+         v-if="chartShow"
          :class="classNames"
          id="series-pptn"></div>
     <simple-table v-if="tableShow"
                   ref="tableChart"
                   :tableData="chartData"
                   :tableColumns="tableColumns"></simple-table>
-    <!-- <div>
+    <div v-if="interpolateCalcShow">
       <a-row type="flex"
              justify="center"
              :gutter="16">
@@ -16,8 +17,8 @@
                     style="width: 120px"
                     @change="handleChange">
             <a-select-option v-for="i in dropdown"
-                             :key="i.field"
-                             :value="i.field">
+                             :key="i.id"
+                             :value="i.id">
               {{i.title}}
             </a-select-option>
           </a-select>
@@ -39,9 +40,8 @@
         </a-col>
 
       </a-row>
-
-    </div> -->
-    <!-- @cellEditDone="cellEditDone" -->
+      <!-- <button @click="qiehuan">切换</button> -->
+    </div>
   </div>
 </template>
 <script>
@@ -54,9 +54,14 @@ const defaultOption = {
   },
   tooltip: {
     trigger: 'axis',
+    formatter: function (arg) {
+      return arg[0].seriesName + ':' + arg[0].data
+    },
   },
   grid: {
     bottom: 50,
+    right: 100,
+    left: 100,
   },
   legend: {
     data: [],
@@ -66,7 +71,7 @@ const defaultOption = {
   },
   xAxis: {
     type: 'category',
-    boundaryGap: false,
+    // boundaryGap: false,
     data: [],
   },
   yAxis: [],
@@ -111,7 +116,18 @@ export default {
       default: true,
       required: false,
     },
+
+    chartShow: {
+      type: Boolean,
+      default: true,
+      required: false,
+    },
     tableShow: {
+      type: Boolean,
+      default: true,
+      required: false,
+    },
+    interpolateCalcShow: {
       type: Boolean,
       default: true,
       required: false,
@@ -134,6 +150,7 @@ export default {
     },
     tableColumns: {
       type: Array,
+      required: false,
     },
     chartData: {
       type: Array,
@@ -149,22 +166,8 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
+    console.log("88888")
     this.dropdowndata()
-    let yAxis = []
-    let series = []
-    yAxis.push({
-      title: this.chartAxis.ytitle,
-      yAxisIndex: 0,
-    })
-    series.push({
-      field: this.chartAxis.yAxis,
-      title: this.chartAxis.ytitle,
-      selected: true,
-      yAxisIndex: 0,
-    })
-    this.chartAxis.yAxis = yAxis
-    this.chartAxis.series = series
-
     this.drawChart()
     this.getChartInstance()
     window.addEventListener('resize', this.resizeTheChart)
@@ -195,21 +198,10 @@ export default {
       this.$emit('compute', { options: this.options, value: this.value })
     },
     dropdowndata() {
-      this.handleselect = this.chartAxis.xAxis
-      for (let i = 0; i < this.tableColumns.length; i++) {
-        console.log(
-          this.tableColumns[i].field,
-          this.chartAxis.yAxis,
-          this.chartAxis.xAxis
-        )
-        if (
-          this.tableColumns[i].field == this.chartAxis.yAxis ||
-          this.tableColumns[i].field == this.chartAxis.xAxis
-        ) {
-          this.dropdown.push(this.tableColumns[i])
-        }
-      }
-      console.log('this.dropdown', this.dropdown)
+      this.handleselect = this.chartAxis.xAxis.id
+     
+      this.dropdown.push(this.chartAxis.xAxis)
+      this.dropdown.push(this.chartAxis.yAxis)
     },
     handleChange(value) {
       this.options = value
@@ -230,6 +222,7 @@ export default {
     },
     setDynamicOption() {
       let option = this.prepareSeries()
+  
       echartsInstance.setOption(option)
     },
     resizeTheChart() {
@@ -238,9 +231,26 @@ export default {
       }
     },
     prepareSeries() {
+      let yAxis = []
+      let series = []
+      yAxis.push({
+        title: this.chartAxis.yAxis.title,
+        yAxisIndex: 0,
+      })
+      series.push({
+        field: this.chartAxis.yAxis.id,
+        title: this.chartAxis.yAxis.title,
+        selected: true,
+        yAxisIndex: 0,
+      })
       let option = Object.assign({}, defaultOption, this.chartOption)
+
+   
       //x轴
-      option.xAxis.data = this.chartData.map((cd) => cd[this.chartAxis.xAxis])
+      option.xAxis.name = this.chartAxis.xAxis.title
+      option.xAxis.data = this.chartData.map(
+        (cd) => cd[this.chartAxis.xAxis.id]
+      )
       if (this.chartAxis.timeSeries) {
         option.xAxis.data = this.sortTime(option.xAxis.data)
       }
@@ -248,40 +258,37 @@ export default {
         option.xAxis.data = this.sections
       }
       if (Array.isArray(option.grid) && option.grid.length > 0) {
-        option.xAxis = this.chartAxis.xAxis
+        option.xAxis = this.chartAxis.xAxis.id
       }
-
+     
       //y轴
       //按照yAxisIndex排序
-
-      if (
-        Object.prototype.hasOwnProperty.call(
-          this.chartAxis.yAxis[0],
-          'yAxisIndex'
-        )
-      ) {
-        this.chartAxis.yAxis = this.chartAxis.yAxis.sort((a, b) => {
+      if (Object.prototype.hasOwnProperty.call(yAxis[0], 'yAxisIndex')) {
+        yAxis = yAxis.sort((a, b) => {
           return a['yAxisIndex'] - b['yAxisIndex']
         })
       }
 
-      option.yAxis = this.chartAxis.yAxis.map((ax) => {
+      // this.chartAxis.yAxis = yAxis
+      // this.chartAxis.series = series
+
+      option.yAxis = yAxis.map((ax) => {
         return Object.assign({}, yAxisOption, {
           name: ax.title,
           gridIndex: ax.gridIndex,
         })
       })
-
+     
       //legend
-      this.chartAxis.series.forEach((yx) => {
-        option.legend.data.push(yx.title)
-        option.legend.selected[yx.title] = Object.prototype.hasOwnProperty.call(
-          yx,
-          'selected'
-        )
-          ? yx.selected
-          : true
-      })
+      //   this.chartAxis.series.forEach((yx) => {
+      //     option.legend.data.push(yx.title)
+      //     option.legend.selected[yx.title] = Object.prototype.hasOwnProperty.call(
+      //       yx,
+      //       'selected'
+      //     )
+      //       ? yx.selected
+      //       : true
+      //   })
 
       //data
       this.chartData = this.chartData.sort((a, b) => {
@@ -291,10 +298,11 @@ export default {
         )
       })
       option.series = []
-      this.chartAxis.series.forEach((yax) => {
+      series.forEach((yax) => {
         let seriesObj = {
           name: yax.title,
-          type: 'line',
+          type: 'bar',
+          barWidth: '60%',
           data: [],
           yAxisIndex: yax.yAxisIndex,
           xAxisIndex: yax.xAxisIndex,
@@ -306,14 +314,13 @@ export default {
         option.series.push(seriesObj)
       })
       if (!option.timeline) {
-        console.log('option', option)
         return {
           baseOption: option,
         }
       } else {
         // 带有时间线的chart
         let options = []
-        let fields = this.chartAxis.series.map((el) => el.field)
+        let fields = series.map((el) => el.field)
         this.chartData.forEach((cd, index) => {
           let series = []
           fields.forEach((item) => {

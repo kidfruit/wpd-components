@@ -30,8 +30,10 @@ export default {
       deep: true,
       handler(val) {
         if (val.length > 0) {
-          this.expandedKeys = [val[0].key];
-          this.selectedKeys = [val[0].key];
+          val.forEach((el) => {
+            this.expandedKeys.push(el.key);
+            this.selectedKeys.push(el.key);
+          });
         }
       },
     },
