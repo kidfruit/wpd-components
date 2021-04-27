@@ -127,14 +127,14 @@ let rAxis = {
   ],
   series: [
     {
-      field: "sectionQArray",
+      field: "sectionZArray",
       title: "初始水位(m)",
       selected: true,
       yAxisIndex: 0,
       xAxisIndex: 0,
     },
     {
-      field: "sectionZArray",
+      field: "sectionQArray",
       title: "初始流量(m³/s)",
       selected: true,
       yAxisIndex: 1,
