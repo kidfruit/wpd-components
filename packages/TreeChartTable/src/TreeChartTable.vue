@@ -99,28 +99,28 @@ let qCols = [
 let rAxis = {
   xAxis: [
     {
-      gridIndex: 0,
+      // gridIndex: 0,
       type: "category",
-      show: false,
+      show: true,
       data: [],
     },
-    {
-      gridIndex: 1,
-      type: "category",
-      data: [],
-    },
+    // {
+    //   // gridIndex: 0,
+    //   type: "category",
+    //   data: [],
+    // },
   ],
   timeSeries: true,
   yAxis: [
     {
       title: "初始水位(m)",
-      yAxisIndex: 1,
-      xAxisIndex: 1,
-      gridIndex: 1,
+      yAxisIndex: 0,
+      xAxisIndex: 0,
+      gridIndex: 0,
     },
     {
       title: "初始流量(m³/s)",
-      yAxisIndex: 0,
+      yAxisIndex: 1,
       xAxisIndex: 0,
       gridIndex: 0,
     },
@@ -130,14 +130,14 @@ let rAxis = {
       field: "sectionQArray",
       title: "初始水位(m)",
       selected: true,
-      yAxisIndex: 1,
-      xAxisIndex: 1,
+      yAxisIndex: 0,
+      xAxisIndex: 0,
     },
     {
       field: "sectionZArray",
       title: "初始流量(m³/s)",
       selected: true,
-      yAxisIndex: 0,
+      yAxisIndex: 1,
       xAxisIndex: 0,
     },
   ],
@@ -163,9 +163,9 @@ let qAxis = {
 };
 let rGrid = [
   //0降雨
-  { x: "7%", y: "7%", height: "35%", left: "10%" },
+  { x: "9%", y: "9%", height: "84%", left: "5%", right: "5%" },
   //1水位流量
-  { x: "7%", y2: "7%", height: "35%", left: "10%", bottom: "7%" },
+  // { x: "7%", y2: "7%", height: "35%", left: "10%", bottom: "7%" },
 ];
 let qGrid = {
   bottom: 70,
