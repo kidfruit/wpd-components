@@ -1,80 +1,93 @@
 <template>
   <div>
-      <!-- 上下结构 -->
-    <div v-if="this.structure == 'Upanddown'||!tableShow">
-      <a-row type="flex"
-             justify="center"
-             :gutter="16">
+    <!-- 上下结构 -->
+    <div v-if="this.structure === 'Upanddown'||!tableShow">
+      <a-row
+          type="flex"
+          justify="center"
+          :gutter="16">
         <a-col :span="24">
-          <div ref="chartRef"
-               v-if="chartShow"
-               :class="classNames"
-               id="curve-chart"></div>
+          <div
+              ref="chartRef"
+              v-if="chartShow"
+              :class="classNames"
+              :id="id"></div>
         </a-col>
       </a-row>
-      <a-row type="flex"
-             justify="center"
-             :gutter="16">
+      <a-row
+          type="flex"
+          justify="center"
+          :gutter="16">
         <a-col :span="24">
-          <simple-table v-if="tableShow"
-                        ref="tableChart"
-                        :tableData="chartData"
-                        :tableColumns="tableColumns"></simple-table>
+          <simple-table
+              v-if="tableShow"
+              ref="tableChart"
+              :tableData="chartData"
+              :tableColumns="tableColumns"></simple-table>
         </a-col>
       </a-row>
     </div>
-    <div v-if="this.structure == 'about' && tableShow">
-      <a-row type="flex"
-             justify="center"
-             >
+    <div v-if="this.structure === 'about' && tableShow">
+      <a-row
+          type="flex"
+          justify="center"
+      >
         <a-col :span="12">
-          <div ref="chartRef"
-               v-if="chartShow"
-               :class="classNames"
-               id="curve-chart"></div>
+          <div
+              ref="chartRef"
+              v-if="chartShow"
+              :class="classNames"
+              :id="id"></div>
         </a-col>
         <a-col :span="12">
-          <simple-table v-if="tableShow"
-                        style="margin-top: 40px;"
-                        ref="tableChart"
-                        :tableData="chartData"
-                        :tableColumns="tableColumns"></simple-table>
+          <simple-table
+              v-if="tableShow"
+              style="margin-top: 40px;"
+              ref="tableChart"
+              :tableData="chartData"
+              :tableColumns="tableColumns"></simple-table>
         </a-col>
       </a-row>
       <!-- <a-row type="flex"
              justify="center"
              >
-        
+
       </a-row> -->
     </div>
     <div v-if="interpolateCalcShow">
-      <a-row type="flex"
-             justify="center"
-             :gutter="16">
+      <a-row
+          type="flex"
+          justify="center"
+          :gutter="16">
         <a-col :span="1.5">
-          <a-select :default-value="handleselect"
-                    style="width: 120px"
-                    @change="handleChange">
-            <a-select-option v-for="i in dropdown"
-                             :key="i.id"
-                             :value="i.id">
-              {{i.title}}
+          <a-select
+              :default-value="handleselect"
+              style="width: 120px"
+              @change="handleChange">
+            <a-select-option
+                v-for="i in dropdown"
+                :key="i.id"
+                :value="i.id">
+              {{ i.title }}
             </a-select-option>
           </a-select>
         </a-col>
         <a-col :span="1.5">
-          <a-input v-model="value" />
+          <a-input v-model="value"/>
         </a-col>
-        <a-col :span="1.5"
-               style="padding-top: 5px">
+        <a-col
+            :span="1.5"
+            style="padding-top: 5px">
           <span style="margin-top: 5px;">插值结果：</span>
         </a-col>
         <a-col :span="1.5">
-          <a-input v-model="value2"
-                   disabled />
+          <a-input
+              v-model="value2"
+              disabled/>
         </a-col>
-        <a-col :span="1.5"
-               style="padding-top: 3px">
+        <a-col
+            :span="1.5"
+            style="padding-top: 3px">
           <button @click="calculation">计算</button>
         </a-col>
 
@@ -102,7 +115,7 @@ const defaultOption = {
     bottom: 50,
     right: 100,
     left: 100,
-    top:40
+    top: 40
   },
   legend: {
     data: [],
@@ -122,7 +135,7 @@ const defaultOption = {
 const yAxisOption = {
   type: 'value',
   splitNumber: 5,
-  axisLine: { show: true },
+  axisLine: {show: true},
   splitLine: {
     show: true,
     lineStyle: {
@@ -202,15 +215,22 @@ export default {
     sections: {
       type: Array,
     },
+    id: {
+      type: String,
+      default: "curve-chart",
+      required: false
+    },
   },
   components: {
     SimpleTable,
     // VChart,
   },
-  created() {},
-  beforeMount() {},
+  created() {
+  },
+  beforeMount() {
+  },
   mounted() {
-    console.log(this.structure)
+    //console.log(this.structure)
     this.dropdowndata()
     this.drawChart()
     this.getChartInstance()
@@ -239,12 +259,12 @@ export default {
       this.value2 = value
     },
     calculation() {
-      this.$emit('compute', { options: this.options, value: this.value })
+      this.$emit('compute', {options: this.options, value: this.value})
     },
     dropdowndata() {
-      if (this.structure == 'Upanddown') {
+      if (this.structure === 'Upanddown') {
         this.span = 24
-      } else if (this.structure == 'about') {
+      } else if (this.structure === 'about') {
         this.span = 12
       }
       this.handleselect = this.chartAxis.xAxis.id
@@ -257,7 +277,7 @@ export default {
       this.value2 = ''
     },
     drawChart() {
-      echartsInstance = echarts.init(document.getElementById('curve-chart'))
+      echartsInstance = echarts.init(document.getElementById(this.id))
       this.setDynamicOption()
     },
     getChartInstance() {
@@ -296,7 +316,7 @@ export default {
       //x轴
       option.xAxis.name = this.chartAxis.xAxis.title
       option.xAxis.data = this.chartData.map(
-        (cd) => cd[this.chartAxis.xAxis.id]
+          (cd) => cd[this.chartAxis.xAxis.id]
       )
       if (this.chartAxis.timeSeries) {
         option.xAxis.data = this.sortTime(option.xAxis.data)
@@ -341,7 +361,7 @@ export default {
       this.chartData = this.chartData.sort((a, b) => {
         let timeField = this.chartAxis.xAxis
         return (
-          new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
+            new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
         )
       })
       option.series = []
@@ -371,7 +391,7 @@ export default {
           let series = []
           fields.forEach((item) => {
             if (cd[item]) {
-              series.push({ data: cd[item] })
+              series.push({data: cd[item]})
             }
           })
           options.push({
