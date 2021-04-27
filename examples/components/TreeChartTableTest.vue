@@ -8,6 +8,7 @@
       :isRefresh="isRefresh"
       :treeData="treeData"
       :chartOption="chartOption"
+      :extraOptions="extraOptions"
       :rawData="rawData"
     />
   </div>
@@ -32,6 +33,12 @@ export default {
       },
       treeData: [],
       rawData: [],
+      extraOptions: {
+        title: {
+          text: "断面信息图",
+          left: "center",
+        },
+      },
     };
   },
   created() {
