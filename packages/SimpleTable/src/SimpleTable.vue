@@ -1,29 +1,33 @@
 <template>
-  <div class="SimpleTable"
-       :key="randomKey"
-       v-if="isVisible && isRefresh">
-    <hot-table :settings="hotSettings"
-               :data="hotData"
-               :class="classes"
-               :after-change="afterChange"
-               ref="hotTableRef">
-      <hot-column v-for="(item, index) in columns"
-                  :key="index"
-                  :title="item.title"
-                  :data="item.field"
-                  :source="item.source"
-                  :renderer="item.renderer"
-                  :type="item.type"
-                  :width="item.width"
-                  :readOnly="item.readOnly">
+  <div
+      class="SimpleTable-Container2021"
+      :key="randomKey"
+      v-if="isVisible && isRefresh">
+    <hot-table
+        :settings="hotSettings"
+        :data="hotData"
+        :class="classes"
+        :after-change="afterChange"
+        ref="hotTableRef">
+      <hot-column
+          v-for="(item, index) in columns"
+          :key="index"
+          :title="item.title"
+          :data="item.field"
+          :source="item.source"
+          :renderer="item.renderer"
+          :type="item.type"
+          :width="item.width"
+          :readOnly="item.readOnly">
       </hot-column>
     </hot-table>
   </div>
 </template>
 <script>
-import { HotTable, HotColumn } from '@handsontable/vue'
+import {HotTable, HotColumn} from '@handsontable/vue'
 import Handsontable from 'handsontable'
-import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
+import {registerLanguageDictionary, zhCN} from 'handsontable/i18n'
+
 registerLanguageDictionary(zhCN)
 
 const defaultHotSettings = {
@@ -74,8 +78,8 @@ export default {
   beforeMount() {
     // 单元格自定义渲染
     Handsontable.renderers.registerRenderer(
-      'negativeValueRenderer',
-      this.negativeValueRenderer
+        'negativeValueRenderer',
+        this.negativeValueRenderer
     )
     const data = JSON.parse(JSON.stringify(this.tableData))
     this.prepareData(data)
@@ -210,7 +214,7 @@ export default {
           this.getHotInstance()
           const [row, prop, oldV, newV] = change
           const changedRow = this.hotInstance.getDataAtRow(row)
-          let rowObj = { row: row.toString() }
+          let rowObj = {row: row.toString()}
           this.tableColumns.forEach((cl, idx) => {
             rowObj[cl.field] = changedRow[idx]
           })
@@ -242,7 +246,7 @@ export default {
         for (let k in this.dropdownHash) {
           if (Object.prototype.hasOwnProperty.call(value, k)) {
             const list = this.dropdownHash[k].filter(
-              (item) => item[fromV] === value[k]
+                (item) => item[fromV] === value[k]
             )[0]
             list && (value[k] = list[toV])
           }
@@ -281,7 +285,7 @@ export default {
 
     // 黑科技更新表格、图展示
     updateShow() {
-      const { row, col } = this.getvisibleLocal()
+      const {row, col} = this.getvisibleLocal()
       this.isRefresh = false
       this.$nextTick(() => {
         this.isRefresh = true
@@ -289,16 +293,27 @@ export default {
         this.scrollViewportTo(row, col)
       })
     },
+    refresh() {
+      //适用于父节点宽度变化的情况
+      this.hotInstance.updateSettings({
+        width: '100%'
+      })
+      this.hotInstance.render()
+    },
+    render() {
+      //刷新table
+      this.hotInstance.render()
+    },
     getvisibleLocal() {
       const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin(
-        'autoRowSize'
+          'autoRowSize'
       )
       const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin(
-        'autoColumnSize'
+          'autoColumnSize'
       )
       const col = pluginCol.getFirstVisibleColumn()
       const row = pluginRow.getFirstVisibleRow()
-      return { row, col }
+      return {row, col}
     },
     scrollViewportTo(row, col) {
       this.$nextTick(() => {
@@ -345,9 +360,9 @@ export default {
             }
           }
           this.$refs.hotTableRef.hotInstance.alter(
-            'remove_row',
-            el[0],
-            el[2] - el[0] + 1
+              'remove_row',
+              el[0],
+              el[2] - el[0] + 1
           )
         })
       }
@@ -374,6 +389,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
   .hot-table {
     width: 100%;
     height: 100%;
