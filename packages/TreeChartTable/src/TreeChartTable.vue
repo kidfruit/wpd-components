@@ -212,6 +212,9 @@ export default {
     id: {
       type: String,
     },
+    extraOptions: {
+      type: Object,
+    },
   },
   computed: {
     classNames() {
@@ -274,7 +277,12 @@ export default {
         // 清除殘留的圖表數據
         this.$refs.chartRef.clear();
 
-        this.newOption = Object.assign({}, this.chartOption, { grid: qGrid });
+        this.newOption = Object.assign(
+          {},
+          this.chartOption,
+          { grid: qGrid },
+          this.extraOptions
+        );
         setTimeout(() => {
           this.$refs.chartRef.setDynamicOption();
         }, 10);
