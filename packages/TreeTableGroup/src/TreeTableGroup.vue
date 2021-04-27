@@ -92,9 +92,9 @@ export default {
     }
   },
   methods: {
-      _selecData(value){
-          this.$refs['tableRef']._selectkey(value)
-      },
+    _selecData(value) {
+      this.$refs['tableRef']._selectkey(value)
+    },
     _cellEditDone(value) {
       const {field, newValue, oldValue, rowIndex} = value;
       if (this.defaultTableData[rowIndex][field] instanceof Object && this.defaultTableData[rowIndex][field].selectedId) {
@@ -116,7 +116,18 @@ export default {
      */
     getTableData() {
       return this.m_tableData;
-    }
+    },
+    highlightRow(value){
+      this.$refs['tableRef'].highlightRow(value)
+    },
+    refresh() {
+      //适用于父节点宽度变化的情况
+      this.$refs['tableRef'].refresh()
+    },
+    render() {
+      //刷新table
+      this.$refs['tableRef'].render()
+    },
   }
 };
 </script>

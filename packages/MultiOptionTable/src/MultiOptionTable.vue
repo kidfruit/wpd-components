@@ -14,14 +14,15 @@
                   :data="item.field"
                   :source="item.source"
                   :renderer="item.renderer"
-                  :type="item.type"> </hot-column>
+                  :type="item.type"></hot-column>
     </hot-table>
   </div>
 </template>
 <script>
-import { HotTable, HotColumn } from '@handsontable/vue'
+import {HotTable, HotColumn} from '@handsontable/vue'
 import Handsontable from 'handsontable'
-import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
+import {registerLanguageDictionary, zhCN} from 'handsontable/i18n'
+
 registerLanguageDictionary(zhCN)
 
 const defaultHotSettings = {
@@ -71,8 +72,8 @@ export default {
   beforeMount() {
     // 单元格自定义渲染
     Handsontable.renderers.registerRenderer(
-      'negativeValueRenderer',
-      this.negativeValueRenderer
+        'negativeValueRenderer',
+        this.negativeValueRenderer
     )
     // console.log(this.hotData, 'this.hotData');
   },
@@ -108,28 +109,28 @@ export default {
           let cellProperties = {}
           if (_this.dropdownHash[prop + '-row' + row]) {
             cellProperties.source = _this.dropdownHash[prop + '-row' + row].map(
-              (i) => i.name
+                (i) => i.name
             )
           }
           cellProperties.renderer = 'negativeValueRenderer'
           return cellProperties
         },
         afterSelection: (
-          rowIndex,
-          columnIndex,
-          row2,
-          column2,
-          preventScrolling,
-          selectionLayerLevel
+            rowIndex,
+            columnIndex,
+            row2,
+            column2,
+            preventScrolling,
+            selectionLayerLevel
         ) => {
           if (rowIndex >= 0) {
             const taregtData = _this.tableData[rowIndex]
             let tempColumns = []
             _this.columns.forEach((item) => {
               if (
-                taregtData[item.field] instanceof Object &&
-                taregtData[item.field].options &&
-                taregtData[item.field].title
+                  taregtData[item.field] instanceof Object &&
+                  taregtData[item.field].options &&
+                  taregtData[item.field].title
               ) {
                 tempColumns.push(taregtData[item.field].title)
               } else {
@@ -154,11 +155,11 @@ export default {
     columns() {
       let result = this.tableColumns.map((item, index) => {
         let itemNew = Object.assign(
-          {},
-          {
-            ...item,
-            data: item.field,
-          }
+            {},
+            {
+              ...item,
+              data: item.field,
+            }
         )
         if (Object.prototype.hasOwnProperty.call(itemNew, 'type')) {
           switch (itemNew.type) {
@@ -175,12 +176,12 @@ export default {
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
               this.tableData.forEach((d, i) => {
                 if (
-                  d[item.field] &&
-                  d[item.field].selectedId &&
-                  d[item.field].options
+                    d[item.field] &&
+                    d[item.field].selectedId &&
+                    d[item.field].options
                 ) {
                   this.dropdownHash[item.field + '-row' + i] =
-                    d[item.field].options
+                      d[item.field].options
                   this.dropdownHeaders[item.field + '-row' + i] = {
                     title: d[item.field].title,
                     key: d[item.field].key,
@@ -213,10 +214,10 @@ export default {
           rows = i
         }
       }
-      console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows, rows))
+      this.$refs.hotTableRef.hotInstance.selectRows(rows, rows)
     },
     refreshColumn() {
-      this.$refs['hotTableRef']['hotInstance'].updateSettings({
+      this.$refs.hotTableRef.hotInstance.updateSettings({
         columns: this.columns,
       })
     },
@@ -231,16 +232,16 @@ export default {
             }
           } else if (list && list.type === 'customDropdown') {
             if (item[k].options instanceof Array) {
-              if (item[k].options.length == 0) {
+              if (item[k].options.length === 0) {
                 item[k].options.push({
                   id: '',
                   name: '',
                   modelParamId: null,
                 })
-                item[k].selectedId=''
+                item[k].selectedId = ''
               }
               let filterItem = item[k].options.find(
-                (s) => s.id === item[k]['selectedId']
+                  (s) => s.id === item[k]['selectedId']
               )
               if (filterItem) item[k] = filterItem.name
             }
@@ -272,7 +273,7 @@ export default {
           this.getHotInstance()
           const [row, prop, oldV, newV] = change
           const changedRow = this.hotInstance.getDataAtRow(row)
-          let rowObj = { row: row.toString() }
+          let rowObj = {row: row.toString()}
           this.tableColumns.forEach((cl, idx) => {
             rowObj[cl.field] = changedRow[idx]
           })
@@ -297,7 +298,7 @@ export default {
         for (let k in this.dropdownHash) {
           if (Object.prototype.hasOwnProperty.call(value, k)) {
             const list = this.dropdownHash[k].filter(
-              (item) => item[fromV] === value[k]
+                (item) => item[fromV] === value[k]
             )[0]
             list && (value[k] = list[toV])
           }
@@ -318,10 +319,10 @@ export default {
         //判断是否是checkbox类型
         Handsontable.renderers.CheckboxRenderer.apply(this, arguments)
       } else if (
-        Object.prototype.hasOwnProperty.call(
-          this.dropdownHash,
-          prop + '-row' + row
-        )
+          Object.prototype.hasOwnProperty.call(
+              this.dropdownHash,
+              prop + '-row' + row
+          )
       ) {
         //判断是否是customDropdown类型
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments)
@@ -344,7 +345,7 @@ export default {
 
     // 黑科技更新表格、图展示
     updateShow() {
-      const { row, col } = this.getvisibleLocal()
+      const {row, col} = this.getvisibleLocal()
       this.isRefresh = false
       this.$nextTick(() => {
         this.isRefresh = true
@@ -353,14 +354,14 @@ export default {
     },
     getvisibleLocal() {
       const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin(
-        'autoRowSize'
+          'autoRowSize'
       )
       const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin(
-        'autoColumnSize'
+          'autoColumnSize'
       )
       const col = pluginCol.getFirstVisibleColumn()
       const row = pluginRow.getFirstVisibleRow()
-      return { row, col }
+      return {row, col}
     },
     scrollViewportTo(row, col) {
       this.$nextTick(() => {
@@ -377,6 +378,17 @@ export default {
         this.isRefresh = true
       }, 0)
     },
+    refresh() {
+      //适用于父节点宽度变化的情况
+      this.hotInstance.updateSettings({
+        width: '100%'
+      })
+      this.hotInstance.render()
+    },
+    render() {
+      //刷新table
+      this.hotInstance.render()
+    }
   },
   watch: {
     tableData: {
@@ -399,6 +411,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
   .hot-table {
     width: 100%;
     height: 100%;
