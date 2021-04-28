@@ -11,10 +11,7 @@
       "title": "防洪调度",
       "order": 2,
       "selectedId": "RD_DISQCTRL",
-      "options": [
-        { "id": "RD_DISQCTRL", "name": "调洪演算模型1", "modelParamId": null },
-        { "id": "RD_CTRLDSP", "name": "混合控制1", "modelParamId": null }
-      ]
+      "options": []
     },
     "flow3": { "key": "RR-assess-NORMAL", "title": "分析评估", "order": 3, "selectedId": "FD_DSPASS", "options": [{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }] }
   },

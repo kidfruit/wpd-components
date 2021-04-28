@@ -295,14 +295,18 @@ export default {
     },
     refresh() {
       //适用于父节点宽度变化的情况
-      this.hotInstance.updateSettings({
-        width: '100%'
-      })
-      this.hotInstance.render()
+      if(this.hotInstance) {
+        this.hotInstance.updateSettings({
+          width: '100%'
+        })
+        this.hotInstance.render()
+      }
     },
     render() {
       //刷新table
-      this.hotInstance.render()
+      if(this.hotInstance){
+        this.hotInstance.render()
+      }
     },
     getvisibleLocal() {
       const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin(
