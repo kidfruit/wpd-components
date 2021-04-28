@@ -267,6 +267,9 @@ export default {
         this.$refs.tableChart.deletedRows
       );
       console.log("增加行", this.$refs.tableChart.addRows);
+      //document.getElementsByClassName("SimpleTable-Container2021")[0].style.width = "500px"
+      //this.$refs.tableChart.refresh();
+      //this.$refs.tableChart.render();
     },
     getSelectData() {
       console.log(this.$refs["tableChart"]._getSelectData("checkbox"));

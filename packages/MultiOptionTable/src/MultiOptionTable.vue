@@ -1,28 +1,16 @@
 <template>
-  <div class="multi-option-table"
-       v-if="isVisible && isRefresh">
-    <hot-table class="hot-table"
-               :settings="hotSettings"
-               :data="hotData"
-               :class="classes"
-               :after-change="afterChange"
-               ref="hotTableRef">
-      <hot-column v-for="(item, index) in columns"
-                  :readOnly="item.readOnly"
-                  :key="index"
-                  :title="item.title"
-                  :data="item.field"
-                  :source="item.source"
-                  :renderer="item.renderer"
-                  :type="item.type"> </hot-column>
+  <div class="multi-option-table" v-if="isVisible && isRefresh">
+    <hot-table class="hot-table" :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
+      <hot-column v-for="(item, index) in columns" :readOnly="item.readOnly" :key="index" :title="item.title" :data="item.field" :source="item.source" :renderer="item.renderer" :type="item.type"></hot-column>
     </hot-table>
   </div>
 </template>
 <script>
-import { HotTable, HotColumn } from '@handsontable/vue'
-import Handsontable from 'handsontable'
-import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
-registerLanguageDictionary(zhCN)
+import { HotTable, HotColumn } from '@handsontable/vue';
+import Handsontable from 'handsontable';
+import { registerLanguageDictionary, zhCN } from 'handsontable/i18n';
+
+registerLanguageDictionary(zhCN);
 
 const defaultHotSettings = {
   rowHeaders: false,
@@ -35,11 +23,11 @@ const defaultHotSettings = {
   contextMenu: false,
   language: zhCN.languageCode,
   cells: (row, col, prop) => {
-    let cellProperties = {}
-    cellProperties.renderer = 'negativeValueRenderer'
-    return cellProperties
-  },
-}
+    let cellProperties = {};
+    cellProperties.renderer = 'negativeValueRenderer';
+    return cellProperties;
+  }
+};
 
 export default {
   name: 'MultiOptionTable',
@@ -47,42 +35,39 @@ export default {
     isVisible: {
       type: Boolean,
       default: true,
-      required: false,
+      required: false
     },
     classNames: {
       type: Array,
-      required: false,
+      required: false
     },
     setting: {
       type: Object,
-      required: false,
+      required: false
     },
     tableData: {
-      type: Array,
+      type: Array
     },
     tableColumns: {
-      type: Array,
-    },
+      type: Array
+    }
   },
   components: {
     HotTable,
-    HotColumn,
+    HotColumn
   },
   beforeMount() {
     // 单元格自定义渲染
-    Handsontable.renderers.registerRenderer(
-      'negativeValueRenderer',
-      this.negativeValueRenderer
-    )
+    Handsontable.renderers.registerRenderer('negativeValueRenderer', this.negativeValueRenderer);
     // console.log(this.hotData, 'this.hotData');
   },
   mounted() {
     //console.log("mounted");
-    this.getHotInstance()
+    this.getHotInstance();
   },
   updated() {
     //console.log("updated");
-    this.getHotInstance()
+    this.getHotInstance();
   },
   data: function () {
     return {
@@ -94,244 +79,217 @@ export default {
       dropdownHeaders: {},
       selectionColumns: [],
       checkbox: {},
-      hotData: [],
-    }
+      hotData: []
+    };
   },
   computed: {
     classes() {
-      return ['tableStyle'].concat(this.classNames)
+      return ['tableStyle'].concat(this.classNames);
     },
     hotSettings() {
-      const _this = this
+      const _this = this;
       return Object.assign({}, defaultHotSettings, this.setting, {
         cells: (row, col, prop) => {
-          let cellProperties = {}
+          let cellProperties = {};
           if (_this.dropdownHash[prop + '-row' + row]) {
-            cellProperties.source = _this.dropdownHash[prop + '-row' + row].map(
-              (i) => i.name
-            )
+            cellProperties.source = _this.dropdownHash[prop + '-row' + row].map(i => i.name);
           }
-          cellProperties.renderer = 'negativeValueRenderer'
-          return cellProperties
+          cellProperties.renderer = 'negativeValueRenderer';
+          return cellProperties;
         },
-        afterSelection: (
-          rowIndex,
-          columnIndex,
-          row2,
-          column2,
-          preventScrolling,
-          selectionLayerLevel
-        ) => {
+        afterSelection: (rowIndex, columnIndex, row2, column2, preventScrolling, selectionLayerLevel) => {
           if (rowIndex >= 0) {
-            const taregtData = _this.tableData[rowIndex]
-            let tempColumns = []
-            _this.columns.forEach((item) => {
-              if (
-                taregtData[item.field] instanceof Object &&
-                taregtData[item.field].options &&
-                taregtData[item.field].title
-              ) {
-                tempColumns.push(taregtData[item.field].title)
+            const taregtData = _this.tableData[rowIndex];
+            let tempColumns = [];
+            _this.columns.forEach(item => {
+              if (taregtData[item.field] instanceof Object && taregtData[item.field].options && taregtData[item.field].title) {
+                tempColumns.push(taregtData[item.field].title);
               } else {
-                tempColumns.push(null)
+                tempColumns.push(null);
               }
-            })
-            _this.selectionColumns = tempColumns
+            });
+            _this.selectionColumns = tempColumns;
             _this.$nextTick(() => {
-              _this.refreshColumn()
-            })
+              _this.refreshColumn();
+            });
           }
-          preventScrolling.value = true
+          preventScrolling.value = true;
         },
         afterDeselect() {
-          _this.selectionColumns = []
+          _this.selectionColumns = [];
           _this.$nextTick(() => {
-            _this.refreshColumn()
-          })
-        },
-      })
+            _this.refreshColumn();
+          });
+        }
+      });
     },
     columns() {
       let result = this.tableColumns.map((item, index) => {
         let itemNew = Object.assign(
-          {},
-          {
-            ...item,
-            data: item.field,
-          }
-        )
+            {},
+            {
+              ...item,
+              data: item.field
+            }
+        );
         if (Object.prototype.hasOwnProperty.call(itemNew, 'type')) {
           switch (itemNew.type) {
             case 'checkbox':
-              this.checkbox[item.field] = item.checkbox
+              this.checkbox[item.field] = item.checkbox;
               // itemNew.source = item.source.map((item) => item.name);
-              break
+              break;
             case 'dropdown':
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
-              this.dropdownHash[item.field] = item.source.slice(0)
-              itemNew.source = item.source.map((item) => item.name)
-              break
+              this.dropdownHash[item.field] = item.source.slice(0);
+              itemNew.source = item.source.map(item => item.name);
+              break;
             case 'customDropdown':
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
               this.tableData.forEach((d, i) => {
-                if (
-                  d[item.field] &&
-                  d[item.field].selectedId &&
-                  d[item.field].options
-                ) {
-                  this.dropdownHash[item.field + '-row' + i] =
-                    d[item.field].options
+                if (d[item.field] && d[item.field].selectedId && d[item.field].options) {
+                  this.dropdownHash[item.field + '-row' + i] = d[item.field].options;
                   this.dropdownHeaders[item.field + '-row' + i] = {
                     title: d[item.field].title,
-                    key: d[item.field].key,
-                  }
+                    key: d[item.field].key
+                  };
                 }
-                itemNew.source = []
-              })
-              itemNew.type = 'dropdown'
-              break
+                itemNew.source = [];
+              });
+              itemNew.type = 'dropdown';
+              break;
           }
         }
-        return itemNew
-      })
+        return itemNew;
+      });
       if (this.selectionColumns.length > 0) {
         result.forEach((item, i) => {
           if (this.selectionColumns[i]) {
-            item.title = this.selectionColumns[i]
+            item.title = this.selectionColumns[i];
           }
-        })
+        });
       }
-      return result
-    },
+      return result;
+    }
   },
   methods: {
     highlightRow(item) {
-      let list = this.$refs.hotTableRef.hotInstance.getSourceData()
-      let rows = ''
+      let list = this.$refs.hotTableRef.hotInstance.getSourceData();
+      let rows = '';
       for (let i = 0; i < list.length; i++) {
         if (item === list[i].key) {
-          rows = i
+          rows = i;
         }
       }
-      console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows, rows))
+      this.$refs.hotTableRef.hotInstance.selectRows(rows, rows);
     },
     refreshColumn() {
-      this.$refs['hotTableRef']['hotInstance'].updateSettings({
-        columns: this.columns,
-      })
+      this.$refs.hotTableRef.hotInstance.updateSettings({
+        columns: this.columns
+      });
     },
     prepareData(data) {
       this.hotData = data.map((item, index) => {
         for (let k in item) {
-          const list = this.tableColumns.filter((cl) => cl.field === k)[0]
+          const list = this.tableColumns.filter(cl => cl.field === k)[0];
           if (list && list.type === 'dropdown') {
             if (list.source instanceof Array) {
-              let filterItem = list.source.find((s) => s.id === item[k])
-              if (filterItem) item[k] = filterItem.name
+              let filterItem = list.source.find(s => s.id === item[k]);
+              if (filterItem) item[k] = filterItem.name;
             }
           } else if (list && list.type === 'customDropdown') {
             if (item[k].options instanceof Array) {
-              if (item[k].options.length == 0) {
+              if (item[k].options.length === 0) {
                 item[k].options.push({
                   id: '',
                   name: '',
-                  modelParamId: null,
-                })
-                item[k].selectedId=''
+                  modelParamId: null
+                });
+                item[k].selectedId = '';
               }
-              let filterItem = item[k].options.find(
-                (s) => s.id === item[k]['selectedId']
-              )
-              if (filterItem) item[k] = filterItem.name
+              let filterItem = item[k].options.find(s => s.id === item[k]['selectedId']);
+              if (filterItem) item[k] = filterItem.name;
             }
           }
         }
-        return item
-      })
+        return item;
+      });
     },
     afterChange(changes, source) {
       if (changes == null) {
-        return
+        return;
       }
       if (source !== 'loadData') {
         // 添加修改触发
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {
-            let element = changes[i]
+            let element = changes[i];
             this.$emit('cellEditDone', {
               rowIndex: element[0],
               field: element[1],
               newValue: element[3],
-              oldValue: element[2],
-            })
-            this.editCells.push(element[1] + '#' + element[0])
+              oldValue: element[2]
+            });
+            this.editCells.push(element[1] + '#' + element[0]);
           }
         }
-        let changedRows = []
-        changes.forEach((change) => {
-          this.getHotInstance()
-          const [row, prop, oldV, newV] = change
-          const changedRow = this.hotInstance.getDataAtRow(row)
-          let rowObj = { row: row.toString() }
+        let changedRows = [];
+        changes.forEach(change => {
+          this.getHotInstance();
+          const [row, prop, oldV, newV] = change;
+          const changedRow = this.hotInstance.getDataAtRow(row);
+          let rowObj = { row: row.toString() };
           this.tableColumns.forEach((cl, idx) => {
-            rowObj[cl.field] = changedRow[idx]
-          })
-          changedRows.push(rowObj)
-        })
+            rowObj[cl.field] = changedRow[idx];
+          });
+          changedRows.push(rowObj);
+        });
         //将更新的数据推送到editRows
-        changedRows = this.processOptionColumn(changedRows, 'name', 'id')
-        changedRows.forEach((r) => {
-          const cr = Object.assign({}, r)
-          let idx = this.editRows.findIndex((er) => er && er.row === r.row)
+        changedRows = this.processOptionColumn(changedRows, 'name', 'id');
+        changedRows.forEach(r => {
+          const cr = Object.assign({}, r);
+          let idx = this.editRows.findIndex(er => er && er.row === r.row);
           if (this.editRows.length > 0 && this.editRows[idx]) {
-            this.editRows[idx] = cr
+            this.editRows[idx] = cr;
           } else {
-            this.editRows.push(cr)
+            this.editRows.push(cr);
           }
-        })
-        this.updateShow()
+        });
+        this.updateShow();
       }
     },
     processOptionColumn(item, fromV, toV) {
-      item.forEach((value) => {
+      item.forEach(value => {
         for (let k in this.dropdownHash) {
           if (Object.prototype.hasOwnProperty.call(value, k)) {
-            const list = this.dropdownHash[k].filter(
-              (item) => item[fromV] === value[k]
-            )[0]
-            list && (value[k] = list[toV])
+            const list = this.dropdownHash[k].filter(item => item[fromV] === value[k])[0];
+            list && (value[k] = list[toV]);
           }
         }
-      })
-      return item
+      });
+      return item;
     },
     getHotInstance() {
       if (this.$refs.hotTableRef) {
-        this.hotInstance = this.$refs.hotTableRef.hotInstance
+        this.hotInstance = this.$refs.hotTableRef.hotInstance;
       }
     },
     // 单元格自定义渲染
     negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
-        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments)
+        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
       } else if (Object.prototype.hasOwnProperty.call(this.checkbox, prop)) {
         //判断是否是checkbox类型
-        Handsontable.renderers.CheckboxRenderer.apply(this, arguments)
-      } else if (
-        Object.prototype.hasOwnProperty.call(
-          this.dropdownHash,
-          prop + '-row' + row
-        )
-      ) {
+        Handsontable.renderers.CheckboxRenderer.apply(this, arguments);
+      } else if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop + '-row' + row)) {
         //判断是否是customDropdown类型
-        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments)
+        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
       } else {
-        Handsontable.renderers.TextRenderer.apply(this, arguments)
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
       }
       // 样式：编辑
       if (this.editCells.includes(prop + '#' + row)) {
         //修改字体颜色
-        td.style.color = '#004fff'
+        td.style.color = '#004fff';
       }
       // 样式:不可编辑
       // if (
@@ -344,61 +302,73 @@ export default {
 
     // 黑科技更新表格、图展示
     updateShow() {
-      const { row, col } = this.getvisibleLocal()
-      this.isRefresh = false
+      const { row, col } = this.getvisibleLocal();
+      this.isRefresh = false;
       this.$nextTick(() => {
-        this.isRefresh = true
-        this.scrollViewportTo(row, col)
-      })
+        this.isRefresh = true;
+        this.scrollViewportTo(row, col);
+      });
     },
     getvisibleLocal() {
-      const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin(
-        'autoRowSize'
-      )
-      const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin(
-        'autoColumnSize'
-      )
-      const col = pluginCol.getFirstVisibleColumn()
-      const row = pluginRow.getFirstVisibleRow()
-      return { row, col }
+      const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin('autoRowSize');
+      const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin('autoColumnSize');
+      const col = pluginCol.getFirstVisibleColumn();
+      const row = pluginRow.getFirstVisibleRow();
+      return { row, col };
     },
     scrollViewportTo(row, col) {
       this.$nextTick(() => {
-        this.$refs.hotTableRef.hotInstance.scrollViewportTo(row, col)
-      })
+        this.$refs.hotTableRef.hotInstance.scrollViewportTo(row, col);
+      });
     },
     reset() {
-      this.isRefresh = false
-      this.editCells = []
-      this.editRows = []
+      this.isRefresh = false;
+      this.editCells = [];
+      this.editRows = [];
       setTimeout(() => {
-        const data = JSON.parse(JSON.stringify(this.tableData))
-        this.prepareData(data)
-        this.isRefresh = true
-      }, 0)
+        const data = JSON.parse(JSON.stringify(this.tableData));
+        this.prepareData(data);
+        this.isRefresh = true;
+      }, 0);
     },
+    refresh() {
+      //适用于父节点宽度变化的情况
+      if(this.hotInstance){
+        this.hotInstance.updateSettings({
+          width: '100%'
+        });
+        this.hotInstance.render();
+      }
+    },
+    render() {
+      //刷新table
+      if(this.hotInstance){
+        this.hotInstance.render();
+      }
+    }
   },
   watch: {
     tableData: {
       immediate: true,
       deep: true,
       handler(val) {
-        this.isRefresh = false
-        const data = JSON.parse(JSON.stringify(val))
-        this.prepareData(data)
+        this.isRefresh = false;
+        const data = JSON.parse(JSON.stringify(val));
+        this.prepareData(data);
         this.$nextTick(() => {
-          this.isRefresh = true
-        })
-      },
-    },
-  },
-}
+          this.isRefresh = true;
+        });
+      }
+    }
+  }
+};
 </script>
 <style lang="scss" scoped>
 .multi-option-table {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
   .hot-table {
     width: 100%;
     height: 100%;

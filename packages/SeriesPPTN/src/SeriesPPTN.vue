@@ -166,7 +166,7 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    console.log("88888")
+    //console.log("88888")
     this.dropdowndata()
     this.drawChart()
     this.getChartInstance()
@@ -199,7 +199,7 @@ export default {
     },
     dropdowndata() {
       this.handleselect = this.chartAxis.xAxis.id
-     
+
       this.dropdown.push(this.chartAxis.xAxis)
       this.dropdown.push(this.chartAxis.yAxis)
     },
@@ -222,7 +222,7 @@ export default {
     },
     setDynamicOption() {
       let option = this.prepareSeries()
-  
+
       echartsInstance.setOption(option)
     },
     resizeTheChart() {
@@ -245,7 +245,7 @@ export default {
       })
       let option = Object.assign({}, defaultOption, this.chartOption)
 
-   
+
       //x轴
       option.xAxis.name = this.chartAxis.xAxis.title
       option.xAxis.data = this.chartData.map(
@@ -260,7 +260,7 @@ export default {
       if (Array.isArray(option.grid) && option.grid.length > 0) {
         option.xAxis = this.chartAxis.xAxis.id
       }
-     
+
       //y轴
       //按照yAxisIndex排序
       if (Object.prototype.hasOwnProperty.call(yAxis[0], 'yAxisIndex')) {
@@ -278,7 +278,7 @@ export default {
           gridIndex: ax.gridIndex,
         })
       })
-     
+
       //legend
       //   this.chartAxis.series.forEach((yx) => {
       //     option.legend.data.push(yx.title)

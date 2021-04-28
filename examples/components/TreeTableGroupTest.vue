@@ -2,9 +2,10 @@
   <div style="width: 100%">
     <div style="width: 100%; height: 700px">
       <tree-table-group ref="treeTableGroup" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns"
-                        :tableData="data" @checkedKeys="checkedKeys"/>
+                        :tableData="data" @checkedKeys="checkedKeys" @cellEditDone="cellEditDone"/>
     </div>
     <button @click="getData">获取表格数据</button>
+    <button @click="renderTable">刷新表格</button>
     <button @click="highlightRow('13')">高亮</button>
     <!-- <button @click="fetchData">获取数据123</button> -->
   </div>
@@ -108,11 +109,17 @@ export default {
     checkedKeys(val) {
       console.log("选中的key", val)
     },
+    cellEditDone(tableData) {
+      console.log("更新后的table数据", tableData)
+    },
     getData() {
       console.log(this.$refs['treeTableGroup'].getTableData());
     },
     highlightRow(value) {
-      this.$refs['treeTableGroup'].$refs['tableRef'].highlightRow(value)
+      this.$refs['treeTableGroup'].highlightRow(value)
+    },
+    renderTable() {
+      this.$refs['treeTableGroup'].render()
     }
   }
 };

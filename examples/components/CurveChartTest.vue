@@ -1,17 +1,18 @@
 <template>
   <div style="width: 100%">
-    <curve-chart ref="curvechart"
-                 v-if="chartshow"
-                 :structure="structure"
-                 :interpolateCalcShow="interpolateCalcShow"
-                 :tableShow="tableShow"
-                 :classes="classNames"
-                 :chartOption="chartOption"
-                 :isRefresh="isRefresh"
-                 :chartAxis="chartAxis"
-                 :tableColumns="tableColumns"
-                 @compute="compute"
-                 :chartData="chartData" />
+    <curve-chart
+        ref="curvechart"
+        v-if="chartshow"
+        :structure="structure"
+        :interpolateCalcShow="interpolateCalcShow"
+        :tableShow="tableShow"
+        :classes="classNames"
+        :chartOption="chartOption"
+        :isRefresh="isRefresh"
+        :chartAxis="chartAxis"
+        :tableColumns="tableColumns"
+        @compute="compute"
+        :chartData="chartData"/>
     <!-- <button @click="changing_over">切换</button> -->
     <button @click="fetchData">获取数据123</button>
     <button @click="Refresh">刷新数据</button>
@@ -22,7 +23,7 @@ import CurveChart from '../../packages/CurveChart/src/CurveChart.vue'
 
 export default {
   name: 'CurveChartTest',
-  components: { CurveChart },
+  components: {CurveChart},
   data() {
     return {
       structure: 'Upanddown', //Upanddown上下结构，about左右结构
