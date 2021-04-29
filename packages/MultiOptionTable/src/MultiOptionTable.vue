@@ -183,6 +183,7 @@ export default {
       this.$refs.hotTableRef.hotInstance.selectRows(rows, rows);
     },
     refreshColumn() {
+      //console.log('refresh column',this.columns)
       this.$refs.hotTableRef.hotInstance.updateSettings({
         columns: this.columns
       });
