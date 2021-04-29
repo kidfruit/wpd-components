@@ -1,14 +1,25 @@
 <template>
   <div :class="classNames">
-    <a-carousel :after-change="onChange">
-      <div v-for="(item, index) in carouselCount" :key="index">
-        <h3>{{ item }}</h3>
-      </div>
-    </a-carousel>
+    <div class="chart-container">
+      <a-carousel :after-change="onChange">
+        <div v-for="(item, index) in carouselCount" :key="index">
+          <h3>{{ item }}</h3>
+        </div>
+      </a-carousel>
+    </div>
+    <div class="table-container">
+      <simple-table
+        ref="tableRef"
+        :tableData="tableData"
+        :setting="setting"
+        :tableColumns="tableColumns"
+      ></simple-table>
+    </div>
   </div>
 </template>
 
 <script>
+import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 function unique(arr) {
   return Array.from(new Set(arr));
 }
@@ -24,9 +35,15 @@ export default {
     tableColumns: {
       type: Array,
     },
+    setting: {
+      type: Object,
+    },
     splitIndex: {
       type: Number,
     },
+  },
+  components: {
+    SimpleTable,
   },
   computed: {
     classNames() {
@@ -46,10 +63,20 @@ export default {
       .map((el) => el.showType)
       .filter((el) => el)
       .map((el) => el.split("-")[0]);
-    this.carouselCount = unique(showTypeList).length;
+    this.carouselCount = unique(showTypeList);
     console.log(this.carouselCount);
+    this.hideRows();
   },
   methods: {
+    hideRows() {
+      let hideRows = [];
+      for (let i = 0; i < this.splitIndex; i++) {
+        hideRows.push(i);
+      }
+      this.setting.hiddenRows = {};
+      this.setting.hiddenRows.rows = hideRows;
+      this.setting.hiddenRows.indicators = true;
+    },
     onChange(a, b, c) {
       console.log(a, b, c);
     },
@@ -79,5 +106,10 @@ export default {
 }
 .ant-carousel >>> .slick-slide h3 {
   color: #364d79;
+}
+.chart-container {
+  margin-bottom: 96px;
+}
+.table-container {
 }
 </style>

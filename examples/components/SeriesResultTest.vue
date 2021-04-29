@@ -5,6 +5,7 @@
       :splitIndex="splitIndex"
       :tableColumns="tableColumns"
       :tableData="tableData"
+      :setting="{ rowHeaders: true }"
     />
   </div>
 </template>
