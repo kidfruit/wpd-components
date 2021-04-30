@@ -120,8 +120,12 @@ export default {
   },
   methods: {
     drawChart() {
-      echartsInstance = echarts.init(document.getElementById(this.id));
-      this.setDynamicOption();
+      let myChart = echarts.getInstanceByDom(document.getElementById(this.id));
+      if (myChart == null) {
+        // 如果不存在，就进行初始化
+        echartsInstance = echarts.init(document.getElementById(this.id));
+        this.setDynamicOption();
+      }
     },
     getChartInstance() {
       if (this.$refs.chartRef) {

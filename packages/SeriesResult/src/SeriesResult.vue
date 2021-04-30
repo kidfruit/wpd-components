@@ -73,6 +73,11 @@ export default {
       chartList: [],
       seriesList: [],
       currentIndex: 0,
+      chartAxis: {
+        xAxis: "time",
+        yAxis: [],
+        series: [],
+      },
     };
   },
   created() {
@@ -96,52 +101,54 @@ export default {
   },
   methods: {
     generateChartSeries(showTypeList) {
-      console.log(showTypeList, 88);
+      let fields = this.tableColumns
+        .map((el) => {
+          return { field: el.field, title: el.title };
+        })
+        .filter((el) => el.field !== "id" && el.field !== "time");
+      for (let i = 0; i < fields.length; i++) {
+        let obj = {
+          field: fields[i].field,
+          title: fields[i].title,
+          selected: true,
+          yAxisIndex: 0,
+        };
+        this.chartAxis.series.push(obj);
+      }
+      console.log(this.chartAxis.series, 88);
     },
     generateChartData(carouselCount) {
       for (let i = 0; i < carouselCount.length; i++) {
-        console.log("hellll");
         let chartOption = {
           title: {
             text: "水位流量图",
             left: "center",
           },
         };
-        let chartAxis = {
-          xAxis: "time",
-          yAxis: [
-            {
-              title: "流量(m³/s)",
-              yAxisIndex: 0,
+        this.chartAxis.yAxis = [
+          {
+            title: "流量(m³/s)",
+            yAxisIndex: 0,
+            type: "value",
+            axisLine: {
+              symbol: ["none", "arrow"], //箭头一端没效果,一端箭头
+              symbolOffset: [0, 8], //箭头段移动8个像素
             },
-          ],
-          series: [
-            {
-              id: "dim2",
-              field: "dim2",
-              title: "入库流量(m³/s)",
-              selected: true,
-              yAxisIndex: 0,
-              smooth: true,
-              symbolSize: 5,
+          },
+          {
+            title: "流量2(m³/s)",
+            yAxisIndex: 1,
+            type: "value",
+            axisLine: {
+              symbol: ["none", "arrow"], //箭头一端没效果,一端箭头
+              symbolOffset: [0, 8], //箭头段移动8个像素
             },
-            {
-              id: "dim1",
-              field: "dim1",
-              title: "水位(m)",
-              selected: true,
-              yAxisIndex: 0,
-              smooth: true,
-              symbolSize: 5,
-            },
-          ],
-        };
-        let chartData = [
-          { dim1: 3, dim2: 1, time: "2021-03-29T15:00:00", index: 1 },
+          },
         ];
+        let chartData = this.tableData;
         this.chartList.push({
           chartOption,
-          chartAxis,
+          chartAxis: this.chartAxis,
           chartData,
           id: guid(),
         });
