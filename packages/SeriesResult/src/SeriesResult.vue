@@ -99,11 +99,18 @@ export default {
       let yAxis = [];
       for (let i = 0; i < yAxisList.length; i++) {
         yAxis.push({
-          title: yAxisList[i].title,
+          title: "",
+          // title: yAxisList[i].title,
           type: "value",
-          name: "",
           axisLabel: {
             show: false,
+          },
+          axisLine: {
+            symbol: ["none", "arrow"],
+            show: true,
+            lineStyle: {
+              color: "#40a9ff  ",
+            },
           },
           position: positionMaps[yAxisList[i].showType.split("-")[1]],
         });

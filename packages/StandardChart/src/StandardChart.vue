@@ -178,6 +178,7 @@ export default {
           gridIndex: ax.gridIndex,
           position: ax.position,
           axisLabel: ax.axisLabel,
+          axisLine: ax.axisLine,
         });
       });
 
