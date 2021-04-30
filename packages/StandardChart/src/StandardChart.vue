@@ -176,6 +176,8 @@ export default {
         return Object.assign({}, yAxisOption, {
           name: ax.title,
           gridIndex: ax.gridIndex,
+          position: ax.position,
+          axisLabel: ax.axisLabel,
         });
       });
 

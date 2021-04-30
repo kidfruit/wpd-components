@@ -30,6 +30,10 @@
 <script>
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
+let positionMaps = {
+  L: "left",
+  R: "right",
+};
 function guid() {
   function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
@@ -73,51 +77,53 @@ export default {
       chartList: [],
       seriesList: [],
       currentIndex: 0,
-      chartAxis: {
-        xAxis: "time",
-        yAxis: [],
-        series: [],
-      },
     };
   },
   created() {
-    console.log(this.tableColumns);
-    console.log(this.tableData);
-    console.log(this.splitIndex);
     let showTypeList = this.tableColumns
       .map((el) => {
-        return { showType: el.showType, field: el.field };
+        return { showType: el.showType, field: el.field, title: el.title };
       })
       .filter((el) => el.showType);
-    console.log(showTypeList);
 
     let filterList = showTypeList.map((el) => el.showType.split("-")[0]);
     let carouselCount = unique(filterList);
-    console.log(carouselCount, filterList);
-    this.generateChartSeries(showTypeList);
-    this.generateChartData(carouselCount);
+    this.generateChartData(carouselCount, showTypeList);
     this.hideRows();
-    console.log(this.chartList, 1111);
   },
   methods: {
-    generateChartSeries(showTypeList) {
-      let fields = this.tableColumns
-        .map((el) => {
-          return { field: el.field, title: el.title };
-        })
-        .filter((el) => el.field !== "id" && el.field !== "time");
-      for (let i = 0; i < fields.length; i++) {
-        let obj = {
-          field: fields[i].field,
-          title: fields[i].title,
-          selected: true,
-          yAxisIndex: 0,
-        };
-        this.chartAxis.series.push(obj);
+    generateChartYaxis(showTypeList, current) {
+      let yAxisList = showTypeList.filter(
+        (el) => el.showType.indexOf(current) !== -1
+      );
+      let yAxis = [];
+      for (let i = 0; i < yAxisList.length; i++) {
+        yAxis.push({
+          title: yAxisList[i].title,
+          type: "value",
+          name: "",
+          axisLabel: {
+            show: false,
+          },
+          position: positionMaps[yAxisList[i].showType.split("-")[1]],
+        });
       }
-      console.log(this.chartAxis.series, 88);
+
+      return yAxis;
     },
-    generateChartData(carouselCount) {
+    generateChartSeries(showTypeList, current) {
+      return showTypeList
+        .filter((el) => el.showType.indexOf(current) !== -1)
+        .map((el) => {
+          return {
+            field: el.field,
+            title: el.title,
+            selected: true,
+            yAxisIndex: 0,
+          };
+        });
+    },
+    generateChartData(carouselCount, showTypeList) {
       for (let i = 0; i < carouselCount.length; i++) {
         let chartOption = {
           title: {
@@ -125,30 +131,23 @@ export default {
             left: "center",
           },
         };
-        this.chartAxis.yAxis = [
-          {
-            title: "流量(m³/s)",
-            yAxisIndex: 0,
-            type: "value",
-            axisLine: {
-              symbol: ["none", "arrow"], //箭头一端没效果,一端箭头
-              symbolOffset: [0, 8], //箭头段移动8个像素
-            },
-          },
-          {
-            title: "流量2(m³/s)",
-            yAxisIndex: 1,
-            type: "value",
-            axisLine: {
-              symbol: ["none", "arrow"], //箭头一端没效果,一端箭头
-              symbolOffset: [0, 8], //箭头段移动8个像素
-            },
-          },
-        ];
+        let chartAxis = {
+          xAxis: "time",
+          yAxis: [],
+          series: [],
+        };
+        chartAxis.yAxis = this.generateChartYaxis(
+          showTypeList,
+          carouselCount[i]
+        );
+        chartAxis.series = this.generateChartSeries(
+          showTypeList,
+          carouselCount[i]
+        );
         let chartData = this.tableData;
         this.chartList.push({
           chartOption,
-          chartAxis: this.chartAxis,
+          chartAxis,
           chartData,
           id: guid(),
         });
@@ -164,7 +163,6 @@ export default {
       this.setting.hiddenRows.indicators = true;
     },
     onChange(a, b, c) {
-      console.log(a, b, c);
       this.currentIndex = a;
     },
   },
