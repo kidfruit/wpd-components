@@ -155,12 +155,21 @@ export default {
             },
           },
           position: positionMaps[yAxisList[i].showType.split("-")[1]],
+          max: function (value) {
+            console.log("value.max", value);
+            return (value.max + 0.01 * value.min).toFixed(2);
+          },
+          min: function (value) {
+            console.log("value.min", value);
+            return (value.min - 0.01 * value.min).toFixed(2);
+          },
         });
       }
 
       return yAxis;
     },
     generateChartSeries(showTypeList, current) {
+      let firstTime = this.tableData[this.splitIndex].time;
       return showTypeList
         .filter((el) => el.showType.indexOf(current) !== -1)
         .map((el) => {
@@ -169,6 +178,22 @@ export default {
             title: el.title,
             selected: true,
             yAxisIndex: 0,
+            markLine: {
+              symbol: "none",
+              data: [
+                {
+                  name: "标记线",
+                  xAxis: firstTime,
+                  lineStyle: {
+                    //警戒线的样式  ，虚实  颜色
+                    type: "solid",
+                    color: "#000",
+                  },
+                },
+              ],
+              label: { show: false, position: "middle" },
+              silent: true,
+            },
           };
         });
     },
@@ -176,7 +201,7 @@ export default {
       for (let i = 0; i < carouselCount.length; i++) {
         let chartOption = {
           title: {
-            text: "水位流量图",
+            text: "",
             left: "center",
           },
           legend: [],

@@ -179,6 +179,8 @@ export default {
           position: ax.position,
           axisLabel: ax.axisLabel,
           axisLine: ax.axisLine,
+          max: ax.max,
+          min: ax.min,
         });
       });
       // 如果legend存在并且是个数组，就不会走这个逻辑
