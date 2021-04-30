@@ -17,6 +17,13 @@
       </a-carousel>
     </div>
     <div class="table-container">
+      <div class="show-hide">
+        <span class="ops" @click="handleShow">
+          <a-icon v-if="isShow" type="up" />
+          <a-icon v-else type="down" />
+        </span>
+      </div>
+
       <simple-table
         ref="tableRef"
         :tableData="tableData"
@@ -78,6 +85,7 @@ export default {
       seriesList: [],
       currentIndex: 0,
       newSetting: {},
+      isShow: false,
     };
   },
   created() {
@@ -93,6 +101,15 @@ export default {
     this.generateChartData(carouselCount, showTypeList);
   },
   methods: {
+    handleShow() {
+      this.isShow = !this.isShow;
+      if (this.isShow) {
+        this.newSetting.hiddenRows = {};
+        this.newSetting = Object.assign({}, this.setting, this.newSetting);
+      } else {
+        this.hideRows();
+      }
+    },
     generateChartLegend(showTypeList, current) {
       let legendList = showTypeList.filter(
         (el) => el.showType.indexOf(current) !== -1
@@ -102,6 +119,15 @@ export default {
       let lastOne = "";
       let base = 0,
         step = 7;
+      legendList = legendList.sort((a, b) => {
+        if (a.showType < b.showType) {
+          return -1;
+        }
+        if (a.showType > b.showType) {
+          return 1;
+        }
+        return 0;
+      });
       for (let i = 0; i < legendList.length; i++) {
         let obj = {
           itemWidth: 27,
@@ -157,11 +183,11 @@ export default {
           },
           position: positionMaps[yAxisList[i].showType.split("-")[1]],
           max: function (value) {
-            console.log("value.max", value);
+            // console.log("value.max", value);
             return (value.max + 0.01 * value.min).toFixed(2);
           },
           min: function (value) {
-            console.log("value.min", value);
+            // console.log("value.min", value);
             return (value.min - 0.01 * value.min).toFixed(2);
           },
         });
@@ -240,7 +266,7 @@ export default {
       }
       this.newSetting.hiddenRows = {};
       this.newSetting.hiddenRows.rows = hideRows;
-      this.newSetting.hiddenRows.indicators = true;
+      this.newSetting.hiddenRows.indicators = false;
       this.newSetting = Object.assign({}, this.setting, this.newSetting);
     },
     onChange(a, b, c) {
@@ -276,6 +302,21 @@ export default {
 .chart-container {
   margin-bottom: 96px;
 }
+</style>
+<style lang="scss">
 .table-container {
+  position: relative;
+  .show-hide {
+    position: absolute;
+    top: 4px;
+    left: 10px;
+    z-index: 999;
+    .ops {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+  }
 }
 </style>
