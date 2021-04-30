@@ -140,7 +140,6 @@ export default {
         if (lastOne !== "" && lastOne === leftRight) {
           flag = true;
           base += step;
-          console.log("flag", flag);
         }
         if (leftRight === "left") {
           obj = Object.assign({}, obj, {
@@ -154,11 +153,9 @@ export default {
           });
         }
         flag = false;
-        console.log(positionMaps[legendList[i].showType.split("-")[1]]);
         legends.push(obj);
         lastOne = leftRight;
       }
-      console.log(legendList);
       return legends;
     },
     generateChartYaxis(showTypeList, current) {

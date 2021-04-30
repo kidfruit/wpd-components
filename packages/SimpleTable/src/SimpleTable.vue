@@ -114,7 +114,6 @@ export default {
       return ["tableStyle"].concat(this.classNames);
     },
     hotSettings() {
-      console.log("setting", this.setting);
       return Object.assign({}, defaultHotSettings, this.setting);
     },
     columns() {
@@ -146,7 +145,7 @@ export default {
           rows = i;
         }
       }
-      console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows, rows));
+      // console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows, rows));
     },
     _getSelectData(field) {
       if (typeof field == "string" && field != "") {
@@ -163,7 +162,7 @@ export default {
     },
 
     updateWidth(newWidth) {
-      console.log(this.hotInstance, newWidth);
+      // console.log(this.hotInstance, newWidth);
       this.hotInstance.updateSettings({
         width: newWidth,
       });
