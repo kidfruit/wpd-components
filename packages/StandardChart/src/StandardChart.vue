@@ -181,17 +181,18 @@ export default {
           axisLine: ax.axisLine,
         });
       });
-
-      //legend
-      this.chartAxis.series.forEach((yx) => {
-        option.legend.data.push(yx.title);
-        option.legend.selected[yx.title] = Object.prototype.hasOwnProperty.call(
-          yx,
-          "selected"
-        )
-          ? yx.selected
-          : true;
-      });
+      // 如果legend存在并且是个数组，就不会走这个逻辑
+      if (!this.chartOption.legend) {
+        //legend
+        this.chartAxis.series.forEach((yx) => {
+          option.legend.data.push(yx.title);
+          option.legend.selected[
+            yx.title
+          ] = Object.prototype.hasOwnProperty.call(yx, "selected")
+            ? yx.selected
+            : true;
+        });
+      }
 
       //data
       this.chartData = this.chartData.sort((a, b) => {

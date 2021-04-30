@@ -92,6 +92,48 @@ export default {
     this.hideRows();
   },
   methods: {
+    generateChartLegend(showTypeList, current) {
+      let legendList = showTypeList.filter(
+        (el) => el.showType.indexOf(current) !== -1
+      );
+      let legends = [];
+      let flag = false; // 连续的控制标志位
+      let lastOne = "";
+      let base = 0,
+        step = 7;
+      for (let i = 0; i < legendList.length; i++) {
+        let obj = {
+          itemWidth: 27,
+          itemHeight: 16,
+          show: true,
+          textStyle: { fontSize: 14 },
+          data: [{ name: legendList[i].title, icon: "line" }], //rect为矩形
+        };
+        let leftRight = positionMaps[legendList[i].showType.split("-")[1]];
+        if (lastOne !== "" && lastOne === leftRight) {
+          flag = true;
+          base += step;
+          console.log("flag", flag);
+        }
+        if (leftRight === "left") {
+          obj = Object.assign({}, obj, {
+            top: !flag ? "15%" : `${15 + base}%`, //调整位置
+            left: "0%",
+          });
+        } else {
+          obj = Object.assign({}, obj, {
+            top: !flag ? "15%" : `${15 + base}%`, //调整位置
+            right: "0%",
+          });
+        }
+        flag = false;
+        console.log(positionMaps[legendList[i].showType.split("-")[1]]);
+        legends.push(obj);
+        lastOne = leftRight;
+      }
+      console.log(legendList);
+      return legends;
+    },
     generateChartYaxis(showTypeList, current) {
       let yAxisList = showTypeList.filter(
         (el) => el.showType.indexOf(current) !== -1
@@ -137,6 +179,7 @@ export default {
             text: "水位流量图",
             left: "center",
           },
+          legend: [],
         };
         let chartAxis = {
           xAxis: "time",
@@ -148,6 +191,10 @@ export default {
           carouselCount[i]
         );
         chartAxis.series = this.generateChartSeries(
+          showTypeList,
+          carouselCount[i]
+        );
+        chartOption.legend = this.generateChartLegend(
           showTypeList,
           carouselCount[i]
         );
