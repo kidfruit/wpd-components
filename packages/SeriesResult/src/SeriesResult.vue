@@ -2,8 +2,17 @@
   <div :class="classNames">
     <div class="chart-container">
       <a-carousel :after-change="onChange">
-        <div v-for="(item, index) in carouselCount" :key="index">
-          <h3>{{ item }}</h3>
+        <div v-for="(item, index) in chartList" :key="index">
+          <standard-chart
+            :key="item.id"
+            v-if="currentIndex === index"
+            ref="chartRef"
+            :chartOption="item.chartOption"
+            :chartAxis="item.chartAxis"
+            :id="item.id"
+            :classes="['series-result']"
+            :chartData="item.chartData"
+          />
         </div>
       </a-carousel>
     </div>
@@ -20,6 +29,14 @@
 
 <script>
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
+import StandardChart from "../../StandardChart/src/StandardChart.vue";
+function guid() {
+  function S4() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  }
+
+  return S4() + "-" + S4();
+}
 function unique(arr) {
   return Array.from(new Set(arr));
 }
@@ -44,6 +61,7 @@ export default {
   },
   components: {
     SimpleTable,
+    StandardChart,
   },
   computed: {
     classNames() {
@@ -52,7 +70,9 @@ export default {
   },
   data() {
     return {
-      carouselCount: 0,
+      chartList: [],
+      seriesList: [],
+      currentIndex: 0,
     };
   },
   created() {
@@ -60,14 +80,73 @@ export default {
     console.log(this.tableData);
     console.log(this.splitIndex);
     let showTypeList = this.tableColumns
-      .map((el) => el.showType)
-      .filter((el) => el)
-      .map((el) => el.split("-")[0]);
-    this.carouselCount = unique(showTypeList);
-    console.log(this.carouselCount);
+      .map((el) => {
+        return { showType: el.showType, field: el.field };
+      })
+      .filter((el) => el.showType);
+    console.log(showTypeList);
+
+    let filterList = showTypeList.map((el) => el.showType.split("-")[0]);
+    let carouselCount = unique(filterList);
+    console.log(carouselCount, filterList);
+    this.generateChartSeries(showTypeList);
+    this.generateChartData(carouselCount);
     this.hideRows();
+    console.log(this.chartList, 1111);
   },
   methods: {
+    generateChartSeries(showTypeList) {
+      console.log(showTypeList, 88);
+    },
+    generateChartData(carouselCount) {
+      for (let i = 0; i < carouselCount.length; i++) {
+        console.log("hellll");
+        let chartOption = {
+          title: {
+            text: "水位流量图",
+            left: "center",
+          },
+        };
+        let chartAxis = {
+          xAxis: "time",
+          yAxis: [
+            {
+              title: "流量(m³/s)",
+              yAxisIndex: 0,
+            },
+          ],
+          series: [
+            {
+              id: "dim2",
+              field: "dim2",
+              title: "入库流量(m³/s)",
+              selected: true,
+              yAxisIndex: 0,
+              smooth: true,
+              symbolSize: 5,
+            },
+            {
+              id: "dim1",
+              field: "dim1",
+              title: "水位(m)",
+              selected: true,
+              yAxisIndex: 0,
+              smooth: true,
+              symbolSize: 5,
+            },
+          ],
+        };
+        let chartData = [
+          { dim1: 3, dim2: 1, time: "2021-03-29T15:00:00", index: 1 },
+        ];
+        this.chartList.push({
+          chartOption,
+          chartAxis,
+          chartData,
+          id: guid(),
+        });
+      }
+    },
     hideRows() {
       let hideRows = [];
       for (let i = 0; i < this.splitIndex; i++) {
@@ -79,6 +158,7 @@ export default {
     },
     onChange(a, b, c) {
       console.log(a, b, c);
+      this.currentIndex = a;
     },
   },
 };
