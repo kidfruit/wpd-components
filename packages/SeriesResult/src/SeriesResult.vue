@@ -156,11 +156,11 @@ export default {
           },
           position: positionMaps[yAxisList[i].showType.split("-")[1]],
           max: function (value) {
-            console.log("value.max", value);
+            // console.log("value.max", value);
             return (value.max + 0.01 * value.min).toFixed(2);
           },
           min: function (value) {
-            console.log("value.min", value);
+            // console.log("value.min", value);
             return (value.min - 0.01 * value.min).toFixed(2);
           },
         });
@@ -266,10 +266,10 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  background: #364d79;
+  background: #40a9ff;
 }
 .ant-carousel >>> .slick-slide h3 {
-  color: #364d79;
+  color: #40a9ff;
 }
 .chart-container {
   margin-bottom: 96px;
