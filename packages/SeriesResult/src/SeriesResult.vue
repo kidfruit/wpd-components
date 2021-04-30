@@ -20,7 +20,7 @@
       <simple-table
         ref="tableRef"
         :tableData="tableData"
-        :setting="setting"
+        :setting="newSetting"
         :tableColumns="tableColumns"
       ></simple-table>
     </div>
@@ -77,9 +77,11 @@ export default {
       chartList: [],
       seriesList: [],
       currentIndex: 0,
+      newSetting: {},
     };
   },
   created() {
+    this.hideRows();
     let showTypeList = this.tableColumns
       .map((el) => {
         return { showType: el.showType, field: el.field, title: el.title };
@@ -89,7 +91,6 @@ export default {
     let filterList = showTypeList.map((el) => el.showType.split("-")[0]);
     let carouselCount = unique(filterList);
     this.generateChartData(carouselCount, showTypeList);
-    this.hideRows();
   },
   methods: {
     generateChartLegend(showTypeList, current) {
@@ -156,11 +157,11 @@ export default {
           },
           position: positionMaps[yAxisList[i].showType.split("-")[1]],
           max: function (value) {
-            // console.log("value.max", value);
+            console.log("value.max", value);
             return (value.max + 0.01 * value.min).toFixed(2);
           },
           min: function (value) {
-            // console.log("value.min", value);
+            console.log("value.min", value);
             return (value.min - 0.01 * value.min).toFixed(2);
           },
         });
@@ -172,12 +173,12 @@ export default {
       let firstTime = this.tableData[this.splitIndex].time;
       return showTypeList
         .filter((el) => el.showType.indexOf(current) !== -1)
-        .map((el) => {
+        .map((el, index) => {
           return {
             field: el.field,
             title: el.title,
             selected: true,
-            yAxisIndex: 0,
+            yAxisIndex: index,
             markLine: {
               symbol: "none",
               data: [
@@ -237,9 +238,10 @@ export default {
       for (let i = 0; i < this.splitIndex; i++) {
         hideRows.push(i);
       }
-      this.setting.hiddenRows = {};
-      this.setting.hiddenRows.rows = hideRows;
-      this.setting.hiddenRows.indicators = true;
+      this.newSetting.hiddenRows = {};
+      this.newSetting.hiddenRows.rows = hideRows;
+      this.newSetting.hiddenRows.indicators = true;
+      this.newSetting = Object.assign({}, this.setting, this.newSetting);
     },
     onChange(a, b, c) {
       this.currentIndex = a;
