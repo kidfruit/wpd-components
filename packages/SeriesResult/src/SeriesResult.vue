@@ -51,6 +51,12 @@ function guid() {
 function unique(arr) {
   return Array.from(new Set(arr));
 }
+function uniqueObj(origin, key) {
+  let temp = {};
+  return origin
+    .reverse()
+    .filter((item) => (item[key] in temp ? false : (temp[item[key]] = true)));
+}
 export default {
   props: {
     classes: {
@@ -162,6 +168,7 @@ export default {
       let yAxisList = showTypeList.filter(
         (el) => el.showType.indexOf(current) !== -1
       );
+      yAxisList = uniqueObj(yAxisList, "showType");
       let yAxis = [];
       for (let i = 0; i < yAxisList.length; i++) {
         yAxis.push({
@@ -169,7 +176,7 @@ export default {
           // title: yAxisList[i].title,
           type: "value",
           axisLabel: {
-            show: false,
+            show: true,
           },
           axisLine: {
             symbol: ["none", "arrow"],
@@ -201,7 +208,8 @@ export default {
             field: el.field,
             title: el.title,
             selected: true,
-            yAxisIndex: index,
+            yAxisIndex:
+              positionMaps[el.showType.split("-")[1]] === "left" ? 0 : 1,
             markLine: {
               symbol: "none",
               data: [

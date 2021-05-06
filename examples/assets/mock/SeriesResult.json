@@ -62,7 +62,7 @@
     {
       "field": "RD_RR_DOWNZ_P",
       "title": "尾水位(m)",
-      "showType": "1-R",
+      "showType": null,
       "width": 80,
       "titleAlign": "center",
       "columnAlign": "center",
