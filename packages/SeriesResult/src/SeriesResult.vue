@@ -149,7 +149,7 @@ export default {
         } else {
           obj = Object.assign({}, obj, {
             top: !flag ? "15%" : `${15 + base}%`, //调整位置
-            right: "0%",
+            left: "91%",
           });
         }
         flag = false;
@@ -215,7 +215,7 @@ export default {
                   },
                 },
               ],
-              label: { show: false, position: "middle" },
+              label: { show: true, position: "end" },
               silent: true,
             },
           };
@@ -291,13 +291,16 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  background: #40a9ff;
+  /* background: #40a9ff; */
 }
 .ant-carousel >>> .slick-slide h3 {
   color: #40a9ff;
 }
 .chart-container {
   margin-bottom: 96px;
+}
+#app .ant-carousel .slick-dots li button {
+  background: #40a9ff;
 }
 </style>
 <style lang="scss">
