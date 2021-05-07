@@ -188,11 +188,12 @@ export default {
           position: positionMaps[yAxisList[i].showType.split("-")[1]],
           max: function (value) {
             // console.log("value.max", value);
-            return (value.max + 0.01 * value.min).toFixed(2);
+            return (value.max - value.min) * (1.15).toFixed(2);
           },
           min: function (value) {
             // console.log("value.min", value);
-            return (value.min - 0.01 * value.min).toFixed(2);
+            let tempVal = (value.max - value.min) * (0.15).toFixed(2);
+            return value.min > tempVal ? value.min - tempVal : 0;
           },
         });
       }
