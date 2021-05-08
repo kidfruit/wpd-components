@@ -183,9 +183,11 @@ export default {
       this.$refs.hotTableRef.hotInstance.selectRows(rows, rows);
     },
     refreshColumn() {
-      this.$refs.hotTableRef.hotInstance.updateSettings({
-        columns: this.columns
-      });
+      if (this.$refs.hotTableRef) {
+        this.$refs.hotTableRef.hotInstance.updateSettings({
+          columns: this.columns
+        });
+      }
     },
     prepareData(data) {
       this.hotData = data.map((item, index) => {
