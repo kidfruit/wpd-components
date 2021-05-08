@@ -120,8 +120,12 @@ export default {
   },
   methods: {
     drawChart() {
-      echartsInstance = echarts.init(document.getElementById(this.id));
-      this.setDynamicOption();
+      let myChart = echarts.getInstanceByDom(document.getElementById(this.id));
+      if (myChart == null) {
+        // 如果不存在，就进行初始化
+        echartsInstance = echarts.init(document.getElementById(this.id));
+        this.setDynamicOption();
+      }
     },
     getChartInstance() {
       if (this.$refs.chartRef) {
@@ -172,19 +176,25 @@ export default {
         return Object.assign({}, yAxisOption, {
           name: ax.title,
           gridIndex: ax.gridIndex,
+          position: ax.position,
+          axisLabel: ax.axisLabel,
+          axisLine: ax.axisLine,
+          max: ax.max,
+          min: ax.min,
         });
       });
-
-      //legend
-      this.chartAxis.series.forEach((yx) => {
-        option.legend.data.push(yx.title);
-        option.legend.selected[yx.title] = Object.prototype.hasOwnProperty.call(
-          yx,
-          "selected"
-        )
-          ? yx.selected
-          : true;
-      });
+      // 如果legend存在并且是个数组，就不会走这个逻辑
+      if (!this.chartOption.legend) {
+        //legend
+        this.chartAxis.series.forEach((yx) => {
+          option.legend.data.push(yx.title);
+          option.legend.selected[
+            yx.title
+          ] = Object.prototype.hasOwnProperty.call(yx, "selected")
+            ? yx.selected
+            : true;
+        });
+      }
 
       //data
       this.chartData = this.chartData.sort((a, b) => {
