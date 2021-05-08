@@ -51,6 +51,12 @@ function guid() {
 function unique(arr) {
   return Array.from(new Set(arr));
 }
+function uniqueObj(origin, key) {
+  let temp = {};
+  return origin
+    .reverse()
+    .filter((item) => (item[key] in temp ? false : (temp[item[key]] = true)));
+}
 export default {
   props: {
     classes: {
@@ -149,7 +155,7 @@ export default {
         } else {
           obj = Object.assign({}, obj, {
             top: !flag ? "15%" : `${15 + base}%`, //调整位置
-            right: "0%",
+            left: "91%",
           });
         }
         flag = false;
@@ -162,6 +168,7 @@ export default {
       let yAxisList = showTypeList.filter(
         (el) => el.showType.indexOf(current) !== -1
       );
+      yAxisList = uniqueObj(yAxisList, "showType");
       let yAxis = [];
       for (let i = 0; i < yAxisList.length; i++) {
         yAxis.push({
@@ -169,7 +176,7 @@ export default {
           // title: yAxisList[i].title,
           type: "value",
           axisLabel: {
-            show: false,
+            show: true,
           },
           axisLine: {
             symbol: ["none", "arrow"],
@@ -181,11 +188,12 @@ export default {
           position: positionMaps[yAxisList[i].showType.split("-")[1]],
           max: function (value) {
             // console.log("value.max", value);
-            return (value.max + 0.01 * value.min).toFixed(2);
+            return (value.max - value.min) * (1.15).toFixed(2);
           },
           min: function (value) {
             // console.log("value.min", value);
-            return (value.min - 0.01 * value.min).toFixed(2);
+            let tempVal = (value.max - value.min) * (0.15).toFixed(2);
+            return value.min > tempVal ? value.min - tempVal : 0;
           },
         });
       }
@@ -201,7 +209,8 @@ export default {
             field: el.field,
             title: el.title,
             selected: true,
-            yAxisIndex: index,
+            yAxisIndex:
+              positionMaps[el.showType.split("-")[1]] === "left" ? 0 : 1,
             markLine: {
               symbol: "none",
               data: [
@@ -215,7 +224,7 @@ export default {
                   },
                 },
               ],
-              label: { show: false, position: "middle" },
+              label: { show: true, position: "end" },
               silent: true,
             },
           };
@@ -291,13 +300,16 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  background: #40a9ff;
+  /* background: #40a9ff; */
 }
 .ant-carousel >>> .slick-slide h3 {
   color: #40a9ff;
 }
 .chart-container {
   margin-bottom: 96px;
+}
+#app .ant-carousel .slick-dots li button {
+  background: #40a9ff;
 }
 </style>
 <style lang="scss">
