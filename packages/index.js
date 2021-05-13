@@ -13,7 +13,7 @@ import ResultHydroDynamic from "./ResultHydroDynamic/src/ResultHydroDynamic.vue"
 import TreeChartTable from "./TreeChartTable/src/TreeChartTable.vue";
 import CurveChart from "./CurveChart/src/CurveChart.vue";
 import SeriesPPTN from "./SeriesPPTN/src/SeriesPPTN.vue";
-
+import SeriesResult from "./SeriesResult/src/SeriesResult.vue";
 
 
 import testDirective from "./testDirective/src/testDirective";
@@ -38,7 +38,8 @@ const components = [
   TreeSimpleTableGroup,
   TreeChartTable,
   CurveChart,
-  SeriesPPTN
+  SeriesPPTN,
+  SeriesResult,
 ];
 
 // 存储指令映射
@@ -47,7 +48,7 @@ export const directives = {
 };
 
 // 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
-const install = function(Vue) {
+const install = function (Vue) {
   // 遍历注册全局组件
   components.map(component => Vue.component(component.name, component));
 
@@ -82,6 +83,7 @@ export default {
   TreeChartTable,
   CurveChart,
   SeriesPPTN,
+  SeriesResult,
 
   ...directives
 };
