@@ -1,7 +1,7 @@
 <template>
   <div :class="classNames">
     <div class="chart-container">
-      <a-carousel :after-change="onChange">
+      <a-carousel :after-change="onChange" arrows>
         <div v-for="(item, index) in chartList" :key="index">
           <standard-chart
             :key="item.id"
@@ -13,6 +13,12 @@
             :classes="['series-result']"
             :chartData="item.chartData"
           />
+        </div>
+        <div slot="prevArrow" class="custom-slick-arrow">
+          <a-icon type="left-circle" />
+        </div>
+        <div slot="nextArrow" class="custom-slick-arrow">
+          <a-icon type="right-circle" />
         </div>
       </a-carousel>
     </div>
@@ -96,18 +102,29 @@ export default {
     };
   },
   created() {
-    this.hideRows();
-    let showTypeList = this.tableColumns
-      .map((el) => {
-        return { showType: el.showType, field: el.field, title: el.title };
-      })
-      .filter((el) => el.showType);
-
-    let filterList = showTypeList.map((el) => el.showType.split("-")[0]);
-    let carouselCount = unique(filterList);
-    this.generateChartData(carouselCount, showTypeList);
+    this.handleData();
   },
   methods: {
+    clearData() {
+      this.chartList = [];
+      this.seriesList = [];
+      this.currentIndex = 0;
+      this.newSetting = {};
+      this.isShow = false;
+    },
+    handleData() {
+      this.clearData();
+      this.hideRows();
+      let showTypeList = this.tableColumns
+        .map((el) => {
+          return { showType: el.showType, field: el.field, title: el.title };
+        })
+        .filter((el) => el.showType);
+
+      let filterList = showTypeList.map((el) => el.showType.split("-")[0]);
+      let carouselCount = unique(filterList);
+      this.generateChartData(carouselCount, showTypeList);
+    },
     handleShow() {
       this.isShow = !this.isShow;
       if (this.isShow) {
@@ -156,7 +173,7 @@ export default {
         } else {
           obj = Object.assign({}, obj, {
             top: !flag ? "15%" : `${15 + base}%`, //调整位置
-            left: "91%",
+            left: "90%",
           });
         }
         flag = false;
@@ -311,6 +328,27 @@ export default {
 }
 #app .ant-carousel .slick-dots li button {
   background: #40a9ff;
+}
+#app .ant-carousel .custom-slick-arrow {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  color: #40a9ff;
+  z-index: 100;
+  background-color: rgba(31, 45, 61, 0.11);
+  opacity: 0.3;
+}
+#app .ant-carousel .custom-slick-arrow:before {
+  display: none;
+}
+#app .ant-carousel .custom-slick-arrow:hover {
+  opacity: 0.5;
+}
+#app .ant-carousel .custom-slick-arrow.slick-arrow.slick-prev {
+  left: 64px !important;
+}
+#app .ant-carousel .custom-slick-arrow.slick-arrow.slick-next {
+  right: 64px !important;
 }
 </style>
 <style lang="scss">
