@@ -29,12 +29,15 @@
           <a-icon v-else type="down" />
         </span>
       </div>
-
+      <div class="reset">
+        <a-button icon="undo" @click="handleReset" shape="circle"> </a-button>
+      </div>
       <simple-table
         ref="tableRef"
-        :tableData="tableData"
+        :tableData="newTableData"
         :setting="newSetting"
-        :tableColumns="tableColumns"
+        :tableColumns="newTableColumns"
+        @cellEditDone="cellEditDone"
       ></simple-table>
     </div>
   </div>
@@ -96,15 +99,55 @@ export default {
     return {
       chartList: [],
       seriesList: [],
+      newTableData: [],
+      newTableColumns: [],
       currentIndex: 0,
       newSetting: {},
       isShow: false,
+      activeField: "",
+      //   记录单元格修改记录，采用拼接方法:prop#row
+      editCells: [],
     };
   },
   created() {
     this.handleData();
   },
   methods: {
+    getTableData() {
+      return this.newTableData;
+    },
+    // 获取被编辑过的列名
+    getEditColumnField() {
+      return this.editCells;
+      // if (this.editCells[0]) {
+      //   return this.editCells[0].split("#")[0];
+      // } else {
+      //   return null;
+      // }
+    },
+    cellEditDone(value) {
+      // 表格到图表的单向数据联动
+      const { field, newValue, oldValue, rowIndex } = value;
+      // console.log("pp", field, newValue, oldValue, rowIndex);
+      if (newValue !== oldValue.toString() && this.activeField === "") {
+        // console.log("one has be edit", this.newTableColumns);
+        this.editCells.push(field);
+        this.activeField = field;
+        this.newTableColumns.forEach((el) => {
+          if (el.field !== field) {
+            el.readOnly = true;
+            el.isEdit = false;
+          }
+        });
+        this.$refs.tableRef.reset();
+        this.$refs.tableRef.updateShow();
+      }
+      this.newTableData[rowIndex][field] = newValue;
+      this.chartList.forEach((el) => {
+        el.chartData = this.newTableData;
+        el.id = guid();
+      });
+    },
     clearData() {
       this.chartList = [];
       this.seriesList = [];
@@ -113,6 +156,9 @@ export default {
       this.isShow = false;
     },
     handleData() {
+      // 备份表格数据
+      this.newTableData = JSON.parse(JSON.stringify(this.tableData));
+      this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns));
       this.clearData();
       this.hideRows();
       let showTypeList = this.tableColumns
@@ -133,6 +179,16 @@ export default {
       } else {
         this.hideRows();
       }
+    },
+    handleReset() {
+      this.activeField = "";
+      this.newTableData = JSON.parse(JSON.stringify(this.tableData));
+      this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns));
+      this.chartList.forEach((el) => {
+        el.chartData = this.newTableData;
+        el.id = guid();
+      });
+      this.editCells = [];
     },
     generateChartLegend(showTypeList, current) {
       let legendList = showTypeList.filter(
@@ -168,12 +224,12 @@ export default {
         if (leftRight === "left") {
           obj = Object.assign({}, obj, {
             top: !flag ? "15%" : `${15 + base}%`, //调整位置
-            left: "0%",
+            left: "5%",
           });
         } else {
           obj = Object.assign({}, obj, {
             top: !flag ? "15%" : `${15 + base}%`, //调整位置
-            left: "90%",
+            left: "85%",
           });
         }
         flag = false;
@@ -219,7 +275,7 @@ export default {
       return yAxis;
     },
     generateChartSeries(showTypeList, current) {
-      let firstTime = this.tableData[this.splitIndex].time;
+      let firstTime = this.newTableData[this.splitIndex].time;
       return showTypeList
         .filter((el) => el.showType.indexOf(current) !== -1)
         .map((el, index) => {
@@ -256,6 +312,11 @@ export default {
             left: "center",
           },
           legend: [],
+          grid: {
+            bottom: 50,
+            left: "16%",
+            right: "16%",
+          },
         };
         let chartAxis = {
           xAxis: "time",
@@ -365,6 +426,11 @@ export default {
       height: 24px;
       cursor: pointer;
     }
+  }
+  .reset {
+    position: absolute;
+    top: -40px;
+    right: 12px;
   }
 }
 </style>

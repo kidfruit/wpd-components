@@ -223,7 +223,7 @@ export default {
         option.series.push(seriesObj);
       });
       if (!option.timeline) {
-        // console.log("option", option);
+        console.log("option", option);
         return {
           baseOption: option,
         };
