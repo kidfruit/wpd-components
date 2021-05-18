@@ -17,7 +17,7 @@
     <div v-if="false">
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
-    </div>
+    </div>  
     <div v-if="false">
       <h2>MultiOptionTable：流程模型选择专用表组件</h2>
       <multi-option-table-test />
@@ -34,7 +34,7 @@
       <h2>DraggableChart：可拖拽的echarts图组件(不支持连贯拖拽)</h2>
       <draggable-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>DraggableChart：可连贯拖拽，图表联动的echarts图组件</h2>
       <coherent-draggable-chart-test />
     </div>
@@ -46,7 +46,7 @@
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>TreeTableGroup：树表联动组件</h2> 
       <tree-table-group-test />
     </div>
@@ -65,6 +65,10 @@
     <div v-if="false">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
+    </div>
+    <div v-if="false">
+      <h2>ManyChartTest:多echarts组件</h2>
+      <many-chart-test />
     </div>
   </div>
 </template>
@@ -89,6 +93,7 @@ import CurveChartTest from "./CurveChartTest.vue";
 import SeriesQZTest from "./SeriesQZTest.vue";
 import SeriesPPTNTest from "./SeriesPPTNTest.vue";
 import SeriesResultTest from "./SeriesResultTest.vue";
+import ManyChartTest from "./ManyChartTest.vue";
 
 export default {
   components: {
@@ -110,6 +115,7 @@ export default {
     SeriesQZTest,
     SeriesPPTNTest,
     SeriesResultTest,
+    ManyChartTest,
   },
   name: "HelloWorld",
   methods: {
