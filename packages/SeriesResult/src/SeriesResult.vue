@@ -118,17 +118,17 @@ export default {
     },
     // 获取被编辑过的列名
     getEditColumnField() {
-      return this.editCells;
-      // if (this.editCells[0]) {
-      //   return this.editCells[0].split("#")[0];
-      // } else {
-      //   return null;
-      // }
+      // return this.editCells;
+      if (this.editCells[0]) {
+        return this.editCells[0].split("#")[0];
+      } else {
+        return null;
+      }
     },
     cellEditDone(value) {
       // 表格到图表的单向数据联动
       const { field, newValue, oldValue, rowIndex } = value;
-      // console.log("pp", field, newValue, oldValue, rowIndex);
+      //console.log("pp", field, newValue, oldValue, rowIndex);
       if (newValue !== oldValue.toString() && this.activeField === "") {
         // console.log("one has be edit", this.newTableColumns);
         this.editCells.push(field);
@@ -141,6 +141,7 @@ export default {
         });
         this.$refs.tableRef.reset();
         this.$refs.tableRef.updateShow();
+        this.$refs.tableRef.render();
       }
       this.newTableData[rowIndex][field] = newValue;
       this.chartList.forEach((el) => {
