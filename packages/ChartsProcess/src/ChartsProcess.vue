@@ -64,7 +64,7 @@ const yAxisOption = {
 }
 let echartsInstance = null
 export default {
-  name: 'ManyChart',
+  name: 'ChartsProcess',
   props: {
     isVisible: {
       type: Boolean,
@@ -125,45 +125,12 @@ export default {
       finaldata: [],
       instance: null,
       programmedata: {
-        // key: '',
-        // option: {
-        //   title: {
-        //     text: '',
-        //   },
-        //   tooltip: {
-        //     trigger: 'axis',
-        //   },
-        //   legend: {
-        //     data: [],
-        //   },
-        //   grid: {
-        //     left: '3%',
-        //     right: '4%',
-        //     bottom: '3%',
-        //     containLabel: true,
-        //   },
-        //   toolbox: {
-        //     feature: {
-        //       saveAsImage: {},
-        //     },
-        //   },
-        //   xAxis: {
-        //     type: 'category',
-        //     boundaryGap: false,
-        //     data: [],
-        //   },
-        //   yAxis: {
-        //     name: '',
-        //     type: 'value',
-        //   },
-        //   series: [],
-        // },
       },
     }
   },
   computed: {
     classNames() {
-      return ['chart'].concat(this.classes)
+      return ['charts'].concat(this.classes)
     },
     // option() {
     //   return this.prepareSeries();
@@ -191,7 +158,7 @@ export default {
           },
           toolbox: {
             feature: {
-              saveAsImage: {},
+            //   saveAsImage: {},
             },
           },
           xAxis: {
@@ -329,113 +296,7 @@ export default {
         echartsInstance.resize()
       }
     },
-    prepareSeries() {
-      let option = Object.assign({}, defaultOption, this.chartOption)
-      //x轴
-      option.xAxis.data = this.chartData.map((cd) => cd[this.chartAxis.xAxis])
-      // console.log(option.xAxis.data);
-      if (this.chartAxis.timeSeries) {
-        option.xAxis.data = this.sortTime(option.xAxis.data)
-      }
-      if (option.timeline) {
-        option.xAxis.data = this.sections
-      }
-      if (Array.isArray(option.grid) && option.grid.length > 0) {
-        option.xAxis = this.chartAxis.xAxis
-      }
-
-      //y轴
-      //按照yAxisIndex排序
-      if (
-        Object.prototype.hasOwnProperty.call(
-          this.chartAxis.yAxis[0],
-          'yAxisIndex'
-        )
-      ) {
-        this.chartAxis.yAxis = this.chartAxis.yAxis.sort((a, b) => {
-          return a['yAxisIndex'] - b['yAxisIndex']
-        })
-      }
-
-      option.yAxis = this.chartAxis.yAxis.map((ax) => {
-        return Object.assign({}, yAxisOption, {
-          name: ax.title,
-          gridIndex: ax.gridIndex,
-          position: ax.position,
-          axisLabel: ax.axisLabel,
-          axisLine: ax.axisLine,
-          max: ax.max,
-          min: ax.min,
-        })
-      })
-      // 如果legend存在并且是个数组，就不会走这个逻辑
-      if (!this.chartOption.legend) {
-        //legend
-        this.chartAxis.series.forEach((yx) => {
-          option.legend.data.push(yx.title)
-          option.legend.selected[
-            yx.title
-          ] = Object.prototype.hasOwnProperty.call(yx, 'selected')
-            ? yx.selected
-            : true
-        })
-      }
-
-      //data
-      this.chartData = this.chartData.sort((a, b) => {
-        let timeField = this.chartAxis.xAxis
-        return (
-          new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
-        )
-      })
-      option.series = []
-      this.chartAxis.series.forEach((yax) => {
-        let seriesObj = {
-          name: yax.title,
-          type: 'line',
-          data: [],
-          yAxisIndex: yax.yAxisIndex,
-          xAxisIndex: yax.xAxisIndex,
-          smooth: yax.smooth,
-          id: yax.id,
-          symbolSize: yax.symbolSize,
-          lineStyle: yax.lineStyle,
-          markLine: yax.markLine,
-          color: yax.color,
-          itemStyle: yax.itemStyle,
-        }
-        seriesObj.data = this.chartData.map((cd) => cd[yax.field])
-        option.series.push(seriesObj)
-      })
-      if (!option.timeline) {
-        console.log('option', option)
-        return {
-          baseOption: option,
-        }
-      } else {
-        // 带有时间线的chart
-        let options = []
-        let fields = this.chartAxis.series.map((el) => el.field)
-        this.chartData.forEach((cd, index) => {
-          let series = []
-          fields.forEach((item) => {
-            if (cd[item]) {
-              series.push({ data: cd[item] })
-            }
-          })
-          options.push({
-            series,
-            title: {
-              text: `${this.chartOption.title.text}    ${this.chartOption.timeline.data[index]}`,
-            },
-          })
-        })
-        return {
-          baseOption: option,
-          options,
-        }
-      }
-    },
+    
     sortTime(timeList) {
       return timeList.sort((a, b) => {
         return new Date(a).getTime() - new Date(b).getTime()
@@ -450,12 +311,12 @@ export default {
 </script>
 <style>
 .chartRef {
-  margin-top: 10px;
-  margin-left: 10px;
-  background-color: #ccc;
+  /* margin-top: 10px;
+  margin-left: 10px; */
+  background-color: #f7f5f5;
   float: left;
 }
-.chart {
+.charts {
   width: 100%;
   height: 300px;
 }

@@ -14,7 +14,10 @@ import TreeChartTable from "./TreeChartTable/src/TreeChartTable.vue";
 import CurveChart from "./CurveChart/src/CurveChart.vue";
 import SeriesPPTN from "./SeriesPPTN/src/SeriesPPTN.vue";
 import SeriesResult from "./SeriesResult/src/SeriesResult.vue";
-import ManyChart from "./ManyChart/src/ManyChart.vue";
+import ChartsProcess from "./ChartsProcess/src/ChartsProcess.vue";
+import ChartsSingle from "./ChartsSingle/src/ChartsSingle.vue";
+
+
 
 
 
@@ -43,7 +46,8 @@ const components = [
   CurveChart,
   SeriesPPTN,
   SeriesResult,
-  ManyChart
+  ChartsProcess,
+  ChartsSingle
 ];
 
 // 存储指令映射
@@ -88,7 +92,8 @@ export default {
   CurveChart,
   SeriesPPTN,
   SeriesResult,
-  ManyChart,
+  ChartsProcess,
+  ChartsSingle,
 
   ...directives
 };

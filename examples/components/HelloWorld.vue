@@ -14,7 +14,7 @@
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
       <standard-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
     </div>  
@@ -34,7 +34,7 @@
       <h2>DraggableChart：可拖拽的echarts图组件(不支持连贯拖拽)</h2>
       <draggable-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>DraggableChart：可连贯拖拽，图表联动的echarts图组件</h2>
       <coherent-draggable-chart-test />
     </div>
@@ -67,8 +67,12 @@
       <series-result-test />
     </div>
     <div v-if="false">
-      <h2>ManyChartTest:多echarts组件</h2>
-      <many-chart-test />
+      <h2>ChartsProcessTest:多echarts过程图对比组件</h2>
+      <charts-process-test />
+    </div>
+    <div v-if="false">
+      <h2>ChartsSingleTest:多echarts单值图对比组件</h2>
+      <charts-single-test />
     </div>
   </div>
 </template>
@@ -93,7 +97,8 @@ import CurveChartTest from "./CurveChartTest.vue";
 import SeriesQZTest from "./SeriesQZTest.vue";
 import SeriesPPTNTest from "./SeriesPPTNTest.vue";
 import SeriesResultTest from "./SeriesResultTest.vue";
-import ManyChartTest from "./ManyChartTest.vue";
+import ChartsProcessTest from "./ChartsProcessTest.vue";
+import ChartsSingleTest from "./ChartsSingleTest.vue";
 
 export default {
   components: {
@@ -115,7 +120,8 @@ export default {
     SeriesQZTest,
     SeriesPPTNTest,
     SeriesResultTest,
-    ManyChartTest,
+    ChartsProcessTest,
+    ChartsSingleTest
   },
   name: "HelloWorld",
   methods: {
