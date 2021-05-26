@@ -18,7 +18,7 @@
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
     </div>  
-    <div v-if="false">
+    <div v-if="true">
       <h2>MultiOptionTable：流程模型选择专用表组件</h2>
       <multi-option-table-test />
     </div>
