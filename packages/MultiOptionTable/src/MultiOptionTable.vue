@@ -38,7 +38,7 @@ const defaultHotSettings = {
   language: zhCN.languageCode,
   cells: (row, col, prop) => {
     let cellProperties = {}
-    cellProperties.renderer = 'negativeValueRenderer'
+    cellProperties.renderer = 'negativeValueRenderers'
     return cellProperties
   },
 }
@@ -73,8 +73,8 @@ export default {
   beforeMount() {
     // 单元格自定义渲染
     Handsontable.renderers.registerRenderer(
-      'negativeValueRenderer',
-      this.negativeValueRenderer
+      'negativeValueRenderers',
+      this.negativeValueRenderers
     )
     // console.log(this.hotData, 'this.hotData');
   },
@@ -113,7 +113,7 @@ export default {
               (i) => i.name
             )
           }
-          cellProperties.renderer = 'negativeValueRenderer'
+          cellProperties.renderer = 'negativeValueRenderers'
           return cellProperties
         },
         afterSelection: (
@@ -355,7 +355,7 @@ export default {
       }
     },
     // 单元格自定义渲染
-    negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
+    negativeValueRenderers(instance, td, row, col, prop, value, cellProperties) {
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments)
       } else if (Object.prototype.hasOwnProperty.call(this.checkbox, prop)) {
