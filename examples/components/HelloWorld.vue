@@ -14,11 +14,11 @@
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
       <standard-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
-    </div>
-    <div v-if="false">
+    </div>  
+    <div v-if="true">
       <h2>MultiOptionTable：流程模型选择专用表组件</h2>
       <multi-option-table-test />
     </div>
@@ -46,7 +46,7 @@
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>TreeTableGroup：树表联动组件</h2> 
       <tree-table-group-test />
     </div>
@@ -65,6 +65,14 @@
     <div v-if="false">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
+    </div>
+    <div v-if="false">
+      <h2>ChartsProcessTest:多echarts过程图对比组件</h2>
+      <charts-process-test />
+    </div>
+    <div v-if="false">
+      <h2>ChartsSingleTest:多echarts单值图对比组件</h2>
+      <charts-single-test />
     </div>
   </div>
 </template>
@@ -89,6 +97,8 @@ import CurveChartTest from "./CurveChartTest.vue";
 import SeriesQZTest from "./SeriesQZTest.vue";
 import SeriesPPTNTest from "./SeriesPPTNTest.vue";
 import SeriesResultTest from "./SeriesResultTest.vue";
+import ChartsProcessTest from "./ChartsProcessTest.vue";
+import ChartsSingleTest from "./ChartsSingleTest.vue";
 
 export default {
   components: {
@@ -110,6 +120,8 @@ export default {
     SeriesQZTest,
     SeriesPPTNTest,
     SeriesResultTest,
+    ChartsProcessTest,
+    ChartsSingleTest
   },
   name: "HelloWorld",
   methods: {

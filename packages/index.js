@@ -14,11 +14,17 @@ import TreeChartTable from "./TreeChartTable/src/TreeChartTable.vue";
 import CurveChart from "./CurveChart/src/CurveChart.vue";
 import SeriesPPTN from "./SeriesPPTN/src/SeriesPPTN.vue";
 import SeriesResult from "./SeriesResult/src/SeriesResult.vue";
+import ChartsProcess from "./ChartsProcess/src/ChartsProcess.vue";
+import ChartsSingle from "./ChartsSingle/src/ChartsSingle.vue";
+
+
+
 
 
 import testDirective from "./testDirective/src/testDirective";
 import MultiOptionTable from "./MultiOptionTable/src/MultiOptionTable.vue";
 import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGroup.vue";
+
 
 
 // 存储组件列表
@@ -40,6 +46,8 @@ const components = [
   CurveChart,
   SeriesPPTN,
   SeriesResult,
+  ChartsProcess,
+  ChartsSingle
 ];
 
 // 存储指令映射
@@ -84,6 +92,8 @@ export default {
   CurveChart,
   SeriesPPTN,
   SeriesResult,
+  ChartsProcess,
+  ChartsSingle,
 
   ...directives
 };
