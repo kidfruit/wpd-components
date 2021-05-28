@@ -5,19 +5,17 @@
     <scheme-table-test v-if="false"></scheme-table-test>
     <char-table-test v-if="false"></char-table-test>
     <div v-if="false">
-      <h2>
-        SimpleChart：数据格式为echarts标准格式（V-Chart封装，打包未成功！！）
-      </h2>
+      <h2>SimpleChart：数据格式为echarts标准格式（V-Chart封装，打包未成功！！）</h2>
       <simple-chart-test />
     </div>
     <div v-if="false">
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
       <standard-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
-    </div>  
+    </div>
     <div v-if="true">
       <h2>MultiOptionTable：流程模型选择专用表组件</h2>
       <multi-option-table-test />
@@ -47,7 +45,7 @@
       <curve-chart-test />
     </div>
     <div v-if="false">
-      <h2>TreeTableGroup：树表联动组件</h2> 
+      <h2>TreeTableGroup：树表联动组件</h2>
       <tree-table-group-test />
     </div>
     <div v-if="false">
@@ -67,6 +65,10 @@
       <series-result-test />
     </div>
     <div v-if="false">
+      <h2>SeriesCompareTest：通用过程线组合组件</h2>
+      <series-compare-test />
+    </div>
+    <div v-if="false">
       <h2>ChartsProcessTest:多echarts过程图对比组件</h2>
       <charts-process-test />
     </div>
@@ -78,27 +80,27 @@
 </template>
 
 <script>
-import TableChartTest from "./TableChartTest";
-import SchemeTableTest from "./SchemeTableTest";
-import SimpleTableTest from "./SimpleTableTest";
-
-import CharTableTest from "./CharTableTest.vue";
-import SimpleChartTest from "./SimpleChartTest.vue";
-import StandardChartTest from "./StandardChartTest.vue";
-import MultiOptionTableTest from "./MultiOptionTableTest.vue";
-import ResultHydroDynamicTest from "./ResultHydroDynamicTest.vue";
-import ChartTableGroupTest from "./ChartTableGroupTest.vue";
-import DraggableChartTest from "./DraggableChartTest.vue";
-import CoherentDraggableChartTest from "./CoherentDraggableChartTest.vue";
-import TreeChartTableTest from "./TreeChartTableTest.vue";
-import TreeTableGroupTest from "./TreeTableGroupTest.vue";
-import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
-import CurveChartTest from "./CurveChartTest.vue";
-import SeriesQZTest from "./SeriesQZTest.vue";
-import SeriesPPTNTest from "./SeriesPPTNTest.vue";
-import SeriesResultTest from "./SeriesResultTest.vue";
-import ChartsProcessTest from "./ChartsProcessTest.vue";
-import ChartsSingleTest from "./ChartsSingleTest.vue";
+import TableChartTest from './TableChartTest';
+import SchemeTableTest from './SchemeTableTest';
+import SimpleTableTest from './SimpleTableTest';
+import CharTableTest from './CharTableTest.vue';
+import SimpleChartTest from './SimpleChartTest.vue';
+import StandardChartTest from './StandardChartTest.vue';
+import MultiOptionTableTest from './MultiOptionTableTest.vue';
+import ResultHydroDynamicTest from './ResultHydroDynamicTest.vue';
+import ChartTableGroupTest from './ChartTableGroupTest.vue';
+import DraggableChartTest from './DraggableChartTest.vue';
+import CoherentDraggableChartTest from './CoherentDraggableChartTest.vue';
+import TreeChartTableTest from './TreeChartTableTest.vue';
+import TreeTableGroupTest from './TreeTableGroupTest.vue';
+import TreeSimpleTableGroupTest from './TreeSimpleTableGroupTest.vue';
+import CurveChartTest from './CurveChartTest.vue';
+import SeriesQZTest from './SeriesQZTest.vue';
+import SeriesPPTNTest from './SeriesPPTNTest.vue';
+import SeriesResultTest from './SeriesResultTest.vue';
+import SeriesCompareTest from './SeriesCompareTest.vue';
+import ChartsProcessTest from './ChartsProcessTest.vue';
+import ChartsSingleTest from './ChartsSingleTest.vue';
 
 export default {
   components: {
@@ -120,15 +122,16 @@ export default {
     SeriesQZTest,
     SeriesPPTNTest,
     SeriesResultTest,
+    SeriesCompareTest,
     ChartsProcessTest,
     ChartsSingleTest
   },
-  name: "HelloWorld",
+  name: 'HelloWorld',
   methods: {
     clickedHello() {
-      alert("iii");
-    },
-  },
+      alert('iii');
+    }
+  }
 };
 </script>
 <style src="../../node_modules/handsontable/dist/handsontable.full.css"></style>
