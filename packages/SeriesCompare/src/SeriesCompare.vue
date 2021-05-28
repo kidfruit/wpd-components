@@ -110,12 +110,9 @@ export default {
       nestedHeaders: [],
       checkAttribute: {
         list: [],
-        checked: []
+        checked: this.attribute || []
       }
     };
-  },
-  created() {
-    this.transData(true);
   },
   methods: {
     getTableData() {
@@ -351,33 +348,11 @@ export default {
       this.currentIndex = a;
     },
     /**根据新格式的数据渲染 */
-    transData(create) {
+    transData() {
       let tableColumns = [];
       let tableData = [];
       let noShowType = [];
       let nestedHeaders = [];
-      if (create) {
-        if (this.data[0].tableColumns && this.data[0].tableColumns instanceof Array) {
-          this.data[0].tableColumns.forEach(column => {
-            this.checkAttribute.list.push({
-              title: column.title,
-              key: column.field
-            });
-          });
-
-          /**
-           * 筛选显示的title
-           */
-          if (this.attribute instanceof Array) {
-            this.checkAttribute.checked = this.attribute;
-          }
-          if (this.checkAttribute.checked.length === 0) {
-            this.checkAttribute.checked = [...this.checkAttribute.list.map(i => i.key)];
-          }
-        } else {
-          throw Error('数据格式错误,没有找到tableColumns,请检查.');
-        }
-      }
 
       this.data.forEach(({ title = '', tableColumns: columns = [], tableData: data = [], splitIndex: sIndex = 0 }, i) => {
         columns.forEach(c => {
@@ -472,8 +447,25 @@ export default {
   },
   watch: {
     data: {
+      immediate: true,
       deep: true,
-      handler() {
+      handler(nVal) {
+        if (nVal[0].tableColumns && nVal[0].tableColumns instanceof Array) {
+          nVal[0].tableColumns.forEach(column => {
+            this.checkAttribute.list.push({
+              title: column.title,
+              key: column.field
+            });
+          });
+          /**
+           * 筛选显示的title
+           */
+          if (this.checkAttribute.checked.length === 0) {
+            this.checkAttribute.checked = [...this.checkAttribute.list.map(i => i.key)];
+          }
+        } else {
+          throw Error('数据格式错误,没有找到tableColumns,请检查.');
+        }
         this.transData();
       }
     },
