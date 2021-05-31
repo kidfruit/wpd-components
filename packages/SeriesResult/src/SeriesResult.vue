@@ -10,6 +10,7 @@
             :chartOption="item.chartOption"
             :chartAxis="item.chartAxis"
             :id="item.id"
+            :splitIndex="splitIndex"
             :classes="['series-result']"
             :chartData="item.chartData"
           />
@@ -275,34 +276,72 @@ export default {
       return yAxis;
     },
     generateChartSeries(showTypeList, current) {
-      let firstTime = this.newTableData[this.splitIndex].time;
-      return showTypeList
-        .filter((el) => el.showType.indexOf(current) !== -1)
-        .map((el, index) => {
-          return {
-            field: el.field,
-            title: el.title,
-            selected: true,
-            yAxisIndex:
-              positionMaps[el.showType.split("-")[1]] === "left" ? 0 : 1,
-            markLine: {
-              symbol: "none",
-              data: [
-                {
-                  name: "标记线",
-                  xAxis: firstTime,
-                  lineStyle: {
-                    //警戒线的样式  ，虚实  颜色
-                    type: "solid",
-                    color: "#000",
+      let firstTime = "";
+      if (this.splitIndex) {
+        firstTime = this.newTableData[this.splitIndex].time;
+      }
+      if (firstTime !== "") {
+        let list = showTypeList
+          .filter((el) => el.showType.indexOf(current) !== -1)
+          .map((el, index) => {
+            return {
+              field: el.field,
+              title: el.title,
+              selected: true,
+              yAxisIndex:
+                positionMaps[el.showType.split("-")[1]] === "left" ? 0 : 1,
+              markLine: {
+                symbol: "none",
+                data: [
+                  {
+                    name: "标记线",
+                    xAxis: firstTime,
+                    lineStyle: {
+                      //警戒线的样式  ，虚实  颜色
+                      type: "solid",
+                      color: "#000",
+                    },
                   },
+                ],
+                label: { show: true, position: "end" },
+                silent: true,
+              },
+            };
+          });
+        // 将3个series处理成一半实线一半虚线的series，一起应该6个series
+        let allList = [];
+        for (let i = 0; i < list.length; i++) {
+          allList.push(list[i]);
+          let obj = Object.assign({}, list[i], {
+            smooth: false, //关键点，为true是不支持虚线，实线就用true
+            itemStyle: {
+              normal: {
+                lineStyle: {
+                  width: 2,
+                  type: "dotted", //'dotted'虚线 'solid'实线
                 },
-              ],
-              label: { show: true, position: "end" },
-              silent: true,
+              },
             },
-          };
+          });
+          allList.push(obj);
+        }
+        allList = allList.sort((a, b) => {
+          return a.name - b.name;
         });
+        return allList;
+      } else {
+        return showTypeList
+          .filter((el) => el.showType.indexOf(current) !== -1)
+          .map((el, index) => {
+            return {
+              field: el.field,
+              title: el.title,
+              selected: true,
+              yAxisIndex:
+                positionMaps[el.showType.split("-")[1]] === "left" ? 0 : 1,
+            };
+          });
+      }
     },
     generateChartData(carouselCount, showTypeList) {
       for (let i = 0; i < carouselCount.length; i++) {
