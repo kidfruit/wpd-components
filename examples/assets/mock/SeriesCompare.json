@@ -16,7 +16,7 @@
       {
         "field": "time",
         "title": "时间",
-        "width": 80,
+        "width": 200,
         "titleAlign": "center",
         "columnAlign": "center",
         "isResize": true,
@@ -408,7 +408,7 @@
       {
         "field": "time",
         "title": "时间",
-        "width": 80,
+        "width": 200,
         "titleAlign": "center",
         "columnAlign": "center",
         "isResize": true,

@@ -94,6 +94,10 @@ export default {
       type: String,
       default: "standard-chart",
     },
+    splitIndex: {
+      type: Number,
+      default: -1,
+    },
   },
   components: {
     // VChart,
@@ -178,6 +182,7 @@ export default {
           gridIndex: ax.gridIndex,
           position: ax.position,
           axisLabel: ax.axisLabel,
+          axisTick: ax.axisTick,
           axisLine: ax.axisLine,
           max: ax.max,
           min: ax.min,
@@ -222,6 +227,20 @@ export default {
         seriesObj.data = this.chartData.map((cd) => cd[yax.field]);
         option.series.push(seriesObj);
       });
+      if (this.splitIndex && this.splitIndex !== -1) {
+        for (let i = 0; i < option.series.length; i++, i++) {
+          // 实线的数据
+          option.series[i].data = option.series[i].data.map((el, index) => {
+            return index <= this.splitIndex ? el : "-";
+          });
+          // 虚线的数据
+          option.series[i + 1].data = option.series[i + 1].data.map(
+            (el, index) => {
+              return index >= this.splitIndex ? el : "-";
+            }
+          );
+        }
+      }
       if (!option.timeline) {
         console.log("option", option);
         return {

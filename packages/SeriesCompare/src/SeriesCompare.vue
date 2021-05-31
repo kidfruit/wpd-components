@@ -21,7 +21,15 @@
         </span>
       </div>
       <div class="reset">
-        <a-button icon="undo" @click="handleReset" shape="circle"> </a-button>
+        <a-popover placement="left" trigger="click">
+          <template slot="title">选择对比的属性</template>
+          <template slot="content">
+            <a-tree checkable :tree-data="checkAttribute.list" :checkedKeys="checkAttribute.checked" :selectable="false" @check="onCheck">
+              <span slot="title0010" style="color: #1890ff">sss</span>
+            </a-tree>
+          </template>
+          <a-button icon="fund" @click="handleReset" shape="circle"> </a-button>
+        </a-popover>
       </div>
       <simple-table ref="tableRef" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns" @cellEditDone="cellEditDone"></simple-table>
     </div>
@@ -60,6 +68,9 @@ export default {
       type: Array,
       required: false
     },
+    attribute: {
+      type: Array
+    },
     // tableData: {
     //   type: Array
     // },
@@ -96,10 +107,13 @@ export default {
       editCells: [],
       tableData: [],
       tableColumns: [],
-      nestedHeaders: []
+      nestedHeaders: [],
+      checkAttribute: {
+        list: [],
+        checked: this.attribute || []
+      }
     };
   },
-  created() {},
   methods: {
     getTableData() {
       return this.newTableData;
@@ -116,9 +130,7 @@ export default {
     cellEditDone(value) {
       // 表格到图表的单向数据联动
       const { field, newValue, oldValue, rowIndex } = value;
-      // console.log("pp", field, newValue, oldValue, rowIndex);
       if (newValue !== oldValue.toString() && this.activeField === '') {
-        // console.log("one has be edit", this.newTableColumns);
         this.editCells.push(field);
         this.activeField = field;
         this.newTableColumns.forEach(el => {
@@ -245,11 +257,9 @@ export default {
           },
           position: positionMaps[yAxisList[i].showType.split('-')[1]],
           max: function (value) {
-            // console.log("value.max", value);
             return ((value.max - value.min) * 1.15).toFixed(2);
           },
           min: function (value) {
-            // console.log("value.min", value);
             let tempVal = ((value.max - value.min) * 0.15).toFixed(2);
             return value.min > tempVal ? (value.min - tempVal).toFixed(2) : 0;
           }
@@ -336,22 +346,17 @@ export default {
     },
     onChange(a, b, c) {
       this.currentIndex = a;
-    }
-  },
-  watch: {
-    data: {
-      immediate: true,
-      deep: true,
-      handler(nVal) {
-        // this.tableColumns
-        // this.tableData
-        // this.splitIndex
-        let tableColumns = [];
-        let tableData = [];
-        let noShowType = [];
-        let nestedHeaders = [];
-        nVal.forEach(({ title = '', tableColumns: columns = [], tableData: data = [], splitIndex: sIndex = 0 }, i) => {
-          columns.forEach(c => {
+    },
+    /**根据新格式的数据渲染 */
+    transData() {
+      let tableColumns = [];
+      let tableData = [];
+      let noShowType = [];
+      let nestedHeaders = [];
+
+      this.data.forEach(({ title = '', tableColumns: columns = [], tableData: data = [], splitIndex: sIndex = 0 }, i) => {
+        columns.forEach(c => {
+          if (this.checkAttribute.checked.includes(c.field)) {
             const index = tableColumns.findIndex(k => k['originTitle'] === c.title && k['originField'] === c.field);
             if (c.showType) {
               if (index >= 0) {
@@ -384,56 +389,90 @@ export default {
                 noShowType.push(c.field);
               }
             }
-          });
-          data.forEach((d, j) => {
-            if (!tableData[j]) {
-              tableData[j] = {};
-            }
-            Object.keys(d).forEach(key => {
-              if (noShowType.includes(key)) {
-                if (!tableData[j][key]) {
-                  tableData[j][key] = d[key];
-                }
-              } else {
-                tableData[j][key + '_' + i] = d[key];
-              }
-            });
-          });
-
-          // if (i === 0) {
-          //   tableColumns = [].concat(this.tableColumns, columns);
-          //   tableData = [].concat(this.tableColumns, columns);
-          // } else {
-          // }
-          // console.log(columns, 'columns');
-          // console.log(data, 'data');
-          // console.log(sIndex, 'sIndex');
+          }
         });
-        for (let i = 0; i < tableColumns.length; i++) {
-          const column = tableColumns[i];
-          if (column['originField'] && column['originTitle']) {
-            if (nestedHeaders[nestedHeaders.length - 1].label === column['originTitle']) {
-              nestedHeaders[nestedHeaders.length - 1].colspan += 1;
+        data.forEach((d, j) => {
+          if (!tableData[j]) {
+            tableData[j] = {};
+          }
+          Object.keys(d).forEach(key => {
+            if (noShowType.includes(key)) {
+              if (!tableData[j][key]) {
+                tableData[j][key] = d[key];
+              }
             } else {
-              nestedHeaders.push({
-                label: column.originTitle,
-                colspan: 1
-              });
+              tableData[j][key + '_' + i] = d[key];
             }
+          });
+        });
+      });
+      /**
+       * 制作顶部nestedHeaders
+       */
+      for (let i = 0; i < tableColumns.length; i++) {
+        const column = tableColumns[i];
+        if (column['originField'] && column['originTitle']) {
+          if (nestedHeaders[nestedHeaders.length - 1].label === column['originTitle']) {
+            nestedHeaders[nestedHeaders.length - 1].colspan += 1;
           } else {
             nestedHeaders.push({
-              label: '',
+              label: column.originTitle,
               colspan: 1
             });
           }
+        } else {
+          nestedHeaders.push({
+            label: '',
+            colspan: 1
+          });
         }
-        console.log(nestedHeaders, 'nestedHeaders');
-        console.log(tableColumns, 'tableColumns');
-        console.log(tableData, 'tableData');
-        this.nestedHeaders = [nestedHeaders, tableColumns.map(i => i.title)];
-        this.tableColumns = tableColumns;
-        this.tableData = tableData;
-        this.handleData();
+      }
+      // console.log(nestedHeaders, 'nestedHeaders');
+      // console.log(tableColumns, 'tableColumns');
+      // console.log(tableData, 'tableData');
+      this.nestedHeaders = [nestedHeaders, tableColumns.map(i => i.title)];
+      this.tableColumns = tableColumns;
+      this.tableData = tableData;
+      this.handleData();
+    },
+    onCheck(checkedKeys) {
+      if (checkedKeys.length > 0) {
+        this.checkAttribute.checked = checkedKeys;
+        this.transData();
+        // this.handleReset();
+      } else {
+        // ....
+      }
+    }
+  },
+  watch: {
+    data: {
+      immediate: true,
+      deep: true,
+      handler(nVal) {
+        if (nVal[0].tableColumns && nVal[0].tableColumns instanceof Array) {
+          nVal[0].tableColumns.forEach(column => {
+            this.checkAttribute.list.push({
+              title: column.title,
+              key: column.field
+            });
+          });
+          /**
+           * 筛选显示的title
+           */
+          if (this.checkAttribute.checked.length === 0) {
+            this.checkAttribute.checked = [...this.checkAttribute.list.map(i => i.key)];
+          }
+        } else {
+          throw Error('数据格式错误,没有找到tableColumns,请检查.');
+        }
+        this.transData();
+      }
+    },
+    'checkAttribute.checked': {
+      deep: true,
+      handler(val) {
+        this.$emit('update:attribute', val);
       }
     }
   }
@@ -443,8 +482,8 @@ export default {
 <style>
 .series-compare .ant-carousel .slick-slide {
   text-align: center;
-  height: 160px;
-  line-height: 160px;
+  height: 400px;
+  line-height: 400px;
   overflow: hidden;
 }
 .series-compare .ant-carousel .slick-dots {
