@@ -258,6 +258,10 @@ export default {
           axisLabel: {
             show: true,
           },
+          axisTick: {
+            //y轴刻度线
+            show: true,
+          },
           axisLine: {
             symbol: ["none", "arrow"],
             show: true,

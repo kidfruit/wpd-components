@@ -182,6 +182,7 @@ export default {
           gridIndex: ax.gridIndex,
           position: ax.position,
           axisLabel: ax.axisLabel,
+          axisTick: ax.axisTick,
           axisLine: ax.axisLine,
           max: ax.max,
           min: ax.min,
