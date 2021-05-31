@@ -13,12 +13,18 @@ import ResultHydroDynamic from "./ResultHydroDynamic/src/ResultHydroDynamic.vue"
 import TreeChartTable from "./TreeChartTable/src/TreeChartTable.vue";
 import CurveChart from "./CurveChart/src/CurveChart.vue";
 import SeriesPPTN from "./SeriesPPTN/src/SeriesPPTN.vue";
+import SeriesResult from "./SeriesResult/src/SeriesResult.vue";
+import ChartsProcess from "./ChartsProcess/src/ChartsProcess.vue";
+import ChartsSingle from "./ChartsSingle/src/ChartsSingle.vue";
+
+
 
 
 
 import testDirective from "./testDirective/src/testDirective";
 import MultiOptionTable from "./MultiOptionTable/src/MultiOptionTable.vue";
 import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGroup.vue";
+
 
 
 // 存储组件列表
@@ -38,7 +44,10 @@ const components = [
   TreeSimpleTableGroup,
   TreeChartTable,
   CurveChart,
-  SeriesPPTN
+  SeriesPPTN,
+  SeriesResult,
+  ChartsProcess,
+  ChartsSingle
 ];
 
 // 存储指令映射
@@ -47,7 +56,7 @@ export const directives = {
 };
 
 // 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
-const install = function(Vue) {
+const install = function (Vue) {
   // 遍历注册全局组件
   components.map(component => Vue.component(component.name, component));
 
@@ -82,6 +91,9 @@ export default {
   TreeChartTable,
   CurveChart,
   SeriesPPTN,
+  SeriesResult,
+  ChartsProcess,
+  ChartsSingle,
 
   ...directives
 };

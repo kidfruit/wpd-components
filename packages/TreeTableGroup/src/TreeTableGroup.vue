@@ -106,11 +106,17 @@ export default {
       this.$emit('cellEditDone', this.defaultTableData);
     },
     _onTreeCheck(checkedKeys, { checked, checkedNodes, node, event }) {
-      this.$emit('checkedKeys', checkedKeys);
-      this.defaultTableData = this.defaultTableData.map(i => {
-        i.selected = checkedKeys.includes(i.nodeId);
-        return i;
-      });
+      let keys = []
+      for (let i = 0; i < checkedNodes.length; i++) {
+        if (!checkedNodes[i].data.props.dataRef.children) {
+          keys.push(checkedNodes[i].key)
+        }
+      }
+      this.$emit('checkedKeys', keys)
+      this.defaultTableData.map((i) => {
+        i.selected = checkedKeys.includes(i.nodeId)
+        return i
+      })
     },
     /**
      * 暴露的方法

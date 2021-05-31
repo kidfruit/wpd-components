@@ -62,6 +62,22 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
+    <div v-if="true">
+      <h2>SeriesResultTest：通用过程线组合组件</h2>
+      <series-result-test />
+    </div>
+    <div v-if="false">
+      <h2>SeriesCompareTest：通用过程线组合组件</h2>
+      <series-compare-test />
+    </div>
+    <div v-if="false">
+      <h2>ChartsProcessTest:多echarts过程图对比组件</h2>
+      <charts-process-test />
+    </div>
+    <div v-if="false">
+      <h2>ChartsSingleTest:多echarts单值图对比组件</h2>
+      <charts-single-test />
+    </div>
   </div>
 </template>
 
@@ -69,7 +85,6 @@
 import TableChartTest from "./TableChartTest";
 import SchemeTableTest from "./SchemeTableTest";
 import SimpleTableTest from "./SimpleTableTest";
-
 import CharTableTest from "./CharTableTest.vue";
 import SimpleChartTest from "./SimpleChartTest.vue";
 import StandardChartTest from "./StandardChartTest.vue";
@@ -84,6 +99,10 @@ import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
 import CurveChartTest from "./CurveChartTest.vue";
 import SeriesQZTest from "./SeriesQZTest.vue";
 import SeriesPPTNTest from "./SeriesPPTNTest.vue";
+import SeriesResultTest from "./SeriesResultTest.vue";
+import SeriesCompareTest from "./SeriesCompareTest.vue";
+import ChartsProcessTest from "./ChartsProcessTest.vue";
+import ChartsSingleTest from "./ChartsSingleTest.vue";
 
 export default {
   components: {
@@ -104,6 +123,10 @@ export default {
     CurveChartTest,
     SeriesQZTest,
     SeriesPPTNTest,
+    SeriesResultTest,
+    SeriesCompareTest,
+    ChartsProcessTest,
+    ChartsSingleTest,
   },
   name: "HelloWorld",
   methods: {
