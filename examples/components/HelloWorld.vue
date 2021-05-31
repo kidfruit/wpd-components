@@ -38,7 +38,7 @@
       <h2>DraggableChart：可连贯拖拽，图表联动的echarts图组件</h2>
       <coherent-draggable-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>TreeChartTable：树表图组件(动态展示不同树节点的图表和表格数据)</h2>
       <tree-chart-table-test />
     </div>
@@ -46,7 +46,7 @@
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>TreeTableGroup：树表联动组件</h2>
       <tree-table-group-test />
     </div>
