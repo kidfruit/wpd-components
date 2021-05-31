@@ -134,10 +134,15 @@ export default {
         // console.log("one has be edit", this.newTableColumns);
         this.editCells.push(field);
         this.activeField = field;
-        this.newTableColumns.forEach((el) => {
+        this.newTableColumns.forEach((el, index) => {
           if (el.field !== field) {
-            el.readOnly = true;
-            el.isEdit = false;
+            // el.readOnly = true;
+            // el.isEdit = false;
+            this.$set(this.newTableColumns, index, {
+              ...this.newTableColumns[index],
+              readOnly: true,
+              isEdit: false,
+            });
           }
         });
         this.$refs.tableRef.reset();
