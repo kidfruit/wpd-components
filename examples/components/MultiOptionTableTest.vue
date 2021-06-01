@@ -45,7 +45,7 @@ export default {
             ],
           },
           flow2: {
-              group:true,
+            group: true,
             key: 'RR-dsp-NORMAL',
             title: '防洪调度',
             order: 2,
@@ -102,7 +102,7 @@ export default {
             ],
           },
           flow2: {
-              group:true,
+            group: true,
             key: 'RCH-flow-NORMAL',
             title: '河道演算',
             order: 2,
@@ -141,7 +141,7 @@ export default {
             ],
           },
           flow2: {
-              group:true,
+            group: true,
             key: 'RR-dsp-NORMAL',
             title: '防洪调度',
             order: 2,
@@ -221,8 +221,8 @@ export default {
   },
   methods: {
     selecData() {
-        this.$refs['tableChart'].highlightRow('RCH301')
-    //   this.$refs['tableChart']._selectkey('RCH301')
+      this.$refs['tableChart'].highlightRow('RCH301')
+      //   this.$refs['tableChart']._selectkey('RCH301')
     },
     getData() {
       console.log(this.$refs.tableChart.hotInstance.getData())
@@ -239,18 +239,51 @@ export default {
       )
     },
     cellEditDone(value) {
+      //   const { field, newValue, oldValue, rowIndex } = value
+      //   if (
+      //     this.tableData[rowIndex][field] instanceof Object &&
+      //     this.tableData[rowIndex][field].selectedId
+      //   ) {
+      //     this.tableData[rowIndex][field].selectedId = this.tableData[rowIndex][
+      //       field
+      //     ].options.find((i) => i.name === newValue).id
+      //   } else {
+      //     this.tableData[rowIndex][field] = newValue
+      //   }
+
       const { field, newValue, oldValue, rowIndex } = value
-      if (
-        this.tableData[rowIndex][field] instanceof Object &&
-        this.tableData[rowIndex][field].selectedId
-      ) {
-        this.tableData[rowIndex][field].selectedId = this.tableData[rowIndex][
-          field
-        ].options.find((i) => i.name === newValue).id
+      if (this.tableData[value.rowIndex][value.field].group) {
+        let selectedId = ''
+        let options = this.tableData[value.rowIndex][value.field].options
+        for (let i = 0; i < options.length; i++) {
+          if (options[i].name == value.newValue) {
+            selectedId = options[i].id
+          }
+        }
+        for (let k = 0; k < this.tableData.length; k++) {
+          if (this.tableData[k][value.field].group) {
+            let select = this.tableData[k][value.field].options
+            for (let j = 0; j < select.length; j++) {
+              if (select[j].id == selectedId) {
+                this.tableData[k][value.field].selectedId = selectedId
+              }
+            }
+          }
+        }
       } else {
-        this.tableData[rowIndex][field] = newValue
+        if (
+          this.tableData[rowIndex][field] instanceof Object &&
+          this.tableData[rowIndex][field].selectedId
+        ) {
+          this.tableData[rowIndex][field].selectedId = this.tableData[rowIndex][
+            field
+          ].options.find((i) => i.name === newValue).id
+        } else {
+          this.tableData[rowIndex][field] = newValue
+        }
       }
-    //   console.log(this.tableData)
+
+      console.log(this.tableData)
     },
   },
 }

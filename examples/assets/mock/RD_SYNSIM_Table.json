@@ -133,7 +133,7 @@
 			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
 		},
 		"flow2": {
-            "group": true,
+            "group": false,
 			"key": "RR-dsp-NORMAL",
 			"title": "防洪调度",
 			"order": 2,
@@ -175,7 +175,7 @@
 			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
 		},
 		"flow2": {
-            "group": true,
+            "group": false,
 			"key": "RR-dsp-NORMAL",
 			"title": "防洪调度",
 			"order": 2,
@@ -1496,7 +1496,7 @@
 			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
 		},
 		"flow2": {
-            "group": true,
+            "group": false,
 			"key": "RR-dsp-NORMAL",
 			"title": "防洪调度",
 			"order": 2,
@@ -1538,7 +1538,7 @@
 			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
 		},
 		"flow2": {
-            "group": true,
+            "group": false,
 			"key": "RR-dsp-NORMAL",
 			"title": "防洪调度",
 			"order": 2,
