@@ -42,7 +42,7 @@ const defaultOption = {
       return list
         .map(item => {
           if (item.value === null || item.value === '-') return '';
-          else return item.marker + item.seriesName + (item.value === null ? '无数据' : item.value);
+          else return item.marker + item.seriesName + `<b style="margin-left:5px;">${item.value}</b>`;
         })
         .filter(i => i)
         .join('<br />');
@@ -261,7 +261,6 @@ export default {
         }
       }
       if (!option.timeline) {
-        console.log('option', option);
         return {
           baseOption: option
         };
