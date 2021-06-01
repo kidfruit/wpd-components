@@ -114,10 +114,12 @@ export default {
           }
         }
         for (let k = 0; k < m_tableData.length; k++) {
-          let select = m_tableData[k][value.field].options
-          for (let j = 0; j < select.length; j++) {
-            if (select[j].id == selectedId) {
-              m_tableData[k][value.field].selectedId = selectedId
+          if (m_tableData[k][value.field].group) {
+            let select = m_tableData[k][value.field].options
+            for (let j = 0; j < select.length; j++) {
+              if (select[j].id == selectedId) {
+                m_tableData[k][value.field].selectedId = selectedId
+              }
             }
           }
         }
