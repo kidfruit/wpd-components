@@ -104,7 +104,7 @@ export default {
       hotInstance: null,
       isRefresh: true,
       dropdownHash: {},
-      checkbox: {},
+      checkbox: [],
       hotData: [],
       randomKey: Math.random(),
     };
@@ -122,8 +122,9 @@ export default {
         if (Object.prototype.hasOwnProperty.call(itemNew, "type")) {
           switch (itemNew.type) {
             case "checkbox":
-              this.checkbox[item.field] = item.checkbox;
+            //   this.checkbox[item.field] = item.checkbox;
               // itemNew.source = item.source.map((item) => item.name);
+              this.checkbox.push(item.field)
               break;
             case "dropdown":
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
@@ -266,7 +267,7 @@ export default {
     negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
-      } else if (Object.prototype.hasOwnProperty.call(this.checkbox, prop)) {
+      } else if (this.checkbox.indexOf(prop)!=-1) {
         //判断是否是checkbox类型
         Handsontable.renderers.CheckboxRenderer.apply(this, arguments);
       } else {

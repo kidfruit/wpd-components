@@ -45,6 +45,7 @@ export default {
             ],
           },
           flow2: {
+              group:true,
             key: 'RR-dsp-NORMAL',
             title: '防洪调度',
             order: 2,
@@ -53,6 +54,11 @@ export default {
               {
                 id: 'RD_DISQCTRL',
                 name: '调洪演算模型1',
+                modelParamId: null,
+              },
+              {
+                id: 'FR_RHLAGTM',
+                name: '滞时演算模型2',
                 modelParamId: null,
               },
               {
@@ -96,6 +102,7 @@ export default {
             ],
           },
           flow2: {
+              group:true,
             key: 'RCH-flow-NORMAL',
             title: '河道演算',
             order: 2,
@@ -134,6 +141,7 @@ export default {
             ],
           },
           flow2: {
+              group:true,
             key: 'RR-dsp-NORMAL',
             title: '防洪调度',
             order: 2,
@@ -142,6 +150,11 @@ export default {
               {
                 id: 'RD_DISQCTRL',
                 name: '调洪演算模型3',
+                modelParamId: null,
+              },
+              {
+                id: 'FR_RHLAGTM',
+                name: '滞时演算模型2',
                 modelParamId: null,
               },
               {
@@ -237,7 +250,7 @@ export default {
       } else {
         this.tableData[rowIndex][field] = newValue
       }
-      console.log(this.tableData)
+    //   console.log(this.tableData)
     },
   },
 }
