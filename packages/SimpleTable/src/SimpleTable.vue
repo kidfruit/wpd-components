@@ -1,35 +1,14 @@
 <template>
-  <div
-    class="SimpleTable-Container2021"
-    :key="randomKey"
-    v-if="isVisible && isRefresh"
-  >
-    <hot-table
-      :settings="hotSettings"
-      :data="hotData"
-      :class="classes"
-      :after-change="afterChange"
-      ref="hotTableRef"
-    >
-      <hot-column
-        v-for="(item, index) in columns"
-        :key="index"
-        :title="item.title"
-        :data="item.field"
-        :source="item.source"
-        :renderer="item.renderer"
-        :type="item.type"
-        :width="item.width"
-        :readOnly="item.readOnly"
-      >
-      </hot-column>
+  <div class="SimpleTable-Container2021" :key="randomKey" v-if="isVisible && isRefresh">
+    <hot-table :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
+      <hot-column v-for="(item, index) in columns" :key="index" :title="item.title" :data="item.field" :source="item.source" :className="item.className" :renderer="item.renderer" :type="item.type" :width="item.width" :readOnly="item.readOnly"> </hot-column>
     </hot-table>
   </div>
 </template>
 <script>
-import { HotTable, HotColumn } from "@handsontable/vue";
-import Handsontable from "handsontable";
-import { registerLanguageDictionary, zhCN } from "handsontable/i18n";
+import { HotTable, HotColumn } from '@handsontable/vue';
+import Handsontable from 'handsontable';
+import { registerLanguageDictionary, zhCN } from 'handsontable/i18n';
 
 registerLanguageDictionary(zhCN);
 
@@ -40,50 +19,47 @@ const defaultHotSettings = {
   outsideClickDeselects: false,
   columnSorting: true,
   // colWidths: "100px",
-  stretchH: "all",
-  licenseKey: "non-commercial-and-evaluation",
+  stretchH: 'all',
+  licenseKey: 'non-commercial-and-evaluation',
   contextMenu: false,
   language: zhCN.languageCode,
   cells: (row, col, prop) => {
     let cellProperties = {};
-    cellProperties.renderer = "negativeValueRenderer";
+    cellProperties.renderer = 'negativeValueRenderer';
     return cellProperties;
-  },
+  }
 };
 
 export default {
-  name: "SimpleTable",
+  name: 'SimpleTable',
   props: {
     isVisible: {
       type: Boolean,
       default: true,
-      required: false,
+      required: false
     },
     classNames: {
       type: Array,
-      required: false,
+      required: false
     },
     setting: {
       type: Object,
-      required: false,
+      required: false
     },
     tableData: {
-      type: Array,
+      type: Array
     },
     tableColumns: {
-      type: Array,
-    },
+      type: Array
+    }
   },
   components: {
     HotTable,
-    HotColumn,
+    HotColumn
   },
   beforeMount() {
     // 单元格自定义渲染
-    Handsontable.renderers.registerRenderer(
-      "negativeValueRenderer",
-      this.negativeValueRenderer
-    );
+    Handsontable.renderers.registerRenderer('negativeValueRenderer', this.negativeValueRenderer);
     const data = JSON.parse(JSON.stringify(this.tableData));
     this.prepareData(data);
   },
@@ -104,42 +80,49 @@ export default {
       hotInstance: null,
       isRefresh: true,
       dropdownHash: {},
-      checkbox: {},
+      checkbox: [],
       hotData: [],
       randomKey: Math.random(),
+      editCols: []
     };
   },
   computed: {
     classes() {
-      return ["tableStyle"].concat(this.classNames);
+      return ['tableStyle'].concat(this.classNames);
     },
     hotSettings() {
       return Object.assign({}, defaultHotSettings, this.setting);
     },
     columns() {
-      return this.tableColumns.map((item, index) => {
-        let itemNew = Object.assign({}, item);
-        if (Object.prototype.hasOwnProperty.call(itemNew, "type")) {
-          switch (itemNew.type) {
-            case "checkbox":
-              this.checkbox[item.field] = item.checkbox;
-              // itemNew.source = item.source.map((item) => item.name);
-              break;
-            case "dropdown":
-              // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
-              this.dropdownHash[item.field] = item.source.slice(0);
-              itemNew.source = item.source.map((item) => item.name);
-              break;
+      return this.tableColumns
+        .map((item, index) => {
+          let itemNew = Object.assign({}, item);
+          if (Object.prototype.hasOwnProperty.call(itemNew, 'type')) {
+            switch (itemNew.type) {
+              case 'checkbox':
+                //   this.checkbox[item.field] = item.checkbox;
+                // itemNew.source = item.source.map((item) => item.name);
+                this.checkbox.push(item.field);
+                break;
+              case 'dropdown':
+                // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
+                this.dropdownHash[item.field] = item.source.slice(0);
+                itemNew.source = item.source.map(item => item.name);
+                break;
+            }
           }
-        }
-        return itemNew;
-      });
-    },
+          if (this.editCols.includes(itemNew.field)) {
+            itemNew['className'] = 'edited-column';
+          }
+          return itemNew;
+        })
+        .filter(i => !['index', 'id', 'Id'].includes(i.field) && !['index', 'id', 'Id'].includes(i.data));
+    }
   },
   methods: {
     highlightRow(item) {
       let list = this.$refs.hotTableRef.hotInstance.getSourceData();
-      let rows = "";
+      let rows = '';
       for (let i = 0; i < list.length; i++) {
         if (item === list[i].key) {
           rows = i;
@@ -148,7 +131,7 @@ export default {
       // console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows, rows));
     },
     _getSelectData(field) {
-      if (typeof field == "string" && field != "") {
+      if (typeof field == 'string' && field != '') {
         let Selectdata = [];
         for (let i = 0; i < this.hotData.length; i++) {
           if (this.hotData[i][field]) {
@@ -157,22 +140,22 @@ export default {
         }
         return Selectdata;
       } else {
-        return Error("field为必填参数！");
+        return Error('field为必填参数！');
       }
     },
 
     updateWidth(newWidth) {
       // console.log(this.hotInstance, newWidth);
       this.hotInstance.updateSettings({
-        width: newWidth,
+        width: newWidth
       });
     },
     prepareData(data) {
       this.hotData = data.map((item, index) => {
         for (let k in item) {
-          const list = this.tableColumns.filter((cl) => cl.field === k)[0];
-          if (list && list.type === "dropdown") {
-            let filterItem = list.source.find((s) => s.id === item[k]);
+          const list = this.tableColumns.filter(cl => cl.field === k)[0];
+          if (list && list.type === 'dropdown') {
+            let filterItem = list.source.find(s => s.id === item[k]);
             if (filterItem) item[k] = filterItem.name;
           }
         }
@@ -183,37 +166,39 @@ export default {
       if (changes == null) {
         return;
       }
-      if (source !== "loadData") {
+      if (source !== 'loadData') {
         // 添加修改触发
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {
             let element = changes[i];
-            if (Object.keys(this.dropdownHash).includes(element[1])) {
-              // 下拉框列
-              this.$emit("cellEditDone", {
-                rowIndex: element[0],
-                field: element[1],
-                newValue: this.dropdownHash[element[1]].find((p) => {
-                  return p.name === element[3];
-                }).id,
-                oldValue: this.dropdownHash[element[1]].find((p) => {
-                  return p.name === element[2];
-                }).id,
-              });
-            } else {
-              this.$emit("cellEditDone", {
-                rowIndex: element[0],
-                field: element[1],
-                newValue: element[3],
-                oldValue: element[2],
-              });
+            if (element[2] != element[3]) {
+              if (Object.keys(this.dropdownHash).includes(element[1])) {
+                // 下拉框列
+                this.$emit('cellEditDone', {
+                  rowIndex: element[0],
+                  field: element[1],
+                  newValue: this.dropdownHash[element[1]].find(p => {
+                    return p.name === element[3];
+                  }).id,
+                  oldValue: this.dropdownHash[element[1]].find(p => {
+                    return p.name === element[2];
+                  }).id
+                });
+              } else {
+                this.$emit('cellEditDone', {
+                  rowIndex: element[0],
+                  field: element[1],
+                  newValue: element[3],
+                  oldValue: element[2]
+                });
+              }
+              this.editCols.push(element[1]);
+              this.editCells.push(element[1] + '#' + element[0]);
             }
-
-            this.editCells.push(element[1] + "#" + element[0]);
           }
         }
         let changedRows = [];
-        changes.forEach((change) => {
+        changes.forEach(change => {
           this.getHotInstance();
           const [row, prop, oldV, newV] = change;
           const changedRow = this.hotInstance.getDataAtRow(row);
@@ -224,20 +209,20 @@ export default {
           changedRows.push(rowObj);
         });
         //将更新的数据推送到editRows
-        changedRows = this.processOptionColumn(changedRows, "name", "id");
-        changedRows.forEach((r) => {
+        changedRows = this.processOptionColumn(changedRows, 'name', 'id');
+        changedRows.forEach(r => {
           const cr = Object.assign({}, r);
-          let idx = this.editRows.findIndex((er) => er && er.row === r.row);
+          let idx = this.editRows.findIndex(er => er && er.row === r.row);
           if (this.editRows.length > 0 && this.editRows[idx]) {
             this.editRows[idx] = cr;
           } else {
             let n = parseInt(cr.row);
-            let index = this.addRows.findIndex((el) => el.tag === n);
+            let index = this.addRows.findIndex(el => el.tag === n);
             if (index === -1) {
               this.editRows.push(cr);
             } else {
               this.addRows[index] = cr;
-              this.addRows[index]["tag"] = n;
+              this.addRows[index]['tag'] = n;
             }
           }
         });
@@ -245,12 +230,10 @@ export default {
       }
     },
     processOptionColumn(item, fromV, toV) {
-      item.forEach((value) => {
+      item.forEach(value => {
         for (let k in this.dropdownHash) {
           if (Object.prototype.hasOwnProperty.call(value, k)) {
-            const list = this.dropdownHash[k].filter(
-              (item) => item[fromV] === value[k]
-            )[0];
+            const list = this.dropdownHash[k].filter(item => item[fromV] === value[k])[0];
             list && (value[k] = list[toV]);
           }
         }
@@ -266,16 +249,16 @@ export default {
     negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
-      } else if (Object.prototype.hasOwnProperty.call(this.checkbox, prop)) {
+      } else if (this.checkbox.indexOf(prop) != -1) {
         //判断是否是checkbox类型
         Handsontable.renderers.CheckboxRenderer.apply(this, arguments);
       } else {
         Handsontable.renderers.TextRenderer.apply(this, arguments);
       }
       // 样式：编辑
-      if (this.editCells.includes(prop + "#" + row)) {
+      if (this.editCells.includes(prop + '#' + row)) {
         //修改字体颜色
-        td.style.color = "#004fff";
+        td.style.color = '#004fff';
       }
       // 样式:不可编辑
       // if (
@@ -300,7 +283,7 @@ export default {
       //适用于父节点宽度变化的情况
       if (this.hotInstance) {
         this.hotInstance.updateSettings({
-          width: "100%",
+          width: '100%'
         });
         this.hotInstance.render();
       }
@@ -312,12 +295,8 @@ export default {
       }
     },
     getvisibleLocal() {
-      const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin(
-        "autoRowSize"
-      );
-      const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin(
-        "autoColumnSize"
-      );
+      const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin('autoRowSize');
+      const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin('autoColumnSize');
       const col = pluginCol.getFirstVisibleColumn();
       const row = pluginRow.getFirstVisibleRow();
       return { row, col };
@@ -331,6 +310,7 @@ export default {
       this.isRefresh = false;
       this.editCells = [];
       this.editRows = [];
+      this.editCols = [];
       setTimeout(() => {
         const data = JSON.parse(JSON.stringify(this.tableData));
         this.prepareData(data);
@@ -340,23 +320,23 @@ export default {
     },
     add() {
       let index = this.$refs.hotTableRef.hotInstance.countRows();
-      this.$refs.hotTableRef.hotInstance.alter("insert_row", index);
+      this.$refs.hotTableRef.hotInstance.alter('insert_row', index);
       let row = this.hotInstance.getDataAtRow(index);
       // 更新新增行数组
       let obj = {};
       row.forEach((el, i) => {
         obj[this.columns[i].field] = el;
       });
-      obj["tag"] = index;
+      obj['tag'] = index;
       this.addRows.push(obj);
     },
     deleted() {
       let seleteds = this.$refs.hotTableRef.hotInstance.getSelected();
       if (seleteds && seleteds.length > 0) {
-        seleteds.forEach((el) => {
+        seleteds.forEach(el => {
           for (let i = 0; i < el[2] - el[0] + 1; i++) {
             let row = this.hotInstance.getDataAtRow(el[0] + i);
-            let ret = row.every((item) => item);
+            let ret = row.every(item => item);
             // 如果删除的每一行有数据，才保存这一行到deletedRows
             if (ret && row.length > 0) {
               let obj = {};
@@ -366,14 +346,10 @@ export default {
               this.deletedRows.push(obj);
             }
           }
-          this.$refs.hotTableRef.hotInstance.alter(
-            "remove_row",
-            el[0],
-            el[2] - el[0] + 1
-          );
+          this.$refs.hotTableRef.hotInstance.alter('remove_row', el[0], el[2] - el[0] + 1);
         });
       }
-    },
+    }
   },
   watch: {
     tableData: {
@@ -386,9 +362,9 @@ export default {
         this.$nextTick(() => {
           this.isRefresh = true;
         });
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -400,6 +376,16 @@ export default {
   .hot-table {
     width: 100%;
     height: 100%;
+  }
+}
+</style>
+<style lang="scss">
+.handsontable td {
+  &.edited-column {
+    background-color: rgba(204, 255, 0, 0.2);
+  }
+  &.preheat-rows {
+    background-color: rgba(204, 204, 204, 0.45);
   }
 }
 </style>
