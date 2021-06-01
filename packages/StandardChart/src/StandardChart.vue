@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <div ref="chartRef" :class="classNames" :id="id"></div>
-  </div>
+  <div ref="chartRef" :class="classNames" :id="id"></div>
 </template>
 <script>
 export const MinMaxFunction = (model, value) => {
