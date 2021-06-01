@@ -3,17 +3,7 @@
     <div class="chart-container">
       <a-carousel :after-change="onChange" arrows>
         <div v-for="(item, index) in chartList" :key="index">
-          <standard-chart
-            :key="item.id"
-            v-if="currentIndex === index"
-            ref="chartRef"
-            :chartOption="item.chartOption"
-            :chartAxis="item.chartAxis"
-            :id="item.id"
-            :splitIndex="splitIndex"
-            :classes="['series-result']"
-            :chartData="item.chartData"
-          />
+          <standard-chart :key="item.id" v-if="currentIndex === index" ref="chartRef" :chartOption="item.chartOption" :chartAxis="item.chartAxis" :id="item.id" :classes="['series-result']" :chartData="item.chartData" />
         </div>
         <div slot="prevArrow" class="custom-slick-arrow">
           <a-icon type="left-circle" />
@@ -33,68 +23,60 @@
       <div class="reset">
         <a-button icon="undo" @click="handleReset" shape="circle"> </a-button>
       </div>
-      <simple-table
-        ref="tableRef"
-        :tableData="newTableData"
-        :setting="newSetting"
-        :tableColumns="newTableColumns"
-        @cellEditDone="cellEditDone"
-      ></simple-table>
+      <simple-table ref="tableRef" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns" @cellEditDone="cellEditDone"></simple-table>
     </div>
   </div>
 </template>
 
 <script>
-import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
-import StandardChart from "../../StandardChart/src/StandardChart.vue";
+import SimpleTable from '../../SimpleTable/src/SimpleTable.vue';
+import StandardChart from '../../StandardChart/src/StandardChart.vue';
 let positionMaps = {
-  L: "left",
-  R: "right",
+  L: 'left',
+  R: 'right'
 };
 function guid() {
   function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   }
 
-  return S4() + "-" + S4();
+  return S4() + '-' + S4();
 }
 function unique(arr) {
   return Array.from(new Set(arr));
 }
 function uniqueObj(origin, key) {
   let temp = {};
-  return origin
-    .reverse()
-    .filter((item) => (item[key] in temp ? false : (temp[item[key]] = true)));
+  return origin.reverse().filter(item => (item[key] in temp ? false : (temp[item[key]] = true)));
 }
 export default {
-  name: "SeriesResult",
+  name: 'SeriesCompare',
   props: {
     classes: {
       type: Array,
-      required: false,
+      required: false
     },
     tableData: {
-      type: Array,
+      type: Array
     },
     tableColumns: {
-      type: Array,
+      type: Array
     },
     setting: {
-      type: Object,
+      type: Object
     },
     splitIndex: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   components: {
     SimpleTable,
-    StandardChart,
+    StandardChart
   },
   computed: {
     classNames() {
-      return ["series-result"].concat(this.classes);
-    },
+      return ['series-result'].concat(this.classes);
+    }
   },
   data() {
     return {
@@ -105,9 +87,9 @@ export default {
       currentIndex: 0,
       newSetting: {},
       isShow: false,
-      activeField: "",
+      activeField: '',
       //   记录单元格修改记录，采用拼接方法:prop#row
-      editCells: [],
+      editCells: []
     };
   },
   created() {
@@ -130,26 +112,21 @@ export default {
       // 表格到图表的单向数据联动
       const { field, newValue, oldValue, rowIndex } = value;
       // console.log("pp", field, newValue, oldValue, rowIndex);
-      if (newValue !== oldValue.toString() && this.activeField === "") {
+      if (newValue !== oldValue.toString() && this.activeField === '') {
         // console.log("one has be edit", this.newTableColumns);
         this.editCells.push(field);
         this.activeField = field;
-        this.newTableColumns.forEach((el, index) => {
+        this.newTableColumns.forEach(el => {
           if (el.field !== field) {
-            // el.readOnly = true;
-            // el.isEdit = false;
-            this.$set(this.newTableColumns, index, {
-              ...this.newTableColumns[index],
-              readOnly: true,
-              isEdit: false,
-            });
+            el.readOnly = true;
+            el.isEdit = false;
           }
         });
         this.$refs.tableRef.reset();
         this.$refs.tableRef.updateShow();
       }
       this.newTableData[rowIndex][field] = newValue;
-      this.chartList.forEach((el) => {
+      this.chartList.forEach(el => {
         el.chartData = this.newTableData;
         el.id = guid();
       });
@@ -168,12 +145,12 @@ export default {
       this.clearData();
       this.hideRows();
       let showTypeList = this.tableColumns
-        .map((el) => {
+        .map(el => {
           return { showType: el.showType, field: el.field, title: el.title };
         })
-        .filter((el) => el.showType);
+        .filter(el => el.showType);
 
-      let filterList = showTypeList.map((el) => el.showType.split("-")[0]);
+      let filterList = showTypeList.map(el => el.showType.split('-')[0]);
       let carouselCount = unique(filterList);
       this.generateChartData(carouselCount, showTypeList);
     },
@@ -187,22 +164,20 @@ export default {
       }
     },
     handleReset() {
-      this.activeField = "";
+      this.activeField = '';
       this.newTableData = JSON.parse(JSON.stringify(this.tableData));
       this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns));
-      this.chartList.forEach((el) => {
+      this.chartList.forEach(el => {
         el.chartData = this.newTableData;
         el.id = guid();
       });
       this.editCells = [];
     },
     generateChartLegend(showTypeList, current) {
-      let legendList = showTypeList.filter(
-        (el) => el.showType.indexOf(current) !== -1
-      );
+      let legendList = showTypeList.filter(el => el.showType.indexOf(current) !== -1);
       let legends = [];
       let flag = false; // 连续的控制标志位
-      let lastOne = "";
+      let lastOne = '';
       let base = 0,
         step = 7;
       legendList = legendList.sort((a, b) => {
@@ -220,22 +195,22 @@ export default {
           itemHeight: 16,
           show: true,
           textStyle: { fontSize: 14 },
-          data: [{ name: legendList[i].title, icon: "line" }], //rect为矩形
+          data: [{ name: legendList[i].title, icon: 'line' }] //rect为矩形
         };
-        let leftRight = positionMaps[legendList[i].showType.split("-")[1]];
-        if (lastOne !== "" && lastOne === leftRight) {
+        let leftRight = positionMaps[legendList[i].showType.split('-')[1]];
+        if (lastOne !== '' && lastOne === leftRight) {
           flag = true;
           base += step;
         }
-        if (leftRight === "left") {
+        if (leftRight === 'left') {
           obj = Object.assign({}, obj, {
-            top: !flag ? "15%" : `${15 + base}%`, //调整位置
-            left: "5%",
+            top: !flag ? '15%' : `${15 + base}%`, //调整位置
+            left: '5%'
           });
         } else {
           obj = Object.assign({}, obj, {
-            top: !flag ? "15%" : `${15 + base}%`, //调整位置
-            left: "85%",
+            top: !flag ? '15%' : `${15 + base}%`, //调整位置
+            left: '85%'
           });
         }
         flag = false;
@@ -245,31 +220,25 @@ export default {
       return legends;
     },
     generateChartYaxis(showTypeList, current) {
-      let yAxisList = showTypeList.filter(
-        (el) => el.showType.indexOf(current) !== -1
-      );
-      yAxisList = uniqueObj(yAxisList, "showType");
+      let yAxisList = showTypeList.filter(el => el.showType.indexOf(current) !== -1);
+      yAxisList = uniqueObj(yAxisList, 'showType');
       let yAxis = [];
       for (let i = 0; i < yAxisList.length; i++) {
         yAxis.push({
-          title: "",
+          title: '',
           // title: yAxisList[i].title,
-          type: "value",
+          type: 'value',
           axisLabel: {
-            show: true,
-          },
-          axisTick: {
-            //y轴刻度线
-            show: true,
+            show: true
           },
           axisLine: {
-            symbol: ["none", "arrow"],
+            symbol: ['none', 'arrow'],
             show: true,
             lineStyle: {
-              color: "#40a9ff  ",
-            },
+              color: '#40a9ff  '
+            }
           },
-          position: positionMaps[yAxisList[i].showType.split("-")[1]],
+          position: positionMaps[yAxisList[i].showType.split('-')[1]],
           max: function (value) {
             // console.log("value.max", value);
             return ((value.max - value.min) * 1.15).toFixed(2);
@@ -278,117 +247,69 @@ export default {
             // console.log("value.min", value);
             let tempVal = ((value.max - value.min) * 0.15).toFixed(2);
             return value.min > tempVal ? (value.min - tempVal).toFixed(2) : 0;
-          },
+          }
         });
       }
 
       return yAxis;
     },
     generateChartSeries(showTypeList, current) {
-      let firstTime = "";
-      if (this.splitIndex) {
-        firstTime = this.newTableData[this.splitIndex].time;
-      }
-      if (firstTime !== "") {
-        let list = showTypeList
-          .filter((el) => el.showType.indexOf(current) !== -1)
-          .map((el, index) => {
-            return {
-              field: el.field,
-              title: el.title,
-              selected: true,
-              yAxisIndex:
-                positionMaps[el.showType.split("-")[1]] === "left" ? 0 : 1,
-              markLine: {
-                symbol: "none",
-                data: [
-                  {
-                    name: "标记线",
-                    xAxis: firstTime,
-                    lineStyle: {
-                      //警戒线的样式  ，虚实  颜色
-                      type: "solid",
-                      color: "#000",
-                    },
-                  },
-                ],
-                label: { show: true, position: "end" },
-                silent: true,
-              },
-            };
-          });
-        // 将3个series处理成一半实线一半虚线的series，一起应该6个series
-        let allList = [];
-        for (let i = 0; i < list.length; i++) {
-          allList.push(list[i]);
-          let obj = Object.assign({}, list[i], {
-            smooth: false, //关键点，为true是不支持虚线，实线就用true
-            itemStyle: {
-              normal: {
-                lineStyle: {
-                  width: 2,
-                  type: "dotted", //'dotted'虚线 'solid'实线
-                },
-              },
-            },
-          });
-          allList.push(obj);
-        }
-        allList = allList.sort((a, b) => {
-          return a.name - b.name;
+      let firstTime = this.newTableData[this.splitIndex].time;
+      return showTypeList
+        .filter(el => el.showType.indexOf(current) !== -1)
+        .map((el, index) => {
+          return {
+            field: el.field,
+            title: el.title,
+            selected: true,
+            yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
+            markLine: {
+              symbol: 'none',
+              data: [
+                {
+                  name: '标记线',
+                  xAxis: firstTime,
+                  lineStyle: {
+                    //警戒线的样式  ，虚实  颜色
+                    type: 'solid',
+                    color: '#000'
+                  }
+                }
+              ],
+              label: { show: true, position: 'end' },
+              silent: true
+            }
+          };
         });
-        return allList;
-      } else {
-        return showTypeList
-          .filter((el) => el.showType.indexOf(current) !== -1)
-          .map((el, index) => {
-            return {
-              field: el.field,
-              title: el.title,
-              selected: true,
-              yAxisIndex:
-                positionMaps[el.showType.split("-")[1]] === "left" ? 0 : 1,
-            };
-          });
-      }
     },
     generateChartData(carouselCount, showTypeList) {
       for (let i = 0; i < carouselCount.length; i++) {
         let chartOption = {
           title: {
-            text: "",
-            left: "center",
+            text: '',
+            left: 'center'
           },
           legend: [],
           grid: {
             bottom: 50,
-            left: "16%",
-            right: "16%",
-          },
+            left: '16%',
+            right: '16%'
+          }
         };
         let chartAxis = {
-          xAxis: "time",
+          xAxis: 'time',
           yAxis: [],
-          series: [],
+          series: []
         };
-        chartAxis.yAxis = this.generateChartYaxis(
-          showTypeList,
-          carouselCount[i]
-        );
-        chartAxis.series = this.generateChartSeries(
-          showTypeList,
-          carouselCount[i]
-        );
-        chartOption.legend = this.generateChartLegend(
-          showTypeList,
-          carouselCount[i]
-        );
+        chartAxis.yAxis = this.generateChartYaxis(showTypeList, carouselCount[i]);
+        chartAxis.series = this.generateChartSeries(showTypeList, carouselCount[i]);
+        chartOption.legend = this.generateChartLegend(showTypeList, carouselCount[i]);
         let chartData = this.tableData;
         this.chartList.push({
           chartOption,
           chartAxis,
           chartData,
-          id: guid(),
+          id: guid()
         });
       }
     },
@@ -404,8 +325,8 @@ export default {
     },
     onChange(a, b, c) {
       this.currentIndex = a;
-    },
-  },
+    }
+  }
 };
 </script>
 

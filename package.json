@@ -18,6 +18,7 @@
     "handsontable": "^8.3.1",
     "less": "^4.1.1",
     "less-loader": "^5.0.0",
+    "lodash": "^4.17.21",
     "serve": "^11.3.2",
     "vue": "^2.6.11",
     "vue-easytable": "^1.7.2",
