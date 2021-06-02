@@ -85,9 +85,12 @@ export default {
   updated() {
     //console.log("updated");
     this.getHotInstance()
-    this.titletop = this.$refs.hotTableRef.hotInstance.getCell(0, 0).offsetTop
-    this.rewheight =
-      this.$refs.hotTableRef.hotInstance.getCell(1, 0).offsetTop - this.titletop
+    if (this.$refs.hotTableRef.hotInstance.getCell()) {
+      this.titletop = this.$refs.hotTableRef.hotInstance.getCell(0, 0).offsetTop
+      this.rewheight =
+        this.$refs.hotTableRef.hotInstance.getCell(1, 0).offsetTop -
+        this.titletop
+    }
   },
   data: function () {
     return {
@@ -224,22 +227,22 @@ export default {
         let table = this.$refs['hotTableRef']
         table = table ? (table instanceof Array ? table : [table]) : []
         table.forEach((items) => {
-            try {
-          const elem = items.$el ? items.$el : items
-          const dom = elem.querySelector(`.wtHolder`)
-          let top = dom.scrollTop //滚动条高度
-          let Selecttop = this.rewheight * rows
-          const height = elem.scrollHeight
-          this.$refs.hotTableRef.hotInstance.selectRows(rows)
-          if (
-            top > Selecttop - this.titletop ||
-            Selecttop > height + top - this.rewheight
-          ) {
-            this.$refs.hotTableRef.hotInstance.scrollViewportTo(rows)
-          }
-            } catch (error) {
-              console.warn('滚动到指定位置!')
+          try {
+            const elem = items.$el ? items.$el : items
+            const dom = elem.querySelector(`.wtHolder`)
+            let top = dom.scrollTop //滚动条高度
+            let Selecttop = this.rewheight * rows
+            const height = elem.scrollHeight
+            this.$refs.hotTableRef.hotInstance.selectRows(rows)
+            if (
+              top > Selecttop - this.titletop ||
+              Selecttop > height + top - this.rewheight
+            ) {
+              this.$refs.hotTableRef.hotInstance.scrollViewportTo(rows)
             }
+          } catch (error) {
+            console.warn('滚动到指定位置!')
+          }
         })
       })
       //   let list = this.$refs.hotTableRef.hotInstance.getSourceData()
