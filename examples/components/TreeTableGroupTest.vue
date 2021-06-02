@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%">
-    <div style="width: 100%; height: 700px">
+    <div style="width: 100%; height:500px">
       <tree-table-group ref="treeTableGroup" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns"
                         :tableData="data" @checkedKeys="checkedKeys" @cellEditDone="cellEditDone"/>
     </div>
