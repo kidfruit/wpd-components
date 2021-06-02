@@ -1,41 +1,34 @@
 <template>
   <div :class="classNames">
-    <div class="chart-box">
-      <div class="chart-switch-button">
-        <a-select v-model="targetChartIndex">
-          <a-select-option v-for="(title, i) in chartTitle" :value="i" :key="i"> {{ title }} </a-select-option>
-        </a-select>
-      </div>
-      <div class="chart-content">
-        <standard-chart
-          :key="chartList[targetChartIndex].id"
-          ref="chartRef"
-          :chartOption="chartList[targetChartIndex].chartOption"
-          :chartAxis="chartList[targetChartIndex].chartAxis"
-          :id="chartList[targetChartIndex].id"
-          :splitIndex="splitIndex"
-          :classes="['series-result-chart']"
-          :chartData="chartList[targetChartIndex].chartData"
-        />
-      </div>
+    <div class="chart-container">
+      <a-carousel :after-change="onChange" arrows>
+        <div v-for="(item, index) in chartList" :key="index">
+          <standard-chart :key="item.id" v-if="currentIndex === index" ref="chartRef" :chartOption="item.chartOption" :chartAxis="item.chartAxis" :id="item.id" :classes="['series-result']" :chartData="item.chartData" />
+        </div>
+        <div slot="prevArrow" class="custom-slick-arrow">
+          <a-icon type="left-circle" />
+        </div>
+        <div slot="nextArrow" class="custom-slick-arrow">
+          <a-icon type="right-circle" />
+        </div>
+      </a-carousel>
     </div>
-    <div class="table-box">
-      <div class="show-hide" :title="isShow ? '关闭预热数据' : '展开预热数据'">
+    <div class="table-container">
+      <div class="show-hide">
         <span class="ops" @click="handleShow">
           <a-icon v-if="isShow" type="up" />
           <a-icon v-else type="down" />
         </span>
       </div>
+      <div class="reset">
+        <a-button icon="undo" @click="handleReset" shape="circle"> </a-button>
+      </div>
       <simple-table ref="tableRef" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns" @cellEditDone="cellEditDone"></simple-table>
     </div>
-    <!-- <div class="reset">
-        <a-button icon="undo" @click="handleReset" shape="circle"> </a-button>
-      </div> -->
   </div>
 </template>
 
 <script>
-import { MinMaxFunction } from '../../../utils/';
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue';
 import StandardChart from '../../StandardChart/src/StandardChart.vue';
 let positionMaps = {
@@ -57,7 +50,7 @@ function uniqueObj(origin, key) {
   return origin.reverse().filter(item => (item[key] in temp ? false : (temp[item[key]] = true)));
 }
 export default {
-  name: 'SeriesResult',
+  name: 'SeriesCompare',
   props: {
     classes: {
       type: Array,
@@ -74,9 +67,6 @@ export default {
     },
     splitIndex: {
       type: Number
-    },
-    chartTitle: {
-      type: Array
     }
   },
   components: {
@@ -94,12 +84,12 @@ export default {
       seriesList: [],
       newTableData: [],
       newTableColumns: [],
+      currentIndex: 0,
       newSetting: {},
       isShow: false,
       activeField: '',
       //   记录单元格修改记录，采用拼接方法:prop#row
-      editCells: [],
-      targetChartIndex: 0
+      editCells: []
     };
   },
   created() {
@@ -126,15 +116,10 @@ export default {
         // console.log("one has be edit", this.newTableColumns);
         this.editCells.push(field);
         this.activeField = field;
-        this.newTableColumns.forEach((el, index) => {
+        this.newTableColumns.forEach(el => {
           if (el.field !== field) {
-            // el.readOnly = true;
-            // el.isEdit = false;
-            this.$set(this.newTableColumns, index, {
-              ...this.newTableColumns[index],
-              readOnly: true,
-              isEdit: false
-            });
+            el.readOnly = true;
+            el.isEdit = false;
           }
         });
         this.$refs.tableRef.reset();
@@ -149,17 +134,8 @@ export default {
     clearData() {
       this.chartList = [];
       this.seriesList = [];
-      this.targetChartIndex = 0;
-      const splitIndex = this.splitIndex;
-      this.newSetting = {
-        cells(row) {
-          let cellProperties = {};
-          if (row < splitIndex) {
-            cellProperties = { className: 'preheat-rows', readOnly: true };
-          }
-          return cellProperties;
-        }
-      };
+      this.currentIndex = 0;
+      this.newSetting = {};
       this.isShow = false;
     },
     handleData() {
@@ -180,7 +156,6 @@ export default {
     },
     handleShow() {
       this.isShow = !this.isShow;
-      const splitIndex = this.splitIndex;
       if (this.isShow) {
         this.newSetting.hiddenRows = {};
         this.newSetting = Object.assign({}, this.setting, this.newSetting);
@@ -256,10 +231,6 @@ export default {
           axisLabel: {
             show: true
           },
-          axisTick: {
-            //y轴刻度线
-            show: true
-          },
           axisLine: {
             symbol: ['none', 'arrow'],
             show: true,
@@ -268,78 +239,48 @@ export default {
             }
           },
           position: positionMaps[yAxisList[i].showType.split('-')[1]],
-          min: v => MinMaxFunction('min', v),
-          max: v => MinMaxFunction('max', v)
+          max: function (value) {
+            // console.log("value.max", value);
+            return ((value.max - value.min) * 1.15).toFixed(2);
+          },
+          min: function (value) {
+            // console.log("value.min", value);
+            let tempVal = ((value.max - value.min) * 0.15).toFixed(2);
+            return value.min > tempVal ? (value.min - tempVal).toFixed(2) : 0;
+          }
         });
       }
 
       return yAxis;
     },
     generateChartSeries(showTypeList, current) {
-      let firstTime = '';
-      if (this.splitIndex) {
-        firstTime = this.newTableData[this.splitIndex].time;
-      }
-      if (firstTime !== '') {
-        let list = showTypeList
-          .filter(el => el.showType.indexOf(current) !== -1)
-          .map((el, index) => {
-            return {
-              field: el.field,
-              title: el.title,
-              selected: true,
-              yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
-              markLine: {
-                symbol: 'none',
-                data: [
-                  {
-                    name: '标记线',
-                    xAxis: firstTime,
-                    lineStyle: {
-                      //警戒线的样式  ，虚实  颜色
-                      type: 'solid',
-                      color: '#000'
-                    }
+      let firstTime = this.newTableData[this.splitIndex].time;
+      return showTypeList
+        .filter(el => el.showType.indexOf(current) !== -1)
+        .map((el, index) => {
+          return {
+            field: el.field,
+            title: el.title,
+            selected: true,
+            yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
+            markLine: {
+              symbol: 'none',
+              data: [
+                {
+                  name: '标记线',
+                  xAxis: firstTime,
+                  lineStyle: {
+                    //警戒线的样式  ，虚实  颜色
+                    type: 'solid',
+                    color: '#000'
                   }
-                ],
-                label: { show: true, position: 'end' },
-                silent: true
-              }
-            };
-          });
-        // 将3个series处理成一半实线一半虚线的series，一起应该6个series
-        let allList = [];
-        for (let i = 0; i < list.length; i++) {
-          allList.push(list[i]);
-          let obj = Object.assign({}, list[i], {
-            smooth: false, //关键点，为true是不支持虚线，实线就用true
-            itemStyle: {
-              normal: {
-                lineStyle: {
-                  width: 2,
-                  type: 'dotted' //'dotted'虚线 'solid'实线
                 }
-              }
+              ],
+              label: { show: true, position: 'end' },
+              silent: true
             }
-          });
-          allList.push(obj);
-        }
-        allList = allList.sort((a, b) => {
-          return a.name - b.name;
+          };
         });
-        return allList;
-      } else {
-        return showTypeList
-          .filter(el => el.showType.indexOf(current) !== -1)
-          .map((el, index) => {
-            return {
-              field: el.field,
-              title: el.title,
-              selected: true,
-              yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1
-            };
-          });
-      }
     },
     generateChartData(carouselCount, showTypeList) {
       for (let i = 0; i < carouselCount.length; i++) {
@@ -381,24 +322,72 @@ export default {
       this.newSetting.hiddenRows.rows = hideRows;
       this.newSetting.hiddenRows.indicators = false;
       this.newSetting = Object.assign({}, this.setting, this.newSetting);
+    },
+    onChange(a, b, c) {
+      this.currentIndex = a;
     }
   }
 };
 </script>
 
+<style>
+.series-result .ant-carousel .slick-slide {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  overflow: hidden;
+}
+.series-result .ant-carousel .slick-dots {
+  width: 20%;
+  height: 40px;
+  position: absolute;
+  left: 50%; /* 定位父级的50% */
+  bottom: -50px;
+  transform: translate(-50%, 0); /*自己的50% */
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  /* background: #40a9ff; */
+}
+.ant-carousel >>> .slick-slide h3 {
+  color: #40a9ff;
+}
+.chart-container {
+  margin-bottom: 96px;
+}
+#app .ant-carousel .slick-dots li button {
+  background: #40a9ff;
+}
+#app .ant-carousel .custom-slick-arrow {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  color: #40a9ff;
+  z-index: 100;
+  background-color: rgba(31, 45, 61, 0.11);
+  opacity: 0.3;
+}
+#app .ant-carousel .custom-slick-arrow:before {
+  display: none;
+}
+#app .ant-carousel .custom-slick-arrow:hover {
+  opacity: 0.5;
+}
+#app .ant-carousel .custom-slick-arrow.slick-arrow.slick-prev {
+  left: 64px !important;
+}
+#app .ant-carousel .custom-slick-arrow.slick-arrow.slick-next {
+  right: 64px !important;
+}
+</style>
 <style lang="scss">
-.series-result {
-  padding: 40px 10px 10px;
-  .chart-box,
-  .table-box {
-    height: 50%;
-    position: relative;
-    min-height: 250px;
-  }
+.table-container {
+  position: relative;
   .show-hide {
     position: absolute;
     top: 4px;
-    left: 12px;
+    left: 10px;
     z-index: 999;
     .ops {
       display: inline-block;
@@ -406,6 +395,11 @@ export default {
       height: 24px;
       cursor: pointer;
     }
+  }
+  .reset {
+    position: absolute;
+    top: -40px;
+    right: 12px;
   }
 }
 </style>

@@ -1,111 +1,163 @@
 <template>
   <div :class="classNames">
-    <div class="tree-container" :style="treeStyle">
-      <a-tree v-model="checkedNode" :treeData="treeData" defaultExpandAll checkable @check="_onTreeCheck" />
+    <div class="tree-container"
+         :style="treeStyle">
+      <a-tree v-model="checkedNode"
+              :treeData="treeData"
+              defaultExpandAll
+              checkable
+              @check="_onTreeCheck" />
     </div>
-    <div class="table-container" :style="tableStyle">
-      <MultiOptionTable ref="tableRef" :tableData="m_tableData" :tableColumns="tableColumns" @cellEditDone="_cellEditDone" />
+    <div class="table-container"
+         :style="tableStyle">
+      <MultiOptionTable ref="tableRef"
+                        :tableData="m_tableData"
+                        :tableColumns="tableColumns"
+                        @cellEditDone="_cellEditDone" />
     </div>
+    
   </div>
 </template>
 <script>
-import MultiOptionTable from '../../MultiOptionTable/src/MultiOptionTable.vue';
+import MultiOptionTable from '../../MultiOptionTable/src/MultiOptionTable.vue'
 
 const treeToList = (tree, list) => {
   if (tree instanceof Array) {
     for (let i = 0; i < tree.length; i++) {
-      const element = tree[i];
-      list.push(element);
+      const element = tree[i]
+      list.push(element)
       if (element.children instanceof Array && element.children.length > 0) {
-        treeToList(element.children, list);
+        treeToList(element.children, list)
       }
     }
   } else {
-    return [];
+    return []
   }
-};
+}
 export default {
   components: {
     // StandardChart,
-    MultiOptionTable
+    MultiOptionTable,
   },
   name: 'TreeTableGroup',
   props: {
     classes: {
-      type: Array
+      type: Array,
     },
     treeData: {
       type: Array,
-      required: true
+      required: true,
     },
     isRefresh: {
       type: Boolean,
       default() {
-        return true;
-      }
+        return true
+      },
     },
     tableColumns: {
-      type: Array
+      type: Array,
     },
     tableData: {
-      type: Array
+      type: Array,
     },
     treeStyle: {
       type: Object || String,
       default() {
-        return undefined;
-      }
+        return undefined
+      },
     },
     tableStyle: {
       type: Object || String,
       default() {
-        return undefined;
-      }
-    }
+        return undefined
+      },
+    },
   },
   data() {
-    return { checkedNode: [], defaultTableData: [] };
+    return { checkedNode: [], defaultTableData: [] }
   },
 
   created() {
     /**
      * 初始化进来先选中所有 treeNode
      */
-    let list = [];
-    treeToList(this.treeData, list);
-    this.checkedNode = list.map(i => i.key);
+    let list = []
+    treeToList(this.treeData, list)
+    this.checkedNode = list.map((i) => i.key)
     /**
      * 讲数据备份一次并加入selected参数
      */
-    this.defaultTableData = JSON.parse(JSON.stringify(this.tableData)).map(i => ({
-      ...i,
-      selected: true
-    }));
+    this.defaultTableData = JSON.parse(JSON.stringify(this.tableData)).map(
+      (i) => ({
+        ...i,
+        selected: true,
+      })
+    )
   },
   computed: {
     classNames() {
-      return ['tree-table-group'].concat(this.classes);
+      return ['tree-table-group'].concat(this.classes)
     },
     m_tableData() {
-      return this.defaultTableData.filter(i => i.selected);
-    }
+      return this.defaultTableData.filter((i) => i.selected)
+    },
   },
   methods: {
-    _selecData(value) {
-      this.$refs['tableRef']._selectkey(value);
-    },
     _cellEditDone(value) {
-      const { field, newValue, oldValue, rowIndex } = value;
-      const m_tableData = this.defaultTableData.filter(i => i.selected);
-      if (m_tableData[rowIndex][field] instanceof Object && m_tableData[rowIndex][field].selectedId) {
-        m_tableData[rowIndex][field].selectedId = m_tableData[rowIndex][field].options.find(i => i.name === newValue).id;
+      const { field, newValue, oldValue, rowIndex } = value
+      const m_tableData = this.defaultTableData.filter((i) => i.selected)
+      if (m_tableData[value.rowIndex][value.field].group) {
+        let selectedId = ''
+        let options = m_tableData[value.rowIndex][value.field].options
+        for (let i = 0; i < options.length; i++) {
+          if (options[i].name == value.newValue) {
+            selectedId = options[i].id
+          }
+        }
+        for (let k = 0; k < m_tableData.length; k++) {
+          if (m_tableData[k][value.field].group) {
+            let select = m_tableData[k][value.field].options
+            for (let j = 0; j < select.length; j++) {
+              if (select[j].id == selectedId) {
+                m_tableData[k][value.field].selectedId = selectedId
+              }
+            }
+          }
+        }
       } else {
-        m_tableData[rowIndex][field] = newValue;
+        if (
+          m_tableData[rowIndex][field] instanceof Object &&
+          m_tableData[rowIndex][field].selectedId
+        ) {
+          m_tableData[rowIndex][field].selectedId = m_tableData[rowIndex][
+            field
+          ].options.find((i) => i.name === newValue).id
+        } else {
+          m_tableData[rowIndex][field] = newValue
+        }
       }
-      //console.log(this.defaultTableData, 'this.defaultTableData');
-      this.$emit('cellEditDone', this.defaultTableData);
+      this.$emit('cellEditDone', this.defaultTableData)
+    },
+    synchronization(originaldata, choice) {
+      let selectedId = ''
+      let options = originaldata[choice.rowIndex][choice.field].options
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].name == choice.newValue) {
+          selectedId = options[i].id
+        }
+      }
+      for (let k = 0; k < originaldata.length; k++) {
+        let select = originaldata[k][choice.field].options
+        for (let j = 0; j < select.length; j++) {
+          if (select[j].id == selectedId) {
+            originaldata[k][choice.field].selectedId = selectedId
+          }
+        }
+      }
+      this.m_tableData = originaldata
     },
     _onTreeCheck(checkedKeys, { checked, checkedNodes, node, event }) {
+        console.log(checkedKeys,checkedNodes)
       let keys = []
       for (let i = 0; i < checkedNodes.length; i++) {
         if (!checkedNodes[i].data.props.dataRef.children) {
@@ -122,21 +174,33 @@ export default {
      * 暴露的方法
      */
     getTableData() {
-      return this.m_tableData;
+      return this.m_tableData
     },
     highlightRow(value) {
-      this.$refs['tableRef'].highlightRow(value);
+      this.$refs['tableRef'].highlightRow(value)
     },
     refresh() {
       //适用于父节点宽度变化的情况
-      this.$refs['tableRef'].refresh();
+      this.$refs['tableRef'].refresh()
     },
     render() {
       //刷新table
-      this.$refs['tableRef'].render();
-    }
+      this.$refs['tableRef'].render()
+    },
+  },
+  watch:{
+    checkedNode: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.defaultTableData.map((i) => {
+        i.selected = val.includes(i.nodeId)
+        return i
+      })
+      }
+    },
   }
-};
+}
 </script>
 <style scoped lang="scss">
 .tree-table-group {
