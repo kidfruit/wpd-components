@@ -7,6 +7,7 @@
     <button @click="getData">获取表格数据</button>
     <button @click="renderTable">刷新表格</button>
     <button @click="highlightRow('13')">高亮</button>
+     <button @click="highlightRow('103039')">高亮2</button>
     <!-- <button @click="fetchData">获取数据123</button> -->
   </div>
 </template>
