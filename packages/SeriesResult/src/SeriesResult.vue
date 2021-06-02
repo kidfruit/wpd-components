@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { MinMaxFunction } from '../../../utils/';
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue';
 import StandardChart from '../../StandardChart/src/StandardChart.vue';
 let positionMaps = {
@@ -267,15 +268,8 @@ export default {
             }
           },
           position: positionMaps[yAxisList[i].showType.split('-')[1]],
-          max: function (value) {
-            // console.log("value.max", value);
-            return ((value.max - value.min) * 1.15).toFixed(2);
-          },
-          min: function (value) {
-            // console.log("value.min", value);
-            let tempVal = ((value.max - value.min) * 0.15).toFixed(2);
-            return value.min > tempVal ? (value.min - tempVal).toFixed(2) : 0;
-          }
+          min: v => MinMaxFunction('min', v),
+          max: v => MinMaxFunction('max', v)
         });
       }
 

@@ -1,28 +1,7 @@
 <template>
-  <div ref="chartRef" :class="classNames" :id="id"></div>
+  <div ref="chartRef" :class="classNames" style="width: 100%; height: 100%; min-height: 300px" :id="id"></div>
 </template>
 <script>
-export const MinMaxFunction = (model, value) => {
-  let differ, result;
-  switch (model) {
-    case 'min':
-      if (value.min == -Infinity) return value.min;
-      differ = value.max - value.min;
-      if (differ === 0) differ = value.min;
-      differ = differ * 0.15;
-      result = Math.floor(value.min - differ);
-      if (value.min < 0) return result;
-      else return Math.max(0, result);
-    case 'max':
-      if (value.max == Infinity) return value.max;
-      differ = value.max - value.min;
-      if (differ === 0) differ = value.max;
-      differ = differ * 0.15;
-      result = Math.ceil(value.max + differ);
-      if (result < 0) return 0;
-      else return result;
-  }
-};
 import * as echarts from 'echarts';
 const defaultOption = {
   title: {
@@ -79,9 +58,7 @@ const yAxisOption = {
     areaStyle: {
       color: ['#fafafa']
     }
-  },
-  max: value => MinMaxFunction('max', value),
-  min: value => MinMaxFunction('min', value)
+  }
 };
 let echartsInstance = null;
 export default {
@@ -201,16 +178,16 @@ export default {
         });
       }
 
-      option.yAxis = this.chartAxis.yAxis.map(ax => {
+      option.yAxis = this.chartAxis.yAxis.map(({ title: name, gridIndex, position, axisLabel, axisTick, axisLine, min, max }) => {
         return Object.assign({}, yAxisOption, {
-          name: ax.title,
-          gridIndex: ax.gridIndex,
-          position: ax.position,
-          axisLabel: ax.axisLabel,
-          axisTick: ax.axisTick,
-          axisLine: ax.axisLine,
-          max: ax.max,
-          min: ax.min
+          name,
+          gridIndex,
+          position,
+          axisLabel,
+          axisTick,
+          axisLine,
+          max,
+          min
         });
       });
       // 如果legend存在并且是个数组，就不会走这个逻辑
