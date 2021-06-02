@@ -59,7 +59,6 @@ const yAxisOption = {
 };
 let echartsInstance = null;
 export default {
-  name: 'StandardChart',
   props: {
     isVisible: {
       type: Boolean,

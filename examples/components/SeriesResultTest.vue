@@ -1,6 +1,6 @@
 <template>
   <div>
-    <series-result ref="seriesResult" :classes="['test-series-result']" :chartTitle="['数据一', '数据二', '数据三', '数据四']" :splitIndex="splitIndex" :tableColumns="tableColumns" :tableData="tableData" :setting="{ rowHeaders: true }" />
+    <series-result ref="seriesResult" :classes="['test-series-result']" :splitIndex="splitIndex" :tableColumns="tableColumns" :tableData="tableData" :setting="{ rowHeaders: true }" />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>
     </div>

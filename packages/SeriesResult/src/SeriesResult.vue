@@ -3,11 +3,11 @@
     <div class="chart-box">
       <div class="chart-switch-button">
         <a-select v-model="targetChartIndex">
-          <a-select-option v-for="(title, i) in chartTitle" :value="i" :key="i"> {{ title }} </a-select-option>
+          <a-select-option v-for="(title, i) in d_chartTitle" :value="i" :key="i"> {{ title }} </a-select-option>
         </a-select>
       </div>
       <div class="chart-content">
-        <standard-chart
+        <chart
           :key="chartList[targetChartIndex].id"
           ref="chartRef"
           :chartOption="chartList[targetChartIndex].chartOption"
@@ -37,7 +37,7 @@
 <script>
 import { MinMaxFunction } from '../../../utils/';
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue';
-import StandardChart from '../../StandardChart/src/StandardChart.vue';
+import Chart from './chart';
 let positionMaps = {
   L: 'left',
   R: 'right'
@@ -81,7 +81,7 @@ export default {
   },
   components: {
     SimpleTable,
-    StandardChart
+    Chart
   },
   computed: {
     classNames() {
@@ -99,7 +99,8 @@ export default {
       activeField: '',
       //   记录单元格修改记录，采用拼接方法:prop#row
       editCells: [],
-      targetChartIndex: 0
+      targetChartIndex: 0,
+      d_chartTitle: []
     };
   },
   created() {
@@ -349,11 +350,7 @@ export default {
             left: 'center'
           },
           legend: [],
-          grid: {
-            bottom: 50,
-            left: '16%',
-            right: '16%'
-          }
+          grid: {}
         };
         let chartAxis = {
           xAxis: 'time',
@@ -370,6 +367,11 @@ export default {
           chartData,
           id: guid()
         });
+      }
+      if (this.chartTitle instanceof Array) {
+        this.d_chartTitle = this.chartTitle;
+      } else {
+        this.d_chartTitle = this.chartList.map((j, i) => `图表（${i + 1}）`);
       }
     },
     hideRows() {

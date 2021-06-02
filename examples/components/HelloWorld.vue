@@ -5,9 +5,7 @@
     <scheme-table-test v-if="false"></scheme-table-test>
     <char-table-test v-if="false"></char-table-test>
     <div v-if="false">
-      <h2>
-        SimpleChart：数据格式为echarts标准格式（V-Chart封装，打包未成功！！）
-      </h2>
+      <h2>SimpleChart：数据格式为echarts标准格式（V-Chart封装，打包未成功！！）</h2>
       <simple-chart-test />
     </div>
     <div v-if="false">
@@ -46,7 +44,7 @@
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>TreeTableGroup：树表联动组件</h2>
       <tree-table-group-test />
     </div>
@@ -62,11 +60,11 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
-    <div v-if="false">
+    <div v-if="0">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
-    <div v-if="false">
+    <div v-if="1">
       <h2>SeriesCompareTest：通用过程线组合组件</h2>
       <series-compare-test />
     </div>
@@ -82,27 +80,27 @@
 </template>
 
 <script>
-import TableChartTest from "./TableChartTest";
-import SchemeTableTest from "./SchemeTableTest";
-import SimpleTableTest from "./SimpleTableTest";
-import CharTableTest from "./CharTableTest.vue";
-import SimpleChartTest from "./SimpleChartTest.vue";
-import StandardChartTest from "./StandardChartTest.vue";
-import MultiOptionTableTest from "./MultiOptionTableTest.vue";
-import ResultHydroDynamicTest from "./ResultHydroDynamicTest.vue";
-import ChartTableGroupTest from "./ChartTableGroupTest.vue";
-import DraggableChartTest from "./DraggableChartTest.vue";
-import CoherentDraggableChartTest from "./CoherentDraggableChartTest.vue";
-import TreeChartTableTest from "./TreeChartTableTest.vue";
-import TreeTableGroupTest from "./TreeTableGroupTest.vue";
-import TreeSimpleTableGroupTest from "./TreeSimpleTableGroupTest.vue";
-import CurveChartTest from "./CurveChartTest.vue";
-import SeriesQZTest from "./SeriesQZTest.vue";
-import SeriesPPTNTest from "./SeriesPPTNTest.vue";
-import SeriesResultTest from "./SeriesResultTest.vue";
-import SeriesCompareTest from "./SeriesCompareTest.vue";
-import ChartsProcessTest from "./ChartsProcessTest.vue";
-import ChartsSingleTest from "./ChartsSingleTest.vue";
+import TableChartTest from './TableChartTest';
+import SchemeTableTest from './SchemeTableTest';
+import SimpleTableTest from './SimpleTableTest';
+import CharTableTest from './CharTableTest.vue';
+import SimpleChartTest from './SimpleChartTest.vue';
+import StandardChartTest from './StandardChartTest.vue';
+import MultiOptionTableTest from './MultiOptionTableTest.vue';
+import ResultHydroDynamicTest from './ResultHydroDynamicTest.vue';
+import ChartTableGroupTest from './ChartTableGroupTest.vue';
+import DraggableChartTest from './DraggableChartTest.vue';
+import CoherentDraggableChartTest from './CoherentDraggableChartTest.vue';
+import TreeChartTableTest from './TreeChartTableTest.vue';
+import TreeTableGroupTest from './TreeTableGroupTest.vue';
+import TreeSimpleTableGroupTest from './TreeSimpleTableGroupTest.vue';
+import CurveChartTest from './CurveChartTest.vue';
+import SeriesQZTest from './SeriesQZTest.vue';
+import SeriesPPTNTest from './SeriesPPTNTest.vue';
+import SeriesResultTest from './SeriesResultTest.vue';
+import SeriesCompareTest from './SeriesCompareTest.vue';
+import ChartsProcessTest from './ChartsProcessTest.vue';
+import ChartsSingleTest from './ChartsSingleTest.vue';
 
 export default {
   components: {
@@ -126,14 +124,14 @@ export default {
     SeriesResultTest,
     SeriesCompareTest,
     ChartsProcessTest,
-    ChartsSingleTest,
+    ChartsSingleTest
   },
-  name: "HelloWorld",
+  name: 'HelloWorld',
   methods: {
     clickedHello() {
-      alert("iii");
-    },
-  },
+      alert('iii');
+    }
+  }
 };
 </script>
 <style src="../../node_modules/handsontable/dist/handsontable.full.css"></style>
