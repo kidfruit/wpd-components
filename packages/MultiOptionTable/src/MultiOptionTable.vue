@@ -85,9 +85,13 @@ export default {
   updated() {
     //console.log("updated");
     this.getHotInstance()
+    this.titletop = this.$refs.hotTableRef.hotInstance.getCell(0, 0).offsetTop
+    this.rewheight =
+      this.$refs.hotTableRef.hotInstance.getCell(1, 0).offsetTop - this.titletop
   },
   data: function () {
     return {
+      titletop: '',
       editRows: [],
       editCells: [],
       hotInstance: null,
@@ -219,31 +223,23 @@ export default {
 
         let table = this.$refs['hotTableRef']
         table = table ? (table instanceof Array ? table : [table]) : []
-        table.forEach((item) => {
-          try {
-            const Selectrow = this.$refs.hotTableRef.hotInstance.getCell(
-              rows,
-              0
-            )
-            const elem = item.$el ? item.$el : item
-            const dom = elem.querySelector(`.wtHolder`)
-            let titletop = this.$refs.hotTableRef.hotInstance.getCell(0, 0)
-              .offsetTop
-            let top = dom.scrollTop //滚动条高度
-            let rewheight =
-              this.$refs.hotTableRef.hotInstance.getCell(1, 0).offsetTop -
-              titletop
-            const height = elem.scrollHeight
-            this.$refs.hotTableRef.hotInstance.selectRows(rows)
-            if (
-              top > Selectrow.parentNode.offsetTop - titletop ||
-              Selectrow.parentNode.offsetTop > height + top-rewheight
-            ) {
-              this.$refs.hotTableRef.hotInstance.scrollViewportTo(rows)
-            }
-          } catch (error) {
-            console.warn('滚动到指定位置!')
+        table.forEach((items) => {
+            try {
+          const elem = items.$el ? items.$el : items
+          const dom = elem.querySelector(`.wtHolder`)
+          let top = dom.scrollTop //滚动条高度
+          let Selecttop = this.rewheight * rows
+          const height = elem.scrollHeight
+          this.$refs.hotTableRef.hotInstance.selectRows(rows)
+          if (
+            top > Selecttop - this.titletop ||
+            Selecttop > height + top - this.rewheight
+          ) {
+            this.$refs.hotTableRef.hotInstance.scrollViewportTo(rows)
           }
+            } catch (error) {
+              console.warn('滚动到指定位置!')
+            }
         })
       })
       //   let list = this.$refs.hotTableRef.hotInstance.getSourceData()
@@ -355,7 +351,15 @@ export default {
       }
     },
     // 单元格自定义渲染
-    negativeValueRenderers(instance, td, row, col, prop, value, cellProperties) {
+    negativeValueRenderers(
+      instance,
+      td,
+      row,
+      col,
+      prop,
+      value,
+      cellProperties
+    ) {
       if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments)
       } else if (Object.prototype.hasOwnProperty.call(this.checkbox, prop)) {
