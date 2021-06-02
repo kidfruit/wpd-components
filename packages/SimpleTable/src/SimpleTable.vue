@@ -363,6 +363,13 @@ export default {
           this.isRefresh = true;
         });
       }
+    },
+    columns: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+       this.refresh()
+      }
     }
   }
 };

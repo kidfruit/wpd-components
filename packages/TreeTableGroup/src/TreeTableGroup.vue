@@ -15,6 +15,7 @@
                         :tableColumns="tableColumns"
                         @cellEditDone="_cellEditDone" />
     </div>
+    
   </div>
 </template>
 <script>
@@ -156,6 +157,7 @@ export default {
       this.m_tableData = originaldata
     },
     _onTreeCheck(checkedKeys, { checked, checkedNodes, node, event }) {
+        console.log(checkedKeys,checkedNodes)
       let keys = []
       for (let i = 0; i < checkedNodes.length; i++) {
         if (!checkedNodes[i].data.props.dataRef.children) {
@@ -186,6 +188,18 @@ export default {
       this.$refs['tableRef'].render()
     },
   },
+  watch:{
+    checkedNode: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.defaultTableData.map((i) => {
+        i.selected = val.includes(i.nodeId)
+        return i
+      })
+      }
+    },
+  }
 }
 </script>
 <style scoped lang="scss">
