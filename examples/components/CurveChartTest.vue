@@ -6,35 +6,36 @@
         title="数据来源"
         destroyOnClose
     >
-      <curve-chart
-          ref="curvechart"
-          v-if="chartshow"
-          id="123div"
-          :structure="structure"
-          :interpolateCalcShow="interpolateCalcShow"
-          :tableShow="tableShow"
-          :classes="classNames"
-          :chartOption="chartOption"
-          :isRefresh="isRefresh"
-          :chartAxis="chartAxis"
-          :tableColumns="tableColumns"
-          @compute="compute"
-          :chartData="chartData"/>
-      <!-- <button @click="changing_over">切换</button> -->
-      <button @click="fetchData">获取数据123</button>
-      <button @click="Refresh">刷新数据</button>
+    <curve-chart ref="curvechart"
+                 v-if="chartshow"
+                 :structure="structure"
+                 :interpolateCalcShow="interpolateCalcShow"
+                 :tableShow="tableShow"
+                 :classes="classNames"
+                 :chartOption="chartOption"
+                 :isRefresh="isRefresh"
+                 :chartAxis="chartAxis"
+                 :tableColumns="tableColumns"
+                 @compute="compute"
+                 :chartData="SW_Chart" />
+    <!-- <button @click="changing_over">切换</button> -->
+    <button @click="fetchData">获取数据123</button>
+    <button @click="Refresh">刷新数据</button>
     </a-modal>
     <button @click="() => modalVisible = !modalVisible">打开弹窗</button>
+
   </div>
 </template>
 <script>
 import CurveChart from '../../packages/CurveChart/src/CurveChart.vue'
 
+import SW_Chart from '../assets/mock/SW_Chart.json';
 export default {
   name: 'CurveChartTest',
-  components: {CurveChart},
+  components: { CurveChart },
   data() {
     return {
+        SW_Chart,
       structure: 'Upanddown', //Upanddown上下结构，about左右结构
       chartshow: true,
       interpolateCalcShow: false,
@@ -43,19 +44,19 @@ export default {
       isRefresh: true,
       chartOption: {
         title: {
-          //   text: '水位流量图',
+          text: '水位流量图',
           left: 'center',
         },
       },
       modalVisible:false,
       chartAxis: {
         xAxis: {
-          id: 'dim2',
-          title: '泄流能力(m³/s)',
+          title: '尾水位(m)',
+          id: 'dim1',
         },
         yAxis: {
-          id: 'dim1',
-          title: '水位(m)',
+          title: '流量(m)',
+          id: 'dim3',
         },
       },
       tableColumns: [
@@ -70,7 +71,7 @@ export default {
         },
         {
           field: 'dim1',
-          title: '水位(m)',
+          title: '尾水位(m)',
           width: 100,
           isResize: true,
           titleAlign: 'center',
@@ -79,7 +80,16 @@ export default {
         },
         {
           field: 'dim2',
-          title: '泄流能力(m³/s)',
+          title: '顶托水位(m)',
+          width: 100,
+          isResize: true,
+          titleAlign: 'center',
+          columnAlign: 'center',
+          readOnly: true,
+        },
+        {
+          field: 'dim3',
+          title: '流量(m)',
           width: 100,
           isResize: true,
           titleAlign: 'center',
@@ -89,79 +99,58 @@ export default {
       ],
       chartData: [
         {
-          dim2: 14274,
-          dim1: 540,
+          dim3: 2500,
+          dim2: 63,
+          dim1: 63.06,
           index: 1,
         },
         {
-          dim2: 14882,
-          dim1: 545,
+          dim3: 2600,
+          dim2: 63,
+          dim1: 63.07,
           index: 2,
         },
         {
-          dim2: 16299,
-          dim1: 550,
+          dim3: 2700,
+          dim2: 63,
+          dim1: 63.07,
           index: 3,
         },
         {
-          dim2: 18385,
-          dim1: 555,
+          dim3: 2800,
+          dim2: 63,
+          dim1: 63.07,
           index: 4,
         },
         {
-          dim2: 20895,
-          dim1: 560,
+          dim3: 2900,
+          dim2: 63,
+          dim1: 63.08,
           index: 5,
         },
         {
-          dim2: 23747,
-          dim1: 565,
+          dim3: 3000,
+          dim2: 63,
+          dim1: 63.08,
           index: 6,
         },
         {
-          dim2: 26701,
-          dim1: 570,
+          dim3: 3100,
+          dim2: 63,
+          dim1: 63.08,
           index: 7,
         },
         {
-          dim2: 28618,
-          dim1: 575,
-          index: 8,
+          dim3: 85500,
+          dim2: 66,
+          dim1: 79.52,
+          index: 976,
         },
         {
-          dim2: 30094,
-          dim1: 580,
-          index: 9,
-        },
-        {
-          dim2: 31448,
-          dim1: 585,
-          index: 10,
-        },
-        {
-          dim2: 33712,
-          dim1: 590,
-          index: 11,
-        },
-        {
-          dim2: 38034,
-          dim1: 595,
-          index: 12,
-        },
-        {
-          dim2: 43682,
-          dim1: 600,
-          index: 13,
-        },
-        {
-          dim2: 50434,
-          dim1: 605,
-          index: 14,
-        },
-        {
-          dim2: 58144,
-          dim1: 610,
-          index: 15,
+          dim3: 85600,
+          dim2: 66,
+          dim1: 79.54,
+          index: 977,
         },
       ],
     }

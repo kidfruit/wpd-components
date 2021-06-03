@@ -1,5 +1,5 @@
 <template>
-  <div class="SimpleTable-Container2021" :key="randomKey" v-if="isVisible && isRefresh">
+  <div class="simple-table" :key="randomKey" v-if="isVisible && isRefresh">
     <hot-table :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
       <hot-column v-for="(item, index) in columns" :key="index" :title="item.title" :data="item.field" :source="item.source" :className="item.className" :renderer="item.renderer" :type="item.type" :width="item.width" :readOnly="item.readOnly"> </hot-column>
     </hot-table>
@@ -368,7 +368,7 @@ export default {
       immediate: true,
       deep: true,
       handler(val) {
-       this.refresh()
+        this.refresh();
       }
     }
   }
@@ -387,7 +387,7 @@ export default {
 }
 </style>
 <style lang="scss">
-.handsontable td {
+.simple-table .handsontable td {
   &.edited-column {
     background-color: rgba(204, 255, 0, 0.2);
   }

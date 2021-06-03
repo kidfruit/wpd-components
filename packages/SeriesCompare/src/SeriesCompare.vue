@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="table-box">
-      <div class="show-hide">
+      <div class="show-hide" :title="isShow ? '关闭预热数据' : '展开预热数据'">
         <span class="ops" @click="handleShow">
           <a-icon v-if="isShow" type="up" />
           <a-icon v-else type="down" />
@@ -124,10 +124,20 @@ export default {
       // this.chartList = [];
       this.chartOption = null;
       this.seriesList = [];
-      this.currentIndex = 0;
-      this.newSetting = {};
+      this.targetChartIndex = 0;
+      const splitIndex = this.splitIndex;
+      this.newSetting = {
+        cells(row) {
+          let cellProperties = {};
+          if (row < splitIndex) {
+            cellProperties = { className: 'preheat-rows', readOnly: true };
+          }
+          return cellProperties;
+        }
+      };
       this.isShow = false;
     },
+
     handleData() {
       // 备份表格数据
       this.newTableData = JSON.parse(JSON.stringify(this.tableData));
@@ -141,9 +151,7 @@ export default {
         .filter(el => el.showType);
 
       // let filterList = showTypeList.map(el => el.showType.split('-')[0]);
-      // console.log(filterList, 'filterList');
       // let carouselCount = unique(filterList);
-      // console.log(showTypeList, 'showTypeList');
       this.generateChartData();
     },
     handleShow() {
@@ -165,108 +173,6 @@ export default {
       });
       this.editCells = [];
     },
-    generateChartLegend(showTypeList, current) {
-      let legendList = showTypeList.filter(el => el.showType.indexOf(current) !== -1);
-      let legends = [];
-      let flag = false; // 连续的控制标志位
-      let lastOne = '';
-      let base = 0,
-        step = 7;
-      legendList = legendList.sort((a, b) => {
-        if (a.showType < b.showType) {
-          return -1;
-        }
-        if (a.showType > b.showType) {
-          return 1;
-        }
-        return 0;
-      });
-      for (let i = 0; i < legendList.length; i++) {
-        let obj = {
-          itemWidth: 27,
-          itemHeight: 16,
-          show: true,
-          textStyle: { fontSize: 14 },
-          data: [{ name: legendList[i].title, icon: 'line' }] //rect为矩形
-        };
-        let leftRight = positionMaps[legendList[i].showType.split('-')[1]];
-        if (lastOne !== '' && lastOne === leftRight) {
-          flag = true;
-          base += step;
-        }
-        if (leftRight === 'left') {
-          obj = Object.assign({}, obj, {
-            top: !flag ? '15%' : `${15 + base}%`, //调整位置
-            left: '5%'
-          });
-        } else {
-          obj = Object.assign({}, obj, {
-            top: !flag ? '15%' : `${15 + base}%`, //调整位置
-            left: '85%'
-          });
-        }
-        flag = false;
-        legends.push(obj);
-        lastOne = leftRight;
-      }
-      return legends;
-    },
-    generateChartYaxis(showTypeList, current) {
-      let yAxisList = showTypeList.filter(el => el.showType.indexOf(current) !== -1);
-      yAxisList = uniqueObj(yAxisList, 'showType');
-      let yAxis = [];
-      for (let i = 0; i < yAxisList.length; i++) {
-        yAxis.push({
-          title: '',
-          // title: yAxisList[i].title,
-          type: 'value',
-          axisLabel: {
-            show: true
-          },
-          axisLine: {
-            symbol: ['none', 'arrow'],
-            show: true,
-            lineStyle: {
-              color: '#40a9ff  '
-            }
-          },
-          position: positionMaps[yAxisList[i].showType.split('-')[1]],
-          min: v => MinMaxFunction('min', v),
-          max: v => MinMaxFunction('max', v)
-        });
-      }
-
-      return yAxis;
-    },
-    generateChartSeries(showTypeList, current) {
-      let firstTime = this.newTableData[this.splitIndex].time;
-      return showTypeList
-        .filter(el => el.showType.indexOf(current) !== -1)
-        .map((el, index) => {
-          return {
-            field: el.field,
-            title: el.title,
-            selected: true,
-            yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
-            markLine: {
-              symbol: 'none',
-              data: [
-                {
-                  name: '标记线',
-                  xAxis: firstTime,
-                  lineStyle: {
-                    //警戒线的样式  ，虚实  颜色
-                    type: 'solid',
-                    color: '#000'
-                  }
-                }
-              ],
-              label: { show: true, position: 'end' },
-              silent: true
-            }
-          };
-        });
-    },
     generateChartData() {
       let firstTime = this.newTableData[this.splitIndex].time;
       let pickedColumn = this.checkAttribute.list.find(i => i.key === this.checkAttribute.checked);
@@ -277,11 +183,31 @@ export default {
         },
         legend: [],
         grid: {
-          bottom: 50,
-          left: '15%',
-          right: '15%'
+          left: 50,
+          right: 50,
+          bottom: 50
         }
       };
+      let minTop = 0;
+      chartOption.legend = this.schemeList.map((title, i) => {
+        const l = {
+          itemWidth: 27,
+          itemHeight: 16,
+          show: true,
+          textStyle: { fontSize: 14 },
+          data: [{ name: title + '-' + pickedColumn.title, icon: 'line' }] //rect为矩形
+        };
+        const row = Math.floor(i / 2);
+        l.top = row * 24;
+        minTop = Math.max(row * 24, minTop);
+        if (i % 2 === 0) {
+          l.left = '1%';
+        } else {
+          l.right = '1%';
+        }
+        return l;
+      });
+      chartOption.grid.top = minTop + 34;
       let chartAxis = {
         xAxis: 'time',
         yAxis: [],
@@ -329,21 +255,7 @@ export default {
           silent: true
         }
       }));
-      chartOption.legend = this.schemeList.map((title, i) => {
-        const l = {
-          itemWidth: 27,
-          itemHeight: 16,
-          show: true,
-          textStyle: { fontSize: 14 },
-          data: [{ name: title + '-' + pickedColumn.title, icon: 'line' }] //rect为矩形
-        };
-        if (i % 2 === 0) {
-          l.left = '5%';
-        } else {
-          l.right = '5%';
-        }
-        return l;
-      });
+
       let chartData = this.tableData;
       this.chartParams = {
         chartOption,
@@ -351,7 +263,6 @@ export default {
         chartData,
         id: guid()
       };
-      console.log(this.chartParams, 'this.chartParams');
     },
     hideRows() {
       let hideRows = [];
@@ -359,8 +270,8 @@ export default {
         hideRows.push(i);
       }
       this.newSetting.hiddenRows = {};
-      // this.newSetting.hiddenRows.rows = hideRows;
-      // this.newSetting.hiddenRows.indicators = false;
+      this.newSetting.hiddenRows.rows = hideRows;
+      this.newSetting.hiddenRows.indicators = false;
       this.newSetting = Object.assign(
         {
           nestedHeaders: this.nestedHeaders
@@ -382,40 +293,41 @@ export default {
       this.data.forEach(({ title = '', tableColumns: columns = [], tableData: data = [], splitIndex: sIndex = 0 }, i) => {
         this.schemeList.push(title);
         columns.forEach(c => {
-          // if (this.checkAttribute.checked.includes(c.field)) {
-          const index = tableColumns.findIndex(k => k['originTitle'] === c.title && k['originField'] === c.field);
-          if (c.showType) {
-            if (index >= 0) {
-              tableColumns.splice(index + 1, 0, {
-                ...c,
-                originTitle: c.title,
-                originField: c.field,
-                title: title + '-' + c.title,
-                field: `${c.field}_${i}`,
-                isEdit: false,
-                readOnly: true
-              });
+          if (!['index', 'id', 'Id'].includes(c.field) && !['index', 'id', 'Id'].includes(c.data)) {
+            //(this.checkAttribute.checked.includes(c.field)) {
+            const index = tableColumns.findIndex(k => k['originTitle'] === c.title && k['originField'] === c.field);
+            if (c.showType) {
+              if (index >= 0) {
+                tableColumns.splice(index + 1, 0, {
+                  ...c,
+                  originTitle: c.title,
+                  originField: c.field,
+                  title: title + '-' + c.title,
+                  field: `${c.field}_${i}`,
+                  isEdit: false,
+                  readOnly: true
+                });
+              } else {
+                tableColumns.push({
+                  ...c,
+                  originTitle: c.title,
+                  originField: c.field,
+                  title: title + '-' + c.title,
+                  field: `${c.field}_${i}`,
+                  isEdit: false,
+                  readOnly: true
+                });
+              }
             } else {
-              tableColumns.push({
-                ...c,
-                originTitle: c.title,
-                originField: c.field,
-                title: title + '-' + c.title,
-                field: `${c.field}_${i}`,
-                isEdit: false,
-                readOnly: true
-              });
-            }
-          } else {
-            const index = tableColumns.findIndex(k => k['title'] === c.title && k['field'] === c.field);
-            if (index < 0) {
-              tableColumns.push({
-                ...c
-              });
-              noShowType.push(c.field);
+              const index = tableColumns.findIndex(k => k['title'] === c.title && k['field'] === c.field);
+              if (index < 0) {
+                tableColumns.push({
+                  ...c
+                });
+                noShowType.push(c.field);
+              }
             }
           }
-          // }
         });
         data.forEach((d, j) => {
           if (!tableData[j]) {
@@ -453,9 +365,6 @@ export default {
           });
         }
       }
-      // console.log(nestedHeaders, 'nestedHeaders');
-      // console.log(tableColumns, 'tableColumns');
-      // console.log(tableData, 'tableData');
       this.nestedHeaders = [nestedHeaders, tableColumns.map(i => i.title)];
       this.tableColumns = tableColumns;
       this.tableData = tableData;
