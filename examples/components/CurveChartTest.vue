@@ -1,21 +1,30 @@
 <template>
   <div style="width: 100%">
-    <curve-chart
-        ref="curvechart"
-        v-if="chartshow"
-        :structure="structure"
-        :interpolateCalcShow="interpolateCalcShow"
-        :tableShow="tableShow"
-        :classes="classNames"
-        :chartOption="chartOption"
-        :isRefresh="isRefresh"
-        :chartAxis="chartAxis"
-        :tableColumns="tableColumns"
-        @compute="compute"
-        :chartData="chartData"/>
-    <!-- <button @click="changing_over">切换</button> -->
-    <button @click="fetchData">获取数据123</button>
-    <button @click="Refresh">刷新数据</button>
+    <a-modal
+        class="associationModel"
+        :visible="modalVisible"
+        title="数据来源"
+        destroyOnClose
+    >
+      <curve-chart
+          ref="curvechart"
+          v-if="chartshow"
+          id="123div"
+          :structure="structure"
+          :interpolateCalcShow="interpolateCalcShow"
+          :tableShow="tableShow"
+          :classes="classNames"
+          :chartOption="chartOption"
+          :isRefresh="isRefresh"
+          :chartAxis="chartAxis"
+          :tableColumns="tableColumns"
+          @compute="compute"
+          :chartData="chartData"/>
+      <!-- <button @click="changing_over">切换</button> -->
+      <button @click="fetchData">获取数据123</button>
+      <button @click="Refresh">刷新数据</button>
+    </a-modal>
+    <button @click="() => modalVisible = !modalVisible">打开弹窗</button>
   </div>
 </template>
 <script>
@@ -38,6 +47,7 @@ export default {
           left: 'center',
         },
       },
+      modalVisible:false,
       chartAxis: {
         xAxis: {
           id: 'dim2',
