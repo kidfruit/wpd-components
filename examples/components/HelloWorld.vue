@@ -60,11 +60,11 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
-    <div v-if="0">
+    <div v-if="1">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
-    <div v-if="1">
+    <div v-if="0">
       <h2>SeriesCompareTest：通用过程线组合组件</h2>
       <series-compare-test />
     </div>

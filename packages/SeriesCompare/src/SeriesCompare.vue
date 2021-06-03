@@ -207,7 +207,6 @@ export default {
         }
         return l;
       });
-      console.log(minTop, 'minTop');
       chartOption.grid.top = minTop + 34;
       let chartAxis = {
         xAxis: 'time',

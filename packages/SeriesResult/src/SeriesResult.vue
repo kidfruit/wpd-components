@@ -122,9 +122,7 @@ export default {
     cellEditDone(value) {
       // 表格到图表的单向数据联动
       const { field, newValue, oldValue, rowIndex } = value;
-      // console.log("pp", field, newValue, oldValue, rowIndex);
       if (newValue !== oldValue.toString() && this.activeField === '') {
-        // console.log("one has be edit", this.newTableColumns);
         this.editCells.push(field);
         this.activeField = field;
         this.newTableColumns.forEach((el, index) => {
@@ -202,10 +200,8 @@ export default {
     generateChartLegend(showTypeList, current) {
       let legendList = showTypeList.filter(el => el.showType.indexOf(current) !== -1);
       let legends = [];
-      let flag = false; // 连续的控制标志位
-      let lastOne = '';
-      let base = 0,
-        step = 7;
+      let leftTop = 0,
+        rightTop = 0;
       legendList = legendList.sort((a, b) => {
         if (a.showType < b.showType) {
           return -1;
@@ -224,24 +220,20 @@ export default {
           data: [{ name: legendList[i].title, icon: 'line' }] //rect为矩形
         };
         let leftRight = positionMaps[legendList[i].showType.split('-')[1]];
-        if (lastOne !== '' && lastOne === leftRight) {
-          flag = true;
-          base += step;
-        }
         if (leftRight === 'left') {
           obj = Object.assign({}, obj, {
-            top: !flag ? '15%' : `${15 + base}%`, //调整位置
-            left: '5%'
+            top: leftTop * 24, //调整位置
+            left: '1%'
           });
+          leftTop++;
         } else {
           obj = Object.assign({}, obj, {
-            top: !flag ? '15%' : `${15 + base}%`, //调整位置
-            left: '85%'
+            top: rightTop * 24, //调整位置
+            right: '1%'
           });
+          rightTop++;
         }
-        flag = false;
         legends.push(obj);
-        lastOne = leftRight;
       }
       return legends;
     },
@@ -350,7 +342,11 @@ export default {
             left: 'center'
           },
           legend: [],
-          grid: {}
+          grid: {
+            left: 50,
+            right: 50,
+            bottom: 50
+          }
         };
         let chartAxis = {
           xAxis: 'time',
@@ -360,6 +356,7 @@ export default {
         chartAxis.yAxis = this.generateChartYaxis(showTypeList, carouselCount[i]);
         chartAxis.series = this.generateChartSeries(showTypeList, carouselCount[i]);
         chartOption.legend = this.generateChartLegend(showTypeList, carouselCount[i]);
+        chartOption.grid.top = Math.max(...chartOption.legend.map(i => i.top || 0)) + 34;
         let chartData = this.tableData;
         this.chartList.push({
           chartOption,
