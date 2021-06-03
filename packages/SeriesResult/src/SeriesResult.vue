@@ -3,11 +3,11 @@
     <div class="chart-box">
       <div class="chart-switch-button">
         <a-select v-model="targetChartIndex">
-          <a-select-option v-for="(title, i) in chartTitle" :value="i" :key="i"> {{ title }} </a-select-option>
+          <a-select-option v-for="(title, i) in d_chartTitle" :value="i" :key="i"> {{ title }} </a-select-option>
         </a-select>
       </div>
       <div class="chart-content">
-        <standard-chart
+        <chart
           :key="chartList[targetChartIndex].id"
           ref="chartRef"
           :chartOption="chartList[targetChartIndex].chartOption"
@@ -37,7 +37,7 @@
 <script>
 import { MinMaxFunction } from '../../../utils/';
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue';
-import StandardChart from '../../StandardChart/src/StandardChart.vue';
+import Chart from './chart';
 let positionMaps = {
   L: 'left',
   R: 'right'
@@ -81,7 +81,7 @@ export default {
   },
   components: {
     SimpleTable,
-    StandardChart
+    Chart
   },
   computed: {
     classNames() {
@@ -99,7 +99,8 @@ export default {
       activeField: '',
       //   记录单元格修改记录，采用拼接方法:prop#row
       editCells: [],
-      targetChartIndex: 0
+      targetChartIndex: 0,
+      d_chartTitle: []
     };
   },
   created() {
@@ -121,9 +122,7 @@ export default {
     cellEditDone(value) {
       // 表格到图表的单向数据联动
       const { field, newValue, oldValue, rowIndex } = value;
-      // console.log("pp", field, newValue, oldValue, rowIndex);
       if (newValue !== oldValue.toString() && this.activeField === '') {
-        // console.log("one has be edit", this.newTableColumns);
         this.editCells.push(field);
         this.activeField = field;
         this.newTableColumns.forEach((el, index) => {
@@ -201,10 +200,8 @@ export default {
     generateChartLegend(showTypeList, current) {
       let legendList = showTypeList.filter(el => el.showType.indexOf(current) !== -1);
       let legends = [];
-      let flag = false; // 连续的控制标志位
-      let lastOne = '';
-      let base = 0,
-        step = 7;
+      let leftTop = 0,
+        rightTop = 0;
       legendList = legendList.sort((a, b) => {
         if (a.showType < b.showType) {
           return -1;
@@ -223,24 +220,20 @@ export default {
           data: [{ name: legendList[i].title, icon: 'line' }] //rect为矩形
         };
         let leftRight = positionMaps[legendList[i].showType.split('-')[1]];
-        if (lastOne !== '' && lastOne === leftRight) {
-          flag = true;
-          base += step;
-        }
         if (leftRight === 'left') {
           obj = Object.assign({}, obj, {
-            top: !flag ? '15%' : `${15 + base}%`, //调整位置
-            left: '5%'
+            top: leftTop * 24, //调整位置
+            left: '1%'
           });
+          leftTop++;
         } else {
           obj = Object.assign({}, obj, {
-            top: !flag ? '15%' : `${15 + base}%`, //调整位置
-            left: '85%'
+            top: rightTop * 24, //调整位置
+            right: '1%'
           });
+          rightTop++;
         }
-        flag = false;
         legends.push(obj);
-        lastOne = leftRight;
       }
       return legends;
     },
@@ -350,9 +343,9 @@ export default {
           },
           legend: [],
           grid: {
-            bottom: 50,
-            left: '16%',
-            right: '16%'
+            left: 50,
+            right: 50,
+            bottom: 50
           }
         };
         let chartAxis = {
@@ -363,6 +356,7 @@ export default {
         chartAxis.yAxis = this.generateChartYaxis(showTypeList, carouselCount[i]);
         chartAxis.series = this.generateChartSeries(showTypeList, carouselCount[i]);
         chartOption.legend = this.generateChartLegend(showTypeList, carouselCount[i]);
+        chartOption.grid.top = Math.max(...chartOption.legend.map(i => i.top || 0)) + 34;
         let chartData = this.tableData;
         this.chartList.push({
           chartOption,
@@ -370,6 +364,11 @@ export default {
           chartData,
           id: guid()
         });
+      }
+      if (this.chartTitle instanceof Array) {
+        this.d_chartTitle = this.chartTitle;
+      } else {
+        this.d_chartTitle = this.chartList.map((j, i) => `图表（${i + 1}）`);
       }
     },
     hideRows() {
