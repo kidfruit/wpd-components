@@ -93,9 +93,9 @@ const defaultOption = {
   },
   tooltip: {
     trigger: 'axis',
-    formatter: function (arg) {
-      return arg[0].seriesName + ':' + arg[0].data
-    },
+    // formatter: function (arg) {
+    //   return arg[0].seriesName + ':' + arg[0].data
+    // },
   },
   grid: {
     bottom: 50,
@@ -335,12 +335,15 @@ export default {
     handledata() {
       let option = {
         title: {
-            text: '折线图堆叠',
-            left: 50,
-         
-            },
+          text: '',
+          left: 50,
+        },
         tooltip: {
           trigger: 'axis',
+        //   formatter: function (arg) {
+        //       console.log(arg)
+        //     // return arg[0].seriesName + ':' + arg[0].data
+        //   },
         },
         grid: {
           bottom: 50,
@@ -360,16 +363,16 @@ export default {
         },
         series: [],
       }
-    //   console.log("this.chartOption.title.text",this.chartOption.title.text)
-      option.title.text=this.chartOption.title.text
+      //   console.log("this.chartOption.title.text",this.chartOption.title.text)
+      option.title.text = this.chartOption.title.text
       option.xAxis.name = this.chartAxis.xAxis.title
       option.yAxis = {
         name: this.chartAxis.yAxis.title,
         type: 'value',
       }
       let threedimensionaldata = this.threedimensional()
-      let xAxismin=[]
-      let xAxismax=[]
+      let xAxismin = []
+      let xAxismax = []
       for (let i = 0; i < threedimensionaldata.length; i++) {
         option.legend.data.push(JSON.stringify(threedimensionaldata[i].name))
         let seriesObj = {
@@ -386,12 +389,25 @@ export default {
         })
         seriesObj.data = arrdata
         xAxismin.push(seriesObj.data[0][0])
-        xAxismax.push(seriesObj.data[seriesObj.data.length-1][0])
+        xAxismax.push(seriesObj.data[seriesObj.data.length - 1][0])
         option.series.push(seriesObj)
       }
-       console.log(Math.min.apply(null, xAxismin),Math.max.apply(null, xAxismax))
-       option.xAxis.max=Math.ceil(Math.max.apply(null, xAxismax))
-       option.xAxis.min=Math.floor(Math.min.apply(null, xAxismin))
+      if (this.chartAxis.xAxis.max) {
+        option.xAxis.max = this.chartAxis.xAxis.max
+      } else {
+        option.xAxis.max = Math.ceil(Math.max.apply(null, xAxismax))
+      }
+      if (this.chartAxis.xAxis.min) {
+        option.xAxis.min = this.chartAxis.xAxis.min
+      } else {
+        option.xAxis.min = Math.floor(Math.min.apply(null, xAxismin))
+      }
+      if (this.chartAxis.yAxis.max) {
+        option.yAxis.max = this.chartAxis.xAxis.max
+      }
+      if (this.chartAxis.yAxis.min) {
+        option.yAxis.min = this.chartAxis.xAxis.min
+      }
       return {
         baseOption: option,
       }

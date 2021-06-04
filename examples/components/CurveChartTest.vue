@@ -48,7 +48,7 @@ export default {
       isRefresh: true,
       chartOption: {
         title: {
-          text: '水位流量图',
+            text: '水位流量图',
           left: 'center',
         },
       },
