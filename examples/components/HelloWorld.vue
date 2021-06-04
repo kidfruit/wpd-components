@@ -12,7 +12,7 @@
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
       <standard-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
     </div>
@@ -40,7 +40,7 @@
       <h2>TreeChartTable：树表图组件(动态展示不同树节点的图表和表格数据)</h2>
       <tree-chart-table-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
@@ -64,7 +64,7 @@
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
-    <div v-if="0">
+    <div v-if="false">
       <h2>SeriesCompareTest：通用过程线组合组件</h2>
       <series-compare-test />
     </div>

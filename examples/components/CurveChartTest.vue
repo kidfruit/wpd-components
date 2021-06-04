@@ -1,32 +1,45 @@
 <template>
   <div style="width: 100%">
-    <curve-chart ref="curvechart"
-                 v-if="chartshow"
-                 :structure="structure"
-                 :interpolateCalcShow="interpolateCalcShow"
-                 :tableShow="tableShow"
-                 :classes="classNames"
-                 :chartOption="chartOption"
-                 :isRefresh="isRefresh"
-                 :chartAxis="chartAxis"
-                 :tableColumns="tableColumns"
-                 @compute="compute"
-                 :chartData="SW_Chart" />
-    <!-- <button @click="changing_over">切换</button> -->
-    <button @click="fetchData">获取数据123</button>
-    <button @click="Refresh">刷新数据</button>
+    <a-modal
+        class="associationModel"
+        :visible="visible"
+        title="测试"
+        destroyOnClose
+        @ok="handleOk"
+        @cancel="handleCancel"
+    >
+      <curve-chart
+          ref="curvechart"
+          v-if="chartshow"
+          :structure="structure"
+          :interpolateCalcShow="interpolateCalcShow"
+          :tableShow="tableShow"
+          :classes="classNames"
+          :chartOption="chartOption"
+          :isRefresh="isRefresh"
+          :chartAxis="chartAxis"
+          :tableColumns="tableColumns"
+          @compute="compute"
+          :chartData="SW_Chart"/>
+      <!-- <button @click="changing_over">切换</button> -->
+      <button @click="fetchData">获取数据123</button>
+      <button @click="Refresh">刷新数据</button>
+    </a-modal>
+    <button @click="() => visible = !visible">打开弹窗</button>
   </div>
 </template>
 <script>
 import CurveChart from '../../packages/CurveChart/src/CurveChart.vue'
 
 import SW_Chart from '../assets/mock/SW_Chart.json';
+
 export default {
   name: 'CurveChartTest',
-  components: { CurveChart },
+  components: {CurveChart},
   data() {
     return {
-        SW_Chart,
+      SW_Chart,
+      visible: false,
       structure: 'Upanddown', //Upanddown上下结构，about左右结构
       chartshow: true,
       interpolateCalcShow: false,
@@ -146,6 +159,12 @@ export default {
     }
   },
   methods: {
+    handleCancel() {
+      this.visible = false;
+    },
+    handleOk(e) {
+      this.visible = false;
+    },
     compute(data) {
       //   console.log(data)
       this.$refs['curvechart']._calculationresults('100')
@@ -251,9 +270,19 @@ export default {
   },
 }
 </script>
-<style>
+<style lang="less">
 .testChart {
   width: 100%;
   height: 50vh;
+}
+.associationModel {
+.ant-modal {
+  width: 1000px !important;
+}
+
+.ant-modal-body {
+  padding: 10px;
+  max-height: fit-content;
+}
 }
 </style>
