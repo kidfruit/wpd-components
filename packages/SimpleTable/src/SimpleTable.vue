@@ -123,11 +123,11 @@ export default {
         let itemNew = Object.assign({}, item);
         if (Object.prototype.hasOwnProperty.call(itemNew, 'type')) {
           switch (itemNew.type) {
-            case 'checkbox':
-              //   this.checkbox[item.field] = item.checkbox;
-              // itemNew.source = item.source.map((item) => item.name);
-              this.checkboxHash[item.field] = true;
-              break;
+            // case 'checkbox':
+            //   //   this.checkbox[item.field] = item.checkbox;
+            //   // itemNew.source = item.source.map((item) => item.name);
+            //   this.checkboxHash[item.field] = true;
+            //   break;
             case 'dropdown':
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
               this.dropdownHash[item.field] = item.source.slice(0);
