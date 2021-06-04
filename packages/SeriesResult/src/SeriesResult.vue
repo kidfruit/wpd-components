@@ -20,13 +20,7 @@
       </div>
     </div>
     <div class="table-box">
-      <div class="show-hide" :title="isShow ? '关闭预热数据' : '展开预热数据'">
-        <span class="ops" @click="handleShow">
-          <a-icon v-if="isShow" type="up" />
-          <a-icon v-else type="down" />
-        </span>
-      </div>
-      <simple-table ref="tableRef" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns" @cellEditDone="cellEditDone"></simple-table>
+      <simple-table ref="tableRef" :splitIndex="splitIndex" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns" @cellEditDone="cellEditDone"></simple-table>
     </div>
     <!-- <div class="reset">
         <a-button icon="undo" @click="handleReset" shape="circle"> </a-button>
@@ -149,16 +143,6 @@ export default {
       this.chartList = [];
       this.seriesList = [];
       this.targetChartIndex = 0;
-      const splitIndex = this.splitIndex;
-      this.newSetting = {
-        cells(row) {
-          let cellProperties = {};
-          if (row < splitIndex) {
-            cellProperties = { className: 'preheat-rows', readOnly: true };
-          }
-          return cellProperties;
-        }
-      };
       this.isShow = false;
     },
     handleData() {
@@ -166,7 +150,6 @@ export default {
       this.newTableData = JSON.parse(JSON.stringify(this.tableData));
       this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns));
       this.clearData();
-      this.hideRows();
       let showTypeList = this.tableColumns
         .map(el => {
           return { showType: el.showType, field: el.field, title: el.title };
@@ -176,16 +159,6 @@ export default {
       let filterList = showTypeList.map(el => el.showType.split('-')[0]);
       let carouselCount = unique(filterList);
       this.generateChartData(carouselCount, showTypeList);
-    },
-    handleShow() {
-      this.isShow = !this.isShow;
-      const splitIndex = this.splitIndex;
-      if (this.isShow) {
-        this.newSetting.hiddenRows = {};
-        this.newSetting = Object.assign({}, this.setting, this.newSetting);
-      } else {
-        this.hideRows();
-      }
     },
     handleReset() {
       this.activeField = '';
@@ -370,16 +343,6 @@ export default {
       } else {
         this.d_chartTitle = this.chartList.map((j, i) => `图表（${i + 1}）`);
       }
-    },
-    hideRows() {
-      let hideRows = [];
-      for (let i = 0; i < this.splitIndex; i++) {
-        hideRows.push(i);
-      }
-      this.newSetting.hiddenRows = {};
-      this.newSetting.hiddenRows.rows = hideRows;
-      this.newSetting.hiddenRows.indicators = false;
-      this.newSetting = Object.assign({}, this.setting, this.newSetting);
     }
   }
 };

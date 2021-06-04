@@ -12,12 +12,6 @@
       </div>
     </div>
     <div class="table-box">
-      <div class="show-hide" :title="isShow ? '关闭预热数据' : '展开预热数据'">
-        <span class="ops" @click="handleShow">
-          <a-icon v-if="isShow" type="up" />
-          <a-icon v-else type="down" />
-        </span>
-      </div>
       <!-- <div class="reset">
         <a-popover placement="left" trigger="click">
           <template slot="title">选择对比的属性</template>
@@ -29,7 +23,7 @@
           <a-button icon="fund" @click="handleReset" shape="circle"> </a-button>
         </a-popover>
       </div> -->
-      <simple-table ref="tableRef" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns"></simple-table>
+      <simple-table ref="tableRef" :splitIndex="splitIndex" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns"></simple-table>
     </div>
   </div>
 </template>
@@ -143,7 +137,6 @@ export default {
       this.newTableData = JSON.parse(JSON.stringify(this.tableData));
       this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns));
       this.clearData();
-      this.hideRows();
       let showTypeList = this.tableColumns
         .map(el => {
           return { showType: el.showType, field: el.field, title: el.title };
@@ -153,15 +146,6 @@ export default {
       // let filterList = showTypeList.map(el => el.showType.split('-')[0]);
       // let carouselCount = unique(filterList);
       this.generateChartData();
-    },
-    handleShow() {
-      this.isShow = !this.isShow;
-      if (this.isShow) {
-        this.newSetting.hiddenRows = {};
-        this.newSetting = Object.assign({}, this.setting, this.newSetting);
-      } else {
-        this.hideRows();
-      }
     },
     handleReset() {
       this.activeField = '';
@@ -263,22 +247,6 @@ export default {
         chartData,
         id: guid()
       };
-    },
-    hideRows() {
-      let hideRows = [];
-      for (let i = 0; i < this.splitIndex; i++) {
-        hideRows.push(i);
-      }
-      this.newSetting.hiddenRows = {};
-      this.newSetting.hiddenRows.rows = hideRows;
-      this.newSetting.hiddenRows.indicators = false;
-      this.newSetting = Object.assign(
-        {
-          nestedHeaders: this.nestedHeaders
-        },
-        this.setting,
-        this.newSetting
-      );
     },
     onChange(a, b, c) {
       this.currentIndex = a;

@@ -50,14 +50,16 @@ export default {
   },
   beforeMount() {
     // 单元格自定义渲染
-
+    Handsontable.renderers.registerRenderer('negativeValueRenderer', this.negativeValueRenderer);
     const data = JSON.parse(JSON.stringify(this.tableData));
     this.prepareData(data);
   },
   mounted() {
+    //console.log("mounted");
     this.getHotInstance();
   },
   updated() {
+    //console.log("updated");
     this.getHotInstance();
   },
   data: function () {
@@ -69,6 +71,7 @@ export default {
       hotInstance: null,
       isRefresh: true,
       dropdownHash: {},
+      checkbox: [],
       hotData: [],
       randomKey: Math.random(),
       editCols: [],
@@ -88,6 +91,7 @@ export default {
           if (this.splitIndex >= 0 && row < this.splitIndex) {
             cellProperties = { className: 'preheat-rows', readOnly: true };
           }
+          cellProperties.renderer = 'negativeValueRenderer';
           return cellProperties;
         }
       },
@@ -126,7 +130,7 @@ export default {
             case 'checkbox':
               //   this.checkbox[item.field] = item.checkbox;
               // itemNew.source = item.source.map((item) => item.name);
-              this.checkboxHash[item.field] = true;
+              this.checkbox.push(item.field);
               break;
             case 'dropdown':
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
@@ -273,6 +277,30 @@ export default {
         this.hotInstance = this.$refs.hotTableRef.hotInstance;
       }
     },
+    // 单元格自定义渲染
+    negativeValueRenderer(instance, td, row, col, prop, value, cellProperties) {
+      if (Object.prototype.hasOwnProperty.call(this.dropdownHash, prop)) {
+        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+      } else if (this.checkbox.indexOf(prop) != -1) {
+        //判断是否是checkbox类型
+        Handsontable.renderers.CheckboxRenderer.apply(this, arguments);
+      } else {
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+      }
+      // 样式：编辑
+      if (this.editCells.includes(prop + '#' + row)) {
+        //修改字体颜色
+        td.style.color = '#004fff';
+      }
+      // 样式:不可编辑
+      // if (
+      //   this.editCells[0] &&
+      //   cellProperties.prop != this.editCells[0].split('#')[0]
+      // ) {
+      //   td.style.color = '#c00101'
+      // }
+    },
+
     // 黑科技更新表格、图展示
     updateShow() {
       const { row, col } = this.getvisibleLocal();
