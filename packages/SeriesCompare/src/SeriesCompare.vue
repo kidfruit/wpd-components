@@ -1,26 +1,18 @@
 <template>
   <div :class="classNames">
-    <div class="chart-container">
-      <a-carousel :after-change="onChange" arrows>
-        <div v-for="(item, index) in chartList" :key="index">
-          <standard-chart :key="item.id" v-if="currentIndex === index" ref="chartRef" :chartOption="item.chartOption" :chartAxis="item.chartAxis" :id="item.id" :classes="['series-compare']" :chartData="item.chartData" />
-        </div>
-        <div slot="prevArrow" class="custom-slick-arrow">
-          <a-icon type="left-circle" />
-        </div>
-        <div slot="nextArrow" class="custom-slick-arrow">
-          <a-icon type="right-circle" />
-        </div>
-      </a-carousel>
-    </div>
-    <div class="table-container">
-      <div class="show-hide">
-        <span class="ops" @click="handleShow">
-          <a-icon v-if="isShow" type="up" />
-          <a-icon v-else type="down" />
-        </span>
+    <div class="chart-box">
+      <!-- checkAttribute.list -->
+      <div class="chart-switch-button">
+        <a-select v-model="checkAttribute.checked" :style="{ width: checkAttribute.width + 'px' }" @change="chartChange">
+          <a-select-option v-for="item in checkAttribute.list" :value="item.key" :key="item.key"> {{ item.title }} </a-select-option>
+        </a-select>
       </div>
-      <div class="reset">
+      <div class="chart-content">
+        <chart :key="chartParams.id" v-if="chartParams" ref="chartRef" :chartOption="chartParams.chartOption" :chartAxis="chartParams.chartAxis" :id="chartParams.id" :chartData="chartParams.chartData" />
+      </div>
+    </div>
+    <div class="table-box">
+      <!-- <div class="reset">
         <a-popover placement="left" trigger="click">
           <template slot="title">选择对比的属性</template>
           <template slot="content">
@@ -30,15 +22,16 @@
           </template>
           <a-button icon="fund" @click="handleReset" shape="circle"> </a-button>
         </a-popover>
-      </div>
-      <simple-table ref="tableRef" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns" @cellEditDone="cellEditDone"></simple-table>
+      </div> -->
+      <simple-table ref="tableRef" :splitIndex="splitIndex" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns"></simple-table>
     </div>
   </div>
 </template>
 
 <script>
+import { MinMaxFunction } from '../../../utils/';
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue';
-import StandardChart from '../../StandardChart/src/StandardChart.vue';
+import Chart from './chart';
 let positionMaps = {
   L: 'left',
   R: 'right'
@@ -86,7 +79,7 @@ export default {
   },
   components: {
     SimpleTable,
-    StandardChart
+    Chart
   },
   computed: {
     classNames() {
@@ -96,6 +89,7 @@ export default {
   data() {
     return {
       chartList: [],
+      chartParams: null,
       seriesList: [],
       newTableData: [],
       newTableColumns: [],
@@ -109,76 +103,49 @@ export default {
       tableColumns: [],
       nestedHeaders: [],
       checkAttribute: {
+        width: 0,
         list: [],
-        checked: this.attribute || []
-      }
+        checked: ''
+      },
+      schemeList: []
     };
   },
   methods: {
     getTableData() {
       return this.newTableData;
     },
-    // 获取被编辑过的列名
-    getEditColumnField() {
-      return this.editCells;
-      // if (this.editCells[0]) {
-      //   return this.editCells[0].split("#")[0];
-      // } else {
-      //   return null;
-      // }
-    },
-    cellEditDone(value) {
-      // 表格到图表的单向数据联动
-      const { field, newValue, oldValue, rowIndex } = value;
-      if (newValue !== oldValue.toString() && this.activeField === '') {
-        this.editCells.push(field);
-        this.activeField = field;
-        this.newTableColumns.forEach(el => {
-          if (el.field !== field) {
-            el.readOnly = true;
-            el.isEdit = false;
-          }
-        });
-        this.$refs.tableRef.reset();
-        this.$refs.tableRef.updateShow();
-      }
-      this.newTableData[rowIndex][field] = newValue;
-      this.chartList.forEach(el => {
-        el.chartData = this.newTableData;
-        el.id = guid();
-      });
-    },
     clearData() {
-      this.chartList = [];
+      // this.chartList = [];
+      this.chartOption = null;
       this.seriesList = [];
-      this.currentIndex = 0;
-      this.newSetting = {};
+      this.targetChartIndex = 0;
+      const splitIndex = this.splitIndex;
+      this.newSetting = {
+        cells(row) {
+          let cellProperties = {};
+          if (row < splitIndex) {
+            cellProperties = { className: 'preheat-rows', readOnly: true };
+          }
+          return cellProperties;
+        }
+      };
       this.isShow = false;
     },
+
     handleData() {
       // 备份表格数据
       this.newTableData = JSON.parse(JSON.stringify(this.tableData));
       this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns));
       this.clearData();
-      this.hideRows();
       let showTypeList = this.tableColumns
         .map(el => {
           return { showType: el.showType, field: el.field, title: el.title };
         })
         .filter(el => el.showType);
 
-      let filterList = showTypeList.map(el => el.showType.split('-')[0]);
-      let carouselCount = unique(filterList);
-      this.generateChartData(carouselCount, showTypeList);
-    },
-    handleShow() {
-      this.isShow = !this.isShow;
-      if (this.isShow) {
-        this.newSetting.hiddenRows = {};
-        this.newSetting = Object.assign({}, this.setting, this.newSetting);
-      } else {
-        this.hideRows();
-      }
+      // let filterList = showTypeList.map(el => el.showType.split('-')[0]);
+      // let carouselCount = unique(filterList);
+      this.generateChartData();
     },
     handleReset() {
       this.activeField = '';
@@ -190,58 +157,48 @@ export default {
       });
       this.editCells = [];
     },
-    generateChartLegend(showTypeList, current) {
-      let legendList = showTypeList.filter(el => el.showType.indexOf(current) !== -1);
-      let legends = [];
-      let flag = false; // 连续的控制标志位
-      let lastOne = '';
-      let base = 0,
-        step = 7;
-      legendList = legendList.sort((a, b) => {
-        if (a.showType < b.showType) {
-          return -1;
+    generateChartData() {
+      let firstTime = this.newTableData[this.splitIndex].time;
+      let pickedColumn = this.checkAttribute.list.find(i => i.key === this.checkAttribute.checked);
+      let chartOption = {
+        title: {
+          text: '',
+          left: 'center'
+        },
+        legend: [],
+        grid: {
+          left: 50,
+          right: 50,
+          bottom: 50
         }
-        if (a.showType > b.showType) {
-          return 1;
-        }
-        return 0;
-      });
-      for (let i = 0; i < legendList.length; i++) {
-        let obj = {
+      };
+      let minTop = 0;
+      chartOption.legend = this.schemeList.map((title, i) => {
+        const l = {
           itemWidth: 27,
           itemHeight: 16,
           show: true,
           textStyle: { fontSize: 14 },
-          data: [{ name: legendList[i].title, icon: 'line' }] //rect为矩形
+          data: [{ name: title + '-' + pickedColumn.title, icon: 'line' }] //rect为矩形
         };
-        let leftRight = positionMaps[legendList[i].showType.split('-')[1]];
-        if (lastOne !== '' && lastOne === leftRight) {
-          flag = true;
-          base += step;
-        }
-        if (leftRight === 'left') {
-          obj = Object.assign({}, obj, {
-            top: !flag ? '15%' : `${15 + base}%`, //调整位置
-            left: '5%'
-          });
+        const row = Math.floor(i / 2);
+        l.top = row * 24;
+        minTop = Math.max(row * 24, minTop);
+        if (i % 2 === 0) {
+          l.left = '1%';
         } else {
-          obj = Object.assign({}, obj, {
-            top: !flag ? '15%' : `${15 + base}%`, //调整位置
-            left: '85%'
-          });
+          l.right = '1%';
         }
-        flag = false;
-        legends.push(obj);
-        lastOne = leftRight;
-      }
-      return legends;
-    },
-    generateChartYaxis(showTypeList, current) {
-      let yAxisList = showTypeList.filter(el => el.showType.indexOf(current) !== -1);
-      yAxisList = uniqueObj(yAxisList, 'showType');
-      let yAxis = [];
-      for (let i = 0; i < yAxisList.length; i++) {
-        yAxis.push({
+        return l;
+      });
+      chartOption.grid.top = minTop + 34;
+      let chartAxis = {
+        xAxis: 'time',
+        yAxis: [],
+        series: []
+      };
+      chartAxis.yAxis = [
+        {
           title: '',
           // title: yAxisList[i].title,
           type: 'value',
@@ -255,94 +212,41 @@ export default {
               color: '#40a9ff  '
             }
           },
-          position: positionMaps[yAxisList[i].showType.split('-')[1]],
-          max: function (value) {
-            return ((value.max - value.min) * 1.15).toFixed(2);
-          },
-          min: function (value) {
-            let tempVal = ((value.max - value.min) * 0.15).toFixed(2);
-            return value.min > tempVal ? (value.min - tempVal).toFixed(2) : 0;
-          }
-        });
-      }
-
-      return yAxis;
-    },
-    generateChartSeries(showTypeList, current) {
-      let firstTime = this.newTableData[this.splitIndex].time;
-      return showTypeList
-        .filter(el => el.showType.indexOf(current) !== -1)
-        .map((el, index) => {
-          return {
-            field: el.field,
-            title: el.title,
-            selected: true,
-            yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
-            markLine: {
-              symbol: 'none',
-              data: [
-                {
-                  name: '标记线',
-                  xAxis: firstTime,
-                  lineStyle: {
-                    //警戒线的样式  ，虚实  颜色
-                    type: 'solid',
-                    color: '#000'
-                  }
-                }
-              ],
-              label: { show: true, position: 'end' },
-              silent: true
+          position: 'left',
+          min: v => MinMaxFunction('min', v),
+          max: v => MinMaxFunction('max', v)
+        }
+      ];
+      chartAxis.series = this.schemeList.map((title, i) => ({
+        field: pickedColumn.key + '_' + i,
+        title: title + '-' + pickedColumn.title,
+        selected: true,
+        yAxisIndex: 0,
+        markLine: {
+          symbol: 'none',
+          data: [
+            {
+              name: '标记线',
+              xAxis: firstTime,
+              lineStyle: {
+                //警戒线的样式  ，虚实  颜色
+                type: 'solid',
+                color: '#000'
+              }
             }
-          };
-        });
-    },
-    generateChartData(carouselCount, showTypeList) {
-      for (let i = 0; i < carouselCount.length; i++) {
-        let chartOption = {
-          title: {
-            text: '',
-            left: 'center'
-          },
-          legend: [],
-          grid: {
-            bottom: 50,
-            left: '16%',
-            right: '16%'
-          }
-        };
-        let chartAxis = {
-          xAxis: 'time',
-          yAxis: [],
-          series: []
-        };
-        chartAxis.yAxis = this.generateChartYaxis(showTypeList, carouselCount[i]);
-        chartAxis.series = this.generateChartSeries(showTypeList, carouselCount[i]);
-        chartOption.legend = this.generateChartLegend(showTypeList, carouselCount[i]);
-        let chartData = this.tableData;
-        this.chartList.push({
-          chartOption,
-          chartAxis,
-          chartData,
-          id: guid()
-        });
-      }
-    },
-    hideRows() {
-      let hideRows = [];
-      for (let i = 0; i < this.splitIndex; i++) {
-        hideRows.push(i);
-      }
-      this.newSetting.hiddenRows = {};
-      // this.newSetting.hiddenRows.rows = hideRows;
-      // this.newSetting.hiddenRows.indicators = false;
-      this.newSetting = Object.assign(
-        {
-          nestedHeaders: this.nestedHeaders
-        },
-        this.setting,
-        this.newSetting
-      );
+          ],
+          label: { show: true, position: 'end' },
+          silent: true
+        }
+      }));
+
+      let chartData = this.tableData;
+      this.chartParams = {
+        chartOption,
+        chartAxis,
+        chartData,
+        id: guid()
+      };
     },
     onChange(a, b, c) {
       this.currentIndex = a;
@@ -353,10 +257,12 @@ export default {
       let tableData = [];
       let noShowType = [];
       let nestedHeaders = [];
-
+      this.schemeList = [];
       this.data.forEach(({ title = '', tableColumns: columns = [], tableData: data = [], splitIndex: sIndex = 0 }, i) => {
+        this.schemeList.push(title);
         columns.forEach(c => {
-          if (this.checkAttribute.checked.includes(c.field)) {
+          if (!['index', 'id', 'Id'].includes(c.field) && !['index', 'id', 'Id'].includes(c.data)) {
+            //(this.checkAttribute.checked.includes(c.field)) {
             const index = tableColumns.findIndex(k => k['originTitle'] === c.title && k['originField'] === c.field);
             if (c.showType) {
               if (index >= 0) {
@@ -427,9 +333,6 @@ export default {
           });
         }
       }
-      // console.log(nestedHeaders, 'nestedHeaders');
-      // console.log(tableColumns, 'tableColumns');
-      // console.log(tableData, 'tableData');
       this.nestedHeaders = [nestedHeaders, tableColumns.map(i => i.title)];
       this.tableColumns = tableColumns;
       this.tableData = tableData;
@@ -443,6 +346,9 @@ export default {
       } else {
         // ....
       }
+    },
+    chartChange() {
+      this.generateChartData();
     }
   },
   watch: {
@@ -452,29 +358,35 @@ export default {
       handler(nVal) {
         if (nVal[0].tableColumns && nVal[0].tableColumns instanceof Array) {
           nVal[0].tableColumns.forEach(column => {
-            this.checkAttribute.list.push({
-              title: column.title,
-              key: column.field
-            });
+            if (column.showType) {
+              this.checkAttribute.list.push({
+                title: column.title,
+                key: column.field
+              });
+              this.checkAttribute.width = Math.max(this.checkAttribute.width, 14 * column.title.length);
+            }
           });
           /**
            * 筛选显示的title
            */
-          if (this.checkAttribute.checked.length === 0) {
-            this.checkAttribute.checked = [...this.checkAttribute.list.map(i => i.key)];
+          // if (this.checkAttribute.checked.length === 0) {
+          //   this.checkAttribute.checked = [...this.checkAttribute.list.map(i => i.key)];
+          // }
+          if (this.checkAttribute.checked === '' && this.checkAttribute.list.length > 0) {
+            this.checkAttribute.checked = this.checkAttribute.list[0].key;
           }
         } else {
           throw Error('数据格式错误,没有找到tableColumns,请检查.');
         }
         this.transData();
       }
-    },
-    'checkAttribute.checked': {
-      deep: true,
-      handler(val) {
-        this.$emit('update:attribute', val);
-      }
     }
+    // 'checkAttribute.checked': {
+    //   deep: true,
+    //   handler(val) {
+    //     this.$emit('update:attribute', val);
+    //   }
+    // }
   }
 };
 </script>
@@ -531,12 +443,22 @@ export default {
 }
 </style>
 <style lang="scss">
-.table-container {
-  position: relative;
+.series-compare {
+  padding: 40px 10px 10px;
+  .chart-box,
+  .table-box {
+    height: 50%;
+    position: relative;
+    min-height: 250px;
+  }
+  .table-box {
+    width: 100%;
+    overflow: hidden;
+  }
   .show-hide {
     position: absolute;
     top: 4px;
-    left: 10px;
+    left: 12px;
     z-index: 999;
     .ops {
       display: inline-block;
@@ -544,11 +466,6 @@ export default {
       height: 24px;
       cursor: pointer;
     }
-  }
-  .reset {
-    position: absolute;
-    top: -40px;
-    right: 12px;
   }
 }
 </style>

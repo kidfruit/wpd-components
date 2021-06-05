@@ -2,50 +2,42 @@
   <div>
     <!-- 上下结构 -->
     <div v-if="this.structure === 'Upanddown'||!tableShow">
-      <a-row
-          type="flex"
-          justify="center"
-          :gutter="16">
+      <a-row type="flex"
+             justify="center"
+             :gutter="16">
         <a-col :span="24">
-          <div
-              ref="chartRef"
-              v-if="chartShow"
-              :class="classNames"
-              :id="id"></div>
+          <div ref="chartRef"
+               v-if="chartShow"
+               :class="classNames"
+               :id="id"></div>
         </a-col>
       </a-row>
-      <a-row
-          type="flex"
-          justify="center"
-          :gutter="16">
+      <a-row type="flex"
+             justify="center"
+             :gutter="16">
         <a-col :span="24">
-          <simple-table
-              v-if="tableShow"
-              ref="tableChart"
-              :tableData="chartData"
-              :tableColumns="tableColumns"></simple-table>
+          <simple-table v-if="tableShow"
+                        ref="tableChart"
+                        :tableData="chartData"
+                        :tableColumns="tableColumns"></simple-table>
         </a-col>
       </a-row>
     </div>
     <div v-if="this.structure === 'about' && tableShow">
-      <a-row
-          type="flex"
-          justify="center"
-      >
+      <a-row type="flex"
+             justify="center">
         <a-col :span="12">
-          <div
-              ref="chartRef"
-              v-if="chartShow"
-              :class="classNames"
-              :id="id"></div>
+          <div ref="chartRef"
+               v-if="chartShow"
+               :class="classNames"
+               :id="id"></div>
         </a-col>
         <a-col :span="12">
-          <simple-table
-              v-if="tableShow"
-              style="margin-top: 40px;"
-              ref="tableChart"
-              :tableData="chartData"
-              :tableColumns="tableColumns"></simple-table>
+          <simple-table v-if="tableShow"
+                        style="margin-top: 40px;"
+                        ref="tableChart"
+                        :tableData="chartData"
+                        :tableColumns="tableColumns"></simple-table>
         </a-col>
       </a-row>
       <!-- <a-row type="flex"
@@ -55,39 +47,33 @@
       </a-row> -->
     </div>
     <div v-if="interpolateCalcShow">
-      <a-row
-          type="flex"
-          justify="center"
-          :gutter="16">
+      <a-row type="flex"
+             justify="center"
+             :gutter="16">
         <a-col :span="1.5">
-          <a-select
-              :default-value="handleselect"
-              style="width: 120px"
-              @change="handleChange">
-            <a-select-option
-                v-for="i in dropdown"
-                :key="i.id"
-                :value="i.id">
+          <a-select :default-value="handleselect"
+                    style="width: 120px"
+                    @change="handleChange">
+            <a-select-option v-for="i in dropdown"
+                             :key="i.id"
+                             :value="i.id">
               {{ i.title }}
             </a-select-option>
           </a-select>
         </a-col>
         <a-col :span="1.5">
-          <a-input v-model="value"/>
+          <a-input v-model="value" />
         </a-col>
-        <a-col
-            :span="1.5"
-            style="padding-top: 5px">
+        <a-col :span="1.5"
+               style="padding-top: 5px">
           <span style="margin-top: 5px;">插值结果：</span>
         </a-col>
         <a-col :span="1.5">
-          <a-input
-              v-model="value2"
-              disabled/>
+          <a-input v-model="value2"
+                   disabled />
         </a-col>
-        <a-col
-            :span="1.5"
-            style="padding-top: 3px">
+        <a-col :span="1.5"
+               style="padding-top: 3px">
           <button @click="calculation">计算</button>
         </a-col>
 
@@ -107,15 +93,15 @@ const defaultOption = {
   },
   tooltip: {
     trigger: 'axis',
-    formatter: function (arg) {
-      return arg[0].seriesName + ':' + arg[0].data
-    },
+    // formatter: function (arg) {
+    //   return arg[0].seriesName + ':' + arg[0].data
+    // },
   },
   grid: {
     bottom: 50,
     right: 100,
     left: 100,
-    top: 40
+    top: 40,
   },
   legend: {
     data: [],
@@ -135,7 +121,7 @@ const defaultOption = {
 const yAxisOption = {
   type: 'value',
   splitNumber: 5,
-  axisLine: {show: true},
+  axisLine: { show: true },
   splitLine: {
     show: true,
     lineStyle: {
@@ -217,18 +203,16 @@ export default {
     },
     id: {
       type: String,
-      default: "curve-chart",
-      required: false
+      default: 'curve-chart',
+      required: false,
     },
   },
   components: {
     SimpleTable,
     // VChart,
   },
-  created() {
-  },
-  beforeMount() {
-  },
+  created() {},
+  beforeMount() {},
   mounted() {
     //console.log(this.structure)
     this.dropdowndata()
@@ -259,7 +243,7 @@ export default {
       this.value2 = value
     },
     calculation() {
-      this.$emit('compute', {options: this.options, value: this.value})
+      this.$emit('compute', { options: this.options, value: this.value })
     },
     dropdowndata() {
       if (this.structure === 'Upanddown') {
@@ -285,18 +269,227 @@ export default {
         this.instance = this.$refs.chartRef
       }
     },
+    threedimensional() {
+      let xydata = []
+      let judge = ''
+      xydata[0] = this.chartAxis.xAxis.id
+      xydata[1] = this.chartAxis.yAxis.id
+      for (let k = 0; k < this.tableColumns.length; k++) {
+        if (
+          xydata.indexOf(this.tableColumns[k].field) == -1 &&
+          this.tableColumns[k].field != 'index'
+        ) {
+          judge = this.tableColumns[k].field
+        }
+      }
+      var map = {},
+        dest = []
+      for (var i = 0; i < this.chartData.length; i++) {
+        var ai = this.chartData[i]
+        if (!map[ai[judge]]) {
+          dest.push({
+            dim2: ai[judge],
+            name: ai[judge],
+            data: [ai],
+          })
+          map[ai[judge]] = ai
+        } else {
+          for (var j = 0; j < dest.length; j++) {
+            var dj = dest[j]
+            if (dj[judge] == ai[judge]) {
+              dj.data.push(ai)
+              break
+            }
+          }
+        }
+      }
+      for (let m = 0; m < dest.lengthl; m++) {
+        dest[m].data = dest[m].data.sort(this.compare(judge))
+      }
+      return dest
+    },
+    compare(property) {
+      return function (a, b) {
+        var value1 = a[property]
+        var value2 = b[property]
+        return value1 - value2
+      }
+    },
     clear() {
       echartsInstance.clear()
     },
     setDynamicOption() {
-      let option = this.prepareSeries()
-
+      let option
+      if (this.tableColumns.length == 3) {
+        option = this.prepareSeries()
+      } else {
+        option = this.handledata()
+      }
       echartsInstance.setOption(option)
     },
     resizeTheChart() {
       if (this.$refs && this.$refs.chartRef) {
         echartsInstance.resize()
       }
+    },
+    handledata() {
+      let option = {
+        title: {
+          text: '',
+          left: 50,
+        },
+        tooltip: {
+          trigger: 'axis',
+        //   formatter: function (arg) {
+        //       console.log(arg)
+        //     // return arg[0].seriesName + ':' + arg[0].data
+        //   },
+        },
+        grid: {
+          bottom: 50,
+          right: 100,
+          left: 100,
+          top: 60,
+        },
+        legend: {
+          data: [],
+        },
+
+        xAxis: {
+          boundaryGap: false,
+        },
+        yAxis: {
+          type: 'value',
+        },
+        series: [],
+      }
+      //   console.log("this.chartOption.title.text",this.chartOption.title.text)
+      option.title.text = this.chartOption.title.text
+      option.xAxis.name = this.chartAxis.xAxis.title
+      option.yAxis = {
+        name: this.chartAxis.yAxis.title,
+        type: 'value',
+      }
+      let threedimensionaldata = this.threedimensional()
+      let xAxismin = []
+      let xAxismax = []
+      for (let i = 0; i < threedimensionaldata.length; i++) {
+        option.legend.data.push(JSON.stringify(threedimensionaldata[i].name))
+        let seriesObj = {
+          name: threedimensionaldata[i].name,
+          type: 'line',
+          data: [],
+        }
+        let arrdata = []
+        threedimensionaldata[i].data.map((cd, index) => {
+          let arr = []
+          arr[0] = cd[this.chartAxis.xAxis.id]
+          arr[1] = cd[this.chartAxis.yAxis.id]
+          arrdata[index] = arr
+        })
+        seriesObj.data = arrdata
+        xAxismin.push(seriesObj.data[0][0])
+        xAxismax.push(seriesObj.data[seriesObj.data.length - 1][0])
+        option.series.push(seriesObj)
+      }
+      if (this.chartAxis.xAxis.max) {
+        option.xAxis.max = this.chartAxis.xAxis.max
+      } else {
+        option.xAxis.max = Math.ceil(Math.max.apply(null, xAxismax))
+      }
+      if (this.chartAxis.xAxis.min) {
+        option.xAxis.min = this.chartAxis.xAxis.min
+      } else {
+        option.xAxis.min = Math.floor(Math.min.apply(null, xAxismin))
+      }
+      if (this.chartAxis.yAxis.max) {
+        option.yAxis.max = this.chartAxis.xAxis.max
+      }
+      if (this.chartAxis.yAxis.min) {
+        option.yAxis.min = this.chartAxis.xAxis.min
+      }
+      return {
+        baseOption: option,
+      }
+
+      //   let option = Object.assign({}, defaultOption, this.chartOption)
+      //   option.xAxis = {
+      //     type: 'category',
+      //     boundaryGap: false,
+      //   }
+      //   //x轴
+      //   option.xAxis.name = this.chartAxis.xAxis.title
+      //   if (Array.isArray(option.grid) && option.grid.length > 0) {
+      //     option.xAxis = this.chartAxis.xAxis.id
+      //   }
+      //   //y轴
+      //   option.yAxis = {
+      //     name: this.chartAxis.yAxis.title,
+      //     type: 'value',
+      //   }
+      //   //data
+      //   this.chartData = this.chartData.sort((a, b) => {
+      //     let timeField = this.chartAxis.xAxis
+      //     return (
+      //       new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
+      //     )
+      //   })
+      //   option.series = []
+      //   //三维
+      //   option.grid = {}
+      //   option.tooltip = {
+      //     trigger: 'axis',
+      //   }
+      //   option.legend = {
+      //     data: [],
+      //   }
+      //   let threedimensionaldata = this.threedimensional()
+      //   series.forEach((yax) => {
+      //     for (let i = 0; i < threedimensionaldata.length; i++) {
+      //       option.legend.data.push(threedimensionaldata[i].name)
+      //       let seriesObj = {
+      //         name: threedimensionaldata[i].name,
+      //         type: 'line',
+      //         data: [],
+      //       }
+      //       let arrdata = []
+      //       threedimensionaldata[i].data.map((cd, index) => {
+      //         let arr = []
+      //         arr[0] = cd[this.chartAxis.xAxis.id]
+      //         arr[1] = cd[this.chartAxis.yAxis.id]
+      //         arrdata[index] = arr
+      //       })
+      //       seriesObj.data = arrdata
+      //       option.series.push(seriesObj)
+      //     }
+      //   })
+      //   if (!option.timeline) {
+      //     return {
+      //       baseOption: option,
+      //     }
+      //   } else {
+      //     // 带有时间线的chart
+      //     let options = []
+      //     let fields = series.map((el) => el.field)
+      //     this.chartData.forEach((cd, index) => {
+      //       let series = []
+      //       fields.forEach((item) => {
+      //         if (cd[item]) {
+      //           series.push({ data: cd[item] })
+      //         }
+      //       })
+      //       options.push({
+      //         series,
+      //         title: {
+      //           text: `${this.chartOption.title.text}    ${this.chartOption.timeline.data[index]}`,
+      //         },
+      //       })
+      //     })
+      //     return {
+      //       baseOption: option,
+      //       options,
+      //     }
+      //   }
     },
     prepareSeries() {
       let yAxis = []
@@ -315,8 +508,9 @@ export default {
 
       //x轴
       option.xAxis.name = this.chartAxis.xAxis.title
+
       option.xAxis.data = this.chartData.map(
-          (cd) => cd[this.chartAxis.xAxis.id]
+        (cd) => cd[this.chartAxis.xAxis.id]
       )
       if (this.chartAxis.timeSeries) {
         option.xAxis.data = this.sortTime(option.xAxis.data)
@@ -324,6 +518,7 @@ export default {
       if (option.timeline) {
         option.xAxis.data = this.sections
       }
+
       if (Array.isArray(option.grid) && option.grid.length > 0) {
         option.xAxis = this.chartAxis.xAxis.id
       }
@@ -335,10 +530,6 @@ export default {
           return a['yAxisIndex'] - b['yAxisIndex']
         })
       }
-
-      // this.chartAxis.yAxis = yAxis
-      // this.chartAxis.series = series
-
       option.yAxis = yAxis.map((ax) => {
         return Object.assign({}, yAxisOption, {
           name: ax.title,
@@ -346,22 +537,11 @@ export default {
         })
       })
 
-      //legend
-      //   this.chartAxis.series.forEach((yx) => {
-      //     option.legend.data.push(yx.title)
-      //     option.legend.selected[yx.title] = Object.prototype.hasOwnProperty.call(
-      //       yx,
-      //       'selected'
-      //     )
-      //       ? yx.selected
-      //       : true
-      //   })
-
       //data
       this.chartData = this.chartData.sort((a, b) => {
         let timeField = this.chartAxis.xAxis
         return (
-            new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
+          new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
         )
       })
       option.series = []
@@ -391,7 +571,7 @@ export default {
           let series = []
           fields.forEach((item) => {
             if (cd[item]) {
-              series.push({data: cd[item]})
+              series.push({ data: cd[item] })
             }
           })
           options.push({
