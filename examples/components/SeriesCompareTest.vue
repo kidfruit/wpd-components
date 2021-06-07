@@ -1,6 +1,6 @@
 <template>
   <div>
-    <series-compare ref="seriesCompare" :classes="['testChart']" :data="SeriesCompareData" :attribute="attribute" :splitIndex="splitIndex" :setting="{ rowHeaders: true }" />
+    <series-compare ref="seriesCompare" :classes="['test-series-result']" :data="SeriesCompareData" :splitIndex="splitIndex" :setting="{ rowHeaders: true }" />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>
     </div>
@@ -19,8 +19,8 @@ export default {
       tableData: [],
       tableColumns: [],
       splitIndex: 0,
-      SeriesCompareData,
-      attribute: ['id', 'time', 'RD_RR_AVGINQ_P', 'RD_RR_UPZ_P']
+      SeriesCompareData
+      // attribute: ['id', 'time', 'RD_RR_AVGINQ_P', 'RD_RR_UPZ_P']
     };
   },
   created() {

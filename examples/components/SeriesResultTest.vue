@@ -1,13 +1,6 @@
 <template>
   <div>
-    <series-result
-      ref="seriesResult"
-      :classes="['testChart']"
-      :splitIndex="splitIndex"
-      :tableColumns="tableColumns"
-      :tableData="tableData"
-      :setting="{ rowHeaders: true }"
-    />
+    <series-result ref="seriesResult" :classes="['test-series-result']" :splitIndex="splitIndex" :tableColumns="tableColumns" :tableData="tableData" :setting="{ rowHeaders: true }" />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>
     </div>
@@ -15,18 +8,18 @@
 </template>
 
 <script>
-import SeriesResult from "../../packages/SeriesResult/src/SeriesResult.vue";
-import fakeData from "../assets/mock/SeriesResult.json";
-import fakeData2 from "../assets/mock/SeriesResult2.json";
+import SeriesResult from '../../packages/SeriesResult/src/SeriesResult.vue';
+import fakeData from '../assets/mock/SeriesResult.json';
+import fakeData2 from '../assets/mock/SeriesResult2.json';
 export default {
   components: {
-    SeriesResult,
+    SeriesResult
   },
   data() {
     return {
       tableData: [],
       tableColumns: [],
-      splitIndex: 0,
+      splitIndex: 0
     };
   },
   created() {
@@ -48,14 +41,12 @@ export default {
     getData() {
       console.log(this.$refs.seriesResult.getTableData());
       console.log(this.$refs.seriesResult.getEditColumnField());
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style >
-.series-result.testChart .ant-carousel .slick-slide {
-  height: 50vh;
-  line-height: 50vh;
+.test-series-result {
 }
 </style>

@@ -1,12 +1,13 @@
 <template>
   <div style="width: 100%">
-    <div style="width: 100%; height: 700px">
+    <div style="width: 100%; height:500px">
       <tree-table-group ref="treeTableGroup" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns"
                         :tableData="data" @checkedKeys="checkedKeys" @cellEditDone="cellEditDone"/>
     </div>
     <button @click="getData">获取表格数据</button>
     <button @click="renderTable">刷新表格</button>
     <button @click="highlightRow('13')">高亮</button>
+     <button @click="highlightRow('103039')">高亮2</button>
     <!-- <button @click="fetchData">获取数据123</button> -->
   </div>
 </template>
