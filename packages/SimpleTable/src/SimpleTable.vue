@@ -101,9 +101,16 @@ export default {
       return ['tableStyle'].concat(this.classNames);
     },
     hotSettings() {
-      let rowHeaders = this.splitIndex >= 0;
+        let rowHeaders=false
+        // console.log(this.setting.rowHeaders)
+        if(this.setting.rowHeaders && this.setting.rowHeaders!=undefined){
+            rowHeaders=this.setting.rowHeaders
+        }else{
+            rowHeaders=false
+        }
+    //   let rowHeaders = this.splitIndex >= 0;
       let hiddenRows = undefined;
-      if (rowHeaders) {
+    //   if (rowHeaders) {
         let hideRows = [];
         for (let i = 0; i < this.splitIndex; i++) {
           hideRows.push(i);
@@ -115,7 +122,7 @@ export default {
               rows: hideRows,
               indicators: false
             };
-      }
+    //   }
       return Object.assign({}, this.defaultHotSettings, { rowHeaders, hiddenRows }, this.setting);
     },
     columns() {
