@@ -85,11 +85,18 @@ export default {
   updated() {
     //console.log("updated");
     this.getHotInstance()
-    if (this.$refs.hotTableRef.hotInstance.getCell()) {
-      this.titletop = this.$refs.hotTableRef.hotInstance.getCell(0, 0).offsetTop
-      this.rewheight =
-        this.$refs.hotTableRef.hotInstance.getCell(1, 0).offsetTop -
-        this.titletop
+    try {
+      if (this.$refs.hotTableRef.hotInstance.getCell()) {
+        this.titletop = this.$refs.hotTableRef.hotInstance.getCell(
+          0,
+          0
+        ).offsetTop
+        this.rewheight =
+          this.$refs.hotTableRef.hotInstance.getCell(1, 0).offsetTop -
+          this.titletop
+      }
+    } catch (error) {
+      console.log()
     }
   },
   data: function () {
@@ -403,12 +410,10 @@ export default {
       })
     },
     getvisibleLocal() {
-      const pluginRow = this.$refs.hotTableRef.hotInstance.getPlugin(
-        'autoRowSize'
-      )
-      const pluginCol = this.$refs.hotTableRef.hotInstance.getPlugin(
-        'autoColumnSize'
-      )
+      const pluginRow =
+        this.$refs.hotTableRef.hotInstance.getPlugin('autoRowSize')
+      const pluginCol =
+        this.$refs.hotTableRef.hotInstance.getPlugin('autoColumnSize')
       const col = pluginCol.getFirstVisibleColumn()
       const row = pluginRow.getFirstVisibleRow()
       return { row, col }

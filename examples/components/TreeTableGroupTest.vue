@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%">
     <div style="width: 100%; height:500px">
-      <tree-table-group ref="treeTableGroup" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns"
+      <tree-table-group ref="treeTableGroup" :classes="classNames" :treeData="mock_Tree" :tableColumns="tableColumns" :setting="setting"
                         :tableData="data" @checkedKeys="checkedKeys" @cellEditDone="cellEditDone"/>
     </div>
     <button @click="getData">获取表格数据</button>
@@ -21,6 +21,9 @@ export default {
   components: {TreeTableGroup},
   data() {
     return {
+        setting: {
+            rowHeaders:true
+        },
       mock_Tree,
       classNames: ['testChart'],
       isRefresh: true,

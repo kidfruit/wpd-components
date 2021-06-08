@@ -1,6 +1,10 @@
 <template>
   <div style="width: 100%">
-    <simple-table ref="tableChart" :tableData="tableData" :tableColumns="tableColumns" @cellEditDone="cellEditDone" :splitIndex="5"></simple-table>
+    <simple-table ref="tableChart"
+                  :tableData="tableData"
+                  :setting="newSetting"
+                  :tableColumns="tableColumns"
+                  @cellEditDone="cellEditDone"></simple-table>
     <button @click="getData">获取数据</button>
     <button @click="getChangedData">获取编辑数据</button>
     <button @click="getSelectData">获取选中数据</button>
@@ -10,16 +14,18 @@
   </div>
 </template>
 <script>
-import SimpleTable from '../../packages/SimpleTable/src/SimpleTable.vue';
+import SimpleTable from '../../packages/SimpleTable/src/SimpleTable.vue'
 
 export default {
   name: 'SimpleTableTest',
   components: { SimpleTable },
   data() {
     return {
+      newSetting: {},
+      splitIndex:0,
       visible: true,
       classNames: ['testTable'],
-      setting: {},
+      setting: { rowHeaders: true },
       tableData: [
         {
           dim2: 0,
@@ -27,7 +33,7 @@ export default {
           time: '2021-03-29T15:00:00',
           index: 1,
           funcType: 'SYN_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 52.3,
@@ -35,7 +41,7 @@ export default {
           time: '2021-03-29T21:00:00',
           index: 2,
           funcType: 'DSP_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 681.7,
@@ -43,7 +49,7 @@ export default {
           time: '2021-03-30T03:00:00',
           index: 3,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 2483,
@@ -51,7 +57,7 @@ export default {
           time: '2021-03-30T09:00:00',
           index: 4,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 4341.4,
@@ -59,7 +65,7 @@ export default {
           time: '2021-03-30T15:00:00',
           index: 5,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 5112.2,
@@ -67,7 +73,7 @@ export default {
           time: '2021-03-30T21:00:00',
           index: 6,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 5973.9,
@@ -75,7 +81,7 @@ export default {
           time: '2021-03-31T03:00:00',
           index: 7,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 6923,
@@ -83,7 +89,7 @@ export default {
           time: '2021-03-31T09:00:00',
           index: 8,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 7953.3,
@@ -91,7 +97,7 @@ export default {
           time: '2021-03-31T15:00:00',
           index: 9,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 9075.4,
@@ -99,7 +105,7 @@ export default {
           time: '2021-03-31T21:00:00',
           index: 10,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 10281.4,
@@ -107,7 +113,7 @@ export default {
           time: '2021-04-01T03:00:00',
           index: 11,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 11573.8,
@@ -115,7 +121,7 @@ export default {
           time: '2021-04-01T09:00:00',
           index: 12,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 12955.3,
@@ -123,7 +129,7 @@ export default {
           time: '2021-04-01T15:00:00',
           index: 13,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 14433.3,
@@ -131,7 +137,7 @@ export default {
           time: '2021-04-01T21:00:00',
           index: 14,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
+          checkbox: true,
         },
         {
           dim2: 17699.7,
@@ -139,8 +145,8 @@ export default {
           time: '2021-04-02T03:00:00',
           index: 15,
           funcType: 'FSA_FUNC_CONF',
-          checkbox: true
-        }
+          checkbox: true,
+        },
       ],
       tableColumns: [
         {
@@ -150,7 +156,7 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          readOnly: true
+          readOnly: true,
         },
         {
           field: 'time',
@@ -158,7 +164,7 @@ export default {
           width: 80,
           titleAlign: 'center',
           columnAlign: 'center',
-          isResize: true
+          isResize: true,
         },
         {
           field: 'dim1',
@@ -166,7 +172,7 @@ export default {
           width: 100,
           isResize: true,
           titleAlign: 'center',
-          columnAlign: 'center'
+          columnAlign: 'center',
         },
         {
           field: 'dim2',
@@ -174,7 +180,7 @@ export default {
           width: 100,
           isResize: true,
           titleAlign: 'center',
-          columnAlign: 'center'
+          columnAlign: 'center',
         },
         {
           field: 'funcType',
@@ -187,45 +193,45 @@ export default {
           source: [
             {
               name: '洪水预报功能',
-              id: 'FHF_FUNC_CONF'
+              id: 'FHF_FUNC_CONF',
             },
             {
               name: '水库调度功能',
-              id: 'DSP_FUNC_CONF'
+              id: 'DSP_FUNC_CONF',
             },
             {
               name: '河道演算功能',
-              id: 'FR_FUNC_CONF'
+              id: 'FR_FUNC_CONF',
             },
             {
               name: '水库回水功能',
-              id: 'BW_FUNC_CONF'
+              id: 'BW_FUNC_CONF',
             },
             {
               name: '水库溃坝功能',
-              id: 'DB_FUNC_CONF'
+              id: 'DB_FUNC_CONF',
             },
             {
               name: '洪水风险分析功能',
-              id: 'FSA_FUNC_CONF'
+              id: 'FSA_FUNC_CONF',
             },
             {
               name: '决策综合模拟功能',
-              id: 'SYN_FUNC_CONF'
+              id: 'SYN_FUNC_CONF',
             },
             {
               name: '联合调度功能',
-              id: 'UNION_FUNC_CONF'
+              id: 'UNION_FUNC_CONF',
             },
             {
               name: '洪水摘录功能',
-              id: 'FLDEXC_FUNC_CONF'
+              id: 'FLDEXC_FUNC_CONF',
             },
             {
               name: '预报参数率定功能',
-              id: 'FPC_FUNC_CONF'
-            }
-          ]
+              id: 'FPC_FUNC_CONF',
+            },
+          ],
         },
         {
           field: 'checkbox',
@@ -234,39 +240,71 @@ export default {
           isResize: true,
           titleAlign: 'center',
           columnAlign: 'center',
-          type: 'checkbox'
-        }
-      ]
-    };
+          type: 'checkbox',
+        },
+      ],
+    }
   },
   methods: {
     getData() {
-      console.log(this.$refs.tableChart.hotInstance.getData());
+      console.log(this.$refs.tableChart.hotInstance.getData())
       //console.log(this.$refs.tableChart.getEditColumnField());
     },
     reset() {
-      this.$refs.tableChart.reset();
+      this.$refs.tableChart.reset()
     },
     add() {
-      this.$refs.tableChart.add();
+      this.$refs.tableChart.add()
     },
     deleted() {
-      this.$refs.tableChart.deleted();
+      this.$refs.tableChart.deleted()
     },
     getChangedData() {
-      console.log('按钮点击', this.$refs.tableChart.editCells, this.$refs.tableChart.editRows, this.$refs.tableChart.addRows, this.$refs.tableChart.deletedRows);
-      console.log('增加行', this.$refs.tableChart.addRows);
+      console.log(
+        '按钮点击',
+        this.$refs.tableChart.editCells,
+        this.$refs.tableChart.editRows,
+        this.$refs.tableChart.addRows,
+        this.$refs.tableChart.deletedRows
+      )
+      console.log('增加行', this.$refs.tableChart.addRows)
       //document.getElementsByClassName("SimpleTable-Container2021")[0].style.width = "500px"
       //this.$refs.tableChart.refresh();
       //this.$refs.tableChart.render();
     },
     getSelectData() {
-      console.log(this.$refs['tableChart']._getSelectData('checkbox'));
+      console.log(this.$refs['tableChart']._getSelectData('checkbox'))
     },
     cellEditDone(value) {
-      console.log('cellEditDone', value);
-    }
-  }
-};
+      console.log('cellEditDone', value)
+    },
+  },
+  watch: {
+    splitIndex: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+          val=val+1
+        this.newSetting = {
+          cells(row) {
+            let cellProperties = {}
+            if (row < val) {
+              cellProperties = { className: 'preheat-rows', readOnly: true }
+            }
+            return cellProperties
+          },
+        }
+        let hideRows = []
+        for (let i = 0; i < val; i++) {
+          hideRows.push(i)
+        }
+        this.newSetting.hiddenRows = {}
+        //   this.newSetting.hiddenRows.rows = hideRows;
+        //   this.newSetting.hiddenRows.indicators = false;
+        this.newSetting = Object.assign({}, this.setting, this.newSetting)
+      },
+    },
+  },
+}
 </script>
 <style scoped></style>
