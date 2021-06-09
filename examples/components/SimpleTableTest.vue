@@ -1,8 +1,9 @@
 <template>
   <div style="width: 100%">
     <simple-table ref="tableChart"
+                  :splitIndex="splitIndex"
                   :tableData="tableData"
-                  :setting="newSetting"
+                  :setting="setting"
                   :tableColumns="tableColumns"
                   @cellEditDone="cellEditDone"></simple-table>
     <button @click="getData">获取数据</button>
@@ -21,11 +22,13 @@ export default {
   components: { SimpleTable },
   data() {
     return {
-      newSetting: {},
-      splitIndex:0,
+    //   newSetting: {
+    //       rowHeaders:true
+    //   },
+      splitIndex:2,
       visible: true,
       classNames: ['testTable'],
-      setting: { rowHeaders: true },
+      setting: { rowHeaders:true },
       tableData: [
         {
           dim2: 0,
@@ -279,32 +282,32 @@ export default {
       console.log('cellEditDone', value)
     },
   },
-  watch: {
-    splitIndex: {
-      immediate: true,
-      deep: true,
-      handler(val) {
-          val=val+1
-        this.newSetting = {
-          cells(row) {
-            let cellProperties = {}
-            if (row < val) {
-              cellProperties = { className: 'preheat-rows', readOnly: true }
-            }
-            return cellProperties
-          },
-        }
-        let hideRows = []
-        for (let i = 0; i < val; i++) {
-          hideRows.push(i)
-        }
-        this.newSetting.hiddenRows = {}
-        //   this.newSetting.hiddenRows.rows = hideRows;
-        //   this.newSetting.hiddenRows.indicators = false;
-        this.newSetting = Object.assign({}, this.setting, this.newSetting)
-      },
-    },
-  },
+//   watch: {
+//     splitIndex: {
+//       immediate: true,
+//       deep: true,
+//       handler(val) {
+//           val=val+1
+//         this.newSetting = {
+//           cells(row) {
+//             let cellProperties = {}
+//             if (row < val) {
+//               cellProperties = { className: 'preheat-rows', readOnly: true }
+//             }
+//             return cellProperties
+//           },
+//         }
+//         let hideRows = []
+//         for (let i = 0; i < val; i++) {
+//           hideRows.push(i)
+//         }
+//         this.newSetting.hiddenRows = {}
+//         //   this.newSetting.hiddenRows.rows = hideRows;
+//         //   this.newSetting.hiddenRows.indicators = false;
+//         this.newSetting = Object.assign({}, this.setting, this.newSetting)
+//       },
+//     },
+//   },
 }
 </script>
 <style scoped></style>
