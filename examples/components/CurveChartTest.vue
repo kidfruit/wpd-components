@@ -16,6 +16,7 @@
                    :isRefresh="isRefresh"
                    :chartAxis="chartAxis"
                    :tableColumns="tableColumns"
+                   :legendNumber="legendNumber"
                    @compute="compute"
                    :chartData="SW_Chart" />
       <!-- <button @click="changing_over">切换</button> -->
@@ -43,6 +44,7 @@ export default {
       tableShow: false,
       classNames: ['testChart'],
       isRefresh: true,
+      legendNumber:6,
       chartOption: {
         title: {
           text: '向家坝（哈电）1#-4#机组NHQ曲线',
