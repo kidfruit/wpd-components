@@ -428,12 +428,26 @@ export default {
         legenddata = this.group(legenddata, this.legendNumber)
         if (legenddata.length > 0) {
           for (let j = 0; j < legenddata.length; j++) {
-            let legendobj = {
-              y: 20 + 15 * j,
-              data: legenddata[j],
+            if (j > 0) {
+              let selected = {}
+              for (let z = 0; z < legenddata[j].length; z++) {
+                selected[legenddata[j][z]] = false
+              }
+              let legendobj = {
+                selected: selected,
+                y: 20 + 15 * j,
+                data: legenddata[j],
+              }
+              option.legend.push(legendobj)
+            }else{
+                let legendobj = {
+                y: 20 + 15 * j,
+                data: legenddata[j],
+              }
+              option.legend.push(legendobj)
             }
-            option.legend.push(legendobj)
           }
+          console.log(option.legend)
         }
       } else {
         option.legend = {
