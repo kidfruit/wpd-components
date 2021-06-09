@@ -215,7 +215,8 @@ export default {
           lineStyle: yax.lineStyle,
           markLine: yax.markLine,
           color: yax.color,
-          itemStyle: yax.itemStyle
+          itemStyle: yax.itemStyle,
+          areaStyle: yax.areaStyle
         };
         seriesObj.data = this.chartData.map(cd => cd[yax.field]);
         option.series.push(seriesObj);
