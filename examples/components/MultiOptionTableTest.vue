@@ -45,7 +45,6 @@ export default {
             ],
           },
           flow2: {
-            group: true,
             key: 'RR-dsp-NORMAL',
             title: '防洪调度',
             order: 2,
@@ -53,17 +52,20 @@ export default {
             options: [
               {
                 id: 'RD_DISQCTRL',
+                group: false,
                 name: '调洪演算模型1',
                 modelParamId: null,
               },
               {
+                group: true,
                 id: 'FR_RHLAGTM',
                 name: '滞时演算模型2',
                 modelParamId: null,
               },
               {
+                group: false,
                 id: 'RD_CTRLDSP',
-                name: '混合控制1',
+                name: '混合控制',
                 modelParamId: null,
               },
             ],
@@ -109,11 +111,13 @@ export default {
             selectedId: 'FR_RHLAGTM',
             options: [
               {
+                group: true,
                 id: 'FR_RHLAGTM',
                 name: '滞时演算模型2',
                 modelParamId: null,
               },
               {
+                group: true,
                 id: 'FR_RHMSK',
                 name: '马斯京根模型2',
                 modelParamId: null,
@@ -148,16 +152,19 @@ export default {
             selectedId: 'RD_DISQCTRL',
             options: [
               {
+                group: false,
                 id: 'RD_DISQCTRL',
                 name: '调洪演算模型3',
                 modelParamId: null,
               },
               {
+                group: true,
                 id: 'FR_RHLAGTM',
                 name: '滞时演算模型2',
                 modelParamId: null,
               },
               {
+                group: false,
                 id: 'RD_CTRLDSP',
                 name: '混合控制',
                 modelParamId: null,
@@ -252,37 +259,46 @@ export default {
       //   }
 
       const { field, newValue, oldValue, rowIndex } = value
-      if (this.tableData[value.rowIndex][value.field].group) {
-        let selectedId = ''
-        let options = this.tableData[value.rowIndex][value.field].options
-        for (let i = 0; i < options.length; i++) {
-          if (options[i].name == value.newValue) {
-            selectedId = options[i].id
-          }
+      let selectedId = ''
+      let group
+      let options = this.tableData[value.rowIndex][value.field].options
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].name == value.newValue) {
+          group = options[i].group
+          selectedId = options[i].id
         }
+      }
+      console.log(group)
+      if (group) {
         for (let k = 0; k < this.tableData.length; k++) {
-          if (this.tableData[k][value.field].group) {
-            let select = this.tableData[k][value.field].options
-            for (let j = 0; j < select.length; j++) {
-              if (select[j].id == selectedId) {
-                this.tableData[k][value.field].selectedId = selectedId
-              }
+          let select = this.tableData[k][value.field].options
+          for (let j = 0; j < select.length; j++) {
+            if (select[j].id == selectedId) {
+              this.tableData[k][value.field].selectedId = selectedId
             }
           }
         }
       } else {
-        if (
-          this.tableData[rowIndex][field] instanceof Object &&
-          this.tableData[rowIndex][field].selectedId
-        ) {
-          this.tableData[rowIndex][field].selectedId = this.tableData[rowIndex][
-            field
-          ].options.find((i) => i.name === newValue).id
-        } else {
-          this.tableData[rowIndex][field] = newValue
+        for (let k = 0; k < this.tableData.length; k++) {
+          let select = this.tableData[k][value.field].options
+          let groupfalse = []
+          let grouptrue = []
+          if (select.length > 0) {
+            for (let j = 0; j < select.length; j++) {
+              if (!select[j].group) {
+                groupfalse.push(select[j])
+              } else {
+                grouptrue.push(select[j])
+              }
+            }
+            if (groupfalse.length > 0) {
+              this.tableData[k][value.field].selectedId = groupfalse[0].id
+            } else {
+              this.tableData[k][value.field].selectedId = grouptrue[0].id
+            }
+          }
         }
       }
-
       console.log(this.tableData)
     },
   },
