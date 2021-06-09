@@ -1,26 +1,23 @@
 <template>
   <div style="width: 100%">
-    <a-modal
-        class="associationModel"
-        :visible="visible"
-        title="测试"
-        destroyOnClose
-        @ok="handleOk"
-        @cancel="handleCancel"
-    >
-      <curve-chart
-          ref="curvechart"
-          v-if="chartshow"
-          :structure="structure"
-          :interpolateCalcShow="interpolateCalcShow"
-          :tableShow="tableShow"
-          :classes="classNames"
-          :chartOption="chartOption"
-          :isRefresh="isRefresh"
-          :chartAxis="chartAxis"
-          :tableColumns="tableColumns"
-          @compute="compute"
-          :chartData="SW_Chart"/>
+    <a-modal class="associationModel"
+             :visible="visible"
+             title="测试"
+             destroyOnClose
+             @ok="handleOk"
+             @cancel="handleCancel">
+      <curve-chart ref="curvechart"
+                   v-if="chartshow"
+                   :structure="structure"
+                   :interpolateCalcShow="interpolateCalcShow"
+                   :tableShow="tableShow"
+                   :classes="classNames"
+                   :chartOption="chartOption"
+                   :isRefresh="isRefresh"
+                   :chartAxis="chartAxis"
+                   :tableColumns="tableColumns"
+                   @compute="compute"
+                   :chartData="SW_Chart" />
       <!-- <button @click="changing_over">切换</button> -->
       <button @click="fetchData">获取数据123</button>
       <button @click="Refresh">刷新数据</button>
@@ -31,11 +28,11 @@
 <script>
 import CurveChart from '../../packages/CurveChart/src/CurveChart.vue'
 
-import SW_Chart from '../assets/mock/SW_Chart.json';
+import SW_Chart from '../assets/mock/SW_Chart.json'
 
 export default {
   name: 'CurveChartTest',
-  components: {CurveChart},
+  components: { CurveChart },
   data() {
     return {
       SW_Chart,
@@ -48,55 +45,47 @@ export default {
       isRefresh: true,
       chartOption: {
         title: {
-            text: '水位流量图',
-          left: 'center',
+          text: '向家坝（哈电）1#-4#机组NHQ曲线',
+          x: 'center',
         },
       },
       chartAxis: {
         xAxis: {
-          title: '尾水位(m)',
+          title: '出力(万kW)',
           id: 'dim1',
+          min:30,
+          max:110
         },
         yAxis: {
-          title: '流量(m)',
+          title: '流量(m³/s)',
           id: 'dim3',
+          min:400,
+          max:1000
         },
       },
       tableColumns: [
-        {
-          field: 'index',
-          title: '序号',
-          width: 100,
-          isResize: true,
-          titleAlign: 'center',
-          columnAlign: 'center',
-          readOnly: true,
-        },
+        // {
+        //   field: 'index',
+        //   title: '序号',
+        //   width: 100,
+        //   isResize: true,
+        //   titleAlign: 'center',
+        //   columnAlign: 'center',
+        //   readOnly: true,
+        // },
         {
           field: 'dim1',
-          title: '尾水位(m)',
-          width: 100,
-          isResize: true,
-          titleAlign: 'center',
-          columnAlign: 'center',
+          title: '出力(万kW)',
           readOnly: true,
         },
         {
           field: 'dim2',
-          title: '顶托水位(m)',
-          width: 100,
-          isResize: true,
-          titleAlign: 'center',
-          columnAlign: 'center',
+          title: '水头(m)',
           readOnly: true,
         },
         {
           field: 'dim3',
-          title: '流量(m)',
-          width: 100,
-          isResize: true,
-          titleAlign: 'center',
-          columnAlign: 'center',
+          title: '流量(m³/s)',
           readOnly: true,
         },
       ],
@@ -160,10 +149,10 @@ export default {
   },
   methods: {
     handleCancel() {
-      this.visible = false;
+      this.visible = false
     },
     handleOk(e) {
-      this.visible = false;
+      this.visible = false
     },
     compute(data) {
       //   console.log(data)
@@ -276,13 +265,13 @@ export default {
   height: 50vh;
 }
 .associationModel {
-.ant-modal {
-  width: 1000px !important;
-}
+  .ant-modal {
+    width: 1000px !important;
+  }
 
-.ant-modal-body {
-  padding: 10px;
-  max-height: fit-content;
-}
+  .ant-modal-body {
+    padding: 10px;
+    max-height: fit-content;
+  }
 }
 </style>

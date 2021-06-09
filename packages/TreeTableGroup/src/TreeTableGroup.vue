@@ -111,36 +111,76 @@ export default {
     _cellEditDone(value) {
       const { field, newValue, oldValue, rowIndex } = value
       const m_tableData = this.defaultTableData.filter((i) => i.selected)
-      if (m_tableData[value.rowIndex][value.field].group) {
-        let selectedId = ''
-        let options = m_tableData[value.rowIndex][value.field].options
-        for (let i = 0; i < options.length; i++) {
-          if (options[i].name == value.newValue) {
-            selectedId = options[i].id
-          }
+      let group
+      let selectedId = ''
+      let options = m_tableData[value.rowIndex][value.field].options
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].name == value.newValue) {
+          group = options[i].group
+          selectedId = options[i].id
         }
+      }
+      if (group) {
         for (let k = 0; k < m_tableData.length; k++) {
-          if (m_tableData[k][value.field].group) {
-            let select = m_tableData[k][value.field].options
-            for (let j = 0; j < select.length; j++) {
-              if (select[j].id == selectedId) {
-                m_tableData[k][value.field].selectedId = selectedId
-              }
+          let select = m_tableData[k][value.field].options
+          for (let j = 0; j < select.length; j++) {
+            if (select[j].id == selectedId) {
+              m_tableData[k][value.field].selectedId = selectedId
             }
           }
         }
       } else {
-        if (
-          m_tableData[rowIndex][field] instanceof Object &&
-          m_tableData[rowIndex][field].selectedId
-        ) {
-          m_tableData[rowIndex][field].selectedId = m_tableData[rowIndex][
-            field
-          ].options.find((i) => i.name === newValue).id
-        } else {
-          m_tableData[rowIndex][field] = newValue
+        for (let k = 0; k < m_tableData.length; k++) {
+          let select = m_tableData[k][value.field].options
+          let groupfalse = []
+          let grouptrue = []
+          if (select.length > 0) {
+            for (let j = 0; j < select.length; j++) {
+              if (!select[j].group) {
+                groupfalse.push(select[j])
+              } else {
+                grouptrue.push(select[j])
+              }
+            }
+            if (groupfalse.length > 0) {
+              m_tableData[k][value.field].selectedId = groupfalse[0].id
+            } else {
+              m_tableData[k][value.field].selectedId = grouptrue[0].id
+            }
+          }
         }
       }
+
+      //   if (m_tableData[value.rowIndex][value.field].group) {
+      //     let selectedId = ''
+      //     let options = m_tableData[value.rowIndex][value.field].options
+      //     for (let i = 0; i < options.length; i++) {
+      //       if (options[i].name == value.newValue) {
+      //         selectedId = options[i].id
+      //       }
+      //     }
+      //     for (let k = 0; k < m_tableData.length; k++) {
+      //       if (m_tableData[k][value.field].group) {
+      //         let select = m_tableData[k][value.field].options
+      //         for (let j = 0; j < select.length; j++) {
+      //           if (select[j].id == selectedId) {
+      //             m_tableData[k][value.field].selectedId = selectedId
+      //           }
+      //         }
+      //       }
+      //     }
+      //   } else {
+      //     if (
+      //       m_tableData[rowIndex][field] instanceof Object &&
+      //       m_tableData[rowIndex][field].selectedId
+      //     ) {
+      //       m_tableData[rowIndex][field].selectedId = m_tableData[rowIndex][
+      //         field
+      //       ].options.find((i) => i.name === newValue).id
+      //     } else {
+      //       m_tableData[rowIndex][field] = newValue
+      //     }
+      //   }
       this.$emit('cellEditDone', this.defaultTableData)
     },
     synchronization(originaldata, choice) {
@@ -162,7 +202,6 @@ export default {
       this.m_tableData = originaldata
     },
     _onTreeCheck(checkedKeys, { checked, checkedNodes, node, event }) {
-      console.log(checkedKeys, checkedNodes)
       let keys = []
       for (let i = 0; i < checkedNodes.length; i++) {
         if (!checkedNodes[i].data.props.dataRef.children) {
