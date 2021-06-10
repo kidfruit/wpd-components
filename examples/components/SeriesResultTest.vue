@@ -1,6 +1,6 @@
 <template>
   <div>
-    <series-result ref="seriesResult" :classes="['test-series-result']" :splitIndex="splitIndex" :tableColumns="tableColumns" :tableData="tableData" :setting="{ rowHeaders: true }" />
+    <series-result ref="seriesResult" :classes="['test-series-result']" :splitIndex="splitIndex" :topmargin="topmargin" :tableColumns="tableColumns" :tableData="tableData" :setting="{ rowHeaders: true }" />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>
     </div>
@@ -19,7 +19,8 @@ export default {
     return {
       tableData: [],
       tableColumns: [],
-      splitIndex: 0
+      splitIndex: 0,
+      topmargin:40
     };
   },
   created() {

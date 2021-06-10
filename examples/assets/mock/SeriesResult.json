@@ -31,7 +31,7 @@
 		},
 		{
 			"field": "RD_RR_AVGOUTQ_P",
-			"areaStyle": {},
+			"smooth": true,
 			"title": "出库流量(m³/s)",
 			"showType": "1-R",
 			"width": 80,
