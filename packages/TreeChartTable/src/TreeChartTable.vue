@@ -1,106 +1,96 @@
 <template>
   <div :class="classNames">
-    <div class="left-box">
-      <div class="chart-container box-border">
-        <standard-chart
-          ref="chartRef"
-          :id="id"
-          :chartOption="newOption"
-          :isRefresh="isRefresh"
-          :chartAxis="newAxis"
-          :classes="['tree-chart']"
-          :chartData="newData"
-        />
-      </div>
-      <div class="table-container box-border">
-        <simple-table
-          ref="tableRef"
-          class="custom-tree-table"
-          :tableData="newData"
-          :setting="setting"
-          :tableColumns="columns"
-        ></simple-table>
-      </div>
-    </div>
-    <div class="right-box box-border">
-      <simple-tree
-        ref="treeRef"
-        :treeData="treeData"
-        @select="handleSelect"
-      ></simple-tree>
-    </div>
+    <a-row
+      type="flex"
+      justify="space-around"
+      style="margin-bottom: 5px"
+      align="middle"
+    >
+      <a-col :span="4" class="tree-container">
+        <simple-tree
+          ref="treeRef"
+          :treeData="treeData"
+          @select="handleSelect"
+        ></simple-tree>
+      </a-col>
+      <a-col :span="20">
+        <a-row class="chart-container">
+          <standard-chart
+            ref="chartRef"
+            :id="id"
+            :chartOption="newOption"
+            :isRefresh="isRefresh"
+            :chartAxis="newAxis"
+            :chartData="newData"
+          />
+        </a-row>
+        <a-row class="table-container">
+          <simple-table
+            ref="tableRef"
+            :tableData="newData"
+            :setting="setting"
+            :tableColumns="columns"
+          ></simple-table>
+        </a-row>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
 <script>
-import StandardChart from "../../StandardChart/src/StandardChart.vue";
-import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
-import SimpleTree from "../../SimpleTree/src/SimpleTree.vue";
-import * as echarts from "echarts";
+import StandardChart from '../../StandardChart/src/StandardChart.vue'
+import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
+import SimpleTree from '../../SimpleTree/src/SimpleTree.vue'
+import * as echarts from 'echarts'
 let rCols = [
   {
-    field: "sectionCode",
-    title: "断面编码",
-    width: 20,
-    titleAlign: "center",
-    columnAlign: "center",
+    field: 'sectionCode',
+    title: '断面编码',
     readOnly: true,
   },
   {
-    field: "sectionDistanceArray",
-    title: "断面间距",
-    titleAlign: "center",
-    columnAlign: "center",
-    isResize: true,
+    field: 'sectionDistanceArray',
+    title: '断面间距',
     readOnly: true,
   },
   {
-    field: "sectionQArray",
-    title: "初始流量(m³/s)",
-    isResize: true,
-    titleAlign: "center",
-    columnAlign: "center",
+    field: 'sectionQArray',
+    title: '初始流量(m³/s)',
     readOnly: true,
   },
   {
-    field: "sectionZArray",
-    title: "初始水位(m)",
-    isResize: true,
-    titleAlign: "center",
-    columnAlign: "center",
+    field: 'sectionZArray',
+    title: '初始水位(m)',
     readOnly: true,
   },
   {
-    field: "rough",
-    title: "断面糙率",
-    isResize: true,
-    titleAlign: "center",
-    columnAlign: "center",
+    field: 'rough',
+    title: '断面糙率',
     readOnly: true,
   },
-];
+]
 let qCols = [
   {
-    field: "diArray",
-    title: "起点距",
-    titleAlign: "center",
-    columnAlign: "center",
+    field: 'diArray',
+    title: '起点距',
+    titleAlign: 'center',
+    columnAlign: 'center',
     readOnly: true,
   },
   {
-    field: "zbArray",
-    title: "高程",
-    titleAlign: "center",
-    columnAlign: "center",
+    field: 'zbArray',
+    title: '高程',
+    titleAlign: 'center',
+    columnAlign: 'center',
     isResize: true,
     readOnly: true,
   },
-];
+]
 let rAxis = {
   xAxis: [
     {
       // gridIndex: 0,
-      type: "category",
+      type: 'category',
       show: true,
       data: [],
     },
@@ -113,13 +103,13 @@ let rAxis = {
   timeSeries: true,
   yAxis: [
     {
-      title: "初始水位(m)",
+      title: '初始水位(m)',
       yAxisIndex: 0,
       xAxisIndex: 0,
       gridIndex: 0,
     },
     {
-      title: "初始流量(m³/s)",
+      title: '初始流量(m³/s)',
       yAxisIndex: 1,
       xAxisIndex: 0,
       gridIndex: 0,
@@ -127,51 +117,51 @@ let rAxis = {
   ],
   series: [
     {
-      field: "sectionZArray",
-      title: "初始水位(m)",
+      field: 'sectionZArray',
+      title: '初始水位(m)',
       selected: true,
       yAxisIndex: 0,
       xAxisIndex: 0,
     },
     {
-      field: "sectionQArray",
-      title: "初始流量(m³/s)",
+      field: 'sectionQArray',
+      title: '初始流量(m³/s)',
       selected: true,
       yAxisIndex: 1,
       xAxisIndex: 0,
     },
   ],
-};
+}
 
 let qAxis = {
-  xAxis: "diArray",
+  xAxis: 'diArray',
   timeSeries: true,
   yAxis: [
     {
-      title: "高程(m)",
+      title: '高程(m)',
       yAxisIndex: 0,
     },
   ],
   series: [
     {
-      field: "zbArray",
-      title: "高程(m)",
+      field: 'zbArray',
+      title: '高程(m)',
       selected: true,
       yAxisIndex: 0,
     },
   ],
-};
+}
 let rGrid = [
   //0降雨
-  { x: "9%", y: "9%", height: "84%", left: "5%", right: "5%" },
+  { x: '9%', y: '9%', height: '84%', left: '5%', right: '5%' },
   //1水位流量
   // { x: "7%", y2: "7%", height: "35%", left: "10%", bottom: "7%" },
-];
+]
 let qGrid = {
   bottom: 70,
-};
+}
 export default {
-  name: "TreeChartTable",
+  name: 'TreeChartTable',
   components: {
     StandardChart,
     SimpleTable,
@@ -218,42 +208,42 @@ export default {
   },
   computed: {
     classNames() {
-      return ["tree-chart-table"].concat(this.classes);
+      return ['tree-chart-table'].concat(this.classes)
     },
   },
   created() {
-    this.handleData();
+    this.handleData()
   },
   beforeMount() {},
   mounted() {
-    this.handleData();
-    setTimeout(() => {
-      this.setTableWidth("100%");
-    }, 10);
+    this.handleData()
+    // setTimeout(() => {
+    //   this.setTableWidth('100%')
+    // }, 10)
   },
   methods: {
-    setTableWidth(width) {
-      // 也可以动态设置handsontable的宽度
-      this.$refs.tableRef.updateWidth(width);
-    },
+    // setTableWidth(width) {
+    //   // 也可以动态设置handsontable的宽度
+    //   this.$refs.tableRef.updateWidth(width)
+    // },
     handleSelect(keys) {
-      this.selectedKeys = keys;
+      this.selectedKeys = keys
       this.$nextTick(() => {
-        this.handleData();
-      });
+        this.handleData()
+      })
     },
     handleData() {
-      this.newData = [];
+      this.newData = []
       if (
         this.selectedKeys.length === 0 ||
         this.selectedKeys[0] === this.rawData.riverReachId
       ) {
-        this.newOption = Object.assign({}, this.chartOption, { grid: rGrid });
-        this.columns = rCols;
+        this.newOption = Object.assign({}, this.chartOption, { grid: rGrid })
+        this.columns = rCols
         rAxis.xAxis.forEach((el) => {
-          el.data = this.rawData.sectionDataList.map((el) => el.sectionCode);
-        });
-        this.newAxis = rAxis;
+          el.data = this.rawData.sectionDataList.map((el) => el.sectionCode)
+        })
+        this.newAxis = Object.assign(rAxis, this.chartAxis)
         this.rawData.sectionDataList.forEach((el, index) => {
           this.newData.push({
             sectionCode: el.sectionCode,
@@ -261,45 +251,58 @@ export default {
             sectionQArray: this.rawData.sectionQArray[index],
             sectionZArray: this.rawData.sectionZArray[index],
             rough: el.rough,
-          });
-        });
+          })
+        })
         setTimeout(() => {
-          this.$refs.chartRef.setDynamicOption();
-        }, 10);
+          this.$refs.chartRef.setDynamicOption()
+        }, 10)
         if (this.selectedKeys[0] === this.rawData.riverReachId) {
-          this.$refs.tableRef.reset();
-          this.$refs.tableRef.updateShow();
+          // this.$refs.tableRef.reset()
+          // this.$refs.tableRef.updateShow()
+          this.updateShow()
         }
       } else {
         // this.instance = echarts.getInstanceByDom(
         //   document.getElementsByClassName("chart tree-chart")[0]
         // );
         // 清除殘留的圖表數據
-        this.$refs.chartRef.clear();
+        this.$refs.chartRef.clear()
 
         this.newOption = Object.assign(
           {},
           this.chartOption,
           { grid: qGrid },
           this.extraOptions
-        );
+        )
         setTimeout(() => {
-          this.$refs.chartRef.setDynamicOption();
-        }, 10);
+          this.$refs.chartRef.setDynamicOption()
+        }, 10)
 
-        this.columns = qCols;
-        this.newAxis = qAxis;
+        this.columns = qCols
+        this.newAxis = Object.assign(qAxis, this.chartAxis)
         let item = this.rawData.sectionDataList.find(
           (el) => el.sectionCode === this.selectedKeys[0]
-        );
+        )
         item.diArray.forEach((el, index) => {
           this.newData.push({
             diArray: el,
             zbArray: item.zbArray[index],
-          });
-        });
-        this.$refs.tableRef.reset();
-        this.$refs.tableRef.updateShow();
+          })
+        })
+        // this.$refs.tableRef.reset()
+        // this.$refs.tableRef.updateShow()
+        this.updateShow()
+      }
+    },
+    updateShow() {
+      if (this.$refs.chartRef) {
+        this.$refs.chartRef.resizeTheChart()
+      }
+      if (this.$refs.tableRef) {
+        this.$refs.tableRef.reset()
+      }
+      if (this.$refs.tableRef) {
+        this.$refs.tableRef.updateShow()
       }
     },
   },
@@ -311,45 +314,23 @@ export default {
       selectedKeys: [],
       instance: null,
       newOption: null,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
 .tree-chart-table {
-  display: flex;
-  .left-box {
-    width: 80vw;
-    margin-right: 24px;
-    .chart-container,
-    .table-container {
-      width: 100%;
-    }
+  height: 500px;
+  overflow: scroll;
+  .tree-container {
+    text-align: left;
   }
-  .right-box {
-    flex: 1;
-    padding: 8px 10px;
-    .ant-tree {
-      height: 100%;
-      max-height: 76vh;
-      overflow: auto;
-      ::v-deep > li {
-        text-align: left;
-      }
-    }
+  .table-container {
+    overflow: hidden;
   }
-  .box-border {
-    border: 1px solid #096dd9;
+  .chart-container {
+    margin-bottom: 20px;
   }
-}
-</style>
-<style>
-.tree-chart-table
-  .table-container
-  .custom-tree-table
-  .tableStyle.handsontable
-  .wtHider {
-  /* width: 70vw !important; */
 }
 </style>
