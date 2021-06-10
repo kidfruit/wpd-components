@@ -1,44 +1,58 @@
 <template>
-  <div ref="chartRef" :class="classNames" style="width: 100%; height: 100%; min-height: 300px" :id="id"></div>
+  <div
+    ref="chartRef"
+    :class="classNames"
+    style="width: 100%; height: 100%; height: 300px"
+    :id="id"
+  ></div>
 </template>
 <script>
-import * as echarts from 'echarts';
+import * as echarts from 'echarts'
 const defaultOption = {
   title: {
-    text: ''
+    text: '',
   },
   tooltip: {
     trigger: 'axis',
     formatter(params) {
-      let list = [];
-      params.map(i => {
-        if (!list.find(j => i.value === j.value && i.seriesName === j.seriesName)) {
-          list.push(i);
+      let list = []
+      params.map((i) => {
+        if (
+          !list.find(
+            (j) => i.value === j.value && i.seriesName === j.seriesName
+          )
+        ) {
+          list.push(i)
         }
-      });
+      })
       return list
-        .map(item => {
-          if (item.value === null || item.value === '-') return '';
-          else return item.marker + item.seriesName + `<b style="margin-left:5px;">${item.value}</b>`;
+        .map((item) => {
+          if (item.value === null || item.value === '-') return ''
+          else
+            return (
+              item.marker +
+              item.seriesName +
+              `<b style="margin-left:5px;">${item.value}</b>`
+            )
         })
-        .filter(i => i)
-        .join('<br />');
-    }
+        .filter((i) => i)
+        .join('<br />')
+    },
   },
   grid: {},
   legend: {
     data: [],
-    selected: {}
+    selected: {},
     // left: 'center'
   },
   xAxis: {
     type: 'category',
     boundaryGap: false,
-    data: []
+    data: [],
   },
   yAxis: [],
-  series: []
-};
+  series: [],
+}
 
 const yAxisOption = {
   type: 'value',
@@ -47,60 +61,60 @@ const yAxisOption = {
   splitLine: {
     show: true,
     lineStyle: {
-      color: ['#eee']
-    }
+      color: ['#eee'],
+    },
   },
   splitArea: {
     show: true,
     areaStyle: {
-      color: ['#fafafa']
-    }
-  }
-};
-let echartsInstance = null;
+      color: ['#fafafa'],
+    },
+  },
+}
+let echartsInstance = null
 export default {
   name: 'StandardChart',
   props: {
     isVisible: {
       type: Boolean,
       default: true,
-      required: false
+      required: false,
     },
     isRefresh: {
       type: Boolean,
       default: true,
-      required: false
+      required: false,
     },
     classes: {
       type: Array,
-      required: false
+      required: false,
     },
     theme: {
       type: String,
       default: 'macarons',
-      required: false
+      required: false,
     },
     chartOption: {
       type: Object,
-      required: false
+      required: false,
     },
     chartAxis: {
-      type: Object
+      type: Object,
     },
     chartData: {
-      type: Array
+      type: Array,
     },
     sections: {
-      type: Array
+      type: Array,
     },
     id: {
       type: String,
-      default: 'standard-chart'
+      default: 'standard-chart',
     },
     splitIndex: {
       type: Number,
-      default: -1
-    }
+      default: -1,
+    },
   },
   components: {
     // VChart,
@@ -108,101 +122,124 @@ export default {
   created() {},
   beforeMount() {},
   mounted() {
-    this.drawChart();
-    this.getChartInstance();
-    window.addEventListener('resize', this.resizeTheChart);
+    this.drawChart()
+    this.getChartInstance()
+    window.addEventListener('resize', this.resizeTheChart)
   },
   data() {
     return {
-      instance: null
-    };
+      instance: null,
+    }
   },
   computed: {
     classNames() {
-      return ['chart'].concat(this.classes);
-    }
+      return ['chart'].concat(this.classes)
+    },
     // option() {
     //   return this.prepareSeries();
     // },
   },
   methods: {
     drawChart() {
-      let myChart = echarts.getInstanceByDom(document.getElementById(this.id));
+      let myChart = echarts.getInstanceByDom(document.getElementById(this.id))
       if (myChart == null) {
         // 如果不存在，就进行初始化
-        echartsInstance = echarts.init(document.getElementById(this.id));
-        this.setDynamicOption();
+        echartsInstance = echarts.init(document.getElementById(this.id))
+        this.setDynamicOption()
       }
     },
     getChartInstance() {
       if (this.$refs.chartRef) {
-        this.instance = this.$refs.chartRef;
+        this.instance = this.$refs.chartRef
       }
     },
     clear() {
-      echartsInstance.clear();
+      echartsInstance.clear()
     },
     setDynamicOption() {
-      let option = this.prepareSeries();
-      console.log(option, 'option');
-      echartsInstance.setOption(option);
+      let option = this.prepareSeries()
+      console.log(option, 'option')
+      echartsInstance.setOption(option)
     },
     resizeTheChart() {
       if (this.$refs && this.$refs.chartRef) {
-        echartsInstance.resize();
+        echartsInstance.resize()
       }
     },
     prepareSeries() {
-      let option = Object.assign({}, defaultOption, this.chartOption);
+      let option = Object.assign({}, defaultOption, this.chartOption)
       //x轴
-      option.xAxis.data = this.chartData.map(cd => cd[this.chartAxis.xAxis]);
+      option.xAxis.data = this.chartData.map((cd) => cd[this.chartAxis.xAxis])
       // console.log(option.xAxis.data);
       if (this.chartAxis.timeSeries) {
-        option.xAxis.data = this.sortTime(option.xAxis.data);
+        option.xAxis.data = this.sortTime(option.xAxis.data)
       }
       if (option.timeline) {
-        option.xAxis.data = this.sections;
+        option.xAxis.data = this.sections
       }
       if (Array.isArray(option.grid) && option.grid.length > 0) {
-        option.xAxis = this.chartAxis.xAxis;
+        option.xAxis = this.chartAxis.xAxis
       }
 
       //y轴
       //按照yAxisIndex排序
-      if (Object.prototype.hasOwnProperty.call(this.chartAxis.yAxis[0], 'yAxisIndex')) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          this.chartAxis.yAxis[0],
+          'yAxisIndex'
+        )
+      ) {
         this.chartAxis.yAxis = this.chartAxis.yAxis.sort((a, b) => {
-          return a['yAxisIndex'] - b['yAxisIndex'];
-        });
+          return a['yAxisIndex'] - b['yAxisIndex']
+        })
       }
 
-      option.yAxis = this.chartAxis.yAxis.map(({ title: name, gridIndex, position, axisLabel, axisTick, axisLine, min, max }) => {
-        return Object.assign({}, yAxisOption, {
-          name,
+      option.yAxis = this.chartAxis.yAxis.map(
+        ({
+          title: name,
           gridIndex,
           position,
           axisLabel,
           axisTick,
           axisLine,
+          min,
           max,
-          min
-        });
-      });
+        }) => {
+          return Object.assign({}, yAxisOption, {
+            name,
+            gridIndex,
+            position,
+            axisLabel,
+            axisTick,
+            axisLine,
+            max,
+            min,
+          })
+        }
+      )
       // 如果legend存在并且是个数组，就不会走这个逻辑
       if (!this.chartOption.legend) {
         //legend
-        this.chartAxis.series.forEach(yx => {
-          option.legend.data.push(yx.title);
-          option.legend.selected[yx.title] = Object.prototype.hasOwnProperty.call(yx, 'selected') ? yx.selected : true;
-        });
+        this.chartAxis.series.forEach((yx) => {
+          option.legend.data.push(yx.title)
+          option.legend.selected[
+            yx.title
+          ] = Object.prototype.hasOwnProperty.call(yx, 'selected')
+            ? yx.selected
+            : true
+        })
+        option.legend = Object.assign(option.legend,this.chartAxis.legend)
       }
 
       //data
       this.chartData = this.chartData.sort((a, b) => {
-        let timeField = this.chartAxis.xAxis;
-        return new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime();
-      });
-      option.series = [];
-      this.chartAxis.series.forEach(yax => {
+        let timeField = this.chartAxis.xAxis
+        return (
+          new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
+        )
+      })
+      option.series = []
+      this.chartAxis.series.forEach((yax) => {
         let seriesObj = {
           name: yax.title,
           type: 'line',
@@ -216,60 +253,62 @@ export default {
           markLine: yax.markLine,
           color: yax.color,
           itemStyle: yax.itemStyle,
-          areaStyle: yax.areaStyle
-        };
-        seriesObj.data = this.chartData.map(cd => cd[yax.field]);
-        option.series.push(seriesObj);
-      });
+          areaStyle: yax.areaStyle,
+        }
+        seriesObj.data = this.chartData.map((cd) => cd[yax.field])
+        option.series.push(seriesObj)
+      })
       if (this.splitIndex && this.splitIndex !== -1) {
         for (let i = 0; i < option.series.length; i++, i++) {
           // 实线的数据
           option.series[i].data = option.series[i].data.map((el, index) => {
-            return index <= this.splitIndex ? el : '-';
-          });
+            return index <= this.splitIndex ? el : '-'
+          })
           // 虚线的数据
-          option.series[i + 1].data = option.series[i + 1].data.map((el, index) => {
-            return index >= this.splitIndex ? el : '-';
-          });
+          option.series[i + 1].data = option.series[i + 1].data.map(
+            (el, index) => {
+              return index >= this.splitIndex ? el : '-'
+            }
+          )
         }
       }
       if (!option.timeline) {
         return {
-          baseOption: option
-        };
+          baseOption: option,
+        }
       } else {
         // 带有时间线的chart
-        let options = [];
-        let fields = this.chartAxis.series.map(el => el.field);
+        let options = []
+        let fields = this.chartAxis.series.map((el) => el.field)
         this.chartData.forEach((cd, index) => {
-          let series = [];
-          fields.forEach(item => {
+          let series = []
+          fields.forEach((item) => {
             if (cd[item]) {
-              series.push({ data: cd[item] });
+              series.push({ data: cd[item] })
             }
-          });
+          })
           options.push({
             series,
             title: {
-              text: `${this.chartOption.title.text}    ${this.chartOption.timeline.data[index]}`
-            }
-          });
-        });
+              text: `${this.chartOption.title.text}    ${this.chartOption.timeline.data[index]}`,
+            },
+          })
+        })
         return {
           baseOption: option,
-          options
-        };
+          options,
+        }
       }
     },
     sortTime(timeList) {
       return timeList.sort((a, b) => {
-        return new Date(a).getTime() - new Date(b).getTime();
-      });
-    }
+        return new Date(a).getTime() - new Date(b).getTime()
+      })
+    },
   },
   beforeDestroy() {
-    echarts.dispose(echartsInstance);
-    window.removeEventListener('resize', this.resizeTheChart);
-  }
-};
+    echarts.dispose(echartsInstance)
+    window.removeEventListener('resize', this.resizeTheChart)
+  },
+}
 </script>
