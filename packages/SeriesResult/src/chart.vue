@@ -244,7 +244,7 @@ export default {
           data: [],
           yAxisIndex: yax.yAxisIndex,
           xAxisIndex: yax.xAxisIndex,
-          smooth: yax.smooth,
+          smooth: yax.smooth? yax.smooth : null,
           id: yax.id,
           symbolSize: yax.symbolSize,
           lineStyle: yax.lineStyle,

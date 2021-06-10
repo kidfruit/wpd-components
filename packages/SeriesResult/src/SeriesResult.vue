@@ -73,6 +73,9 @@ export default {
     setting: {
       type: Object,
     },
+    topmargin:{
+        type: Number,
+    },
     splitIndex: {
       type: Number,
     },
@@ -167,6 +170,7 @@ export default {
             areaStyle: el.areaStyle,
             step: el.step,
             color: el.color,
+            smooth:el.smooth
           }
         })
         .filter((el) => el.showType)
@@ -209,10 +213,11 @@ export default {
           textStyle: { fontSize: 14 },
           data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
         }
+        console.log("positionMaps[legendList[i].showType.split('-')[1]]",positionMaps)
         let leftRight = positionMaps[legendList[i].showType.split('-')[1]]
         if (leftRight === 'left') {
           obj = Object.assign({}, obj, {
-            top: leftTop * 24, //调整位置
+            top: this.topmargin+ leftTop * 24, //调整位置
             left: '1%',
           })
           leftTop++
@@ -231,7 +236,9 @@ export default {
       let yAxisList = showTypeList.filter(
         (el) => el.showType.indexOf(current) !== -1
       )
+      
       yAxisList = uniqueObj(yAxisList, 'showType')
+      console.log("555555555555555",yAxisList)
       let yAxis = []
       for (let i = 0; i < yAxisList.length; i++) {
         yAxis.push({
@@ -270,7 +277,7 @@ export default {
         let list = showTypeList
           .filter((el) => el.showType.indexOf(current) !== -1)
           .map((el, index) => {
-            console.log(el)
+            console.log(el,"----------------------")
             return {
               type: el.echartstype,
               areaStyle: el.areaStyle,
@@ -278,9 +285,10 @@ export default {
               step: el.step,
               field: el.field,
               title: el.title,
+              smooth:el.smooth,
               selected: true,
               yAxisIndex:
-                positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
+                positionMaps[el.showType.split('-')[1]] === 'left' ? 1 : 0,
               markLine: el.echartstype!='bar'? {
                 symbol: 'none',
                 data: [
@@ -305,7 +313,7 @@ export default {
           allList.push(list[i])
           if (list[i].type != 'bar') {//如果为柱状图则不需要实现虚线
               let obj = Object.assign({}, list[i], {
-                smooth: false, //关键点，为true是不支持虚线，实线就用true
+                // smooth: true, //关键点，为true是不支持虚线，实线就用true
                 itemStyle: {
                   normal: {
                     lineStyle: {
@@ -331,7 +339,7 @@ export default {
               title: el.title,
               selected: true,
               yAxisIndex:
-                positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
+                positionMaps[el.showType.split('-')[1]] === 'left' ? 1 : 0,
             }
           })
       }
