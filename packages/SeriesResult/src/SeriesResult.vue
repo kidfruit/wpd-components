@@ -113,12 +113,12 @@ export default {
     },
     // 获取被编辑过的列名
     getEditColumnField() {
-      return this.editCells
-      // if (this.editCells[0]) {
-      //   return this.editCells[0].split("#")[0];
-      // } else {
-      //   return null;
-      // }
+      // return this.editCells;
+      if (this.editCells[0]) {
+        return this.editCells[0].split("#")[0];
+      } else {
+        return null;
+      }
     },
     cellEditDone(value) {
       // 表格到图表的单向数据联动
