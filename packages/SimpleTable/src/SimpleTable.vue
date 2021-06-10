@@ -103,7 +103,7 @@ export default {
     hotSettings() {
         let rowHeaders=false
         // console.log(this.setting.rowHeaders)
-        if(this.setting.rowHeaders && this.setting.rowHeaders!=undefined){
+        if(this.setting && this.setting.rowHeaders){
             rowHeaders=this.setting.rowHeaders
         }else{
             rowHeaders=false
@@ -166,7 +166,7 @@ export default {
       // console.log(this.$refs.hotTableRef.hotInstance.selectRows(rows, rows));
     },
     _getSelectData(field) {
-      if (typeof field == 'string' && field != '') {
+      if (typeof field == 'string' && field !== '') {
         let Selectdata = [];
         for (let i = 0; i < this.hotData.length; i++) {
           if (this.hotData[i][field]) {
@@ -206,7 +206,7 @@ export default {
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {
             let element = changes[i];
-            if (element[2] != element[3]) {
+            if (element[2] !== element[3]) {
               if (Object.keys(this.dropdownHash).includes(element[1])) {
                 // 下拉框列
                 this.$emit('cellEditDone', {
