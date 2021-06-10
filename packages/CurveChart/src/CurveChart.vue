@@ -146,6 +146,9 @@ let echartsInstance = null
 export default {
   name: 'CurveChart',
   props: {
+    legendNumber: {
+      type: Number,
+    },
     isVisible: {
       type: Boolean,
       default: true,
@@ -320,7 +323,7 @@ export default {
     },
     setDynamicOption() {
       let option
-      if (this.tableColumns.length == 3) {
+      if (this.tableColumns.length == 2) {
         option = this.prepareSeries()
       } else {
         option = this.handledata()
@@ -332,53 +335,77 @@ export default {
         echartsInstance.resize()
       }
     },
+    group(array, subGroupLength) {
+      let index = 0
+      let newArray = []
+      while (index < array.length) {
+        newArray.push(array.slice(index, (index += subGroupLength)))
+      }
+      return newArray
+    },
     handledata() {
       let option = {
         title: {
           text: '',
-          left: 50,
+          x: 'left',
+          y: 'top',
         },
         tooltip: {
           trigger: 'axis',
-        //   formatter: function (arg) {
-        //       console.log(arg)
-        //     // return arg[0].seriesName + ':' + arg[0].data
-        //   },
+          //   formatter: function (arg) {
+          //       console.log(arg)
+          //     // return arg[0].seriesName + ':' + arg[0].data
+          //   },
         },
         grid: {
           bottom: 50,
           right: 100,
           left: 100,
-          top: 60,
+          top: 80,
         },
-        legend: {
-          data: [],
-        },
+        legend: [],
+        // legend: {
+        //   right: 100,
+        //   left: 80,
+        //   top: 20,
+        //   data: [],
+        // },
 
         xAxis: {
           boundaryGap: false,
         },
         yAxis: {
           type: 'value',
+          //   nameGap:50
         },
         series: [],
       }
       //   console.log("this.chartOption.title.text",this.chartOption.title.text)
       option.title.text = this.chartOption.title.text
+      if (this.chartOption.title.x) {
+        option.title.x = this.chartOption.title.x
+      }
+      //   option.title.text = this.chartOption.title.text
       option.xAxis.name = this.chartAxis.xAxis.title
       option.yAxis = {
         name: this.chartAxis.yAxis.title,
         type: 'value',
+        nameTextStyle: {
+          padding: [0, 70, 0, 0],
+        },
       }
       let threedimensionaldata = this.threedimensional()
       let xAxismin = []
       let xAxismax = []
+      let legenddata = []
       for (let i = 0; i < threedimensionaldata.length; i++) {
-        option.legend.data.push(JSON.stringify(threedimensionaldata[i].name))
+        // option.legend.data.push(JSON.stringify(threedimensionaldata[i].name))
+        legenddata.push(threedimensionaldata[i].name)
         let seriesObj = {
           name: threedimensionaldata[i].name,
           type: 'line',
           data: [],
+          symbol: 'none', //取消折点圆圈
         }
         let arrdata = []
         threedimensionaldata[i].data.map((cd, index) => {
@@ -392,6 +419,43 @@ export default {
         xAxismax.push(seriesObj.data[seriesObj.data.length - 1][0])
         option.series.push(seriesObj)
       }
+      legenddata = legenddata
+        .sort(function (a, b) {
+          return a - b
+        })
+        .map(String)
+      if (this.legendNumber) {
+        legenddata = this.group(legenddata, this.legendNumber)
+        if (legenddata.length > 0) {
+          for (let j = 0; j < legenddata.length; j++) {
+            if (j > 0) {
+              let selected = {}
+              for (let z = 0; z < legenddata[j].length; z++) {
+                selected[legenddata[j][z]] = false
+              }
+              let legendobj = {
+                selected: selected,
+                y: 20 + 15 * j,
+                data: legenddata[j],
+              }
+              option.legend.push(legendobj)
+            }else{
+                let legendobj = {
+                y: 20 + 15 * j,
+                data: legenddata[j],
+              }
+              option.legend.push(legendobj)
+            }
+          }
+          console.log(option.legend)
+        }
+      } else {
+        option.legend = {
+          y: 20,
+          data: legenddata,
+        }
+      }
+
       if (this.chartAxis.xAxis.max) {
         option.xAxis.max = this.chartAxis.xAxis.max
       } else {
@@ -403,10 +467,10 @@ export default {
         option.xAxis.min = Math.floor(Math.min.apply(null, xAxismin))
       }
       if (this.chartAxis.yAxis.max) {
-        option.yAxis.max = this.chartAxis.xAxis.max
+        option.yAxis.max = this.chartAxis.yAxis.max
       }
       if (this.chartAxis.yAxis.min) {
-        option.yAxis.min = this.chartAxis.xAxis.min
+        option.yAxis.min = this.chartAxis.yAxis.min
       }
       return {
         baseOption: option,
