@@ -352,10 +352,6 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
-          //   formatter: function (arg) {
-          //       console.log(arg)
-          //     // return arg[0].seriesName + ':' + arg[0].data
-          //   },
         },
         grid: {
           bottom: 50,
@@ -363,29 +359,20 @@ export default {
           left: 100,
           top: 80,
         },
-        legend: [],
-        // legend: {
-        //   right: 100,
-        //   left: 80,
-        //   top: 20,
-        //   data: [],
-        // },
+        // legend: [],
 
         xAxis: {
           boundaryGap: false,
         },
         yAxis: {
           type: 'value',
-          //   nameGap:50
         },
         series: [],
       }
-      //   console.log("this.chartOption.title.text",this.chartOption.title.text)
       option.title.text = this.chartOption.title.text
       if (this.chartOption.title.x) {
         option.title.x = this.chartOption.title.x
       }
-      //   option.title.text = this.chartOption.title.text
       option.xAxis.name = this.chartAxis.xAxis.title
       option.yAxis = {
         name: this.chartAxis.yAxis.title,
@@ -399,7 +386,6 @@ export default {
       let xAxismax = []
       let legenddata = []
       for (let i = 0; i < threedimensionaldata.length; i++) {
-        // option.legend.data.push(JSON.stringify(threedimensionaldata[i].name))
         legenddata.push(threedimensionaldata[i].name)
         let seriesObj = {
           name: threedimensionaldata[i].name,
@@ -419,42 +405,41 @@ export default {
         xAxismax.push(seriesObj.data[seriesObj.data.length - 1][0])
         option.series.push(seriesObj)
       }
-      legenddata = legenddata
-        .sort(function (a, b) {
-          return a - b
-        })
-        .map(String)
-      if (this.legendNumber) {
-        legenddata = this.group(legenddata, this.legendNumber)
-        if (legenddata.length > 0) {
-          for (let j = 0; j < legenddata.length; j++) {
-            if (j > 0) {
-              let selected = {}
-              for (let z = 0; z < legenddata[j].length; z++) {
-                selected[legenddata[j][z]] = false
-              }
-              let legendobj = {
-                selected: selected,
-                y: 20 + 15 * j,
-                data: legenddata[j],
-              }
-              option.legend.push(legendobj)
-            }else{
-                let legendobj = {
-                y: 20 + 15 * j,
-                data: legenddata[j],
-              }
-              option.legend.push(legendobj)
-            }
-          }
-          console.log(option.legend)
-        }
-      } else {
-        option.legend = {
-          y: 20,
-          data: legenddata,
-        }
-      }
+    //   legenddata = legenddata
+    //     .sort(function (a, b) {
+    //       return a - b
+    //     })
+    //     .map(String)
+    //   if (this.legendNumber) {
+    //     legenddata = this.group(legenddata, this.legendNumber)
+    //     if (legenddata.length > 0) {
+    //       for (let j = 0; j < legenddata.length; j++) {
+    //         if (j > 0) {
+    //           let selected = {}
+    //           for (let z = 0; z < legenddata[j].length; z++) {
+    //             selected[legenddata[j][z]] = false
+    //           }
+    //           let legendobj = {
+    //             selected: selected,
+    //             y: 20 + 15 * j,
+    //             data: legenddata[j],
+    //           }
+    //           option.legend.push(legendobj)
+    //         }else{
+    //             let legendobj = {
+    //             y: 20 + 15 * j,
+    //             data: legenddata[j],
+    //           }
+    //           option.legend.push(legendobj)
+    //         }
+    //       }
+    //     }
+    //   } else {
+    //     option.legend = {
+    //       y: 20,
+    //       data: legenddata,
+    //     }
+    //   }
 
       if (this.chartAxis.xAxis.max) {
         option.xAxis.max = this.chartAxis.xAxis.max
@@ -476,84 +461,6 @@ export default {
         baseOption: option,
       }
 
-      //   let option = Object.assign({}, defaultOption, this.chartOption)
-      //   option.xAxis = {
-      //     type: 'category',
-      //     boundaryGap: false,
-      //   }
-      //   //x轴
-      //   option.xAxis.name = this.chartAxis.xAxis.title
-      //   if (Array.isArray(option.grid) && option.grid.length > 0) {
-      //     option.xAxis = this.chartAxis.xAxis.id
-      //   }
-      //   //y轴
-      //   option.yAxis = {
-      //     name: this.chartAxis.yAxis.title,
-      //     type: 'value',
-      //   }
-      //   //data
-      //   this.chartData = this.chartData.sort((a, b) => {
-      //     let timeField = this.chartAxis.xAxis
-      //     return (
-      //       new Date(a[timeField]).getTime() - new Date(b[timeField]).getTime()
-      //     )
-      //   })
-      //   option.series = []
-      //   //三维
-      //   option.grid = {}
-      //   option.tooltip = {
-      //     trigger: 'axis',
-      //   }
-      //   option.legend = {
-      //     data: [],
-      //   }
-      //   let threedimensionaldata = this.threedimensional()
-      //   series.forEach((yax) => {
-      //     for (let i = 0; i < threedimensionaldata.length; i++) {
-      //       option.legend.data.push(threedimensionaldata[i].name)
-      //       let seriesObj = {
-      //         name: threedimensionaldata[i].name,
-      //         type: 'line',
-      //         data: [],
-      //       }
-      //       let arrdata = []
-      //       threedimensionaldata[i].data.map((cd, index) => {
-      //         let arr = []
-      //         arr[0] = cd[this.chartAxis.xAxis.id]
-      //         arr[1] = cd[this.chartAxis.yAxis.id]
-      //         arrdata[index] = arr
-      //       })
-      //       seriesObj.data = arrdata
-      //       option.series.push(seriesObj)
-      //     }
-      //   })
-      //   if (!option.timeline) {
-      //     return {
-      //       baseOption: option,
-      //     }
-      //   } else {
-      //     // 带有时间线的chart
-      //     let options = []
-      //     let fields = series.map((el) => el.field)
-      //     this.chartData.forEach((cd, index) => {
-      //       let series = []
-      //       fields.forEach((item) => {
-      //         if (cd[item]) {
-      //           series.push({ data: cd[item] })
-      //         }
-      //       })
-      //       options.push({
-      //         series,
-      //         title: {
-      //           text: `${this.chartOption.title.text}    ${this.chartOption.timeline.data[index]}`,
-      //         },
-      //       })
-      //     })
-      //     return {
-      //       baseOption: option,
-      //       options,
-      //     }
-      //   }
     },
     prepareSeries() {
       let yAxis = []

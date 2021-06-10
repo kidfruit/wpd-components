@@ -20,7 +20,7 @@ export default {
   components: { ChartTableGroup },
   data() {
     return {
-      classNames: ["testChart"],
+      classNames: ["testChartTableGroup"],
       isRefresh: true,
       chartOption: {
         title: {
@@ -87,8 +87,7 @@ export default {
           width: 100,
           isResize: true,
           titleAlign: "center",
-          columnAlign: "center",
-          readOnly: true,
+          columnAlign: "center"
         },
         {
           field: "dim2",
@@ -96,8 +95,7 @@ export default {
           width: 100,
           isResize: true,
           titleAlign: "center",
-          columnAlign: "center",
-          readOnly: true,
+          columnAlign: "center"
         },
       ],
       data: [
@@ -122,9 +120,21 @@ export default {
   methods: {},
 };
 </script>
-<style>
-.chart {
-  width: 100%;
-  height: 50vh;
+<style lang="less">
+.testChartTableGroup{
+  width:100%;
+  height:800px;
+  .chart {
+    width: 100%;
+    height: 300px;
+  }
+  .chart-container{
+    margin:0;
+  }
+  .table-container{
+    height:500px;
+    width:100%;
+    overflow:hidden;
+  }
 }
 </style>
