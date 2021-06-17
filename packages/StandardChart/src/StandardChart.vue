@@ -43,7 +43,7 @@ const defaultOption = {
   legend: {
     data: [],
     selected: {},
-    // left: 'center'
+    top: 30
   },
   xAxis: {
     type: 'category',
@@ -70,6 +70,13 @@ const yAxisOption = {
       color: ['#fafafa'],
     },
   },
+  max: function (value) {
+    return value.max + (value.max - value.min) * 0.15
+  },
+  min: function (value) {
+    let minV = value.min - (value.max - value.min) * 0.15
+    return minV >= 0 ? minV : 0
+  }
 }
 let echartsInstance = null
 export default {

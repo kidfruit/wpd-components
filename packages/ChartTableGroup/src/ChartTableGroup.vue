@@ -7,6 +7,8 @@
         :isRefresh="isRefresh"
         :chartAxis="chartAxis"
         :chartData="data"
+        :key="randomKey"
+        :id="id"
       />
     </div>
     <div class="table-container">
@@ -14,6 +16,7 @@
         ref="tableRef"
         :tableData="data"
         :tableColumns="tableColumns"
+        @cellEditDone="cellEditDone"
       ></simple-table>
     </div>
   </div>
@@ -55,13 +58,25 @@ export default {
   beforeMount() {},
   mounted() {},
   data() {
-    return {};
+    return {
+      randomKey: +new Date() + (Math.random() * 1000).toFixed(0)
+    };
   },
   computed: {
     classNames() {
       return ["chart-table-group"].concat(this.classes);
     },
+    id() {
+      return 'chart-table-group-' + this.randomKey
+    }
   },
-  methods: {},
+  methods: {
+    cellEditDone(value) {
+      const { field, newValue, oldValue, rowIndex } = value
+      // this.$set(this.data[rowIndex], field, +newValue)
+      this.data[rowIndex][field] = +newValue
+      this.randomKey = +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+    }
+  }
 };
 </script>

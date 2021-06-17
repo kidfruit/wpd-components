@@ -171,7 +171,7 @@ export default {
 };
 </script>
  
-<style >
+<style>
 .draggable-chart.chart {
   width: 100%;
   height: 50vh;

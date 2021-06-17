@@ -9,6 +9,7 @@
         :classes="['draggable-chart']"
         @mergeOptions="mergeOptions"
         :chartData="data"
+        :id="id"
       />
     </div>
   </div>
@@ -58,6 +59,7 @@ export default {
       instance: null,
       symbolSize: 10,
       dom: null,
+      id: 'draggable-chart-' + +new Date() + (Math.random() * 1000).toFixed(0)
     };
   },
   computed: {
@@ -66,10 +68,13 @@ export default {
     },
   },
   mounted() {
-    //获取echart实例对象
+    //获取echarts实例对象
     this.instance = echarts.getInstanceByDom(
-      document.getElementsByClassName("chart draggable-chart")[0]
+      document.getElementById(this.id)
+      // document.getElementsByClassName("chart draggable-chart")[0]
     );
+    console.log(document.getElementById(this.id))
+    // console.log(document.getElementsByClassName("chart draggable-chart")[0])
     this.dragFields.forEach((item) => {
       arr.push(
         this.data.map((el) => {

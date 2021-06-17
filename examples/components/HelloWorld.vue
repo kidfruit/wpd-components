@@ -24,7 +24,7 @@
       <h2>ResultHydroDynamic：水动力成果展示组件</h2>
       <result-hydro-dynamic-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>ChartTableGroup：图表联动组件</h2>
       <chart-table-group-test />
     </div>
