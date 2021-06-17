@@ -73,6 +73,7 @@ export default {
       randomKey: Math.random(),
       editCols: [],
       defaultHotSettings: {
+        manualRowMove: true,
         rowHeaders: false,
         colHeaders: true,
         autoColumnSize: true,
@@ -93,7 +94,8 @@ export default {
       },
       preheat: {
         show: false
-      }
+      },
+      selectedRange: null
     };
   },
   computed: {
@@ -278,6 +280,9 @@ export default {
     getHotInstance() {
       if (this.$refs.hotTableRef) {
         this.hotInstance = this.$refs.hotTableRef.hotInstance;
+        if (this.selectedRange) {
+          this.hotInstance.selectCells(this.selectedRange)
+        }
       }
     },
     // 黑科技更新表格、图展示
@@ -359,6 +364,46 @@ export default {
           }
           this.$refs.hotTableRef.hotInstance.alter('remove_row', el[0], el[2] - el[0] + 1);
         });
+      }
+    },
+    moveUp() {
+      let selectedRange = this.hotInstance.getSelectedRange()
+      let selectedArray = []
+      if (selectedRange && selectedRange.length > 0) {
+        // selected框
+        if (selectedRange[0].from.row === 0) {
+          return
+        }
+        selectedRange.forEach(item => {
+          selectedArray.push([item.from.row, item.to.row])
+          item.from.row = item.from.row - 1
+          item.to.row = item.to.row - 1
+        })
+        this.selectedRange = selectedRange
+        selectedArray.forEach(item => {
+          const arr = this.tableData.splice(item[0], item[1] - item[0] + 1)
+          this.tableData.splice(item[0] - 1, 0, ...arr)
+        })
+      }
+    },
+    moveDown() {
+      let selectedRange = this.hotInstance.getSelectedRange()
+      const rowLength = this.hotInstance.getData().length
+      let selectedArray = []
+      if (selectedRange && selectedRange.length > 0) {
+        if (selectedRange[selectedRange.length - 1].to.row === rowLength - 1) {
+          return
+        }
+        selectedRange.forEach(item => {
+          selectedArray.push([item.from.row, item.to.row])
+          item.from.row = item.from.row + 1
+          item.to.row = item.to.row + 1
+        })
+        this.selectedRange = selectedRange
+        selectedArray.forEach(item => {
+          const arr = this.tableData.splice(item[0], item[1] - item[0] + 1)
+          this.tableData.splice(item[0] + 1, 0, ...arr)
+        })
       }
     }
   },
