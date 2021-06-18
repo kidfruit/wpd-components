@@ -2,12 +2,14 @@
   <div
     ref="chartRef"
     :class="classNames"
-    style="width: 100%; height: 100%; height: 300px"
+    style="width: 100%; height: 300px"
     :id="id"
   ></div>
 </template>
 <script>
 import * as echarts from 'echarts'
+import lodash from 'lodash'
+
 const defaultOption = {
   title: {
     text: '',
@@ -58,6 +60,8 @@ const yAxisOption = {
   type: 'value',
   splitNumber: 5,
   axisLine: { show: true },
+  axisTick: { show: true },
+  axisLabel: { show: true },
   splitLine: {
     show: true,
     lineStyle: {
@@ -212,7 +216,7 @@ export default {
           min,
           max,
         }) => {
-          return Object.assign({}, yAxisOption, {
+          return lodash.merge({}, yAxisOption, {
             name,
             gridIndex,
             position,

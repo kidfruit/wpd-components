@@ -8,7 +8,7 @@
       <h2>SimpleChart：数据格式为echarts标准格式（V-Chart封装，打包未成功！！）</h2>
       <simple-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
       <standard-chart-test />
     </div>
