@@ -381,10 +381,11 @@ export default {
         })
         this.selectedRange = selectedRange
         selectedArray.forEach(item => {
-          const arr = this.tableData.splice(item[0], item[1] - item[0] + 1)
-          this.tableData.splice(item[0] - 1, 0, ...arr)
+          const arr = this.hotData.splice(item[0], item[1] - item[0] + 1)
+          this.hotData.splice(item[0] - 1, 0, ...arr)
         })
       }
+      this.$emit('moveDone', this.hotData)
     },
     moveDown() {
       let selectedRange = this.hotInstance.getSelectedRange()
@@ -401,10 +402,11 @@ export default {
         })
         this.selectedRange = selectedRange
         selectedArray.forEach(item => {
-          const arr = this.tableData.splice(item[0], item[1] - item[0] + 1)
-          this.tableData.splice(item[0] + 1, 0, ...arr)
+          const arr = this.hotData.splice(item[0], item[1] - item[0] + 1)
+          this.hotData.splice(item[0] + 1, 0, ...arr)
         })
       }
+      this.$emit('moveDone', this.hotData)
     }
   },
   watch: {

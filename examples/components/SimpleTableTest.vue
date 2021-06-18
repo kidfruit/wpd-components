@@ -5,7 +5,9 @@
                   :tableData="tableData"
                   :setting="setting"
                   :tableColumns="tableColumns"
-                  @cellEditDone="cellEditDone"></simple-table>
+                  @cellEditDone="cellEditDone"
+                  @moveDone="moveDone"
+    ></simple-table>
     <button @click="getData">获取数据</button>
     <button @click="getChangedData">获取编辑数据</button>
     <button @click="getSelectData">获取选中数据</button>
@@ -289,6 +291,9 @@ export default {
     cellEditDone(value) {
       console.log('cellEditDone', value)
     },
+    moveDone(value) {
+      console.log('moveDone', value)
+    }
   },
 //   watch: {
 //     splitIndex: {
