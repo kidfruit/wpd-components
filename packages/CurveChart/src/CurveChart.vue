@@ -350,9 +350,9 @@ export default {
           x: 'left',
           y: 'top',
         },
-        tooltip: {
-          trigger: 'axis',
-        },
+        // tooltip: {
+        //   trigger: 'axis',
+        // },
         grid: {
           bottom: 50,
           right: 100,

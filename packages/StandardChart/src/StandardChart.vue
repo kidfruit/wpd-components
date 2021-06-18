@@ -2,12 +2,14 @@
   <div
     ref="chartRef"
     :class="classNames"
-    style="width: 100%; height: 100%; height: 300px"
+    style="width: 100%; height: 300px"
     :id="id"
   ></div>
 </template>
 <script>
 import * as echarts from 'echarts'
+import lodash from 'lodash'
+
 const defaultOption = {
   title: {
     text: '',
@@ -43,7 +45,7 @@ const defaultOption = {
   legend: {
     data: [],
     selected: {},
-    // left: 'center'
+    top: 30
   },
   xAxis: {
     type: 'category',
@@ -58,6 +60,8 @@ const yAxisOption = {
   type: 'value',
   splitNumber: 5,
   axisLine: { show: true },
+  axisTick: { show: true },
+  axisLabel: { show: true },
   splitLine: {
     show: true,
     lineStyle: {
@@ -70,6 +74,13 @@ const yAxisOption = {
       color: ['#fafafa'],
     },
   },
+  max: function (value) {
+    return value.max + (value.max - value.min) * 0.15
+  },
+  min: function (value) {
+    let minV = value.min - (value.max - value.min) * 0.15
+    return minV >= 0 ? minV : 0
+  }
 }
 let echartsInstance = null
 export default {
@@ -205,7 +216,7 @@ export default {
           min,
           max,
         }) => {
-          return Object.assign({}, yAxisOption, {
+          return lodash.merge({}, yAxisOption, {
             name,
             gridIndex,
             position,

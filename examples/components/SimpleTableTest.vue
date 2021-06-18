@@ -12,6 +12,8 @@
     <button @click="reset">重置</button>
     <button @click="add">新增</button>
     <button @click="deleted">删除</button>
+    <button @click="moveUp">上移</button>
+    <button @click="moveDown">下移</button>
   </div>
 </template>
 <script>
@@ -249,6 +251,12 @@ export default {
     }
   },
   methods: {
+    moveUp() {
+      this.$refs.tableChart.moveUp()
+    },
+    moveDown() {
+      this.$refs.tableChart.moveDown()
+    },
     getData() {
       console.log(this.$refs.tableChart.hotInstance.getData())
       //console.log(this.$refs.tableChart.getEditColumnField());
