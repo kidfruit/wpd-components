@@ -149,12 +149,23 @@ export default {
               }
             }
 
+            // console.log(currentSelectedTrueOrFalse)
             // console.log(field, rowIndex, newValue, oldValue, k)
             if (currentSelectedTrueOrFalse) {
               if (rowIndex !== k) {
                 m_tableData[k][value.field].selectedId = groupfalse[0].id
               } else {
                 // console.log(m_tableData[k][value.field])
+                // console.log('----------------')
+                for (let i = 0; i < m_tableData[k][value.field].options.length; i++) {
+                  if (m_tableData[k][value.field].options[i].name === newValue) {
+                    m_tableData[k][value.field].selectedId = m_tableData[k][value.field].options[i].id
+                  }
+                }
+              }
+            } else {
+              if (rowIndex === k) {
+                // console.log('--------123123')
                 for (let i = 0; i < m_tableData[k][value.field].options.length; i++) {
                   if (m_tableData[k][value.field].options[i].name === newValue) {
                     m_tableData[k][value.field].selectedId = m_tableData[k][value.field].options[i].id
