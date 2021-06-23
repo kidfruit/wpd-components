@@ -1,32 +1,163 @@
 [
 	{
+		"nodeId": "103049",
+		"nodeName": "三堆子",
+		"nodeType": "WPStationZQ",
+		"nodeTypeName": "水文站",
+		"key": "103049",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_LINK",
+			"options": [
+				{
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "FD_DSPASS",
+			"options": [
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		}
+	},
+	{
+		"nodeId": "RCH300",
+		"nodeName": "三堆子-乌东德",
+		"nodeType": "WPRiverReach",
+		"nodeTypeName": "河段",
+		"key": "RCH300",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH300LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH300MUSK"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
 		"nodeId": "11",
 		"nodeName": "乌东德",
 		"nodeType": "WPStationRR",
 		"nodeTypeName": "水库",
 		"key": "11",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
+			"selectedId": "RD_VFLDMINGROUP",
+			"options": [
+				{
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"11RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"11RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"11RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_MAXZMIN",
+					"name": "调洪最高水位最低",
+					"modelParamIds": [
+						"11RSDSP"
+					],
+					"group": false
+				}
+			]
 		},
 		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
 			"order": 2,
-			"selectedId": "RD_DISQCTRL",
-			"options": []
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -37,47 +168,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH301",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCZDX",
-					"name": "自动选择",
-					"group": false,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH301LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH301MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -87,40 +213,71 @@
 		"nodeTypeName": "水库",
 		"key": "12",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "RD_VFLDMINGROUP",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"12RSDSP"
+					],
+					"group": true
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"12RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"12RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_MAXZMIN",
+					"name": "调洪最高水位最低",
+					"modelParamIds": [
+						"12RSDSP"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -131,41 +288,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH302",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": false,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH302LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH302MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -175,40 +333,71 @@
 		"nodeTypeName": "水库",
 		"key": "13",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": false,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "RD_VFLDMINGROUP",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"13RSDSP"
+					],
+					"group": true
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"13RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"13RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_MAXZMIN",
+					"name": "调洪最高水位最低",
+					"modelParamIds": [
+						"13RSDSP"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -219,41 +408,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH303",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH303LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH303MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -263,40 +453,71 @@
 		"nodeTypeName": "水库",
 		"key": "14",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "RD_VFLDMINGROUP",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"14RSDSP"
+					],
+					"group": true
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"14RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"14RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_MAXZMIN",
+					"name": "调洪最高水位最低",
+					"modelParamIds": [
+						"14RSDSP"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -307,41 +528,382 @@
 		"nodeTypeName": "区间汇流",
 		"key": "ITV100",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV100LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"ITV100MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "103067",
+		"nodeName": "高场",
+		"nodeType": "WPStationZQ",
+		"nodeTypeName": "水文站",
+		"key": "103067",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_LINK",
+			"options": [
+				{
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
+		}
+	},
+	{
+		"nodeId": "ITV106",
+		"nodeName": "高场-李庄",
+		"nodeType": "WPNodeInterval",
+		"nodeTypeName": "区间汇流",
+		"key": "ITV106",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV106LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "103068",
+		"nodeName": "富顺",
+		"nodeType": "WPStationZQ",
+		"nodeTypeName": "水文站",
+		"key": "103068",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_LINK",
+			"options": [
+				{
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "FD_DSPASS",
+			"options": [
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		}
+	},
+	{
+		"nodeId": "ITV107",
+		"nodeName": "富顺-朱沱",
+		"nodeType": "WPNodeInterval",
+		"nodeTypeName": "区间汇流",
+		"key": "ITV107",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV107LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "103004",
+		"nodeName": "北碚",
+		"nodeType": "WPStationZQ",
+		"nodeTypeName": "水文站",
+		"key": "103004",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_LINK",
+			"options": [
+				{
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "FD_DSPASS",
+			"options": [
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		}
+	},
+	{
+		"nodeId": "ITV103",
+		"nodeName": "北碚-寸滩",
+		"nodeType": "WPNodeInterval",
+		"nodeTypeName": "区间汇流",
+		"key": "ITV103",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV103LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "103003",
+		"nodeName": "武隆",
+		"nodeType": "WPStationZQ",
+		"nodeTypeName": "水文站",
+		"key": "103003",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_LINK",
+			"options": [
+				{
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "FD_DSPASS",
+			"options": [
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		}
+	},
+	{
+		"nodeId": "ITV104",
+		"nodeName": "武隆-三峡",
+		"nodeType": "WPNodeInterval",
+		"nodeTypeName": "区间汇流",
+		"key": "ITV104",
+		"flow1": {
+			"key": "FLOW-3-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV104LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-3-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -351,40 +913,71 @@
 		"nodeTypeName": "水库",
 		"key": "16",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "RD_VFLDMINGROUP",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": true
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_MAXZMIN",
+					"name": "调洪最高水位最低",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -395,41 +988,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH201",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH201LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH201MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -439,40 +1033,71 @@
 		"nodeTypeName": "水库",
 		"key": "17",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "RD_VFLDMINGROUP",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": true
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_MAXZMIN",
+					"name": "调洪最高水位最低",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -483,41 +1108,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH202",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH202LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH202MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -527,40 +1153,71 @@
 		"nodeTypeName": "水库",
 		"key": "15",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "RD_VFLDMINGROUP",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": true
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_MAXZMIN",
+					"name": "调洪最高水位最低",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -571,84 +1228,83 @@
 		"nodeTypeName": "区间汇流",
 		"key": "ITV101",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV101LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"ITV101MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
-		"nodeId": "103090",
+		"nodeId": "103040",
 		"nodeName": "仙桃",
 		"nodeType": "WPStationZQ",
 		"nodeTypeName": "水文站",
-		"key": "103090",
+		"key": "103040",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -659,41 +1315,42 @@
 		"nodeTypeName": "区间汇流",
 		"key": "ITV102",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV102LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"ITV102MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -703,46 +1360,38 @@
 		"nodeTypeName": "水文站",
 		"key": "103038",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCZDX",
-					"name": "自动选择",
-					"group": false,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -753,41 +1402,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH101",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH101LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH101MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -797,39 +1447,38 @@
 		"nodeTypeName": "水文站",
 		"key": "103001",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -840,41 +1489,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH102",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH102LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH102MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -884,40 +1534,38 @@
 		"nodeTypeName": "水文站",
 		"key": "103002",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -928,41 +1576,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH103",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH103LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH103MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -972,40 +1621,71 @@
 		"nodeTypeName": "水库",
 		"key": "18",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "RD_VFLDMINGROUP",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"18RSDSP"
+					],
+					"group": true
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"18RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"18RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_MAXZMIN",
+					"name": "调洪最高水位最低",
+					"modelParamIds": [
+						"18RSDSP"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -1016,41 +1696,49 @@
 		"nodeTypeName": "河段",
 		"key": "RCH104",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH104LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH104MUSK"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1060,46 +1748,71 @@
 		"nodeTypeName": "水库",
 		"key": "19",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "RD_VFLDMINGROUP",
 			"options": [
 				{
-					"id": "RD_DISQCZDX",
-					"name": "自动选择",
-					"group": false,
-					"modelParamId": null
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"19RSDSP"
+					],
+					"group": true
 				},
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"19RSDSP"
+					],
+					"group": true
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"19RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_MAXZMIN",
+					"name": "调洪最高水位最低",
+					"modelParamIds": [
+						"19RSDSP"
+					],
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -1110,41 +1823,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH105",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH105LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH105MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1154,40 +1868,38 @@
 		"nodeTypeName": "水文站",
 		"key": "103032",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -1198,41 +1910,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH106",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH106LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH106MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1242,46 +1955,38 @@
 		"nodeTypeName": "水文站",
 		"key": "103033",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCZDX",
-					"name": "自动选择",
-					"group": false,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -1292,47 +1997,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH107",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCZDX",
-					"name": "自动选择",
-					"group": false,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH107LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH107MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1342,40 +2042,38 @@
 		"nodeTypeName": "水文站",
 		"key": "103034",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -1386,41 +2084,42 @@
 		"nodeTypeName": "河段",
 		"key": "RCH108",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH108LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH108MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1430,40 +2129,38 @@
 		"nodeTypeName": "水文站",
 		"key": "103036",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -1474,84 +2171,83 @@
 		"nodeTypeName": "河段",
 		"key": "RCH109",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH109LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH109MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
-		"nodeId": "103037",
+		"nodeId": "103212",
 		"nodeName": "城陵矶",
 		"nodeType": "WPStationZQ",
 		"nodeTypeName": "水文站",
-		"key": "103037",
+		"key": "103212",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": true,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	},
@@ -1562,84 +2258,83 @@
 		"nodeTypeName": "河段",
 		"key": "RCH110",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": false,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_RHLAGTM",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH110LAG"
+					],
+					"group": false
 				},
 				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH110MUSK"
+					],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
-			]
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
-		"nodeId": "103039",
+		"nodeId": "103058",
 		"nodeName": "汉口",
 		"nodeType": "WPStationZQ",
 		"nodeTypeName": "水文站",
-		"key": "103039",
+		"key": "103058",
 		"flow1": {
-			"key": "RR-null-NORMAL",
-			"title": "——",
+			"key": "FLOW-3-1",
+			"title": "调度演进",
 			"order": 1,
-			"selectedId": "FD_NULL",
-			"options": [{ "id": "FD_NULL", "name": "——", "modelParamId": null }]
-		},
-		"flow2": {
-			"group": false,
-			"key": "RR-dsp-NORMAL",
-			"title": "防洪调度",
-			"order": 2,
-			"selectedId": "RD_DISQCTRL",
+			"selectedId": "FR_LINK",
 			"options": [
 				{
-					"id": "RD_DISQCTRL",
-					"name": "调洪演算模型1",
-					"group": true,
-					"modelParamId": null
-				},
-				{
-					"id": "RD_CTRLDSP",
-					"name": "混合控制1",
-					"group": true,
-					"modelParamId": null
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
 				}
 			]
 		},
+		"flow2": {
+			"key": "FLOW-3-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
 		"flow3": {
-			"key": "RR-assess-NORMAL",
+			"key": "FLOW-3-3",
 			"title": "分析评估",
 			"order": 3,
 			"selectedId": "FD_DSPASS",
 			"options": [
-				{ "id": "FD_DSPASS", "name": "调度评估", "modelParamId": null }
+				{
+					"id": "FD_DSPASS",
+					"name": "调度评估",
+					"modelParamIds": [],
+					"group": false
+				}
 			]
 		}
 	}

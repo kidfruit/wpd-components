@@ -131,9 +131,11 @@ export default {
         }
       } else {
         for (let k = 0; k < m_tableData.length; k++) {
+          let oldSelectedID = m_tableData[k][value.field].selectedId
           let select = m_tableData[k][value.field].options
           let groupfalse = []
           let grouptrue = []
+          let currentSelectedTrueOrFalse
           if (select.length > 0) {
             for (let j = 0; j < select.length; j++) {
               if (!select[j].group) {
@@ -141,46 +143,40 @@ export default {
               } else {
                 grouptrue.push(select[j])
               }
+
+              if (select[j].id === oldSelectedID) {
+                currentSelectedTrueOrFalse = select[j].group
+              }
             }
-            if (groupfalse.length > 0) {
-              m_tableData[k][value.field].selectedId = groupfalse[0].id
-            } else {
-              m_tableData[k][value.field].selectedId = grouptrue[0].id
+
+            // console.log(field, rowIndex, newValue, oldValue, k)
+            if (currentSelectedTrueOrFalse) {
+              if (rowIndex !== k) {
+                m_tableData[k][value.field].selectedId = groupfalse[0].id
+              } else {
+                // console.log(m_tableData[k][value.field])
+                for (let i = 0; i < m_tableData[k][value.field].options.length; i++) {
+                  if (m_tableData[k][value.field].options[i].name === newValue) {
+                    m_tableData[k][value.field].selectedId = m_tableData[k][value.field].options[i].id
+                  }
+                }
+              }
             }
+
+
+            // if (groupfalse.length > 0) {
+            //   m_tableData[k][value.field].selectedId = groupfalse[0].id
+            //   // for (let i = 0; i < groupfalse.length; i++) {
+            //   //   if (selectedId ===  groupfalse[i].id) {
+            //   //     m_tableData[k][value.field].selectedId = groupfalse[i].id
+            //   //   }
+            //   // }
+            // } else {
+            //   m_tableData[k][value.field].selectedId = grouptrue[0].id
+            // }
           }
         }
       }
-
-      //   if (m_tableData[value.rowIndex][value.field].group) {
-      //     let selectedId = ''
-      //     let options = m_tableData[value.rowIndex][value.field].options
-      //     for (let i = 0; i < options.length; i++) {
-      //       if (options[i].name == value.newValue) {
-      //         selectedId = options[i].id
-      //       }
-      //     }
-      //     for (let k = 0; k < m_tableData.length; k++) {
-      //       if (m_tableData[k][value.field].group) {
-      //         let select = m_tableData[k][value.field].options
-      //         for (let j = 0; j < select.length; j++) {
-      //           if (select[j].id == selectedId) {
-      //             m_tableData[k][value.field].selectedId = selectedId
-      //           }
-      //         }
-      //       }
-      //     }
-      //   } else {
-      //     if (
-      //       m_tableData[rowIndex][field] instanceof Object &&
-      //       m_tableData[rowIndex][field].selectedId
-      //     ) {
-      //       m_tableData[rowIndex][field].selectedId = m_tableData[rowIndex][
-      //         field
-      //       ].options.find((i) => i.name === newValue).id
-      //     } else {
-      //       m_tableData[rowIndex][field] = newValue
-      //     }
-      //   }
       this.$emit('cellEditDone', this.defaultTableData)
     },
     synchronization(originaldata, choice) {
