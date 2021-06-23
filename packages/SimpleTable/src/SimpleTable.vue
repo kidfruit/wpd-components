@@ -9,6 +9,9 @@
     <hot-table :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
       <hot-column v-for="(item, index) in columns" :key="index" :title="item.title" :data="item.field" :source="item.source" :className="item.className" :renderer="item.renderer" :type="item.type" :width="item.width" :readOnly="item.readOnly"> </hot-column>
     </hot-table>
+    <a-modal v-model="saveFileTitleModalVisible" title="保存文件名" okText="确定" cancelText="取消" @ok="handleSaveFileTitleOK">
+      <a-input placeholder="请输入你想要保存的文件名" v-model="saveFileTitleInput"/>
+    </a-modal>
   </div>
 </template>
 <script>
@@ -60,7 +63,7 @@ export default {
   updated() {
     this.getHotInstance();
   },
-  data: function () {
+  data() {
     return {
       editRows: [],
       addRows: [],
@@ -82,7 +85,17 @@ export default {
         // colWidths: "100px",
         stretchH: 'all',
         licenseKey: 'non-commercial-and-evaluation',
-        contextMenu: false,
+        contextMenu: {
+          items: {
+            'mouseRightDown': {
+              name: '下载表格文件',
+              callback: () => {
+                this.saveFileTitleModalVisible = true
+                this.saveFileTitleInput = ''
+              }
+            }
+          }
+        },
         language: zhCN.languageCode,
         cells: (row, col, prop) => {
           let cellProperties = {};
@@ -95,7 +108,9 @@ export default {
       preheat: {
         show: false
       },
-      selectedRange: null
+      selectedRange: null,
+      saveFileTitleModalVisible: false,
+      saveFileTitleInput: ''
     };
   },
   computed: {
@@ -407,6 +422,17 @@ export default {
         })
       }
       this.$emit('moveDone', this.hotData)
+    },
+    handleSaveFileTitleOK() {
+      const exportFile = this.$refs.hotTableRef.hotInstance.getPlugin('exportFile')
+      exportFile.downloadFile('csv', {
+        filename: this.saveFileTitleInput === '' ? '我的表格' : this.saveFileTitleInput,
+        exportHiddenRows: true,
+        exportHiddenColumns: true,
+        columnHeaders: true,
+        rowHeaders: true
+      })
+      this.saveFileTitleModalVisible = false
     }
   },
   watch: {

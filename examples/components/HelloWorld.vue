@@ -12,7 +12,7 @@
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
       <standard-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
     </div>
@@ -44,7 +44,7 @@
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>TreeTableGroup：树表联动组件</h2>
       <tree-table-group-test />
     </div>
