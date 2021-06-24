@@ -6,11 +6,17 @@
         <a-icon v-else type="down" />
       </span>
     </div>
-    <hot-table :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef">
+    <hot-table :settings="hotSettings" :data="hotData" :class="classes" :after-change="afterChange" ref="hotTableRef" :key="hotTableRandomKey">
       <hot-column v-for="(item, index) in columns" :key="index" :title="item.title" :data="item.field" :source="item.source" :className="item.className" :renderer="item.renderer" :type="item.type" :width="item.width" :readOnly="item.readOnly"> </hot-column>
     </hot-table>
-    <a-modal v-model="saveFileTitleModalVisible" title="保存文件名" okText="确定" cancelText="取消" @ok="handleSaveFileTitleOK">
-      <a-input placeholder="请输入你想要保存的文件名" v-model="saveFileTitleInput"/>
+    <a-modal v-model="saveFileModalVisible" title="保存文件名" okText="确定" cancelText="取消" @ok="saveFile">
+      <a-input placeholder="请输入你想要保存的文件名" v-model="saveFileInput" @pressEnter="saveFile"/>
+    </a-modal>
+    <a-modal v-model="scaleModalVisible" title="倍比缩放" okText="确定" cancelText="取消" @ok="scale">
+      <a-input placeholder="请输入你想要缩放的倍数" v-model="scaleInput" @pressEnter="scale"/>
+    </a-modal>
+    <a-modal v-model="sameIncreaseDecreaseModalVisible" title="同增同减" okText="确定" cancelText="取消" @ok="sameIncreaseDecrease">
+      <a-input placeholder="请输入你想要增加的数目" v-model="sameIncreaseDecreaseInput" @pressEnter="sameIncreaseDecrease"/>
     </a-modal>
   </div>
 </template>
@@ -87,14 +93,32 @@ export default {
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: {
           items: {
-            'mouseRightDown': {
-              name: '下载表格文件',
+            'interpolation': {
+              name: '内插',
               callback: () => {
-                this.saveFileTitleModalVisible = true
-                this.saveFileTitleInput = ''
+                this.handleInterpolationCallback()
+              }
+            },
+            'scale': {
+              name: '倍比缩放',
+              callback: () => {
+                this.handleScaleCallback()
+              }
+            },
+            'sameIncreaseDecrease': {
+              name: '同增同减',
+              callback: () => {
+                this.handleSameIncreaseDecreaseCallback()
+              }
+            },
+            'separator': '---------',
+            'saveFile': {
+              name: '数据下载',
+              callback: () => {
+                this.handleSaveFileCallback()
               }
             }
-          }
+          },
         },
         language: zhCN.languageCode,
         cells: (row, col, prop) => {
@@ -109,8 +133,13 @@ export default {
         show: false
       },
       selectedRange: null,
-      saveFileTitleModalVisible: false,
-      saveFileTitleInput: ''
+      saveFileModalVisible: false,
+      saveFileInput: '',
+      scaleModalVisible: false,
+      scaleInput: '',
+      sameIncreaseDecreaseModalVisible: false,
+      sameIncreaseDecreaseInput: '',
+      hotTableRandomKey: +new Date() + (Math.random() * 1000).toFixed(0)
     };
   },
   computed: {
@@ -423,16 +452,108 @@ export default {
       }
       this.$emit('moveDone', this.hotData)
     },
-    handleSaveFileTitleOK() {
+    handleSaveFileCallback() {
+      console.log('下载表格文件')
+      this.saveFileModalVisible = true
+      this.saveFileInput = ''
+    },
+    saveFile() {
+      this.saveFileModalVisible = false
       const exportFile = this.$refs.hotTableRef.hotInstance.getPlugin('exportFile')
       exportFile.downloadFile('csv', {
-        filename: this.saveFileTitleInput === '' ? '我的表格' : this.saveFileTitleInput,
+        filename: this.saveFileInput === '' ? '我的表格' : this.saveFileInput,
         exportHiddenRows: true,
         exportHiddenColumns: true,
         columnHeaders: true,
         rowHeaders: true
       })
-      this.saveFileTitleModalVisible = false
+    },
+    handleInterpolationCallback() {
+      let selectedRange = this.hotInstance.getSelectedRange()
+      if (selectedRange[0].from.row === -1) {
+        selectedRange[0].from.row = 0
+      }
+      const filed = this.columns[selectedRange[0].from.col].field
+      const firstData = +this.hotData[selectedRange[0].from.row][filed]
+      const endData = +this.hotData[selectedRange[0].to.row][filed]
+      const selectedMidRows = selectedRange[0].to.row - selectedRange[0].from.row
+      const stepNumber = Math.abs((endData - firstData) / selectedMidRows)
+      if (selectedRange && selectedRange.length > 0) {
+        if (selectedRange[0].from.col !== selectedRange[0].to.col) {
+          return
+        }
+        if (typeof firstData === 'number' && !isNaN(firstData)) {
+          console.log('内插')
+          if (firstData < endData) {
+            for (let i = 0; i < selectedMidRows - 1; i++) {
+              this.hotData[selectedRange[0].from.row + i + 1][filed] = +(firstData + stepNumber * (i + 1)).toFixed(2)
+            }
+          } else {
+            for (let i = 0; i < selectedMidRows - 1; i++) {
+              this.hotData[selectedRange[0].from.row + i + 1][filed] = +(firstData - stepNumber * (i + 1)).toFixed(2)
+            }
+          }
+          this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+        }
+      }
+    },
+    handleScaleCallback() {
+      let selectedRange = this.hotInstance.getSelectedRange()
+      if (selectedRange[0].from.row === -1) {
+        selectedRange[0].from.row = 0
+      }
+      const filed = this.columns[selectedRange[0].from.col].field
+      const firstData = +this.hotData[selectedRange[0].from.row][filed]
+      if (selectedRange && selectedRange.length > 0) {
+        if (selectedRange[0].from.col !== selectedRange[0].to.col) {
+          return
+        }
+        if (typeof firstData === 'number' && !isNaN(firstData)) {
+          console.log('倍比缩放')
+          this.scaleModalVisible = true
+          this.scaleInput = ''
+        }
+      }
+    },
+    scale() {
+      this.scaleModalVisible = false
+      let selectedRange = this.hotInstance.getSelectedRange()
+      const filed = this.columns[selectedRange[0].from.col].field
+      const stepNumber = selectedRange[0].to.row - selectedRange[0].from.row + 1
+      for (let i = 0; i < stepNumber; i++) {
+        this.hotData[selectedRange[0].from.row + i][filed] =
+            +(+this.hotData[selectedRange[0].from.row + i][filed] * +this.scaleInput).toFixed(2)
+      }
+      this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+    },
+    handleSameIncreaseDecreaseCallback() {
+      let selectedRange = this.hotInstance.getSelectedRange()
+      if (selectedRange[0].from.row === -1) {
+        selectedRange[0].from.row = 0
+      }
+      const filed = this.columns[selectedRange[0].from.col].field
+      const firstData = +this.hotData[selectedRange[0].from.row][filed]
+      if (selectedRange && selectedRange.length > 0) {
+        if (selectedRange[0].from.col !== selectedRange[0].to.col) {
+          return
+        }
+        if (typeof firstData === 'number' && !isNaN(firstData)) {
+          console.log('同增同减')
+          this.sameIncreaseDecreaseModalVisible = true
+          this.sameIncreaseDecreaseInput = ''
+        }
+      }
+    },
+    sameIncreaseDecrease() {
+      this.sameIncreaseDecreaseModalVisible = false
+      let selectedRange = this.hotInstance.getSelectedRange()
+      const filed = this.columns[selectedRange[0].from.col].field
+      const stepNumber = selectedRange[0].to.row - selectedRange[0].from.row + 1
+      for (let i = 0; i < stepNumber; i++) {
+        this.hotData[selectedRange[0].from.row + i][filed] =
+            +(+this.hotData[selectedRange[0].from.row + i][filed] + +this.sameIncreaseDecreaseInput).toFixed(2)
+      }
+      this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     }
   },
   watch: {
