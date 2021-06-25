@@ -1,31 +1,31 @@
 <template>
   <div>
-    <div v-if="time.periodType == 'HOUR'" class="hourDiv">
-      <a-date-picker v-model="time.bTime" type="date" />
+    <div v-if="localPeriodType == 'HOUR'" class="hourDiv">
+      <a-date-picker v-model="localBTime" type="date" :allow-clear="false"/>
       <a-select style="width: 120px" v-model="hour">
         <a-select-option v-for="h in hours" :key="h">
           {{ h }}时
         </a-select-option>
       </a-select>
     </div>
-    <div v-if="time.periodType == 'DAY'" class="dayDiv">
-      <a-month-picker v-model="time.bTime" type="date" />
+    <div v-if="localPeriodType == 'DAY'" class="dayDiv">
+      <a-month-picker v-model="localBTime" type="date" :allow-clear="false"/>
       <a-select style="width: 120px" v-model="day">
         <a-select-option v-for="d in days" :key="d">
           {{ d }}日
         </a-select-option>
       </a-select>
     </div>
-    <div v-if="time.periodType == 'TENDAY'" class="tendayDiv">
-      <a-month-picker v-model="time.bTime" type="date" />
+    <div v-if="localPeriodType == 'TENDAY'" class="tendayDiv">
+      <a-month-picker v-model="localBTime" type="date" :allow-clear="false"/>
       <a-select style="width: 120px" v-model="tenDay">
         <a-select-option v-for="td in tenDays" :key="td">
           {{ tenDaysTitle[td] }}
         </a-select-option>
       </a-select>
     </div>
-    <div v-if="time.periodType == 'MONTH'" class="monthDiv">
-      <a-month-picker v-model="time.bTime" type="date" />
+    <div v-if="localPeriodType == 'MONTH'" class="monthDiv">
+      <a-month-picker v-model="localBTime" type="date" :allow-clear="false"/>
     </div>
   </div>
 </template>
@@ -34,15 +34,19 @@ import moment from "moment";
 export default {
   name: "WpdTimePicker",
   props: {
-    form: {
-      type: Object,
+    bTime: {
+      type: Object, // moment对象
+      required: true,
+    },
+    periodType: {
+      type: String,
       required: true,
     },
   },
   data() {
     return {
-      time: {},
-      realTime: {},
+      localBTime: {},
+      localPeriodType: "",
 
       hour: 0,
       hours: [
@@ -85,76 +89,85 @@ export default {
     };
   },
   watch: {
-    form: {
+    bTime: {
       handler(nValue) {
-        this.time = Object.assign({}, nValue);
-        this.time.bTime = moment(this.time.bTime);
-        // 规整
-        switch (this.time.periodType) {
-          case "HOUR":
-            {
-              this.time.bTime.set("minute", 0).set("second", 0);
-            }
-            break;
-          case "DAY":
-            {
-              this.time.bTime
-                .set("hour", 0)
-                .set("minute", 0)
-                .set("second", 0);
-            }
-            break;
-          case "TENDAY":
-            {
-              this.time.bTime
-                .set("hour", 0)
-                .set("minute", 0)
-                .set("second", 0);
-            }
-            break;
-          case "MONTH":
-            {
-              this.time.bTime
-                .set("date", 1)
-                .set("hour", 0)
-                .set("minute", 0)
-                .set("second", 0);
-            }
-            break;
-          default:
-            break;
+        if (nValue) {
+          this.localBTime = moment(nValue);
+          this.localPeriodType = this.periodType;
+          switch (this.localPeriodType) {
+            case "HOUR":
+              {
+                this.localBTime.set("minute", 0).set("second", 0);
+              }
+              break;
+            case "DAY":
+              {
+                this.localBTime
+                  .set("hour", 0)
+                  .set("minute", 0)
+                  .set("second", 0);
+              }
+              break;
+            case "TENDAY":
+              {
+                this.localBTime
+                  .set("hour", 0)
+                  .set("minute", 0)
+                  .set("second", 0);
+              }
+              break;
+            case "MONTH":
+              {
+                this.localBTime
+                  .set("date", 1)
+                  .set("hour", 0)
+                  .set("minute", 0)
+                  .set("second", 0);
+              }
+              break;
+            default:
+              break;
+          }
         }
       },
       immediate: true,
       deep: true,
     },
-    time: {
+    periodType: {
       handler(nValue) {
-        // 选项
-        switch (nValue.periodType) {
+        if (nValue) {
+          this.localPeriodType = nValue;
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
+    localBTime: {
+      handler(nValue) {
+        switch (this.localPeriodType) {
           case "HOUR":
             {
-              this.hour = nValue.bTime.get("hour");
+              this.hour = nValue.get("hour");
             }
             break;
           case "DAY":
             {
-              this.days = moment(nValue.bTime).daysInMonth();
-              this.day = nValue.bTime.get("date");
+              this.days = moment(nValue).daysInMonth();
+              this.day = nValue.get("date");
             }
             break;
           case "TENDAY":
             {
-              const date = moment(nValue.bTime).date;
+              const date = moment(nValue).date;
               if (date < 11) {
                 this.tenDay = 1;
-                nValue.bTime.set("date", 1);
+                nValue.set("date", 1);
               } else if (date < 21) {
                 this.tenDay = 2;
-                nValue.bTime.set("date", 11);
+                nValue.set("date", 11);
               } else {
                 this.tenDay = 3;
-                nValue.bTime.set("date", 21);
+                nValue.set("date", 21);
               }
             }
             break;
@@ -165,32 +178,35 @@ export default {
           default:
             break;
         }
+        this.$emit("formChange", nValue);
       },
       immediate: true,
       deep: true,
     },
-
     hour(nValue) {
-      this.time.bTime.set("hour", nValue);
+      this.localBTime.set("hour", nValue);
+      this.$emit("formChange", this.localBTime);
     },
     day(nValue) {
-      this.time.bTime.set("date", nValue);
+      this.localBTime.set("date", nValue);
+      this.$emit("formChange", this.localBTime);
     },
     tenDay(nValue) {
       if (nValue === 1) {
-        this.time.bTime.set("date", 1);
+        this.localBTime.set("date", 1);
       } else if (nValue === 2) {
-        this.time.bTime.set("date", 11);
+        this.localBTime.set("date", 11);
       } else {
-        this.time.bTime.set("date", 21);
+        this.localBTime.set("date", 21);
       }
+      this.$emit("formChange", this.localBTime);
     },
   },
   methods: {
     moment,
-    getTime(){
-        return this.time
-    }
+    getTime() {
+      return this.localBTime;
+    },
   },
 };
 </script>

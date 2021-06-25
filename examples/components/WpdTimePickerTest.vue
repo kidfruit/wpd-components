@@ -2,32 +2,40 @@
   <div>
     小时
     <wpd-time-picker
-      :form="form1"
+      :bTime="form1.bTime"
+      :periodType="form1.periodType"
       ref="form1Ref"
+      @formChange="formChange"
       class="timePickerWrap"
     ></wpd-time-picker>
     <button @click="eTime1 = getETime('form1Ref')">获取结果</button>
     <div>{{ eTime1 }}</div>
     日
     <wpd-time-picker
-      :form="form2"
+      :bTime="form2.bTime"
+      :periodType="form2.periodType"
       ref="form2Ref"
+      @formChange="formChange"
       class="timePickerWrap"
     ></wpd-time-picker>
     <button @click="eTime2 = getETime('form2Ref')">获取结果</button>
     <div>{{ eTime2 }}</div>
     旬
     <wpd-time-picker
-      :form="form3"
+      :bTime="form3.bTime"
+      :periodType="form3.periodType"
       ref="form3Ref"
+      @formChange="formChange"
       class="timePickerWrap"
     ></wpd-time-picker>
     <button @click="eTime3 = getETime('form3Ref')">获取结果</button>
     <div>{{ eTime3 }}</div>
     月
     <wpd-time-picker
-      :form="form4"
+      :bTime="form4.bTime"
+      :periodType="form4.periodType"
       ref="form4Ref"
+      @formChange="formChange"
       class="timePickerWrap"
     ></wpd-time-picker>
     <button @click="eTime4 = getETime('form4Ref')">获取结果</button>
@@ -96,14 +104,19 @@ export default {
   },
   methods: {
     getETime(ref) {
-      const form_r = this.$refs.[ref]?.getTime();
+      const form_r = this.$refs?.[ref]?.getTime();
       if (form_r) {
         return WpdTimePickerUtile.indexTimeGet(
-          form_r,
+          form_r.bTime,
+          form_r.periodType,
+          form_r.periodTypeNum,
           form_r.periodNum
-        ).format("YYYY-MM-DD HH:mm:ss");
+        );
       }
       return "";
+    },
+    formChange(bTime) {
+      console.log(bTime);
     },
   },
 };
