@@ -8,11 +8,11 @@
       <h2>SimpleChart：数据格式为echarts标准格式（V-Chart封装，打包未成功！！）</h2>
       <simple-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
       <standard-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
     </div>
@@ -24,7 +24,7 @@
       <h2>ResultHydroDynamic：水动力成果展示组件</h2>
       <result-hydro-dynamic-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>ChartTableGroup：图表联动组件</h2>
       <chart-table-group-test />
     </div>
@@ -64,8 +64,8 @@
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
-    <div v-if="false">
-      <h2>SeriesCompareTest：通用过程线组合组件</h2>
+    <div v-if="true">
+      <h2>SeriesCompareTest：通用过程线多方案对比组件</h2>
       <series-compare-test />
     </div>
     <div v-if="false">
