@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-chart
+    <!-- <v-chart
       v-if="isVisible && isRefresh"
       :class="classNames"
       :option="option"
       :theme="theme"
       ref="chartRef"
-    />
+    /> -->
   </div>
 </template>
 <script>
@@ -18,7 +18,7 @@ import {
   TooltipComponent,
   LegendComponent,
 } from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
+// import VChart, { THEME_KEY } from "vue-echarts";
 
 use([
   CanvasRenderer,
@@ -65,7 +65,7 @@ export default {
     },
   },
   components: {
-    VChart,
+    // VChart,
   },
   beforeMount() {},
   mounted() {
