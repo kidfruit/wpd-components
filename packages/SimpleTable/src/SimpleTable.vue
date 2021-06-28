@@ -82,7 +82,7 @@ export default {
       randomKey: Math.random(),
       editCols: [],
       defaultHotSettings: {
-        manualRowMove: true,
+        manualRowMove: false,
         rowHeaders: false,
         colHeaders: true,
         autoColumnSize: true,
@@ -467,7 +467,6 @@ export default {
         columnHeaders: true,
         rowHeaders: true
       })
-      this.$emit('cellEditDone', this.hotData)
     },
     handleInterpolationCallback() {
       let selectedRange = this.hotInstance.getSelectedRange()
@@ -479,12 +478,12 @@ export default {
       const endData = +this.hotData[selectedRange[0].to.row][filed]
       const selectedMidRows = selectedRange[0].to.row - selectedRange[0].from.row
       const stepNumber = Math.abs((endData - firstData) / selectedMidRows)
-      const currentCol = selectedRange[0].from.col
+      const rowIndex = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
-        if (currentCol !== selectedRange[0].to.col) {
+        if (rowIndex !== selectedRange[0].to.col) {
           return
         }
-        if (this.tableColumns[currentCol].readOnly === true) {
+        if (this.tableColumns[rowIndex].readOnly === true) {
           return
         }
         if (typeof this.hotData[selectedRange[0].from.row][filed] === 'boolean') {
@@ -494,15 +493,30 @@ export default {
           console.log('内插')
           if (firstData < endData) {
             for (let i = 0; i < selectedMidRows - 1; i++) {
-              this.hotData[selectedRange[0].from.row + i + 1][filed] = +(firstData + stepNumber * (i + 1)).toFixed(2)
+              const newValue = +(firstData + stepNumber * (i + 1)).toFixed(2)
+              const oldValue = this.hotData[selectedRange[0].from.row + i + 1][filed]
+              this.$emit('cellEditDone', {
+                rowIndex,
+                filed,
+                newValue,
+                oldValue
+              })
+              this.hotData[selectedRange[0].from.row + i + 1][filed] = newValue
             }
           } else {
             for (let i = 0; i < selectedMidRows - 1; i++) {
-              this.hotData[selectedRange[0].from.row + i + 1][filed] = +(firstData - stepNumber * (i + 1)).toFixed(2)
+              const newValue = +(firstData - stepNumber * (i + 1)).toFixed(2)
+              const oldValue = this.hotData[selectedRange[0].from.row + i + 1][filed]
+              this.$emit('cellEditDone', {
+                rowIndex,
+                filed,
+                newValue,
+                oldValue
+              })
+              this.hotData[selectedRange[0].from.row + i + 1][filed] = newValue
             }
           }
           this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
-          this.$emit('cellEditDone', this.hotData)
         }
       }
     },
@@ -513,12 +527,12 @@ export default {
       }
       const filed = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][filed]
-      const currentCol = selectedRange[0].from.col
+      const rowIndex = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
-        if (currentCol !== selectedRange[0].to.col) {
+        if (rowIndex !== selectedRange[0].to.col) {
           return
         }
-        if (this.tableColumns[currentCol].readOnly === true) {
+        if (this.tableColumns[rowIndex].readOnly === true) {
           return
         }
         if (typeof this.hotData[selectedRange[0].from.row][filed] === 'boolean') {
@@ -534,14 +548,21 @@ export default {
     scale() {
       this.scaleModalVisible = false
       let selectedRange = this.hotInstance.getSelectedRange()
+      const rowIndex = selectedRange[0].from.col
       const filed = this.columns[selectedRange[0].from.col].field
       const stepNumber = selectedRange[0].to.row - selectedRange[0].from.row + 1
       for (let i = 0; i < stepNumber; i++) {
-        this.hotData[selectedRange[0].from.row + i][filed] =
-            +(+this.hotData[selectedRange[0].from.row + i][filed] * +this.scaleInput).toFixed(2)
+        const newValue = +(+this.hotData[selectedRange[0].from.row + i][filed] * +this.scaleInput).toFixed(2)
+        const oldValue = this.hotData[selectedRange[0].from.row + i][filed]
+        this.$emit('cellEditDone', {
+          rowIndex,
+          filed,
+          newValue,
+          oldValue
+        })
+        this.hotData[selectedRange[0].from.row + i][filed] = newValue
       }
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
-      this.$emit('cellEditDone', this.hotData)
     },
     handleSameIncreaseDecreaseCallback() {
       let selectedRange = this.hotInstance.getSelectedRange()
@@ -550,12 +571,12 @@ export default {
       }
       const filed = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][filed]
-      const currentCol = selectedRange[0].from.col
+      const rowIndex = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
-        if (currentCol !== selectedRange[0].to.col) {
+        if (rowIndex !== selectedRange[0].to.col) {
           return
         }
-        if (this.tableColumns[currentCol].readOnly === true) {
+        if (this.tableColumns[rowIndex].readOnly === true) {
           return
         }
         if (typeof this.hotData[selectedRange[0].from.row][filed] === 'boolean') {
@@ -571,14 +592,21 @@ export default {
     sameIncreaseDecrease() {
       this.sameIncreaseDecreaseModalVisible = false
       let selectedRange = this.hotInstance.getSelectedRange()
+      const rowIndex = selectedRange[0].from.col
       const filed = this.columns[selectedRange[0].from.col].field
       const stepNumber = selectedRange[0].to.row - selectedRange[0].from.row + 1
       for (let i = 0; i < stepNumber; i++) {
-        this.hotData[selectedRange[0].from.row + i][filed] =
-            +(+this.hotData[selectedRange[0].from.row + i][filed] + +this.sameIncreaseDecreaseInput).toFixed(2)
+        const newValue = +(+this.hotData[selectedRange[0].from.row + i][filed] + +this.sameIncreaseDecreaseInput).toFixed(2)
+        const oldValue = this.hotData[selectedRange[0].from.row + i][filed]
+        this.$emit('cellEditDone', {
+          rowIndex,
+          filed,
+          newValue,
+          oldValue
+        })
+        this.hotData[selectedRange[0].from.row + i][filed] = newValue
       }
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
-      this.$emit('cellEditDone', this.hotData)
     }
   },
   watch: {
