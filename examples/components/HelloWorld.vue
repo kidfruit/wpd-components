@@ -12,7 +12,7 @@
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
       <standard-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
     </div>
@@ -76,6 +76,10 @@
       <h2>ChartsSingleTest:多echarts单值图对比组件</h2>
       <charts-single-test />
     </div>
+    <div v-if="true">
+      <h2>WpdTimePickerTest:时间控件</h2>
+      <wpd-time-picker-test />
+    </div>
   </div>
 </template>
 
@@ -101,6 +105,7 @@ import SeriesResultTest from './SeriesResultTest.vue';
 import SeriesCompareTest from './SeriesCompareTest.vue';
 import ChartsProcessTest from './ChartsProcessTest.vue';
 import ChartsSingleTest from './ChartsSingleTest.vue';
+import WpdTimePickerTest from './WpdTimePickerTest.vue';
 
 export default {
   components: {
@@ -124,7 +129,8 @@ export default {
     SeriesResultTest,
     SeriesCompareTest,
     ChartsProcessTest,
-    ChartsSingleTest
+    ChartsSingleTest,
+    WpdTimePickerTest
   },
   name: 'HelloWorld',
   methods: {
@@ -138,5 +144,8 @@ export default {
 <style scoped>
 h2 {
   color: orange;
+}
+.about{
+  min-height: 500px;
 }
 </style>
