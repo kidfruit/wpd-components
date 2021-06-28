@@ -8,28 +8,23 @@ export default {
     switch (periodType) {
       case "SECOND":
         result = bTime
-          .add(Number(periodTypeNum) * Number(index), "seconds")
-          .format("YYYY-MM-DD HH:mm:ss");
+          .add(Number(periodTypeNum) * Number(index), "seconds");
         break;
       case "MINUTE":
         result = bTime
-          .add(Number(periodTypeNum) * Number(index), "minutes")
-          .format("YYYY-MM-DD HH:mm");
+          .add(Number(periodTypeNum) * Number(index), "minutes");
         break;
       case "HOUR":
         result = bTime
-          .add(Number(periodTypeNum) * Number(index), "hours")
-          .format("YYYY-MM-DD HH");
+          .add(Number(periodTypeNum) * Number(index), "hours");
         break;
       case "DAY":
         result = bTime
-          .add(Number(periodTypeNum) * Number(index), "days")
-          .format("YYYY-MM-DD");
+          .add(Number(periodTypeNum) * Number(index), "days");
         break;
       case "WEEK":
         result = bTime
-          .add(Number(periodTypeNum) * Number(index), "weeks")
-          .format("YYYY-MM-DD");
+          .add(Number(periodTypeNum) * Number(index), "weeks");
         break;
       case "TENDAY":
         {
@@ -56,35 +51,31 @@ export default {
             }
           }
 
-          let text = "下旬";
-          console.log(result.get("date"));
-          switch (result.get("date")) {
-            case 1:
-              text = "上旬";
-              break;
-            case 11:
-              text = "中旬";
-              break;
-            default:
-              break;
-          }
-          result = result.format("YYYY-MM") + " " + text;
+          // let text = "下旬";
+          // switch (result.get("date")) {
+          //   case 1:
+          //     text = "上旬";
+          //     break;
+          //   case 11:
+          //     text = "中旬";
+          //     break;
+          //   default:
+          //     break;
+          // }
+          // result = result.format("YYYY-MM-DD");
         }
         break;
       case "MONTH":
         result = bTime
-          .add(Number(periodTypeNum) * Number(index), "months")
-          .format("YYYY-MM");
+          .add(Number(periodTypeNum) * Number(index), "months");
         break;
       case "SEASON":
         result = bTime
-          .add(Number(periodTypeNum) * Number(index), "quarters")
-          .format("YYYY-MM");
+          .add(Number(periodTypeNum) * Number(index), "quarters");
         break;
       case "YEAR":
         result = bTime
-          .add(Number(periodTypeNum) * Number(index), "years")
-          .format("YYYY");
+          .add(Number(periodTypeNum) * Number(index), "years");
         break;
       case "NONE":
         result = bTime;
