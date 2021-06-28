@@ -453,7 +453,7 @@ export default {
       this.$emit('moveDone', this.hotData)
     },
     handleSaveFileCallback() {
-      console.log('下载表格文件')
+      console.log('数据下载')
       this.saveFileModalVisible = true
       this.saveFileInput = ''
     },
@@ -467,6 +467,7 @@ export default {
         columnHeaders: true,
         rowHeaders: true
       })
+      this.$emit('cellEditDone', this.hotData)
     },
     handleInterpolationCallback() {
       let selectedRange = this.hotInstance.getSelectedRange()
@@ -478,8 +479,15 @@ export default {
       const endData = +this.hotData[selectedRange[0].to.row][filed]
       const selectedMidRows = selectedRange[0].to.row - selectedRange[0].from.row
       const stepNumber = Math.abs((endData - firstData) / selectedMidRows)
+      const currentCol = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
-        if (selectedRange[0].from.col !== selectedRange[0].to.col) {
+        if (currentCol !== selectedRange[0].to.col) {
+          return
+        }
+        if (this.tableColumns[currentCol].readOnly === true) {
+          return
+        }
+        if (typeof this.hotData[selectedRange[0].from.row][filed] === 'boolean') {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
@@ -494,6 +502,7 @@ export default {
             }
           }
           this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+          this.$emit('cellEditDone', this.hotData)
         }
       }
     },
@@ -504,8 +513,15 @@ export default {
       }
       const filed = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][filed]
+      const currentCol = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
-        if (selectedRange[0].from.col !== selectedRange[0].to.col) {
+        if (currentCol !== selectedRange[0].to.col) {
+          return
+        }
+        if (this.tableColumns[currentCol].readOnly === true) {
+          return
+        }
+        if (typeof this.hotData[selectedRange[0].from.row][filed] === 'boolean') {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
@@ -525,6 +541,7 @@ export default {
             +(+this.hotData[selectedRange[0].from.row + i][filed] * +this.scaleInput).toFixed(2)
       }
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.$emit('cellEditDone', this.hotData)
     },
     handleSameIncreaseDecreaseCallback() {
       let selectedRange = this.hotInstance.getSelectedRange()
@@ -533,8 +550,15 @@ export default {
       }
       const filed = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][filed]
+      const currentCol = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
-        if (selectedRange[0].from.col !== selectedRange[0].to.col) {
+        if (currentCol !== selectedRange[0].to.col) {
+          return
+        }
+        if (this.tableColumns[currentCol].readOnly === true) {
+          return
+        }
+        if (typeof this.hotData[selectedRange[0].from.row][filed] === 'boolean') {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
@@ -554,6 +578,7 @@ export default {
             +(+this.hotData[selectedRange[0].from.row + i][filed] + +this.sameIncreaseDecreaseInput).toFixed(2)
       }
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.$emit('cellEditDone', this.hotData)
     }
   },
   watch: {
