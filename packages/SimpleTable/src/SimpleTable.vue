@@ -82,7 +82,7 @@ export default {
       randomKey: Math.random(),
       editCols: [],
       defaultHotSettings: {
-        manualRowMove: true,
+        manualRowMove: false,
         rowHeaders: false,
         colHeaders: true,
         autoColumnSize: true,
@@ -453,7 +453,7 @@ export default {
       this.$emit('moveDone', this.hotData)
     },
     handleSaveFileCallback() {
-      console.log('下载表格文件')
+      console.log('数据下载')
       this.saveFileModalVisible = true
       this.saveFileInput = ''
     },
@@ -473,24 +473,53 @@ export default {
       if (selectedRange[0].from.row === -1) {
         selectedRange[0].from.row = 0
       }
-      const filed = this.columns[selectedRange[0].from.col].field
-      const firstData = +this.hotData[selectedRange[0].from.row][filed]
-      const endData = +this.hotData[selectedRange[0].to.row][filed]
+      const field = this.columns[selectedRange[0].from.col].field
+      const firstData = +this.hotData[selectedRange[0].from.row][field]
+      const endData = +this.hotData[selectedRange[0].to.row][field]
       const selectedMidRows = selectedRange[0].to.row - selectedRange[0].from.row
       const stepNumber = Math.abs((endData - firstData) / selectedMidRows)
+      const currentCol = selectedRange[0].from.col
+      const firstRow = selectedRange[0].from.row
       if (selectedRange && selectedRange.length > 0) {
-        if (selectedRange[0].from.col !== selectedRange[0].to.col) {
+        if (currentCol !== selectedRange[0].to.col) {
+          return
+        }
+        if (this.tableColumns[currentCol].readOnly === true) {
+          return
+        }
+        if (typeof this.hotData[selectedRange[0].from.row][field] === 'boolean') {
+          return
+        }
+        if (firstRow < this.splitIndex) {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
           console.log('内插')
           if (firstData < endData) {
             for (let i = 0; i < selectedMidRows - 1; i++) {
-              this.hotData[selectedRange[0].from.row + i + 1][filed] = +(firstData + stepNumber * (i + 1)).toFixed(2)
+              const newValue = +(firstData + stepNumber * (i + 1)).toFixed(2)
+              const oldValue = this.hotData[selectedRange[0].from.row + i + 1][field]
+              const rowIndex = selectedRange[0].from.row + i + 1
+              this.$emit('cellEditDone', {
+                rowIndex,
+                field,
+                newValue,
+                oldValue
+              })
+              this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
             }
           } else {
             for (let i = 0; i < selectedMidRows - 1; i++) {
-              this.hotData[selectedRange[0].from.row + i + 1][filed] = +(firstData - stepNumber * (i + 1)).toFixed(2)
+              const newValue = +(firstData - stepNumber * (i + 1)).toFixed(2)
+              const oldValue = this.hotData[selectedRange[0].from.row + i + 1][field]
+              const rowIndex = selectedRange[0].from.row + i + 1
+              this.$emit('cellEditDone', {
+                rowIndex,
+                field,
+                newValue,
+                oldValue
+              })
+              this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
             }
           }
           this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
@@ -502,10 +531,21 @@ export default {
       if (selectedRange[0].from.row === -1) {
         selectedRange[0].from.row = 0
       }
-      const filed = this.columns[selectedRange[0].from.col].field
-      const firstData = +this.hotData[selectedRange[0].from.row][filed]
+      const field = this.columns[selectedRange[0].from.col].field
+      const firstData = +this.hotData[selectedRange[0].from.row][field]
+      const currentCol = selectedRange[0].from.col
+      const firstRow = selectedRange[0].from.row
       if (selectedRange && selectedRange.length > 0) {
-        if (selectedRange[0].from.col !== selectedRange[0].to.col) {
+        if (currentCol !== selectedRange[0].to.col) {
+          return
+        }
+        if (this.tableColumns[currentCol].readOnly === true) {
+          return
+        }
+        if (typeof this.hotData[selectedRange[0].from.row][field] === 'boolean') {
+          return
+        }
+        if (firstRow < this.splitIndex) {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
@@ -518,11 +558,19 @@ export default {
     scale() {
       this.scaleModalVisible = false
       let selectedRange = this.hotInstance.getSelectedRange()
-      const filed = this.columns[selectedRange[0].from.col].field
+      const field = this.columns[selectedRange[0].from.col].field
       const stepNumber = selectedRange[0].to.row - selectedRange[0].from.row + 1
       for (let i = 0; i < stepNumber; i++) {
-        this.hotData[selectedRange[0].from.row + i][filed] =
-            +(+this.hotData[selectedRange[0].from.row + i][filed] * +this.scaleInput).toFixed(2)
+        const newValue = +(+this.hotData[selectedRange[0].from.row + i][field] * +this.scaleInput).toFixed(2)
+        const oldValue = this.hotData[selectedRange[0].from.row + i][field]
+        const rowIndex = selectedRange[0].from.row + i
+        this.$emit('cellEditDone', {
+          rowIndex,
+          field,
+          newValue,
+          oldValue
+        })
+        this.hotData[selectedRange[0].from.row + i][field] = newValue
       }
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
@@ -531,10 +579,21 @@ export default {
       if (selectedRange[0].from.row === -1) {
         selectedRange[0].from.row = 0
       }
-      const filed = this.columns[selectedRange[0].from.col].field
-      const firstData = +this.hotData[selectedRange[0].from.row][filed]
+      const field = this.columns[selectedRange[0].from.col].field
+      const firstData = +this.hotData[selectedRange[0].from.row][field]
+      const currentCol = selectedRange[0].from.col
+      const firstRow = selectedRange[0].from.row
       if (selectedRange && selectedRange.length > 0) {
-        if (selectedRange[0].from.col !== selectedRange[0].to.col) {
+        if (currentCol !== selectedRange[0].to.col) {
+          return
+        }
+        if (this.tableColumns[currentCol].readOnly === true) {
+          return
+        }
+        if (typeof this.hotData[selectedRange[0].from.row][field] === 'boolean') {
+          return
+        }
+        if (firstRow < this.splitIndex) {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
@@ -547,11 +606,19 @@ export default {
     sameIncreaseDecrease() {
       this.sameIncreaseDecreaseModalVisible = false
       let selectedRange = this.hotInstance.getSelectedRange()
-      const filed = this.columns[selectedRange[0].from.col].field
+      const field = this.columns[selectedRange[0].from.col].field
       const stepNumber = selectedRange[0].to.row - selectedRange[0].from.row + 1
       for (let i = 0; i < stepNumber; i++) {
-        this.hotData[selectedRange[0].from.row + i][filed] =
-            +(+this.hotData[selectedRange[0].from.row + i][filed] + +this.sameIncreaseDecreaseInput).toFixed(2)
+        const newValue = +(+this.hotData[selectedRange[0].from.row + i][field] + +this.sameIncreaseDecreaseInput).toFixed(2)
+        const oldValue = this.hotData[selectedRange[0].from.row + i][field]
+        const rowIndex = selectedRange[0].from.row + i
+        this.$emit('cellEditDone', {
+          rowIndex,
+          field,
+          newValue,
+          oldValue
+        })
+        this.hotData[selectedRange[0].from.row + i][field] = newValue
       }
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     }

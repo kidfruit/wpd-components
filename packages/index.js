@@ -17,9 +17,14 @@ import SeriesResult from "./SeriesResult/src/SeriesResult.vue";
 import SeriesCompare from "./SeriesCompare/src/SeriesCompare.vue";
 import ChartsProcess from "./ChartsProcess/src/ChartsProcess.vue";
 import ChartsSingle from "./ChartsSingle/src/ChartsSingle.vue";
+import WpdTimePicker from "./WpdTimePicker/src/WpdTimePicker.vue";
+
 import testDirective from "./testDirective/src/testDirective";
+import WpdTimePickerUtile from "./WpdTimePickerUtile/src/WpdTimePickerUtile";
+
 import MultiOptionTable from "./MultiOptionTable/src/MultiOptionTable.vue";
 import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGroup.vue";
+
 
 
 // 存储组件列表
@@ -43,21 +48,23 @@ const components = [
   SeriesResult,
   SeriesCompare,
   ChartsProcess,
-  ChartsSingle
+  ChartsSingle,
+  WpdTimePicker,
 ];
 
 // 存储指令映射
 export const directives = {
-  testDirective
+  testDirective,
+  WpdTimePickerUtile,
 };
 
 // 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
-const install = function (Vue) {
+const install = function(Vue) {
   // 遍历注册全局组件
-  components.map(component => Vue.component(component.name, component));
+  components.map((component) => Vue.component(component.name, component));
 
   // 遍历注册指令
-  Reflect.ownKeys(directives).map(name =>
+  Reflect.ownKeys(directives).map((name) =>
     Vue.directive(name, directives[name])
   );
 };
@@ -91,6 +98,7 @@ export default {
   SeriesCompare,
   ChartsProcess,
   ChartsSingle,
+  WpdTimePicker,
 
-  ...directives
+  ...directives,
 };
