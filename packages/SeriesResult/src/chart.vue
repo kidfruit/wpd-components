@@ -224,6 +224,7 @@ export default {
               ? yx.selected
               : true
         })
+        option.legend = Object.assign(option.legend,this.chartAxis.legend)
       }
 
       //data
