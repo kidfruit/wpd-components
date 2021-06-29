@@ -1,14 +1,27 @@
 <template>
-  <div class="scheme-comparison-chart">
+  <div class="scheme-comparison-chart" :key="schemeComparisonKey">
     <div class="scheme-comparison-single-chart">
-      <Chart
-        ref="singleChar"
-        :classes="singleClassNames"
-        :chartOption="singleChartOption"
-        :chartAxis="singleChartAxis"
-        :chartData="singleChartData"
-        :id="singleChartId"
-      />
+      <div class="single-chart-switch">
+        <a-select v-model="singleChartTargetIndex">
+          <a-select-option
+              v-for="(title, i) in singleChartTitles"
+              :value="i"
+              :key="i"
+          >
+            {{ title }}
+          </a-select-option>
+        </a-select>
+      </div>
+      <div class="single-chart-content">
+        <Chart
+            ref="singleChar"
+            :classes="singleClassNames"
+            :chartOption="singleChartOption"
+            :chartAxis="singleChartAxis"
+            :chartData="singleChartData"
+            :id="singleChartId"
+        />
+      </div>
     </div>
     <div class="scheme-comparison-process-chart">
       <div class="process-chart-switch">
@@ -30,7 +43,6 @@
             :chartAxis="processChartAxis"
             :chartData="processChartData"
             :id="processChartId"
-            :key="processChartKey"
         />
       </div>
     </div>
@@ -51,44 +63,16 @@ export default {
   },
   data: function () {
     return {
+      schemeComparisonKey: +new Date() + (Math.random() * 1000).toFixed(0),
       singleClassNames: ['single-chart'],
       singleChartOption: {
         title: {
           text: '单值图',
           left: 'center'
-        },
-        tooltip: {
-          trigger: 'axis',
-          formatter: (params) => {
-            let list = []
-            params.map((i) => {
-              i.key = this.singleChartData[i.dataIndex]
-              if (
-                  !list.find(
-                      (j) => i.value === j.value && i.seriesName === j.seriesName
-                  )
-              ) {
-
-                list.push(i)
-              }
-            })
-            return list
-                .map((item) => {
-                  if (item.value === null || item.value === '-') return ''
-                  else
-                    return (
-                        item.marker +
-                        item.key.name +
-                        `<b style="margin-left:5px;">${item.value}</b>`
-                    )
-                })
-                .filter((i) => i)
-                .join('<br />')
-          }
         }
       },
       singleChartAxis: {
-        xAxis: 'index',
+        xAxis: 'name',
         yAxis: [{
           type: 'value',
           axisLabel: {
@@ -126,43 +110,19 @@ export default {
           top: 30
         }
       },
-      singleChartData: [
+      singleChartAllData: [
         //  数据结构
         // {index: 0, singleValue1: 2500, singleValue2: 46, name: '水库出库最大值',  key: 'outQMax',}
       ],
+      singleChartData: [],
+      singleChartTargetIndex: 0,
+      singleChartTitles: [],
       singleChartId: +new Date() + (Math.random() * 1000).toFixed(0),
       processClassNames: ['process-chart'],
       processChartOption: {
         title: {
           text: '过程图',
           left: 'center'
-        },
-        tooltip: {
-          trigger: 'axis',
-          formatter: (params) => {
-            let list = []
-            params.map((i) => {
-              if (
-                  !list.find(
-                      (j) => i.value === j.value && i.seriesName === j.seriesName
-                  )
-              ) {
-                list.push(i)
-              }
-            })
-            return list
-                .map((item) => {
-                  if (item.value === null || item.value === '-') return ''
-                  else
-                    return (
-                        item.marker +
-                        this.processChartTitles[this.processChartTargetIndex] +
-                        `<b style="margin-left:10px;">${item.value}</b>`
-                    )
-                })
-                .filter((i) => i)
-                .join('<br />')
-          }
         }
       },
       processChartAxis: {
@@ -210,17 +170,20 @@ export default {
       processChartData: [],
       processChartTitles: [],
       processChartId: +new Date() + (Math.random() * 1000).toFixed(0),
-      processChartKey: +new Date() + (Math.random() * 1000).toFixed(0)
     }
   },
-  created() {
-    // 单值数据预处理
-    this.initSingleChart()
-
-    // 过程数据预处理
-    this.initProcessChart()
-  },
   watch: {
+    singleChartTargetIndex: {
+      immediate: true,
+      deep: true,
+      handler(targetIndex) {
+        this.singleChartData = []
+        this.singleChartAllData = []
+        this.singleChartTitles = []
+        this.initSingleChart()
+        this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      }
+    },
     processChartTargetIndex: {
       immediate: true,
       deep: true,
@@ -230,7 +193,7 @@ export default {
         this.processChartCurrentData = {}
         this.processChartTitles = []
         this.initProcessChart()
-        this.processChartKey = +new Date() + (Math.random() * 1000).toFixed(0)
+        this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
     }
   },
@@ -243,7 +206,6 @@ export default {
       singleData1.forEach(item => {
         if (typeof item.value === 'number') {
           singleChartData1.push({
-            index: singleChartData1.length + 1,
             singleValue1: item.value,
             name: item.name,
             key: item.key
@@ -254,7 +216,6 @@ export default {
       singleData2.forEach(item => {
         if (typeof item.value === 'number') {
           singleChartData2.push({
-            index: singleChartData2.length + 1,
             singleValue2: item.value,
             name: item.name,
             key: item.key
@@ -265,11 +226,17 @@ export default {
       singleChartData1.forEach(i => {
         singleChartData2.forEach(j => {
           if (i.key === j.key) {
-            this.singleChartData.push(lodash.merge(i, j))
+            this.singleChartAllData.push(lodash.merge(i, j))
           }
         })
       })
-      // console.log(this.singleChartData)
+      // console.log(this.singleChartAllData)
+
+      this.singleChartAllData.forEach(item => {
+        this.singleChartTitles.push(item.name)
+      })
+
+      this.singleChartData = [this.singleChartAllData[this.singleChartTargetIndex]]
     },
     initProcessChart() {
       const processData1 = this.schemeComparisonData[0].value.process
@@ -340,11 +307,14 @@ export default {
 .scheme-comparison-chart {
   width: 100%;
   .scheme-comparison-single-chart {
-    width: 100%;
+    width: 500px;
     float: left;
+    .single-chart-switch {
+      margin-bottom: 10px;
+    }
   }
   .scheme-comparison-process-chart {
-    width: 100%;
+    width: calc(100% - 500px);
     float: left;
     .process-chart-switch {
       margin-bottom: 10px;
