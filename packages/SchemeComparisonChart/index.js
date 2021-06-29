@@ -1,5 +1,5 @@
 // 引入组件
-import SchemeComparisonChart from './SchemeComparisonChart'
+import SchemeComparisonChart from './SchemeComparisonChart/src'
 SchemeComparisonChart.install = Vue => Vue.component(SchemeComparisonChart.name, SchemeComparisonChart)
 
 if (typeof window !== 'undefined' && window.Vue) {
