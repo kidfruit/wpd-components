@@ -88,6 +88,10 @@
       <h2>StatusInfoCompTest：信息展示控件</h2>
       <StatusInfoCompTest/>
     </div>
+    <div v-if="true">
+      <h2>SelectAndSortCompTest: 选择与排序控件</h2>
+      <SelectAndSortCompTest/>
+    </div>
   </div>
 </template>
 
@@ -116,6 +120,7 @@ import ChartsSingleTest from './ChartsSingleTest.vue';
 import WpdTimePickerTest from './WpdTimePickerTest.vue';
 import SchemeComparisonChartTest from "./SchemeComparisonChartTest";
 import StatusInfoCompTest from "@/components/StatusInfoCompTest";
+import SelectAndSortCompTest from "@/components/SelectAndSortCompTest";
 export default {
   components: {
     TableChartTest,
@@ -141,7 +146,8 @@ export default {
     ChartsSingleTest,
     WpdTimePickerTest,
     SchemeComparisonChartTest,
-    StatusInfoCompTest
+    StatusInfoCompTest,
+    SelectAndSortCompTest
   },
   name: 'HelloWorld',
   methods: {
