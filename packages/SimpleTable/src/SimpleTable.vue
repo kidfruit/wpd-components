@@ -127,7 +127,8 @@ export default {
             cellProperties = { className: 'preheat-rows', readOnly: true };
           }
           return cellProperties;
-        }
+        },
+        afterOnCellCornerDblClick: this.afterOnCellCornerDblClick,
       },
       preheat: {
         show: false
@@ -413,6 +414,9 @@ export default {
     moveUp() {
       let selectedRange = this.hotInstance.getSelectedRange()
       let selectedArray = []
+      if (selectedRange[0].from.row === -1) {
+        selectedRange[0].from.row = 0
+      }
       if (selectedRange && selectedRange.length > 0) {
         // selected框
         if (selectedRange[0].from.row === 0) {
@@ -621,6 +625,50 @@ export default {
         this.hotData[selectedRange[0].from.row + i][field] = newValue
       }
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+    },
+    afterOnCellCornerDblClick() {
+      let selectedRange = this.hotInstance.getSelectedRange()
+      if (selectedRange[0].from.row === -1) {
+        selectedRange[0].from.row = 0
+      }
+      const currentCol = selectedRange[0].from.col
+      const currentRow = selectedRange[0].from.row
+      const field = this.columns[selectedRange[0].from.col].field
+      const currentData = +this.hotData[selectedRange[0].from.row][field]
+      const rowLength = this.hotInstance.getData().length
+      if (selectedRange && selectedRange.length > 0) {
+        if (currentCol !== selectedRange[0].to.col) {
+          return
+        }
+        if (currentRow !== selectedRange[0].to.row) {
+          return
+        }
+        if (this.tableColumns[currentCol].readOnly === true) {
+          return
+        }
+        if (typeof this.hotData[selectedRange[0].from.row][field] === 'boolean') {
+          return
+        }
+        if (currentRow < this.splitIndex) {
+          return
+        }
+        if (typeof currentData === 'number' && !isNaN(currentData)) {
+          console.log('afterOnCellCornerDblClick')
+          for (let i = 0; i < rowLength - currentRow - 1; i++) {
+            const oldValue = this.hotData[selectedRange[0].from.row + i + 1][field]
+            const newValue = currentData
+            const rowIndex = selectedRange[0].from.row + i + 1
+            this.$emit('cellEditDone', {
+              rowIndex,
+              field,
+              newValue,
+              oldValue
+            })
+            this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
+          }
+        }
+        this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      }
     }
   },
   watch: {
