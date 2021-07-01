@@ -60,7 +60,7 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
@@ -68,7 +68,7 @@
       <h2>SeriesCompareTest：通用过程线多方案对比组件</h2>
       <series-compare-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SchemeComparison:方案对比-单值-过程</h2>
       <SchemeComparisonChartTest/>
     </div>
@@ -84,9 +84,13 @@
       <h2>WpdTimePickerTest:时间控件</h2>
       <wpd-time-picker-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>StatusInfoCompTest：信息展示控件</h2>
       <StatusInfoCompTest/>
+    </div>
+    <div v-if="false">
+      <h2>SelectAndSortCompTest: 选择与排序控件</h2>
+      <SelectAndSortCompTest/>
     </div>
   </div>
 </template>
@@ -116,6 +120,7 @@ import ChartsSingleTest from './ChartsSingleTest.vue';
 import WpdTimePickerTest from './WpdTimePickerTest.vue';
 import SchemeComparisonChartTest from "./SchemeComparisonChartTest";
 import StatusInfoCompTest from "@/components/StatusInfoCompTest";
+import SelectAndSortCompTest from "@/components/SelectAndSortCompTest";
 export default {
   components: {
     TableChartTest,
@@ -141,7 +146,8 @@ export default {
     ChartsSingleTest,
     WpdTimePickerTest,
     SchemeComparisonChartTest,
-    StatusInfoCompTest
+    StatusInfoCompTest,
+    SelectAndSortCompTest
   },
   name: 'HelloWorld',
   methods: {

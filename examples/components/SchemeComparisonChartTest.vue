@@ -1,9 +1,10 @@
 <template>
   <div style="width: 100%;">
     <SchemeComparisonChart
+      ref="schemeComparison"
       :schemeComparisonData="schemeComparisonData"
-      :isRefresh="isRefresh"
     />
+    <button @click="update">刷新</button>
   </div>
 </template>
 
@@ -17,6 +18,11 @@ export default {
     return {
       schemeComparisonData,
       isRefresh: true,
+    }
+  },
+  methods: {
+    update() {
+      this.$refs.schemeComparison.updateChart()
     }
   }
 }

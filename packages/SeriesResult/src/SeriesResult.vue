@@ -21,6 +21,7 @@
     </div>
     <div class="table-box">
       <simple-table ref="tableRef"
+                    :targetChartIndex="targetChartIndex"
                     :splitIndex="splitIndex"
                     :tableData="newTableData"
                     :setting="setting"

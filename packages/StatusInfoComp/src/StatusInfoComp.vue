@@ -6,6 +6,7 @@
         <div class="status-info-kpi-name">{{j.name}}</div>
         <div class="status-info-kpi-value" :style="{backgroundColor: j.color}">{{j.value}}</div>
       </div>
+      ；
     </div>
   </div>
 </template>
@@ -68,7 +69,7 @@ export default {
       flex-direction: row;
       justify-content: left;
       align-items: center;
-      margin-right: 15px;
+      margin-right: 10px;
       .status-info-kpi-name {
         margin-right: 5px;
       }
