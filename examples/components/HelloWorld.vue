@@ -84,11 +84,11 @@
       <h2>WpdTimePickerTest:时间控件</h2>
       <wpd-time-picker-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>StatusInfoCompTest：信息展示控件</h2>
       <StatusInfoCompTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>
