@@ -214,7 +214,7 @@ export default {
           textStyle: { fontSize: 14 },
           data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
         }
-        console.log("positionMaps[legendList[i].showType.split('-')[1]]",positionMaps)
+        //console.log("positionMaps[legendList[i].showType.split('-')[1]]",positionMaps)
         let leftRight = positionMaps[legendList[i].showType.split('-')[1]]
         if (leftRight === 'left') {
           obj = Object.assign({}, obj, {
@@ -239,7 +239,7 @@ export default {
       )
       
       yAxisList = uniqueObj(yAxisList, 'showType')
-      console.log("555555555555555",yAxisList)
+      //console.log("555555555555555",yAxisList)
       let yAxis = []
       for (let i = 0; i < yAxisList.length; i++) {
         yAxis.push({
@@ -269,7 +269,7 @@ export default {
       return yAxis
     },
     generateChartSeries(showTypeList, current) {
-      console.log('showTypeList', showTypeList)
+      //console.log('showTypeList', showTypeList)
       let firstTime = ''
       if (this.splitIndex) {
         firstTime = this.newTableData[this.splitIndex].time
@@ -278,7 +278,7 @@ export default {
         let list = showTypeList
           .filter((el) => el.showType.indexOf(current) !== -1)
           .map((el, index) => {
-            console.log(el,"----------------------")
+            //console.log(el,"----------------------")
             return {
               type: el.echartstype,
               areaStyle: el.areaStyle,
@@ -386,7 +386,7 @@ export default {
           id: guid(),
         })
 
-        console.log('454545', chartAxis.series)
+        //console.log('454545', chartAxis.series)
       }
       if (this.chartTitle instanceof Array) {
         this.d_chartTitle = this.chartTitle
