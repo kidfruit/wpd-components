@@ -470,7 +470,7 @@ export default {
     moveUp() {
       let selectedRange = this.hotInstance.getSelectedRange()
       let selectedArray = []
-      if (selectedRange[0].from.row === -1) {
+      if (selectedRange && selectedRange[0].from.row === -1) {
         selectedRange[0].from.row = 0
       }
       if (selectedRange && selectedRange.length > 0) {

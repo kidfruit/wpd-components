@@ -335,7 +335,8 @@ export default {
       })
     },
     updateChart() {
-      this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.singleChartTargetIndex = 0
+      this.processChartTargetIndex = 0
     }
   }
 }
