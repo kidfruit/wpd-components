@@ -121,6 +121,7 @@ export default {
       this.targetChartIndex = 0;
       const splitIndex = this.splitIndex;
       this.newSetting = {
+        ...this.setting,
         cells(row) {
           let cellProperties = {};
           if (row < splitIndex) {

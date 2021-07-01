@@ -1,8 +1,9 @@
 <template>
   <div>
-    <series-compare ref="seriesCompare" :classes="['test-series-result']" :data="SeriesCompareData" :splitIndex="splitIndex" :setting="{ rowHeaders: true }" />
+    <series-compare ref="seriesCompare" :classes="['test-series-result']" :data="SeriesCompareData" :splitIndex="splitIndex" :setting="{ fixedColumnsLeft: 1, rowHeaders: true }" />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>
+      <button @click="changeData">改变数据</button>
     </div>
   </div>
 </template>
@@ -10,6 +11,7 @@
 <script>
 import SeriesCompare from '../../packages/SeriesCompare/src/SeriesCompare.vue';
 import SeriesCompareData from '../assets/mock/SeriesCompare.json';
+import SeriesCompareData2 from '../assets/mock/SeriesCompare2.json';
 export default {
   components: {
     SeriesCompare
@@ -37,6 +39,9 @@ export default {
     getData() {
       console.log(this.$refs.seriesCompare.getTableData());
       console.log(this.$refs.seriesCompare.getEditColumnField());
+    },
+    changeData() {
+      this.SeriesCompareData = SeriesCompareData2;
     }
   }
 };
