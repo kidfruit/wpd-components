@@ -17,7 +17,7 @@ export default {
   components: { SelectAndSortComp },
   data() {
     return {
-      className: 'select-and-sort-com-test',
+      className: 'select-and-sort-comp-test',
       structure: 'leftright', // topbottom,leftright
       selectAndSortCompStyle: {
         width: '100%',

@@ -14,6 +14,7 @@ import TreeChartTable from "./TreeChartTable/src/TreeChartTable.vue";
 import CurveChart from "./CurveChart/src/CurveChart.vue";
 import SeriesPPTN from "./SeriesPPTN/src/SeriesPPTN.vue";
 import SeriesResult from "./SeriesResult/src/SeriesResult.vue";
+import SeriesCompare from "./SeriesCompare/src/SeriesCompare.vue";
 import ChartsProcess from "./ChartsProcess/src/ChartsProcess.vue";
 import ChartsSingle from "./ChartsSingle/src/ChartsSingle.vue";
 import WpdTimePicker from "./WpdTimePicker/src/WpdTimePicker.vue";
@@ -26,6 +27,8 @@ import WpdTimePickerUtile from "./WpdTimePickerUtile/src/WpdTimePickerUtile";
 
 import MultiOptionTable from "./MultiOptionTable/src/MultiOptionTable.vue";
 import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGroup.vue";
+
+
 
 // 存储组件列表
 const components = [
@@ -46,6 +49,7 @@ const components = [
   CurveChart,
   SeriesPPTN,
   SeriesResult,
+  SeriesCompare,
   ChartsProcess,
   ChartsSingle,
   WpdTimePicker,
@@ -97,6 +101,7 @@ export default {
   CurveChart,
   SeriesPPTN,
   SeriesResult,
+  SeriesCompare,
   ChartsProcess,
   ChartsSingle,
   WpdTimePicker,

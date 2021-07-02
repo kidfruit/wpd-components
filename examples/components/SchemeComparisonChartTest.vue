@@ -2,7 +2,6 @@
   <div style="width: 100%;">
     <SchemeComparisonChart
       :schemeComparisonData="schemeComparisonData"
-      :isRefresh="isRefresh"
     />
   </div>
 </template>

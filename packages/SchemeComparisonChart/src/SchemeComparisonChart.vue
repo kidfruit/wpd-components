@@ -92,29 +92,14 @@ export default {
             show: true
           }
         }],
-        series: [
-          {
-            field: 'singleValue1',
-            title: this.schemeComparisonData[0].schemeName,
-            selected: true,
-            type: 'bar'
-          },
-          {
-            field: 'singleValue2',
-            title: this.schemeComparisonData[1].schemeName,
-            selected: true,
-            type: 'bar'
-          }
-        ],
+        series: [],
         legend: {
           top: 30
         }
       },
-      singleChartAllData: [
-        //  数据结构
-        // {index: 0, singleValue1: 2500, singleValue2: 46, name: '水库出库最大值',  key: 'outQMax',}
-      ],
+      singleChartAllData: [],
       singleChartData: [],
+      singleChartFilterData: [],
       singleChartTargetIndex: 0,
       singleChartTitles: [],
       singleChartId: +new Date() + (Math.random() * 1000).toFixed(0),
@@ -146,20 +131,7 @@ export default {
             show: true
           }
         }],
-        series: [
-          {
-            field: 'processValue1',
-            title: this.schemeComparisonData[0].schemeName,
-            selected: true,
-            type: 'line'
-          },
-          {
-            field: 'processValue2',
-            title: this.schemeComparisonData[1].schemeName,
-            selected: true,
-            type: 'line'
-          }
-        ],
+        series: [],
         legend: {
           top: 30
         }
@@ -168,6 +140,7 @@ export default {
       processChartAllData: [],
       processChartCurrentData: {},
       processChartData: [],
+      processChartFilterData: [],
       processChartTitles: [],
       processChartId: +new Date() + (Math.random() * 1000).toFixed(0),
     }
@@ -176,11 +149,14 @@ export default {
     singleChartTargetIndex: {
       immediate: true,
       deep: true,
-      handler(targetIndex) {
+      handler() {
         this.singleChartData = []
         this.singleChartAllData = []
         this.singleChartTitles = []
-        this.initSingleChart()
+        this.singleChartAxis.series = []
+        this.singleChartFilterData = []
+        this.initSingleChartData()
+        this.initSingleChartOptions()
         this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
     },
@@ -192,112 +168,176 @@ export default {
         this.processChartAllData = []
         this.processChartCurrentData = {}
         this.processChartTitles = []
-        this.initProcessChart()
+        this.processChartAxis.series = []
+        this.processChartFilterData = []
+        this.initProcessChartData()
+        this.initProcessChartOptions()
+        this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      }
+    },
+    schemeComparisonData: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.singleChartTargetIndex = 0
+        this.processChartTargetIndex = 0
         this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
     }
   },
   methods: {
-    initSingleChart() {
-      const singleData1 = this.schemeComparisonData[0].value.single
-      const singleData2 = this.schemeComparisonData[1].value.single
-      const singleChartData1 = []
-      const singleChartData2 = []
-      singleData1.forEach(item => {
-        if (typeof item.value === 'number') {
-          singleChartData1.push({
-            singleValue1: item.value,
-            name: item.name,
-            key: item.key
+    initSingleChartData() {
+      // 可能多方案对比
+      this.schemeComparisonData.forEach((item, index) => {
+        const singleData = item.value.single
+        const singleChartData = []
+        if (singleData !== undefined) {
+          singleData.forEach(i => {
+            // 排除不是数字的single数据
+            if (typeof i.value === 'number') {
+              singleChartData.push({
+                [`singleValue${index}`]: i.value,
+                name: i.name,
+                key: i.key
+              })
+            }
           })
+          this.singleChartFilterData.push(singleChartData)
         }
       })
-      // console.log(singleChartData1)
-      singleData2.forEach(item => {
-        if (typeof item.value === 'number') {
-          singleChartData2.push({
-            singleValue2: item.value,
-            name: item.name,
-            key: item.key
-          })
-        }
-      })
-      // console.log(singleChartData2)
-      singleChartData1.forEach(i => {
-        singleChartData2.forEach(j => {
-          if (i.key === j.key) {
-            this.singleChartAllData.push(lodash.merge(i, j))
-          }
-        })
-      })
-      // console.log(this.singleChartAllData)
 
+      let tempData = []
+      for (let i = 0; i < this.singleChartFilterData.length; i++) {
+        if (i === 0) {
+          this.singleChartFilterData[i].forEach(j => {
+            tempData.push(lodash.merge({}, j))
+          })
+        } else if (i === this.singleChartFilterData.length - 1) {
+          this.singleChartFilterData[i].forEach(m => {
+            tempData.forEach(n => {
+              if (m.key === n.key) {
+                this.singleChartAllData.push(lodash.merge(m, n))
+              }
+            })
+          })
+        } else {
+          this.singleChartFilterData[i].forEach(m => {
+            tempData.forEach(n => {
+              if (m.key === n.key) {
+                tempData.push(lodash.merge(m, n))
+              }
+            })
+          })
+        }
+      }
+      this.singleChartAllData = lodash.uniq(this.singleChartAllData)
+
+      // selectTitle
       this.singleChartAllData.forEach(item => {
         this.singleChartTitles.push(item.name)
       })
 
       this.singleChartData = [this.singleChartAllData[this.singleChartTargetIndex]]
     },
-    initProcessChart() {
-      const processData1 = this.schemeComparisonData[0].value.process
-      const processData2 = this.schemeComparisonData[1].value.process
-      const processChartData1 = []
-      const processChartData2 = []
-      processData1.forEach(item => {
-        processChartData1.push({
-          processValue1: item.value,
-          name: item.name,
-          id: item.id,
-          unit: item.unit
-        })
+    initSingleChartOptions() {
+      this.schemeComparisonData.forEach((item, index) => {
+        if (this.singleChartData[0][`singleValue${index}`] !== undefined) {
+          this.singleChartAxis.series.push({
+            field: `singleValue${index}`,
+            title: item.schemeName,
+            selected: true,
+            type: 'bar'
+          })
+        }
       })
-      processData2.forEach(item => {
-        processChartData2.push({
-          processValue2: item.value,
-          name: item.name,
-          id: item.id,
-          unit: item.unit
-        })
+    },
+    initProcessChartData() {
+      this.schemeComparisonData.forEach((item, index) => {
+        const processData = item.value.process
+        const processChartData = []
+        if (processData !== undefined) {
+          processData.forEach(i => {
+            processChartData.push({
+              [`processValue${index}`]: i.value,
+              name: i.name,
+              id: i.id,
+              unit: i.unit
+            })
+          })
+          this.processChartFilterData.push(processChartData)
+        }
       })
-      processChartData1.forEach(i => {
-        processChartData2.forEach(j => {
-          if (i.id === j.id) {
-            this.processChartAllData.push(lodash.merge(i, j))
-          }
-        })
-      })
-      // console.log(this.processChartAllData)
+
+      let tempData = []
+      for (let i = 0; i < this.processChartFilterData.length; i++) {
+        if (i === 0) {
+          this.processChartFilterData[i].forEach(j => {
+            tempData.push(lodash.merge({}, j))
+          })
+        } else if (i === this.processChartFilterData.length - 1) {
+          this.processChartFilterData[i].forEach(m => {
+            tempData.forEach(n => {
+              if (m.id === n.id) {
+                this.processChartAllData.push(lodash.merge(m, n))
+              }
+            })
+          })
+        } else {
+          this.processChartFilterData[i].forEach(m => {
+            tempData.forEach(n => {
+              if (m.id === n.id) {
+                tempData.push(lodash.merge(m, n))
+              }
+            })
+          })
+        }
+      }
+      this.processChartAllData = lodash.uniq(this.processChartAllData)
+
+
       this.processChartAllData.forEach(item => {
         this.processChartTitles.push(item.name + '（' + item.unit + ')')
       })
       this.processChartCurrentData = this.processChartAllData[this.processChartTargetIndex]
       // console.log(this.processChartCurrentData)
 
-      if (this.processChartCurrentData.processValue1.length < this.processChartCurrentData.processValue2.length) {
-        for (let i = 0; i < this.processChartCurrentData.processValue1.length; i++) {
-          this.processChartData.push({
-            id: this.processChartCurrentData.id,
-            name: this.processChartCurrentData.name,
-            unit: this.processChartCurrentData.unit,
-            processValue1: this.processChartCurrentData.processValue1[i],
-            processValue2: this.processChartCurrentData.processValue2[i],
-            index: i + 1
-          })
-        }
-      } else {
-        for (let i = 0; i < this.processChartCurrentData.processValue2.length; i++) {
-          this.processChartData.push({
-            id: this.processChartCurrentData.id,
-            name: this.processChartCurrentData.name,
-            unit: this.processChartCurrentData.unit,
-            processValue1: this.processChartCurrentData.processValue1[i],
-            processValue2: this.processChartCurrentData.processValue2[i],
-            index: i + 1
-          })
+      let tempLength = []
+      for (let i = 0; i < this.schemeComparisonData.length; i++) {
+        if (this.processChartCurrentData[`processValue${i}`]) {
+          tempLength.push(this.processChartCurrentData[`processValue${i}`].length)
         }
       }
+      let minLength = Math.min(...tempLength)
 
-      // console.log(this.processChartData)
+
+      for (let i = 0; i < minLength; i++) {
+        let temp = {}
+        for (let j = 0; j < this.schemeComparisonData.length; j++) {
+          if (this.processChartCurrentData[`processValue${j}`]) {
+            temp[`processValue${j}`] = this.processChartCurrentData[`processValue${j}`][i]
+          }
+        }
+        this.processChartData.push(
+          lodash.merge({
+            id: this.processChartCurrentData.id,
+            name: this.processChartCurrentData.name,
+            unit: this.processChartCurrentData.unit,
+            index: i + 1
+          }, temp)
+        )
+      }
+    },
+    initProcessChartOptions() {
+      this.schemeComparisonData.forEach((item, index) => {
+        if (this.processChartData[0][`processValue${index}`] !== undefined) {
+          this.processChartAxis.series.push({
+            field: `processValue${index}`,
+            title: item.schemeName,
+            selected: true,
+            type: 'line'
+          })
+        }
+      })
     }
   }
 }
@@ -307,14 +347,14 @@ export default {
 .scheme-comparison-chart {
   width: 100%;
   .scheme-comparison-single-chart {
-    width: 500px;
+    width: 100%;
     float: left;
     .single-chart-switch {
       margin-bottom: 10px;
     }
   }
   .scheme-comparison-process-chart {
-    width: calc(100% - 500px);
+    width: 100%;
     float: left;
     .process-chart-switch {
       margin-bottom: 10px;
