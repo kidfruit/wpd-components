@@ -88,7 +88,7 @@
       <h2>StatusInfoCompTest：信息展示控件</h2>
       <StatusInfoCompTest/>
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>

@@ -235,7 +235,7 @@ export default {
         )
       })
       option.series = []
-      console.log(this.chartAxis.series, 'this.chartAxis.series')
+      //console.log(this.chartAxis.series, 'this.chartAxis.series')
       this.chartAxis.series.forEach((yax) => {
         let seriesObj = {
           name: yax.title,
