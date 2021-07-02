@@ -166,13 +166,13 @@ export default {
 .select-and-sort-comp.leftright {
   .select-comp {
     float: left;
-    width: 30%;
+    width: 400px;
     height: 100%;
     //background: antiquewhite;
   }
   .sort-comp {
     float: left;
-    width: 70%;
+    width: calc(100% - 400px);
     height: 100%;
     //background: cadetblue;
   }
@@ -205,7 +205,7 @@ export default {
     .select-comp-content {
       width: 100%;
       height: calc(100% - 50px);
-      overflow-y: scroll;
+      overflow-y: auto;
       .select-comp-groups {
         .select-comp-group-title {
           display: flex;
@@ -248,6 +248,7 @@ export default {
     }
     .sort-comp-groups {
       width: 100%;
+      height: calc(100% - 50px);
       display: flex;
       justify-content: space-around;
       .sort-comp-group {

@@ -75,10 +75,10 @@ const yAxisOption = {
     },
   },
   max: function (value) {
-    return value.max + (value.max - value.min) * 0.15
+    return +(value.max + (value.max - value.min) * 0.15).toFixed(2)
   },
   min: function (value) {
-    let minV = value.min - (value.max - value.min) * 0.15
+    let minV = +(value.min - (value.max - value.min) * 0.15).toFixed(2)
     return minV >= 0 ? minV : 0
   }
 }
