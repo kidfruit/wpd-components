@@ -174,6 +174,15 @@ export default {
         this.initProcessChartOptions()
         this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
+    },
+    schemeComparisonData: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.singleChartTargetIndex = 0
+        this.processChartTargetIndex = 0
+        this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      }
     }
   },
   methods: {
@@ -317,10 +326,6 @@ export default {
           }, temp)
         )
       }
-
-      // eslint-disable-next-line no-debugger
-      // debugger
-      // console.log(this.processChartData)
     },
     initProcessChartOptions() {
       this.schemeComparisonData.forEach((item, index) => {
@@ -333,10 +338,6 @@ export default {
           })
         }
       })
-    },
-    updateChart() {
-      this.singleChartTargetIndex = 0
-      this.processChartTargetIndex = 0
     }
   }
 }
