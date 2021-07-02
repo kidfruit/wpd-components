@@ -358,6 +358,11 @@ export default {
       deep: true,
       handler(nVal) {
         if (nVal[0].tableColumns && nVal[0].tableColumns instanceof Array) {
+          this.checkAttribute = {
+            width: 0,
+            list: [],
+            checked: ''
+          };
           nVal[0].tableColumns.forEach(column => {
             if (column.showType) {
               this.checkAttribute.list.push({
