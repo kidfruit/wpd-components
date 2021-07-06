@@ -3,17 +3,17 @@
     <a-row
       type="flex"
       justify="space-around"
-      style="margin-bottom: 5px"
+      style="margin-bottom: 5px;height: 100%;"
       align="middle"
     >
-      <a-col :span="4" class="tree-container">
+      <a-col :span="6" class="tree-container">
         <simple-tree
           ref="treeRef"
           :treeData="treeData"
           @select="handleSelect"
         ></simple-tree>
       </a-col>
-      <a-col :span="20">
+      <a-col :span="18" style="height: 100%;">
         <a-row class="chart-container">
           <standard-chart
             ref="chartRef"
@@ -321,16 +321,32 @@ export default {
 
 <style lang="scss" scoped>
 .tree-chart-table {
-  height: 500px;
-  overflow: scroll;
+  height: 100%;
   .tree-container {
     text-align: left;
-  }
-  .table-container {
-    overflow: hidden;
+    overflow-y: auto;
+    height: 100%;
   }
   .chart-container {
     margin-bottom: 20px;
+  }
+  .table-container {
+    overflow: hidden;
+    height: calc(100% - 320px);
+    .simple-table {
+      height: 100% !important;
+    }
+  }
+}
+</style>
+<style lang="scss">
+.tree-chart-table {
+  .table-container {
+    .simple-table {
+      .tableStyle {
+        height: 100% !important;
+      }
+    }
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%">
+  <div style="width: 100%;height: 500px;">
     <tree-chart-table
       ref="TreeChartTable"
       :classes="classNames"
