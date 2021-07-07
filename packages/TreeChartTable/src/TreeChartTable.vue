@@ -6,14 +6,14 @@
       style="margin-bottom: 5px;height: 100%;"
       align="middle"
     >
-      <a-col :span="6" class="tree-container">
+      <a-col :span="4" class="tree-container">
         <simple-tree
           ref="treeRef"
           :treeData="treeData"
           @select="handleSelect"
         ></simple-tree>
       </a-col>
-      <a-col :span="18" style="height: 100%;">
+      <a-col :span="20" style="height: 100%;">
         <a-row class="chart-container">
           <standard-chart
             ref="chartRef"
@@ -324,7 +324,7 @@ export default {
   height: 100%;
   .tree-container {
     text-align: left;
-    overflow-y: auto;
+    overflow: auto;
     height: 100%;
   }
   .chart-container {
