@@ -10,7 +10,7 @@ import StandardChart from "./StandardChart/src/StandardChart.vue";
 import ChartTableGroup from "./ChartTableGroup/src/ChartTableGroup.vue";
 import TreeTableGroup from "./TreeTableGroup/src/TreeTableGroup.vue";
 import ResultHydroDynamic from "./ResultHydroDynamic/src/ResultHydroDynamic.vue";
-import TreeChartTable from "./TreeChartTable/src/TreeChartTable.vue";
+import SectionInit from "./SectionInit/src/SectionInit.vue";
 import CurveChart from "./CurveChart/src/CurveChart.vue";
 import SeriesPPTN from "./SeriesPPTN/src/SeriesPPTN.vue";
 import SeriesResult from "./SeriesResult/src/SeriesResult.vue";
@@ -45,7 +45,7 @@ const components = [
   TreeTableGroup,
   ResultHydroDynamic,
   TreeSimpleTableGroup,
-  TreeChartTable,
+  SectionInit,
   CurveChart,
   SeriesPPTN,
   SeriesResult,
@@ -97,7 +97,7 @@ export default {
   TreeTableGroup,
   ResultHydroDynamic,
   TreeSimpleTableGroup,
-  TreeChartTable,
+  SectionInit,
   CurveChart,
   SeriesPPTN,
   SeriesResult,

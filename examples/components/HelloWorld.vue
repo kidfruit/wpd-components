@@ -36,9 +36,9 @@
       <h2>DraggableChart：可连贯拖拽，图表联动的echarts图组件</h2>
       <coherent-draggable-chart-test />
     </div>
-    <div v-if="false">
-      <h2>TreeChartTable：树表图组件(动态展示不同树节点的图表和表格数据)</h2>
-      <tree-chart-table-test />
+    <div v-if="true">
+      <h2>SectionInit：树表图组件(动态展示不同树节点的图表和表格数据)</h2>
+      <SectionInitTest />
     </div>
     <div v-if="false">
       <h2>CurveChart：通用二维曲线</h2>
@@ -60,11 +60,11 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SeriesCompareTest：通用过程线多方案对比组件</h2>
       <series-compare-test />
     </div>
@@ -88,7 +88,7 @@
       <h2>StatusInfoCompTest：信息展示控件</h2>
       <StatusInfoCompTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>
@@ -107,7 +107,7 @@ import ResultHydroDynamicTest from './ResultHydroDynamicTest.vue';
 import ChartTableGroupTest from './ChartTableGroupTest.vue';
 import DraggableChartTest from './DraggableChartTest.vue';
 import CoherentDraggableChartTest from './CoherentDraggableChartTest.vue';
-import TreeChartTableTest from './TreeChartTableTest.vue';
+import SectionInitTest from './SectionInitTest.vue';
 import TreeTableGroupTest from './TreeTableGroupTest.vue';
 import TreeSimpleTableGroupTest from './TreeSimpleTableGroupTest.vue';
 import CurveChartTest from './CurveChartTest.vue';
@@ -134,7 +134,7 @@ export default {
     MultiOptionTableTest,
     DraggableChartTest,
     CoherentDraggableChartTest,
-    TreeChartTableTest,
+    SectionInitTest,
     TreeTableGroupTest,
     TreeSimpleTableGroupTest,
     CurveChartTest,
