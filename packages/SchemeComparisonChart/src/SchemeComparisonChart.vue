@@ -1,6 +1,9 @@
 <template>
   <div class="scheme-comparison-chart" :key="schemeComparisonKey">
-    <div class="scheme-comparison-single-chart">
+    <div
+      class="scheme-comparison-single-chart"
+      v-if="this.singleChartAxis.series.length !== 0"
+    >
       <div class="single-chart-switch">
         <a-select v-model="singleChartTargetIndex">
           <a-select-option
@@ -23,7 +26,10 @@
         />
       </div>
     </div>
-    <div class="scheme-comparison-process-chart">
+    <div
+      class="scheme-comparison-process-chart"
+      v-if="this.processChartAxis.series.length !== 0"
+    >
       <div class="process-chart-switch">
         <a-select v-model="processChartTargetIndex">
           <a-select-option
@@ -61,7 +67,7 @@ export default {
       required: true
     },
   },
-  data: function () {
+  data() {
     return {
       schemeComparisonKey: +new Date() + (Math.random() * 1000).toFixed(0),
       singleClassNames: ['single-chart'],
@@ -241,7 +247,7 @@ export default {
     },
     initSingleChartOptions() {
       this.schemeComparisonData.forEach((item, index) => {
-        if (this.singleChartData[0][`singleValue${index}`] !== undefined) {
+        if (this.singleChartData[0] && this.singleChartData[0][`singleValue${index}`] !== undefined) {
           this.singleChartAxis.series.push({
             field: `singleValue${index}`,
             title: item.schemeName,
@@ -294,42 +300,43 @@ export default {
       }
       this.processChartAllData = lodash.uniq(this.processChartAllData)
 
+      if (this.processChartAllData[0] !== undefined) {
+        this.processChartAllData.forEach(item => {
+          this.processChartTitles.push(item.name + '（' + item.unit + ')')
+        })
+        this.processChartCurrentData = this.processChartAllData[this.processChartTargetIndex]
+        // console.log(this.processChartCurrentData)
 
-      this.processChartAllData.forEach(item => {
-        this.processChartTitles.push(item.name + '（' + item.unit + ')')
-      })
-      this.processChartCurrentData = this.processChartAllData[this.processChartTargetIndex]
-      // console.log(this.processChartCurrentData)
-
-      let tempLength = []
-      for (let i = 0; i < this.schemeComparisonData.length; i++) {
-        if (this.processChartCurrentData[`processValue${i}`]) {
-          tempLength.push(this.processChartCurrentData[`processValue${i}`].length)
-        }
-      }
-      let minLength = Math.min(...tempLength)
-
-
-      for (let i = 0; i < minLength; i++) {
-        let temp = {}
-        for (let j = 0; j < this.schemeComparisonData.length; j++) {
-          if (this.processChartCurrentData[`processValue${j}`]) {
-            temp[`processValue${j}`] = this.processChartCurrentData[`processValue${j}`][i]
+        let tempLength = []
+        for (let i = 0; i < this.schemeComparisonData.length; i++) {
+          if (this.processChartCurrentData[`processValue${i}`]) {
+            tempLength.push(this.processChartCurrentData[`processValue${i}`].length)
           }
         }
-        this.processChartData.push(
-          lodash.merge({
-            id: this.processChartCurrentData.id,
-            name: this.processChartCurrentData.name,
-            unit: this.processChartCurrentData.unit,
-            index: i + 1
-          }, temp)
-        )
+        let minLength = Math.min(...tempLength)
+
+
+        for (let i = 0; i < minLength; i++) {
+          let temp = {}
+          for (let j = 0; j < this.schemeComparisonData.length; j++) {
+            if (this.processChartCurrentData[`processValue${j}`]) {
+              temp[`processValue${j}`] = this.processChartCurrentData[`processValue${j}`][i]
+            }
+          }
+          this.processChartData.push(
+              lodash.merge({
+                id: this.processChartCurrentData.id,
+                name: this.processChartCurrentData.name,
+                unit: this.processChartCurrentData.unit,
+                index: i + 1
+              }, temp)
+          )
+        }
       }
     },
     initProcessChartOptions() {
       this.schemeComparisonData.forEach((item, index) => {
-        if (this.processChartData[0][`processValue${index}`] !== undefined) {
+        if (this.processChartData[0] && this.processChartData[0][`processValue${index}`] !== undefined) {
           this.processChartAxis.series.push({
             field: `processValue${index}`,
             title: item.schemeName,
