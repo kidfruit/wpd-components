@@ -13,6 +13,7 @@
       :splitIndex="4"
       :setting="{ rowHeaders: true }"
     />
+    <button style="margin-top: 390px" @click="updateShow">updateShow</button>
   </div>
 </template>
 
@@ -246,6 +247,11 @@ export default {
       ],
     }
   },
+  methods: {
+    updateShow() {
+      this.$refs.resultHydroDynamicTable.updateShow()
+    }
+  }
 }
 </script>
 <style>
