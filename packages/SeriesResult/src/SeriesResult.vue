@@ -308,6 +308,19 @@ export default {
               } :null,
             }
           })
+
+        const listYAxisIndexArray = []
+        list.forEach(item => {
+          listYAxisIndexArray.push(item.yAxisIndex)
+        })
+        // console.log(listYAxisIndexArray)
+        // console.log(!listYAxisIndexArray.includes(0))
+        if (!listYAxisIndexArray.includes(0)) {
+          list.forEach(item => {
+            item.yAxisIndex = 0
+          })
+        }
+
         // 将3个series处理成一半实线一半虚线的series，一起应该6个series
         let allList = []
         for (let i = 0; i < list.length; i++) {

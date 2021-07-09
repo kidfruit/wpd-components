@@ -20,7 +20,7 @@
       <h2>MultiOptionTable：流程模型选择专用表组件</h2>
       <multi-option-table-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>ResultHydroDynamic：水动力成果展示组件</h2>
       <result-hydro-dynamic-test />
     </div>
@@ -60,7 +60,7 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
