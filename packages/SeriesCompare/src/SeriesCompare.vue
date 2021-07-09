@@ -420,9 +420,9 @@ export default {
 .ant-carousel >>> .slick-slide h3 {
   color: #40a9ff;
 }
-.chart-container {
-  margin-bottom: 96px;
-}
+/*.chart-container {*/
+/*  margin-bottom: 96px;*/
+/*}*/
 #app .ant-carousel .slick-dots li button {
   background: #40a9ff;
 }
