@@ -388,7 +388,7 @@ export default {
 
         //console.log('454545', chartAxis.series)
       }
-      if (this.chartTitle instanceof Array) {
+      if (this.chartTitle && this.chartTitle instanceof Array && this.chartTitle.length > 0) {
         this.d_chartTitle = this.chartTitle
       } else {
         this.d_chartTitle = this.chartList.map((j, i) => `图表（${i + 1}）`)
