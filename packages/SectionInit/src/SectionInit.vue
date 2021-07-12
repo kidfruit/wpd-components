@@ -251,7 +251,7 @@ export default {
         rAxis.xAxis.forEach((el) => {
           el.data = this.rawData.sectionDataList.map((el) => el.sectionCode)
         })
-        console.log(eidtDataCols)
+        // console.log(eidtDataCols)
         eidtDataCols.forEach(item => {
           if (item.field === 'SECTION_BEG_Z_SET' || item.field === 'SECTION_BEG_Q_SET') {
             return
