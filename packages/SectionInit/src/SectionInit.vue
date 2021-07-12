@@ -54,16 +54,6 @@ let rCols = [
     readOnly: true,
   },
   {
-    field: 'sectionQArray',
-    title: '初始流量(m³/s)',
-    readOnly: true,
-  },
-  {
-    field: 'sectionZArray',
-    title: '初始水位(m)',
-    readOnly: true,
-  },
-  {
     field: 'rough',
     title: '断面糙率',
     readOnly: true,
@@ -117,15 +107,15 @@ let rAxis = {
   ],
   series: [
     {
-      field: 'sectionZArray',
-      title: '初始水位(m)',
+      field: 'SECTION_BEG_Z_SET',
+      title: '各断面期初水位(m)',
       selected: true,
       yAxisIndex: 0,
       xAxisIndex: 0,
     },
     {
-      field: 'sectionQArray',
-      title: '初始流量(m³/s)',
+      field: 'SECTION_BEG_Q_SET',
+      title: '各断面期初流量(m³/s)',
       selected: true,
       yAxisIndex: 1,
       xAxisIndex: 0,
@@ -206,6 +196,16 @@ export default {
       type: Object,
     },
   },
+  data() {
+    return {
+      newData: [],
+      columns: [],
+      newAxis: {},
+      selectedKeys: [],
+      instance: null,
+      newOption: null,
+    }
+  },
   computed: {
     classNames() {
       return ['section-init'].concat(this.classes)
@@ -240,25 +240,58 @@ export default {
       ) {
         this.newOption = Object.assign({}, this.chartOption, { grid: rGrid })
         this.columns = rCols
+        const eidtDataCols = []
+        this.rawData.eidtData.forEach(item => {
+          eidtDataCols.push({
+            field: item.key,
+            title: item.title
+          })
+        })
+        this.columns = this.columns.concat(eidtDataCols)
         rAxis.xAxis.forEach((el) => {
           el.data = this.rawData.sectionDataList.map((el) => el.sectionCode)
         })
+        console.log(eidtDataCols)
+        eidtDataCols.forEach(item => {
+          if (item.field === 'SECTION_BEG_Z_SET' || item.field === 'SECTION_BEG_Q_SET') {
+            return
+          }
+          rAxis.series.push({
+            field: item.field,
+            title: item.title,
+            selected: false,
+            yAxisIndex: 0,
+            xAxisIndex: 0,
+          })
+        })
+        // console.log(rAxis)
+
         this.newAxis = Object.assign(rAxis, this.chartAxis)
         this.rawData.sectionDataList.forEach((el, index) => {
           this.newData.push({
             sectionCode: el.sectionCode,
             sectionDistanceArray: this.rawData.sectionDistanceArray[index],
-            sectionQArray: this.rawData.sectionQArray[index],
-            sectionZArray: this.rawData.sectionZArray[index],
+            // sectionQArray: this.rawData.sectionQArray[index],
+            // sectionZArray: this.rawData.sectionZArray[index],
             rough: el.rough,
           })
         })
+
+        this.newData.forEach((item, index) => {
+          eidtDataCols.forEach(element => {
+            this.rawData.eidtData.forEach(value => {
+              if (value.key === element.field) {
+                item[element.field] = value.value[index]
+              }
+            })
+          })
+        })
+
+
         setTimeout(() => {
           this.$refs.chartRef.setDynamicOption()
         }, 10)
         if (this.selectedKeys[0] === this.rawData.riverReachId) {
-          // this.$refs.tableRef.reset()
-          // this.$refs.tableRef.updateShow()
           this.updateShow()
         }
       } else {
@@ -305,16 +338,6 @@ export default {
         this.$refs.tableRef.updateShow()
       }
     },
-  },
-  data() {
-    return {
-      newData: [],
-      columns: [],
-      newAxis: {},
-      selectedKeys: [],
-      instance: null,
-      newOption: null,
-    }
   },
 }
 </script>
