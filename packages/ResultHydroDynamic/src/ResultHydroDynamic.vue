@@ -124,19 +124,29 @@ export default {
       }
 
       // 处理data
-      const field1 = this.chartAxis.series[0].field
-      const field2 = this.chartAxis.series[1].field
-      const temp = Object.keys(this.data[0])
-      this.data.forEach((item) => {
-        item[field1] = []
-        item[field2] = []
-        temp.forEach(el => {
-          if (el.split('#').includes(field1)) {
-            item[field1].push(item[el])
-          } else if (el.split('#').includes(field2)) {
-            item[field2].push(item[el])
-          }
+      for (let i = 0; i < this.chartAxis.series.length; i++) {
+        const field = this.chartAxis.series[i].field
+        const temp = Object.keys(this.data[0])
+        this.data.forEach((item) => {
+          item[field] = []
+          temp.forEach(el => {
+            if (el.split('#').includes(field)) {
+              item[field].push(item[el])
+            }
+          })
         })
+      }
+
+      // console.log(this.columns)
+      this.columns.forEach((item, index) => {
+        if (index > 2) {
+          this.chartAxis.series.push({
+            title: item.title,
+            selected: false,
+            yAxisIndex: 0,
+            smooth: true
+          })
+        }
       })
 
       this.data.forEach(element => {
