@@ -105,22 +105,7 @@ let rAxis = {
       gridIndex: 0,
     },
   ],
-  series: [
-    {
-      field: 'SECTION_BEG_Z_SET',
-      title: '各断面期初水位(m)',
-      selected: true,
-      yAxisIndex: 0,
-      xAxisIndex: 0,
-    },
-    {
-      field: 'SECTION_BEG_Q_SET',
-      title: '各断面期初流量(m³/s)',
-      selected: true,
-      yAxisIndex: 1,
-      xAxisIndex: 0,
-    },
-  ],
+  series: [],
 }
 
 let qAxis = {
@@ -216,7 +201,7 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.handleData()
+    // this.handleData()
     // setTimeout(() => {
     //   this.setTableWidth('100%')
     // }, 10)
@@ -252,6 +237,23 @@ export default {
           el.data = this.rawData.sectionDataList.map((el) => el.sectionCode)
         })
         // console.log(eidtDataCols)
+        rAxis.series = [
+          {
+            field: 'SECTION_BEG_Z_SET',
+            title: '各断面期初水位(m)',
+            selected: true,
+            yAxisIndex: 0,
+            xAxisIndex: 0,
+          },
+          {
+            field: 'SECTION_BEG_Q_SET',
+            title: '各断面期初流量(m³/s)',
+            selected: true,
+            yAxisIndex: 1,
+            xAxisIndex: 0,
+          },
+        ]
+        // console.log(rAxis.series)
         eidtDataCols.forEach(item => {
           if (item.field === 'SECTION_BEG_Z_SET' || item.field === 'SECTION_BEG_Q_SET') {
             return
@@ -330,11 +332,10 @@ export default {
     updateShow() {
       if (this.$refs.chartRef) {
         this.$refs.chartRef.resizeTheChart()
+        this.$refs.chartRef.setDynamicOption()
       }
       if (this.$refs.tableRef) {
         this.$refs.tableRef.reset()
-      }
-      if (this.$refs.tableRef) {
         this.$refs.tableRef.updateShow()
       }
     },

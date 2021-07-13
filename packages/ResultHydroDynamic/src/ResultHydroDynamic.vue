@@ -124,6 +124,18 @@ export default {
       }
 
       // 处理data
+      this.columns.forEach((item, index) => {
+        if (index > 2) {
+          this.chartAxis.series.push({
+            title: item.title,
+            selected: false,
+            yAxisIndex: 0,
+            smooth: true,
+            field: item.field
+          })
+        }
+      })
+
       for (let i = 0; i < this.chartAxis.series.length; i++) {
         const field = this.chartAxis.series[i].field
         const temp = Object.keys(this.data[0])
@@ -136,18 +148,6 @@ export default {
           })
         })
       }
-
-      // console.log(this.columns)
-      this.columns.forEach((item, index) => {
-        if (index > 2) {
-          this.chartAxis.series.push({
-            title: item.title,
-            selected: false,
-            yAxisIndex: 0,
-            smooth: true
-          })
-        }
-      })
 
       this.data.forEach(element => {
         let newDataItem = {}

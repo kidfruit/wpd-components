@@ -10,7 +10,6 @@
       :sections="sections"
       :tableColumns="tableColumns"
       :data="data"
-      :splitIndex="4"
       :setting="{ rowHeaders: true, fixedColumnsLeft: 1 }"
     />
     <button style="margin-top: 390px" @click="updateShow">updateShow</button>
