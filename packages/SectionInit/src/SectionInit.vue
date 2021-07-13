@@ -1,5 +1,5 @@
 <template>
-  <div :class="classNames">
+  <div :class="classNames" :key="randomKey">
     <a-row
       type="flex"
       justify="space-around"
@@ -183,6 +183,7 @@ export default {
   },
   data() {
     return {
+      randomKey: +new Date() + (Math.random() * 1000).toFixed(0),
       newData: [],
       columns: [],
       newAxis: {},
@@ -330,14 +331,7 @@ export default {
       }
     },
     updateShow() {
-      if (this.$refs.chartRef) {
-        this.$refs.chartRef.resizeTheChart()
-        this.$refs.chartRef.setDynamicOption()
-      }
-      if (this.$refs.tableRef) {
-        this.$refs.tableRef.reset()
-        this.$refs.tableRef.updateShow()
-      }
+      this.randomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
   },
 }
