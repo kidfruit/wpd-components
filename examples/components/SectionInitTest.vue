@@ -45,19 +45,19 @@ export default {
   created() {
     if (fakeData.state === 0) {
       let rawData = fakeData.data
-      rawData.sectionQArray = []
-      rawData.sectionZArray = []
-      for (let i = 0; i < rawData.sectionDataList.length; i++) {
-        // 初始流量
-        rawData.sectionQArray.push(0.0)
-        // 初始水位
-        rawData.sectionZArray.push(213.5 + i + parseInt(Math.random() * 10))
-
-        rawData.sectionDistanceArray.push(123)
-      }
+      // rawData.sectionQArray = []
+      // rawData.sectionZArray = []
+      // for (let i = 0; i < rawData.sectionDataList.length; i++) {
+      //   // 初始流量
+      //   rawData.sectionQArray.push(0.0)
+      //   // 初始水位
+      //   rawData.sectionZArray.push(213.5 + i + parseInt(Math.random() * 10))
+      //
+      //   rawData.sectionDistanceArray.push(123)
+      // }
 
       this.treeData = [
-        { title: '罗渡溪-渠嘉', key: rawData.riverReachId, children: [] },
+        { title: '寸滩-三峡', key: rawData.riverReachId, children: [] },
       ]
       this.treeData[0].children = rawData.sectionDataList.map((el) => {
         return {

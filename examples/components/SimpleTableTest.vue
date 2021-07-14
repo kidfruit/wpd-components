@@ -271,6 +271,7 @@ export default {
     },
     deleted() {
       this.$refs.tableChart.deleted()
+      console.log(this.$refs.tableChart.deletedRows)
     },
     getChangedData() {
       console.log(

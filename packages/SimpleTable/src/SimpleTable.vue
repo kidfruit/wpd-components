@@ -449,8 +449,9 @@ export default {
         seleteds.forEach((el) => {
           for (let i = 0; i < el[2] - el[0] + 1; i++) {
             let row = this.hotInstance.getDataAtRow(el[0] + i)
-            let ret = row.every((item) => item)
+            let ret = row.every((item) => item !== null)
             // 如果删除的每一行有数据，才保存这一行到deletedRows
+            // console.log(row, ret)
             if (ret && row.length > 0) {
               let obj = {}
               row.forEach((el, i) => {

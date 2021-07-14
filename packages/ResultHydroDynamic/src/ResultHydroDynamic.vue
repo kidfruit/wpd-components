@@ -12,6 +12,19 @@
         :chartData="data"
       />
     </div>
+    <a-select
+        style="width: 100%;margin-bottom: 20px;"
+        show-search
+        :defaultValue="sections[0]"
+        @change="handleChangeSelected"
+    >
+      <a-select-option
+          v-for="section in sections"
+          :key="section"
+      >
+        {{section}}
+      </a-select-option>
+    </a-select>
     <div class="table-container">
       <simple-table
         ref="tableRef"
@@ -88,52 +101,90 @@ export default {
       localSetting: {
         nestedHeaders: [],
       },
-      randomKey: +new Date() + (Math.random() * 1000).toFixed(0)
+      randomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      currentSelectedValue: this.sections[0],
+      count: null
     }
   },
   methods: {
     handleData() {
-      this.chartAxis.series[0].field = this.tableColumns[1].field.split('#')[1]
-      this.chartAxis.series[1].field = this.tableColumns[2].field.split('#')[1]
 
       this.chartOption.timeline.data = this.data.map((el) => el.time)
       // 将多个时间线的数据拆分
-      this.newData = JSON.parse(JSON.stringify(this.data))
+      this.count = (this.tableColumns.length - 1) / this.sections.length
+      const defaultSelected = this.tableColumns[1].field.split('#')[0]
 
       // 处理columns
-      this.columns = JSON.parse(JSON.stringify(this.tableColumns))
+      this.columns.push(this.tableColumns[0])
+      for (let i = 0; i < this.count; i++) {
+        this.columns.push({
+          field: this.tableColumns[i + 1].field.split('#')[1],
+          title: this.tableColumns[i + 1].title
+        })
+      }
 
       // 处理data
-      const field1 = this.chartAxis.series[0].field
-      const field2 = this.chartAxis.series[1].field
-      const temp = Object.keys(this.data[0])
-      this.data.forEach((item) => {
-        item[field1] = []
-        item[field2] = []
-        temp.forEach(el => {
-          if (el.split('#').includes(field1)) {
-            item[field1].push(item[el])
-          } else if (el.split('#').includes(field2)) {
-            item[field2].push(item[el])
-          }
-        })
+      this.columns.forEach((item, index) => {
+        if (index > 2) {
+          this.chartAxis.series.push({
+            title: item.title,
+            selected: false,
+            yAxisIndex: 0,
+            smooth: true,
+            field: item.field
+          })
+        }
       })
 
-      // 自定义表头
-      // let nestedHeaders = [];
-      let notFields = [{ label: '', colspan: 1 }]
-      let sectionFields = this.sections.map((el) => {
-        return { label: el, colspan: 2 }
-      })
-      let nestedHeaders = []
-      nestedHeaders.push(notFields.concat(sectionFields))
-      nestedHeaders.push(
-          this.columns.map((el) => {
-            return { label: el.title, colspan: 1 }
+      for (let i = 0; i < this.chartAxis.series.length; i++) {
+        const field = this.chartAxis.series[i].field
+        const temp = Object.keys(this.data[0])
+        this.data.forEach((item) => {
+          item[field] = []
+          temp.forEach(el => {
+            if (el.split('#').includes(field)) {
+              item[field].push(item[el])
+            }
           })
-      )
-      this.localSetting = Object.assign({ nestedHeaders }, this.setting)
-      // console.log(this.columns, this.newData)
+        })
+      }
+
+      this.data.forEach(element => {
+        let newDataItem = {}
+        Object.keys(element).forEach(item => {
+          if (item === 'time') {
+            newDataItem.time = element[item]
+          } else if (item.split('#')[0] === defaultSelected) {
+            for (let i = 0; i < this.count; i++) {
+              if (this.columns[i + 1].field === item.split('#')[1]) {
+                newDataItem[this.columns[i + 1].field] = element[item]
+              }
+            }
+          }
+        })
+        this.newData.push(newDataItem)
+      })
+
+      this.localSetting = Object.assign({}, this.setting)
+    },
+    handleChangeSelected(value) {
+      console.log(value)
+      this.newData = []
+      this.data.forEach(element => {
+        let newDataItem = {}
+        Object.keys(element).forEach(item => {
+          if (item === 'time') {
+            newDataItem.time = element[item]
+          } else if (item.split('#')[0] === value) {
+            for (let i = 0; i < this.count; i++) {
+              if (this.columns[i + 1].field === item.split('#')[1]) {
+                newDataItem[this.columns[i + 1].field] = element[item]
+              }
+            }
+          }
+        })
+        this.newData.push(newDataItem)
+      })
     },
     updateShow() {
       this.randomKey = +new Date() + (Math.random() * 1000).toFixed(0)
