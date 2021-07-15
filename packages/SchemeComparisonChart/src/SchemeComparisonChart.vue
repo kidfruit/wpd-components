@@ -1,5 +1,7 @@
 <template>
-  <div class="scheme-comparison-chart" :key="schemeComparisonKey">
+  <div class="scheme-comparison-chart"
+   :key="schemeComparisonKey"
+  >
     <div
       class="scheme-comparison-single-chart"
       v-if="this.singleChartAxis.series.length !== 0"
@@ -72,10 +74,10 @@ export default {
       schemeComparisonKey: +new Date() + (Math.random() * 1000).toFixed(0),
       singleClassNames: ['single-chart'],
       singleChartOption: {
-        title: {
-          text: '单值图',
-          left: 'center'
-        }
+        // title: {
+        //   text: '单值图',
+        //   left: 'center'
+        // }
       },
       singleChartAxis: {
         xAxis: 'name',
@@ -111,10 +113,10 @@ export default {
       singleChartId: +new Date() + (Math.random() * 1000).toFixed(0),
       processClassNames: ['process-chart'],
       processChartOption: {
-        title: {
-          text: '过程图',
-          left: 'center'
-        }
+        // title: {
+        //   text: '过程图',
+        //   left: 'center'
+        // }
       },
       processChartAxis: {
         xAxis: 'index',
@@ -156,38 +158,21 @@ export default {
       immediate: true,
       deep: true,
       handler() {
-        this.singleChartData = []
-        this.singleChartAllData = []
-        this.singleChartTitles = []
-        this.singleChartAxis.series = []
-        this.singleChartFilterData = []
-        this.initSingleChartData()
-        this.initSingleChartOptions()
-        this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+        this.handleWatchSingleChartTargetIndex()
       }
     },
     processChartTargetIndex: {
       immediate: true,
       deep: true,
       handler() {
-        this.processChartData = []
-        this.processChartAllData = []
-        this.processChartCurrentData = {}
-        this.processChartTitles = []
-        this.processChartAxis.series = []
-        this.processChartFilterData = []
-        this.initProcessChartData()
-        this.initProcessChartOptions()
-        this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+        this.handleWatchProcessChartTargetIndex()
       }
     },
     schemeComparisonData: {
       immediate: true,
       deep: true,
       handler() {
-        this.singleChartTargetIndex = 0
-        this.processChartTargetIndex = 0
-        this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+        this.handleWatchSchemeComparisonData()
       }
     }
   },
@@ -256,6 +241,16 @@ export default {
           })
         }
       })
+    },
+    handleWatchSingleChartTargetIndex() {
+      this.singleChartData = []
+      this.singleChartAllData = []
+      this.singleChartTitles = []
+      this.singleChartAxis.series = []
+      this.singleChartFilterData = []
+      this.initSingleChartData()
+      this.initSingleChartOptions()
+      this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
     initProcessChartData() {
       this.schemeComparisonData.forEach((item, index) => {
@@ -345,6 +340,40 @@ export default {
           })
         }
       })
+    },
+    handleWatchProcessChartTargetIndex() {
+      this.processChartData = []
+      this.processChartAllData = []
+      this.processChartCurrentData = {}
+      this.processChartTitles = []
+      this.processChartAxis.series = []
+      this.processChartFilterData = []
+      this.initProcessChartData()
+      this.initProcessChartOptions()
+      this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+    },
+    handleWatchSchemeComparisonData() {
+      this.singleChartTargetIndex = 0
+      this.singleChartData = []
+      this.singleChartAllData = []
+      this.singleChartTitles = []
+      this.singleChartAxis.series = []
+      this.singleChartFilterData = []
+      this.initSingleChartData()
+      this.initSingleChartOptions()
+      this.processChartTargetIndex = 0
+      this.processChartData = []
+      this.processChartAllData = []
+      this.processChartCurrentData = {}
+      this.processChartTitles = []
+      this.processChartAxis.series = []
+      this.processChartFilterData = []
+      this.initProcessChartData()
+      this.initProcessChartOptions()
+      this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+    },
+    update() {
+      this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
     }
   }
 }
@@ -357,14 +386,18 @@ export default {
     width: 100%;
     float: left;
     .single-chart-switch {
-      margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
     }
   }
   .scheme-comparison-process-chart {
     width: 100%;
     float: left;
     .process-chart-switch {
-      margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
     }
   }
 }
