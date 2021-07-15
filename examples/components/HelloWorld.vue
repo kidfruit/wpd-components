@@ -20,7 +20,7 @@
       <h2>MultiOptionTable：流程模型选择专用表组件</h2>
       <multi-option-table-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>ResultHydroDynamic：水动力成果展示组件</h2>
       <result-hydro-dynamic-test />
     </div>
@@ -52,7 +52,7 @@
       <h2>TreeSimpleTableGroup：树表联动组件(SimpleTable基础表)</h2>
       <tree-simple-table-group-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SeriesQZTest：通用过程线表过程组件</h2>
       <series-q-z-test />
     </div>

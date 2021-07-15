@@ -1,32 +1,35 @@
 <template>
-  <div :class="classNames">
-    <div class="left-box">
-      <div class="chart-container">
-        <standard-chart
+  <div :class="classNames" :key="randomKey">
+    <div class="chart-container">
+      <standard-chart
           ref="chartRef"
+          :classes="['result-hydro-dynamic']"
           :chartOption="chartOption"
           :chartAxis="chartAxis"
-          :key="randomKey"
-          :id="id"
-          :classes="['result-hydro-dynamic']"
           :chartData="newData"
-        />
-      </div>
-      <div class="table-container">
-        <simple-table
-          ref="tableRef"
-          :tableData="newData"
-          :setting="setting"
-          :tableColumns="columns"
-        ></simple-table>
+          :id="id"
+      />
+      <div class="chart-des">
+        <div class="water-lever">
+          <span class="max-water-level">最高水位：{{maxWaterLevel}}</span>
+          <span class="min-water-level">最低水位：{{minWaterLevel}}</span>
+        </div>
+        <div class="incoming-flow">
+          <span class="max-incoming-flow">最大入库流量：{{maxIncomingFlow}}</span>
+          <span class="min-incoming-flow">最小入库流量：{{minIncomingFlow}}</span>
+        </div>
       </div>
     </div>
-    <div class="right-box box-border">
-      <simple-tree
-        ref="treeRef"
-        :treeData="treeData"
-        @select="handleSelect"
-      ></simple-tree>
+    <div class="table-container">
+      <simple-table
+          class="simple-table"
+          ref="tableRef"
+          :tableData="tableData"
+          :tableColumns="tableColumns"
+          :splitIndex="splitIndex"
+          :setting="setting"
+          @cellEditDone="cellEditDone"
+      ></simple-table>
     </div>
   </div>
 </template>
@@ -34,31 +37,17 @@
 <script>
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
-import SimpleTree from "../../SimpleTree/src/SimpleTree.vue";
 export default {
   components: {
     StandardChart,
     SimpleTable,
-    SimpleTree,
   },
   props: {
     classes: {
       type: Array,
       required: false,
     },
-    id: {
-      type: String,
-    },
     chartAxis: {
-      type: Object,
-    },
-    realtimeData: {
-      type: Object,
-    },
-    treeData: {
-      type: Array,
-    },
-    resultData: {
       type: Object,
     },
     setting: {
@@ -68,192 +57,165 @@ export default {
       type: Object,
       required: false,
     },
+    tableColumns: {
+      type: Array
+    },
+    tableData: {
+      type: Array
+    },
+    singleData: {
+      type: Array
+    },
+    splitIndex: {
+      type: Number
+    }
   },
   data() {
     return {
       newData: [],
-      columns: [],
-      newResultData: [],
-      newRealtimeData: [],
-      resultFields: [],
-      realtimeFields: [],
-      randomKey: Math.random(),
+      randomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      waterLevelArr: [],
+      maxWaterLevel: '',
+      minWaterLevel: '',
+      incomingFlowArr: [],
+      maxIncomingFlow: '',
+      minIncomingFlow: ''
     };
   },
   created() {
-    console.log(this.chartAxis, 11);
     this.handleData();
   },
   computed: {
     classNames() {
       return ["series-qz"].concat(this.classes);
     },
+    id() {
+      return 'series-qz-' + this.randomKey
+    }
   },
   methods: {
-    dynamicCols(columns) {
-      columns.forEach((el) => {
-        if (
-          this.columns.findIndex((item) => item.field === el.field) === -1 &&
-          el.field !== "id"
-        ) {
-          this.columns.push(el);
-        }
-      });
-    },
-    handleSelect(key) {
-      this.$emit("select", key);
-    },
-    clearData() {
-      this.newData = [];
-      this.columns = [];
-      this.newResultData = [];
-      this.newRealtimeData = [];
-      this.resultFields = [];
-      this.realtimeFields = [];
-      if (this.$refs.tableRef) {
-        this.$refs.tableRef.reset();
-      }
-    },
     handleData() {
-      this.clearData();
-      this.newRealtimeData = JSON.parse(JSON.stringify(this.realtimeData));
-      this.newResultData = JSON.parse(JSON.stringify(this.resultData));
-      this.newRealtimeData.tableData = this.newRealtimeData.tableData.sort(
-        (a, b) => {
-          return new Date(a.time).getTime() - new Date(b.time).getTime();
-        }
-      );
-      this.newResultData.tableData = this.newResultData.tableData.sort(
-        (a, b) => {
-          return new Date(a.time).getTime() - new Date(b.time).getTime();
-        }
-      );
-      let firstTime = this.newResultData.tableData[0].time;
-      let resultFields = Object.keys(this.newResultData.tableData[0]);
-      resultFields = resultFields.filter((el) => {
-        return el !== "id" && el != "time";
-      });
-      this.columns = [];
-      this.dynamicCols(this.newRealtimeData.tableColumns);
-      this.dynamicCols(this.newResultData.tableColumns);
-      console.log("this.cols", this.columns);
-      this.columns.forEach((el) => {
-        if (el.field != "time") {
-          let obj = {
-            field: el.field,
-            title: el.title,
-            selected: true,
-            yAxisIndex: 0,
-          };
-          if (resultFields.indexOf(el.field) !== -1) {
-            obj = Object.assign({}, obj, {
-              itemStyle: {
-                normal: {
-                  lineStyle: {
-                    width: 2,
-                    type: "dotted", //'dotted'虚线 'solid'实线
-                  },
-                },
-              },
-            });
-            obj = Object.assign({}, obj, {
-              markLine: {
-                symbol: "none",
-                data: [
-                  {
-                    name: "标记线",
-                    xAxis: firstTime,
-                    lineStyle: {
-                      //警戒线的样式  ，虚实  颜色
-                      type: "solid",
-                      color: "#000",
-                    },
-                  },
-                ],
-                label: { show: false, position: "middle" },
-                silent: true,
-              },
-            });
-          }
-          this.chartAxis.series.push(obj);
-        }
-      });
+      // 构造newData
+      this.newData = []
+      this.tableData.forEach(item => {
+        this.singleData.forEach(element => {
+          item[element.field] = element.value
+        })
+      })
+      this.newData = this.tableData
 
-      this.newData = this.newRealtimeData.tableData.concat(
-        this.newResultData.tableData
-      );
-
-      let groups = this.chartAxis.yAxis.map((el) => el.group).flat(Infinity);
-      // console.log(firstTime, resultFields, groups);
-      this.chartAxis.series.forEach((el) => {
-        let one = groups.find((item) => item.set.indexOf(el.field) !== -1);
-        if (one) {
-          if (resultFields.indexOf(el.field) !== -1) {
-            el.itemStyle.normal.lineStyle.color = one.color;
-            el.itemStyle.normal.color = one.color;
+      // 构造series
+      this.chartAxis.series = []
+      this.tableColumns.forEach((item, index) => {
+        if (index > 1) {
+          if (item.field === 'RD_RR_UPZ_P') {
+            this.chartAxis.series.push({
+              title: item.title,
+              field: item.field,
+              yAxisIndex: 0
+            })
           } else {
-            el.lineStyle = {};
-            el.lineStyle.color = one.color;
-            el.color = one.color;
+            this.chartAxis.series.push({
+              title: item.title,
+              field: item.field,
+              yAxisIndex: 1
+            })
           }
         }
-      });
-      console.log(this.chartAxis.xAxis, 111);
-      // this.chartAxis.xAxis = {};
-      // this.chartAxis.xAxis.axisLabel = {
-      //   interval: 0,
-      //   show: true,
-      //   textStyle: {
-      //     // color: "#a9a9a9", //更改坐标轴文字颜色
-      //     fontSize: 10, //更改坐标轴文字大小
-      //   },
-      //   // rotate: 20,
-      //   formatter: function (v) {
-      //     let half = v.split(" ");
-      //     var date = new Date(v);
-      //     return `\n${half[0]}\n${half[1]}`;
-      //     // return `${date.getDate()}\n${("0" + date.getHours()).slice(-2)}:${(
-      //     //   "0" + date.getMinutes()
-      //     // ).slice(-2)}`;
-      //     // return `${('0' + date.getHours()).slice(-2)}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}`;
-      //   },
-      //   showMinLabel: true, //显示最小值
-      //   showMaxLabel: true, //显示最大值
-      // };
-      this.randomKey = Math.random();
-      setTimeout(() => {
-        this.$refs.tableRef.updateShow();
-      }, 500);
+      })
+      this.singleData.forEach(item => {
+        this.chartAxis.series.push({
+          title: item.title,
+          field: item.field,
+          yAxisIndex: 0
+        })
+      })
+
+      // 构造chart-des
+      this.waterLevelArr = []
+      this.incomingFlowArr = []
+      this.tableData.forEach(item => {
+        this.waterLevelArr.push(item.RD_RR_UPZ_P)
+        this.incomingFlowArr.push((item.RD_RR_AVGINQ_P))
+      })
+      const maxWaterLevel = Math.max(...this.waterLevelArr)
+      const minWaterLevel = Math.min(...this.waterLevelArr)
+      const maxIncomingFlow = Math.max(...this.incomingFlowArr)
+      const minIncomingFlow = Math.min(...this.incomingFlowArr)
+      const maxWaterLevelIndex = this.waterLevelArr.findIndex(element => element === maxWaterLevel)
+      const minWaterLevelIndex = this.waterLevelArr.findIndex(element => element === minWaterLevel)
+      const maxIncomingFlowIndex = this.incomingFlowArr.findIndex(element => element === maxIncomingFlow)
+      const minIncomingFlowIndex = this.incomingFlowArr.findIndex(element => element === minIncomingFlow)
+      this.maxWaterLevel = `${maxWaterLevel} (${this.tableData[maxWaterLevelIndex].time}})`
+      this.minWaterLevel = `${minWaterLevel} (${this.tableData[minWaterLevelIndex].time})`
+      this.maxIncomingFlow = `${maxIncomingFlow} (${this.tableData[maxIncomingFlowIndex].time})`
+      this.minIncomingFlow = `${minIncomingFlow} (${this.tableData[minIncomingFlowIndex].time})`
+
     },
-  },
+    cellEditDone(value) {
+      console.log(value)
+      const { field, newValue, oldValue, rowIndex } = value
+      // this.$set(this.data[rowIndex], field, +newValue)
+      this.newData[rowIndex][field] = +newValue
+      this.randomKey = +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .series-qz {
   display: flex;
-  .left-box {
-    width: 80vw;
-    margin-right: 24px;
-    .chart-container,
-    .table-container {
-      width: 100%;
-    }
+  flex-direction: row;
+  width: 100%;
+  height: 400px;
+  .chart-container,
+  .table-container {
+    width: 50%;
+    height: 100%;
   }
-  .right-box {
-    flex: 1;
-    padding: 8px 10px;
-    .ant-tree {
-      height: 100%;
-      max-height: 76vh;
-      overflow: auto;
-      ::v-deep > li {
+  .chart-container {
+    .result-hydro-dynamic {
+      height: 350px !important;
+    }
+    .chart-des {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 50px;
+      padding: 0 20px;
+      .water-lever,
+      .incoming-flow {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 25px;
+        span {
+          font-size: 14px;
+          width: 50%;
+          height: 25px;
+        }
+      }
+      .max-incoming-flow,
+      .max-water-level {
         text-align: left;
+        line-height: 25px;
+        float: left;
+      }
+      .min-incoming-flow,
+      .min-water-level {
+        text-align: right;
+        line-height: 25px;
+        float: right;
       }
     }
   }
-  .box-border {
-    border: 1px solid #096dd9;
+  .table-container {
+    .simple-table {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
   }
 }
 </style>
