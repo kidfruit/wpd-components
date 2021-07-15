@@ -1,67 +1,83 @@
 <template>
-  <div class="simple-table"
-       :key="randomKey"
-       v-if="isVisible && isRefresh">
-    <div class="preheat-switch"
-         :title="preheat.show ? '关闭预热数据' : '展开预热数据'"
-         v-if="splitIndex >= 0">
-      <span class="ops"
-            @click="preheatSwitch">
-        <a-icon v-if="preheat.show"
-                type="up" />
-        <a-icon v-else
-                type="down" />
+  <div
+    class="simple-table"
+    v-if="isVisible && isRefresh"
+    :key="randomKey"
+  >
+    <div
+      class="preheat-switch"
+      v-if="splitIndex >= 0"
+      :title="preheat.show ? '关闭预热数据' : '展开预热数据'"
+    >
+      <span class="ops" @click="preheatSwitch">
+        <a-icon v-if="preheat.show" type="up" />
+        <a-icon v-else type="down" />
       </span>
     </div>
-    <hot-table :settings="hotSettings"
-               :data="hotData"
-               :class="classes"
-               :after-change="afterChange"
-               ref="hotTableRef"
-               :key="hotTableRandomKey">
-      <hot-column v-for="(item, index) in columns"
-                  :key="index"
-                  :title="item.title"
-                  :data="item.field"
-                  :source="item.source"
-                  :className="item.className"
-                  :renderer="item.renderer"
-                  :type="item.type"
-                  :width="item.width"
-                  :readOnly="item.readOnly"> </hot-column>
+    <hot-table
+      ref="hotTableRef"
+      :class="classes"
+      :settings="hotSettings"
+      :data="hotData"
+      :after-change="afterChange"
+      :key="hotTableRandomKey"
+    >
+      <hot-column
+        v-for="(item, index) in columns"
+        :key="index"
+        :title="item.title"
+        :data="item.field"
+        :source="item.source"
+        :className="item.className"
+        :renderer="item.renderer"
+        :type="item.type"
+        :width="item.width"
+        :readOnly="item.readOnly"
+      />
     </hot-table>
-    <a-modal v-model="saveFileModalVisible"
-             title="保存文件名"
-             okText="确定"
-             cancelText="取消"
-             @ok="saveFile">
-      <a-input placeholder="请输入你想要保存的文件名"
-               v-model="saveFileInput"
-               @pressEnter="saveFile" />
+    <a-modal
+      title="保存文件名"
+      okText="确定"
+      cancelText="取消"
+      v-model="saveFileModalVisible"
+      @ok="saveFile"
+    >
+      <a-input
+        placeholder="请输入你想要保存的文件名"
+        v-model="saveFileInput"
+        @pressEnter="saveFile"
+      />
     </a-modal>
-    <a-modal v-model="scaleModalVisible"
-             title="倍比缩放"
-             okText="确定"
-             cancelText="取消"
-             @ok="scale">
-      <a-input placeholder="请输入你想要缩放的倍数"
-               v-model="scaleInput"
-               @pressEnter="scale" />
+    <a-modal
+      title="倍比缩放"
+      okText="确定"
+      cancelText="取消"
+      v-model="scaleModalVisible"
+      @ok="scale"
+    >
+      <a-input
+        placeholder="请输入你想要缩放的倍数"
+        v-model="scaleInput"
+        @pressEnter="scale"
+      />
     </a-modal>
-    <a-modal v-model="sameIncreaseDecreaseModalVisible"
-             title="同增同减"
-             okText="确定"
-             cancelText="取消"
-             @ok="sameIncreaseDecrease">
-      <a-input placeholder="请输入你想要增加的数目"
-               v-model="sameIncreaseDecreaseInput"
-               @pressEnter="sameIncreaseDecrease" />
+    <a-modal
+      title="同增同减"
+      okText="确定"
+      cancelText="取消"
+      v-model="sameIncreaseDecreaseModalVisible"
+      @ok="sameIncreaseDecrease"
+    >
+      <a-input
+        placeholder="请输入你想要增加的数目"
+        v-model="sameIncreaseDecreaseInput"
+        @pressEnter="sameIncreaseDecrease"
+      />
     </a-modal>
   </div>
 </template>
 <script>
 import { HotTable, HotColumn } from '@handsontable/vue'
-import Handsontable from 'handsontable'
 import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
 
 registerLanguageDictionary(zhCN)
@@ -167,7 +183,7 @@ export default {
         cells: (row, col, prop) => {
           let cellProperties = {}
           if (this.splitIndex >= 0 && row < this.splitIndex) {
-            cellProperties = { className: 'preheat-rows', readOnly: true }
+            cellProperties = { className: 'preheat-rows'}
           }
           return cellProperties
         },
@@ -520,8 +536,7 @@ export default {
     },
     saveFile() {
       this.saveFileModalVisible = false
-      const exportFile =
-        this.$refs.hotTableRef.hotInstance.getPlugin('exportFile')
+      const exportFile = this.$refs.hotTableRef.hotInstance.getPlugin('exportFile')
       exportFile.downloadFile('csv', {
         filename: this.saveFileInput === '' ? '我的表格' : this.saveFileInput,
         exportHiddenRows: true,
@@ -538,11 +553,9 @@ export default {
       const field = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][field]
       const endData = +this.hotData[selectedRange[0].to.row][field]
-      const selectedMidRows =
-        selectedRange[0].to.row - selectedRange[0].from.row
+      const selectedMidRows = selectedRange[0].to.row - selectedRange[0].from.row
       const stepNumber = Math.abs((endData - firstData) / selectedMidRows)
       const currentCol = selectedRange[0].from.col
-      const firstRow = selectedRange[0].from.row
       if (selectedRange && selectedRange.length > 0) {
         if (currentCol !== selectedRange[0].to.col) {
           return
@@ -553,9 +566,6 @@ export default {
         if (
           typeof this.hotData[selectedRange[0].from.row][field] === 'boolean'
         ) {
-          return
-        }
-        if (firstRow < this.splitIndex) {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
@@ -602,7 +612,6 @@ export default {
       const field = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][field]
       const currentCol = selectedRange[0].from.col
-      const firstRow = selectedRange[0].from.row
       if (selectedRange && selectedRange.length > 0) {
         if (currentCol !== selectedRange[0].to.col) {
           return
@@ -613,9 +622,6 @@ export default {
         if (
           typeof this.hotData[selectedRange[0].from.row][field] === 'boolean'
         ) {
-          return
-        }
-        if (firstRow < this.splitIndex) {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
@@ -654,7 +660,6 @@ export default {
       const field = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][field]
       const currentCol = selectedRange[0].from.col
-      const firstRow = selectedRange[0].from.row
       if (selectedRange && selectedRange.length > 0) {
         if (currentCol !== selectedRange[0].to.col) {
           return
@@ -665,9 +670,6 @@ export default {
         if (
           typeof this.hotData[selectedRange[0].from.row][field] === 'boolean'
         ) {
-          return
-        }
-        if (firstRow < this.splitIndex) {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
@@ -707,7 +709,7 @@ export default {
       const currentCol = selectedRange[0].from.col
       const currentRow = selectedRange[0].from.row
       const field = this.columns[selectedRange[0].from.col].field
-      const currentData = +this.hotData[selectedRange[0].from.row][field]
+      const currentData = this.hotData[selectedRange[0].from.row][field]
       const rowLength = this.hotInstance.getData().length
       if (selectedRange && selectedRange.length > 0) {
         if (currentCol !== selectedRange[0].to.col) {
@@ -719,29 +721,18 @@ export default {
         if (this.tableColumns[currentCol].readOnly === true) {
           return
         }
-        if (
-          typeof this.hotData[selectedRange[0].from.row][field] === 'boolean'
-        ) {
-          return
-        }
-        if (currentRow < this.splitIndex) {
-          return
-        }
-        if (typeof currentData === 'number' && !isNaN(currentData)) {
-          console.log('afterOnCellCornerDblClick')
-          for (let i = 0; i < rowLength - currentRow - 1; i++) {
-            const oldValue =
-              this.hotData[selectedRange[0].from.row + i + 1][field]
-            const newValue = currentData
-            const rowIndex = selectedRange[0].from.row + i + 1
-            this.$emit('cellEditDone', {
-              rowIndex,
-              field,
-              newValue,
-              oldValue,
-            })
-            this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
-          }
+        console.log('afterOnCellCornerDblClick')
+        for (let i = 0; i < rowLength - currentRow - 1; i++) {
+          const oldValue = this.hotData[selectedRange[0].from.row + i + 1][field]
+          const newValue = currentData
+          const rowIndex = selectedRange[0].from.row + i + 1
+          this.$emit('cellEditDone', {
+            rowIndex,
+            field,
+            newValue,
+            oldValue,
+          })
+          this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
         }
         this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }

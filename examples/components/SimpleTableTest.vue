@@ -29,7 +29,7 @@ export default {
     //   newSetting: {
     //       rowHeaders:true
     //   },
-      splitIndex:2,
+      splitIndex:4,
       visible: true,
       classNames: ['testTable'],
       setting: { rowHeaders:true },
@@ -172,6 +172,7 @@ export default {
           titleAlign: 'center',
           columnAlign: 'center',
           isResize: true,
+          readOnly: true,
         },
         {
           field: 'dim1',
