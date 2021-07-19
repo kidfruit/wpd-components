@@ -10,6 +10,8 @@
       :tableData="tableData"
       :singleData="singleData"
       :splitIndex="splitIndex"
+      :structure="structure"
+      :seriesQZStyle="seriesQZStyle"
       :setting="{}"
     />
   </div>
@@ -32,7 +34,12 @@ export default {
       tableColumns: [],
       tableData: [],
       singleData: [],
-      splitIndex: 0
+      splitIndex: 0,
+      structure: 'leftright',  // leftright topbottom
+      seriesQZStyle: {
+        width: '100%',
+        height: '500px'
+      }
     };
   },
   methods: {

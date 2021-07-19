@@ -1,5 +1,9 @@
 <template>
-  <div :class="classNames" :key="randomKey">
+  <div
+    :class="classNames"
+    :style="seriesQZStyle"
+    :key="randomKey"
+  >
     <div class="chart-container">
       <standard-chart
           ref="chartRef"
@@ -95,6 +99,13 @@ export default {
     },
     splitIndex: {
       type: Number
+    },
+    structure: {
+      type: String,
+      default: 'leftright'
+    },
+    seriesQZStyle: {
+      type: Object
     }
   },
   data() {
@@ -112,9 +123,12 @@ export default {
   created() {
     this.handleData();
   },
+  beforeUpdate() {
+    this.handleData()
+  },
   computed: {
     classNames() {
-      return ["series-qz"].concat(this.classes);
+      return ["series-qz", this.structure].concat(this.classes);
     },
     id() {
       return 'series-qz-' + this.randomKey
@@ -315,18 +329,16 @@ export default {
       const { field, newValue, oldValue, rowIndex } = value
       // this.$set(this.data[rowIndex], field, +newValue)
       this.newData[rowIndex][field] = +newValue
-      this.randomKey = +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+      this.$refs.tableRef.reset()
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.series-qz {
+.series-qz.leftright {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 400px;
   .chart-container,
   .table-container {
     width: 50%;
@@ -334,7 +346,7 @@ export default {
   }
   .chart-container {
     .result-hydro-dynamic {
-      height: 350px !important;
+      height: calc(100% - 50px) !important;
     }
     .chart-des {
       display: flex;
@@ -369,6 +381,57 @@ export default {
     }
   }
   .table-container {
+    .simple-table {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  }
+}
+.series-qz.topbottom {
+  display: flex;
+  flex-direction: column;
+  .chart-container {
+    width: 100%;
+    height: 75%;
+    .result-hydro-dynamic {
+      height: calc(100% - 50px) !important;
+    }
+    .chart-des {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 50px;
+      padding: 0 50px;
+      .water-lever,
+      .incoming-flow {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 25px;
+        span {
+          font-size: 14px;
+          width: 50%;
+          height: 25px;
+        }
+      }
+      .max-incoming-flow,
+      .max-water-level {
+        text-align: left;
+        line-height: 25px;
+        float: left;
+      }
+      .min-incoming-flow,
+      .min-water-level {
+        text-align: right;
+        line-height: 25px;
+        float: right;
+      }
+    }
+  }
+  .table-container {
+    width: 100%;
+    height: 25%;
     .simple-table {
       height: 100%;
       overflow-y: auto;
