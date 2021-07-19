@@ -4,6 +4,7 @@
       <standard-chart
           ref="chartRef"
           :classes="['result-hydro-dynamic']"
+          :splitIndex="splitIndex"
           :chartOption="chartOption"
           :chartAxis="chartAxis"
           :chartData="newData"
@@ -60,56 +61,7 @@ const defaultChartOption = {
   },
   dataZoom: [{
     show: true
-  }],
-  tooltip: {
-    trigger: "axis",
-    formatter: function (params) {
-      let paramsNameArr = []
-      params.forEach(item => paramsNameArr.push(item.seriesName))
-      paramsNameArr = [...new Set(paramsNameArr)]
-      const tempParamsArr = []
-      const tempParams = []
-      paramsNameArr.forEach((item) => {
-        params.forEach(el => {
-          if (tempParamsArr.includes(item)) {
-            return
-          }
-          if (item === el.seriesName) {
-            tempParamsArr.push(item)
-            tempParams.push(el)
-          }
-        })
-      })
-      params = tempParams
-
-      var htmlStr =
-          '<div style="height: auto;overflow-y: hidden;"><p style="color: #666;font-weight:700;font-size:14px;">' +
-          params[0].axisValue +
-          "</p>";
-      let arr = params.filter((el) => el.value);
-      arr = arr.sort((a, b) => b.value - a.value);
-      for (var i = 0; i < arr.length; i++) {
-        if (arr[i].value) {
-          htmlStr +=
-              '<div style="display:flex;justify-content:space-between;"><p style="color: #000;textAlign:left;">' +
-              arr[i].marker +
-              arr[i].seriesName +
-              ":&nbsp;&nbsp;" +
-              "<span>" +
-              arr[i].value +
-              "</span>" +
-              "</p></div>";
-        }
-      }
-      htmlStr += "</div>";
-      return htmlStr;
-    },
-    extraCssText: "box-shadow: 0 0 3px rgba(150,150,150, 0.7);",
-    textStyle: {
-      fontSize: 14,
-      color: "#000",
-    },
-  },
+  }]
 }
 
 export default {
@@ -202,13 +154,18 @@ export default {
           }
         }
       })
+      this.singleData.forEach(item => {
+        tempSeries.push({
+          title: item.title,
+          field: item.field,
+          yAxisIndex: 0
+        })
+      })
       // series 有splitIndex，前面为实线，后面为虚线
       let tempTime = ''
       if (this.splitIndex) {
         tempTime = this.newData[this.splitIndex].time
       }
-      console.log(tempTime)
-      console.log(tempSeries)
       if (tempTime !== '') {
         const list = tempSeries.map(el => ({
           type: el.echartstype,
@@ -235,7 +192,6 @@ export default {
             silent: true
           } : null,
         }))
-        console.log(list)
 
         const listYAxisIndexArray = []
         list.forEach(item => {
@@ -274,13 +230,64 @@ export default {
           yAxisIndex: el.yAxisIndex,
         }))
       }
-      this.singleData.forEach(item => {
-        this.chartAxis.series.push({
-          title: item.title,
-          field: item.field,
-          yAxisIndex: 0
-        })
-      })
+
+      // 构造tooltip
+      this.chartOption.tooltip = {
+        trigger: "axis",
+        formatter: (params) => {
+          let paramsNameArr = []
+          params.forEach(item => paramsNameArr.push(item.seriesName))
+          paramsNameArr = [...new Set(paramsNameArr)]
+          const tempParamsArr = []
+          const tempParams = []
+          paramsNameArr.forEach((item) => {
+            params.forEach(el => {
+              if (tempParamsArr.includes(item)) {
+                return
+              }
+              if (item === el.seriesName) {
+                tempParamsArr.push(item)
+                tempParams.push(el)
+              }
+            })
+          })
+          tempParams.forEach(el => {
+            this.chartAxis.series.forEach(item => {
+              if (el.seriesName === item.title) {
+                el.value = this.tableData[el.dataIndex][item.field]
+              }
+            })
+          })
+          params = tempParams
+
+          var htmlStr =
+              '<div style="height: auto;overflow-y: hidden;"><p style="color: #666;font-weight:700;font-size:14px;">' +
+              params[0].axisValue +
+              "</p>";
+          let arr = params.filter((el) => el.value !== null);
+          arr = arr.sort((a, b) => b.value - a.value);
+          for (var i = 0; i < arr.length; i++) {
+            if (arr[i].value !== null) {
+              htmlStr +=
+                  '<div style="display:flex;justify-content:space-between;"><p style="color: #000;textAlign:left;">' +
+                  arr[i].marker +
+                  arr[i].seriesName +
+                  ":&nbsp;&nbsp;" +
+                  "<span>" +
+                  arr[i].value +
+                  "</span>" +
+                  "</p></div>";
+            }
+          }
+          htmlStr += "</div>";
+          return htmlStr;
+        },
+        extraCssText: "box-shadow: 0 0 3px rgba(150,150,150, 0.7);",
+        textStyle: {
+          fontSize: 14,
+          color: "#000"
+        }
+      }
 
       // 构造chart-des
       this.waterLevelArr = []
