@@ -372,6 +372,8 @@ export default {
             }
           }
         })
+        let selectedRange = this.hotInstance.getSelectedRange()
+        this.selectedRange = selectedRange
         this.updateShow()
       }
     },
@@ -682,6 +684,7 @@ export default {
     sameIncreaseDecrease() {
       this.sameIncreaseDecreaseModalVisible = false
       let selectedRange = this.hotInstance.getSelectedRange()
+      this.selectedRange = selectedRange
       const field = this.columns[selectedRange[0].from.col].field
       const stepNumber = selectedRange[0].to.row - selectedRange[0].from.row + 1
       for (let i = 0; i < stepNumber; i++) {
@@ -703,6 +706,7 @@ export default {
     },
     afterOnCellCornerDblClick() {
       let selectedRange = this.hotInstance.getSelectedRange()
+      this.selectedRange = selectedRange
       if (selectedRange[0].from.row === -1) {
         selectedRange[0].from.row = 0
       }

@@ -3,12 +3,12 @@
     <div class="chart-container">
       <standard-chart
         ref="chartRef"
+        :id="id"
+        :key="randomKey"
         :chartOption="chartOption"
         :isRefresh="isRefresh"
         :chartAxis="chartAxis"
         :chartData="data"
-        :key="randomKey"
-        :id="id"
       />
     </div>
     <div class="table-container">

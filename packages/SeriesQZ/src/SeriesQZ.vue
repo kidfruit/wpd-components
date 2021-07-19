@@ -37,6 +37,81 @@
 <script>
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
+
+const defaultChartAxis =  {
+  xAxis: "time",
+  timeSeries: true,
+  yAxis: [
+    {
+      title: "水位(m)",
+      yAxisIndex: 0
+    },
+    {
+      title: "流量(m³/s)",
+      yAxisIndex: 1
+    }
+  ],
+  series: []
+}
+
+const defaultChartOption = {
+  legend: {
+    top: 0
+  },
+  dataZoom: [{
+    show: true
+  }],
+  tooltip: {
+    trigger: "axis",
+    formatter: function (params) {
+      let paramsNameArr = []
+      params.forEach(item => paramsNameArr.push(item.seriesName))
+      paramsNameArr = [...new Set(paramsNameArr)]
+      const tempParamsArr = []
+      const tempParams = []
+      paramsNameArr.forEach((item) => {
+        params.forEach(el => {
+          if (tempParamsArr.includes(item)) {
+            return
+          }
+          if (item === el.seriesName) {
+            tempParamsArr.push(item)
+            tempParams.push(el)
+          }
+        })
+      })
+      params = tempParams
+
+      var htmlStr =
+          '<div style="height: auto;overflow-y: hidden;"><p style="color: #666;font-weight:700;font-size:14px;">' +
+          params[0].axisValue +
+          "</p>";
+      let arr = params.filter((el) => el.value);
+      arr = arr.sort((a, b) => b.value - a.value);
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].value) {
+          htmlStr +=
+              '<div style="display:flex;justify-content:space-between;"><p style="color: #000;textAlign:left;">' +
+              arr[i].marker +
+              arr[i].seriesName +
+              ":&nbsp;&nbsp;" +
+              "<span>" +
+              arr[i].value +
+              "</span>" +
+              "</p></div>";
+        }
+      }
+      htmlStr += "</div>";
+      return htmlStr;
+    },
+    extraCssText: "box-shadow: 0 0 3px rgba(150,150,150, 0.7);",
+    textStyle: {
+      fontSize: 14,
+      color: "#000",
+    },
+  },
+}
+
 export default {
   components: {
     StandardChart,
@@ -95,6 +170,9 @@ export default {
   },
   methods: {
     handleData() {
+      this.chartAxis = Object.assign(this.chartAxis, defaultChartAxis)
+      this.chartOption = Object.assign(this.chartOption, defaultChartOption)
+
       // 构造newData
       this.newData = []
       this.tableData.forEach(item => {
@@ -105,17 +183,18 @@ export default {
       this.newData = this.tableData
 
       // 构造series
+      const tempSeries = []
       this.chartAxis.series = []
       this.tableColumns.forEach((item, index) => {
         if (index > 1) {
           if (item.field === 'RD_RR_UPZ_P') {
-            this.chartAxis.series.push({
+            tempSeries.push({
               title: item.title,
               field: item.field,
               yAxisIndex: 0
             })
           } else {
-            this.chartAxis.series.push({
+            tempSeries.push({
               title: item.title,
               field: item.field,
               yAxisIndex: 1
@@ -123,6 +202,78 @@ export default {
           }
         }
       })
+      // series 有splitIndex，前面为实线，后面为虚线
+      let tempTime = ''
+      if (this.splitIndex) {
+        tempTime = this.newData[this.splitIndex].time
+      }
+      console.log(tempTime)
+      console.log(tempSeries)
+      if (tempTime !== '') {
+        const list = tempSeries.map(el => ({
+          type: el.echartstype,
+          areaStyle: el.areaStyle,
+          color: el.color,
+          step: el.step,
+          field: el.field,
+          title: el.title,
+          smooth:el.smooth,
+          selected: true,
+          yAxisIndex: el.yAxisIndex,
+          markLine: el.echartstype !== 'bar' ? {
+            symbol: 'none',
+            data: [{
+              name: '标记线',
+              xAxis: tempTime,
+              lineStyle: {
+                //警戒线的样式  ，虚实  颜色
+                type: 'dash',
+                color: '#000'
+              }
+            }],
+            label: { show: true, position: 'end' },
+            silent: true
+          } : null,
+        }))
+        console.log(list)
+
+        const listYAxisIndexArray = []
+        list.forEach(item => {
+          listYAxisIndexArray.push(item.yAxisIndex)
+        })
+        if (!listYAxisIndexArray.includes(0)) {
+          list.forEach(item => {
+            item.yAxisIndex = 0
+          })
+        }
+
+        let allList = []
+        for (let i = 0; i < list.length; i++) {
+          allList.push(list[i])
+          if (list[i].type !== 'bar') {//如果为柱状图则不需要实现虚线
+            let obj = Object.assign({}, list[i], {
+              // smooth: true, //关键点，为true是不支持虚线，实线就用true
+              itemStyle: {
+                normal: {
+                  lineStyle: {
+                    width: 2,
+                    type: 'dotted', //'dotted'虚线 'solid'实线
+                  },
+                },
+              },
+            })
+            allList.push(obj)
+          }
+        }
+        this.chartAxis.series = allList
+      } else {
+        this.chartAxis.series = tempSeries.map(el => ({
+          field: el.field,
+          title: el.title,
+          selected: true,
+          yAxisIndex: el.yAxisIndex,
+        }))
+      }
       this.singleData.forEach(item => {
         this.chartAxis.series.push({
           title: item.title,

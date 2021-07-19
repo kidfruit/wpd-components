@@ -237,7 +237,7 @@ export default {
       let yAxisList = showTypeList.filter(
         (el) => el.showType.indexOf(current) !== -1
       )
-      
+
       yAxisList = uniqueObj(yAxisList, 'showType')
       //console.log("555555555555555",yAxisList)
       let yAxis = []
@@ -269,7 +269,7 @@ export default {
       return yAxis
     },
     generateChartSeries(showTypeList, current) {
-      //console.log('showTypeList', showTypeList)
+      // console.log(showTypeList, current)
       let firstTime = ''
       if (this.splitIndex) {
         firstTime = this.newTableData[this.splitIndex].time
