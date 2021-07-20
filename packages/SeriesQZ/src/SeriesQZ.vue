@@ -2,7 +2,6 @@
   <div
     :class="classNames"
     :style="seriesQZStyle"
-    :key="randomKey"
   >
     <div class="chart-container">
       <standard-chart
@@ -328,8 +327,12 @@ export default {
         this.zArr = []
         this.qArr = []
         this.tableData.forEach(item => {
-          this.zArr.push(item.z)
-          this.qArr.push((item.q))
+          if (item.z !== null) {
+            this.zArr.push(item.z)
+          }
+          if (item.q !== null) {
+            this.qArr.push((item.q))
+          }
         })
         const maxZ = Math.max(...this.zArr)
         const minZ = Math.min(...this.zArr)
@@ -351,22 +354,28 @@ export default {
         this.inQArr = []
         this.outQArr = []
         this.tableData.forEach(item => {
-          this.zArr.push(item.z)
-          this.inQArr.push(item.inq)
-          this.outQArr.push(item.outq)
+          if (item.z !== null) {
+            this.zArr.push(item.z)
+          }
+          if (item.inq !== null) {
+            this.inQArr.push(item.inq)
+          }
+          if (item.outq !== null) {
+            this.outQArr.push(item.outq)
+          }
         })
         const maxZ = Math.max(...this.zArr)
         const minZ = Math.min(...this.zArr)
         const maxInQ = Math.max(...this.inQArr)
         const minInQ = Math.min(...this.inQArr)
         const maxOutQ = Math.max(...this.outQArr)
-        const minOutQ = Math.min(...this.OutQArr)
+        const minOutQ = Math.min(...this.outQArr)
         const maxZIndex = this.zArr.findIndex(element => element === maxZ)
         const minZIndex = this.zArr.findIndex(element => element === minZ)
-        const maxInQIndex = this.qArr.findIndex(element => element === maxInQ)
-        const minInQIndex = this.qArr.findIndex(element => element === minInQ)
-        const maxOutQIndex = this.qArr.findIndex(element => element === maxOutQ)
-        const minOutQIndex = this.qArr.findIndex(element => element === minOutQ)
+        const maxInQIndex = this.inQArr.findIndex(element => element === maxInQ)
+        const minInQIndex = this.inQArr.findIndex(element => element === minInQ)
+        const maxOutQIndex = this.outQArr.findIndex(element => element === maxOutQ)
+        const minOutQIndex = this.outQArr.findIndex(element => element === minOutQ)
         this.maxZ = `${maxZ} (${this.tableData[maxZIndex].time}})`
         this.minZ = `${minZ} (${this.tableData[minZIndex].time})`
         this.maxInQ = `${maxInQ} (${this.tableData[maxInQIndex].time})`
@@ -382,9 +391,6 @@ export default {
       // this.$set(this.data[rowIndex], field, +newValue)
       this.newData[rowIndex][field] = +newValue
       this.$refs.tableRef.reset()
-    },
-    update() {
-      this.randomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     }
   }
 };
