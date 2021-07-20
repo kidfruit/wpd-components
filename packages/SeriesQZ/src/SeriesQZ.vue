@@ -69,6 +69,7 @@ const defaultChartOption = {
 }
 
 export default {
+  name: 'SeriesQZ',
   components: {
     StandardChart,
     SimpleTable,
@@ -123,9 +124,6 @@ export default {
   created() {
     this.handleData();
   },
-  beforeUpdate() {
-    this.handleData()
-  },
   computed: {
     classNames() {
       return ["series-qz", this.structure].concat(this.classes);
@@ -157,12 +155,14 @@ export default {
             tempSeries.push({
               title: item.title,
               field: item.field,
+              selected: true,
               yAxisIndex: 0
             })
           } else {
             tempSeries.push({
               title: item.title,
               field: item.field,
+              selected: true,
               yAxisIndex: 1
             })
           }
@@ -172,6 +172,7 @@ export default {
         tempSeries.push({
           title: item.title,
           field: item.field,
+          selected: false,
           yAxisIndex: 0
         })
       })
@@ -189,7 +190,7 @@ export default {
           field: el.field,
           title: el.title,
           smooth:el.smooth,
-          selected: true,
+          selected: el.selected,
           yAxisIndex: el.yAxisIndex,
           markLine: el.echartstype !== 'bar' ? {
             symbol: 'none',
@@ -240,7 +241,7 @@ export default {
         this.chartAxis.series = tempSeries.map(el => ({
           field: el.field,
           title: el.title,
-          selected: true,
+          selected: el.selected,
           yAxisIndex: el.yAxisIndex,
         }))
       }
@@ -330,6 +331,9 @@ export default {
       // this.$set(this.data[rowIndex], field, +newValue)
       this.newData[rowIndex][field] = +newValue
       this.$refs.tableRef.reset()
+    },
+    update() {
+      this.randomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     }
   }
 };

@@ -14,6 +14,7 @@
       :seriesQZStyle="seriesQZStyle"
       :setting="{}"
     />
+    <button @click="update">刷新数据</button>
   </div>
 </template>
 
@@ -48,6 +49,9 @@ export default {
       this.tableData = fakeData2.tableData
       this.singleData = fakeData2.singleData
       this.splitIndex = fakeData2.splitIndex
+    },
+    update() {
+      this.$refs.seriesQZ.update()
     }
   }
 };
