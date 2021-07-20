@@ -21,6 +21,7 @@ import WpdTimePicker from "./WpdTimePicker/src/WpdTimePicker.vue";
 import SchemeComparisonChart from "./SchemeComparisonChart/src/SchemeComparisonChart";
 import StatusInfoComp from "./StatusInfoComp/src/StatusInfoComp";
 import SelectAndSortComp from "./SelectAndSortComp/src/SelectAndSortComp";
+import SeriesQZ from "./SeriesQZ/src/SeriesQZ";
 
 import testDirective from "./testDirective/src/testDirective";
 import WpdTimePickerUtile from "./WpdTimePickerUtile/src/WpdTimePickerUtile";
@@ -55,7 +56,8 @@ const components = [
   WpdTimePicker,
   SchemeComparisonChart,
   StatusInfoComp,
-  SelectAndSortComp
+  SelectAndSortComp,
+  SeriesQZ
 ];
 
 // 存储指令映射
@@ -108,6 +110,7 @@ export default {
   SchemeComparisonChart,
   StatusInfoComp,
   SelectAndSortComp,
+  SeriesQZ,
 
   ...directives,
 };

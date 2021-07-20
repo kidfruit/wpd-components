@@ -15,13 +15,21 @@
           :id="id"
       />
       <div class="chart-des">
-        <div class="water-lever">
-          <span class="max-water-level">最高水位：{{maxWaterLevel}}</span>
-          <span class="min-water-level">最低水位：{{minWaterLevel}}</span>
+        <div class="z">
+          <span class="max-z">最高水位：{{maxZ}}</span>
+          <span class="min-z">最低水位：{{minZ}}</span>
         </div>
-        <div class="incoming-flow">
-          <span class="max-incoming-flow">最大入库流量：{{maxIncomingFlow}}</span>
-          <span class="min-incoming-flow">最小入库流量：{{minIncomingFlow}}</span>
+        <div class="q" v-if="shuiWenShow">
+          <span class="max-q">最高流量：{{maxQ}}</span>
+          <span class="min-q">最低流量：{{minQ}}</span>
+        </div>
+        <div class="in-q" v-if="shuiKuShow">
+          <span class="max-in-q">最大入库流量：{{maxInQ}}</span>
+          <span class="min-in-q">最小入库流量：{{minInQ}}</span>
+        </div>
+        <div class="out-q" v-if="shuiKuShow">
+          <span class="max-out-q">最大出库流量：{{maxOutQ}}</span>
+          <span class="min-out-q">最小出库流量：{{minOutQ}}</span>
         </div>
       </div>
     </div>
@@ -113,12 +121,20 @@ export default {
     return {
       newData: [],
       randomKey: +new Date() + (Math.random() * 1000).toFixed(0),
-      waterLevelArr: [],
-      maxWaterLevel: '',
-      minWaterLevel: '',
-      incomingFlowArr: [],
-      maxIncomingFlow: '',
-      minIncomingFlow: ''
+      zArr: [],
+      qArr: [],
+      inQArr: [],
+      outQArr: [],
+      maxZ: '',
+      minZ: '',
+      maxQ: '',
+      minQ: '',
+      maxInQ: '',
+      minInQ: '',
+      maxOutQ: '',
+      minOutQ: '',
+      shuiWenShow: true,
+      shuiKuShow: false
     };
   },
   created() {
@@ -150,8 +166,8 @@ export default {
       const tempSeries = []
       this.chartAxis.series = []
       this.tableColumns.forEach((item, index) => {
-        if (index > 1) {
-          if (item.field === 'RD_RR_UPZ_P') {
+        if (index > 0) {
+          if (item.field === 'z') {
             tempSeries.push({
               title: item.title,
               field: item.field,
@@ -305,24 +321,59 @@ export default {
       }
 
       // 构造chart-des
-      this.waterLevelArr = []
-      this.incomingFlowArr = []
-      this.tableData.forEach(item => {
-        this.waterLevelArr.push(item.RD_RR_UPZ_P)
-        this.incomingFlowArr.push((item.RD_RR_AVGINQ_P))
-      })
-      const maxWaterLevel = Math.max(...this.waterLevelArr)
-      const minWaterLevel = Math.min(...this.waterLevelArr)
-      const maxIncomingFlow = Math.max(...this.incomingFlowArr)
-      const minIncomingFlow = Math.min(...this.incomingFlowArr)
-      const maxWaterLevelIndex = this.waterLevelArr.findIndex(element => element === maxWaterLevel)
-      const minWaterLevelIndex = this.waterLevelArr.findIndex(element => element === minWaterLevel)
-      const maxIncomingFlowIndex = this.incomingFlowArr.findIndex(element => element === maxIncomingFlow)
-      const minIncomingFlowIndex = this.incomingFlowArr.findIndex(element => element === minIncomingFlow)
-      this.maxWaterLevel = `${maxWaterLevel} (${this.tableData[maxWaterLevelIndex].time}})`
-      this.minWaterLevel = `${minWaterLevel} (${this.tableData[minWaterLevelIndex].time})`
-      this.maxIncomingFlow = `${maxIncomingFlow} (${this.tableData[maxIncomingFlowIndex].time})`
-      this.minIncomingFlow = `${minIncomingFlow} (${this.tableData[minIncomingFlowIndex].time})`
+      if (Object.keys(this.tableData[0]).includes('q')) {
+        this.shuiKuShow = false
+        this.shuiWenShow = true
+
+        this.zArr = []
+        this.qArr = []
+        this.tableData.forEach(item => {
+          this.zArr.push(item.z)
+          this.qArr.push((item.q))
+        })
+        const maxZ = Math.max(...this.zArr)
+        const minZ = Math.min(...this.zArr)
+        const maxQ = Math.max(...this.qArr)
+        const minQ = Math.min(...this.qArr)
+        const maxZIndex = this.zArr.findIndex(element => element === maxZ)
+        const minZIndex = this.zArr.findIndex(element => element === minZ)
+        const maxQIndex = this.qArr.findIndex(element => element === maxQ)
+        const minQIndex = this.qArr.findIndex(element => element === minQ)
+        this.maxZ = `${maxZ} (${this.tableData[maxZIndex].time}})`
+        this.minZ = `${minZ} (${this.tableData[minZIndex].time})`
+        this.maxQ = `${maxQ} (${this.tableData[maxQIndex].time})`
+        this.minQ = `${minQ} (${this.tableData[minQIndex].time})`
+      } else {
+        this.shuiKuShow = true
+        this.shuiWenShow = false
+
+        this.zArr = []
+        this.inQArr = []
+        this.outQArr = []
+        this.tableData.forEach(item => {
+          this.zArr.push(item.z)
+          this.inQArr.push(item.inq)
+          this.outQArr.push(item.outq)
+        })
+        const maxZ = Math.max(...this.zArr)
+        const minZ = Math.min(...this.zArr)
+        const maxInQ = Math.max(...this.inQArr)
+        const minInQ = Math.min(...this.inQArr)
+        const maxOutQ = Math.max(...this.outQArr)
+        const minOutQ = Math.min(...this.OutQArr)
+        const maxZIndex = this.zArr.findIndex(element => element === maxZ)
+        const minZIndex = this.zArr.findIndex(element => element === minZ)
+        const maxInQIndex = this.qArr.findIndex(element => element === maxInQ)
+        const minInQIndex = this.qArr.findIndex(element => element === minInQ)
+        const maxOutQIndex = this.qArr.findIndex(element => element === maxOutQ)
+        const minOutQIndex = this.qArr.findIndex(element => element === minOutQ)
+        this.maxZ = `${maxZ} (${this.tableData[maxZIndex].time}})`
+        this.minZ = `${minZ} (${this.tableData[minZIndex].time})`
+        this.maxInQ = `${maxInQ} (${this.tableData[maxInQIndex].time})`
+        this.minInQ = `${minInQ} (${this.tableData[minInQIndex].time})`
+        this.maxOutQ = `${maxOutQ} (${this.tableData[maxOutQIndex].time})`
+        this.minOutQ = `${minOutQ} (${this.tableData[minOutQIndex].time})`
+      }
 
     },
     cellEditDone(value) {
@@ -358,8 +409,10 @@ export default {
       width: 100%;
       height: 50px;
       padding: 0 20px;
-      .water-lever,
-      .incoming-flow {
+      .z,
+      .q,
+      .in-q,
+      .out-q {
         display: flex;
         align-items: center;
         width: 100%;
@@ -370,14 +423,18 @@ export default {
           height: 25px;
         }
       }
-      .max-incoming-flow,
-      .max-water-level {
+      .max-z,
+      .max-q,
+      .max-in-q,
+      .max-out-q {
         text-align: left;
         line-height: 25px;
         float: left;
       }
-      .min-incoming-flow,
-      .min-water-level {
+      .min-z,
+      .min-q,
+      .min-in-q,
+      .min-out-q {
         text-align: right;
         line-height: 25px;
         float: right;
@@ -407,8 +464,10 @@ export default {
       width: 100%;
       height: 50px;
       padding: 0 50px;
-      .water-lever,
-      .incoming-flow {
+      .z,
+      .q,
+      .in-q,
+      .out-q {
         display: flex;
         align-items: center;
         width: 100%;
@@ -419,14 +478,18 @@ export default {
           height: 25px;
         }
       }
-      .max-incoming-flow,
-      .max-water-level {
+      .max-z,
+      .max-q,
+      .max-in-q,
+      .max-out-q {
         text-align: left;
         line-height: 25px;
         float: left;
       }
-      .min-incoming-flow,
-      .min-water-level {
+      .min-z,
+      .min-q,
+      .min-in-q,
+      .min-out-q {
         text-align: right;
         line-height: 25px;
         float: right;
