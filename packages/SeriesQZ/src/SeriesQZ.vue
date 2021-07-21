@@ -261,7 +261,18 @@ export default {
         }))
       }
 
-      // 构造tooltip
+      // 构造legend
+      const legendData = []
+      const legendSelected = {}
+      this.chartAxis.series.forEach(item => {
+        legendData.push(item.title)
+        if (Object.keys(legendSelected).includes(item.title)) return
+        legendSelected[item.title] = item.selected
+      })
+      this.chartOption.legend.data = legendData
+      this.chartOption.legend.selected = legendSelected
+
+      // 构造tooltip (有bug)
       this.chartOption.tooltip = {
         trigger: "axis",
         formatter: (params) => {
