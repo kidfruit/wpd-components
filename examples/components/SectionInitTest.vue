@@ -11,6 +11,7 @@
       :extraOptions="extraOptions"
       :rawData="rawData"
       :chartAxis="{ legend: { right: 150 } }"
+      @cellEditDone="cellEditDone"
     />
   </div>
 </template>
@@ -68,5 +69,10 @@ export default {
       this.rawData = rawData
     }
   },
+  methods: {
+    cellEditDone(val) {
+      console.log(val)
+    }
+  }
 }
 </script>

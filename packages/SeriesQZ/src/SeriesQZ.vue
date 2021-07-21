@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 
@@ -155,6 +156,7 @@ export default {
       // 构造newData
       this.newData = []
       this.tableData.forEach(item => {
+        item.time = moment(item.time).format('YYYY-MM-DD HH:mm:ss')
         this.singleData.forEach(element => {
           item[element.field] = element.value
         })
@@ -353,10 +355,10 @@ export default {
         const minZIndex = this.zArr.findIndex(element => element === minZ)
         const maxQIndex = this.qArr.findIndex(element => element === maxQ)
         const minQIndex = this.qArr.findIndex(element => element === minQ)
-        this.maxZ = `${maxZ} (${this.tableData[maxZIndex].time}})`
-        this.minZ = `${minZ} (${this.tableData[minZIndex].time})`
-        this.maxQ = `${maxQ} (${this.tableData[maxQIndex].time})`
-        this.minQ = `${minQ} (${this.tableData[minQIndex].time})`
+        this.maxZ = `${maxZ} (${moment(this.tableData[maxZIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
+        this.minZ = `${minZ} (${moment(this.tableData[minZIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
+        this.maxQ = `${maxQ} (${moment(this.tableData[maxQIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
+        this.minQ = `${minQ} (${moment(this.tableData[minQIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
       } else {
         this.shuiKuShow = true
         this.shuiWenShow = false
@@ -387,12 +389,12 @@ export default {
         const minInQIndex = this.inQArr.findIndex(element => element === minInQ)
         const maxOutQIndex = this.outQArr.findIndex(element => element === maxOutQ)
         const minOutQIndex = this.outQArr.findIndex(element => element === minOutQ)
-        this.maxZ = `${maxZ} (${this.tableData[maxZIndex].time}})`
-        this.minZ = `${minZ} (${this.tableData[minZIndex].time})`
-        this.maxInQ = `${maxInQ} (${this.tableData[maxInQIndex].time})`
-        this.minInQ = `${minInQ} (${this.tableData[minInQIndex].time})`
-        this.maxOutQ = `${maxOutQ} (${this.tableData[maxOutQIndex].time})`
-        this.minOutQ = `${minOutQ} (${this.tableData[minOutQIndex].time})`
+        this.maxZ = `${maxZ} (${moment(this.tableData[maxZIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
+        this.minZ = `${minZ} (${moment(this.tableData[minZIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
+        this.maxInQ = `${maxInQ} (${moment(this.tableData[maxInQIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
+        this.minInQ = `${minInQ} (${moment(this.tableData[minInQIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
+        this.maxOutQ = `${maxOutQ} (${moment(this.tableData[maxOutQIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
+        this.minOutQ = `${minOutQ} (${moment(this.tableData[minOutQIndex].time).format('YYYY-MM-DD HH:mm:ss')})`
       }
 
     },

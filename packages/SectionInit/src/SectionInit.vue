@@ -30,6 +30,7 @@
             :tableData="newData"
             :setting="setting"
             :tableColumns="columns"
+            @cellEditDone="cellEditDone"
           ></simple-table>
         </a-row>
       </a-col>
@@ -333,6 +334,9 @@ export default {
     updateShow() {
       this.randomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
+    cellEditDone(val) {
+      this.$emit('cellEditDone', val)
+    }
   },
 }
 </script>
