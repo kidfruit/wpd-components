@@ -210,7 +210,22 @@ export default {
   },
 };
 </script>
-<style scoped>
+
+<style lang="less">
+.hourDiv, .dayDiv, .tendayDiv {
+  .ant-calendar-picker {
+    .ant-calendar-picker-input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+  .ant-select-selection {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+</style>
+<style lang="less" scoped>
 .hourDiv {
   display: flex;
   width: 200px;

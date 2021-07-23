@@ -238,7 +238,8 @@ export default {
         let allList = []
         for (let i = 0; i < list.length; i++) {
           allList.push(list[i])
-          if (list[i].type !== 'bar') {//如果为柱状图则不需要实现虚线
+          //如果为柱状图则不需要实现虚线 汛限水位 防洪高水位 不需要虚线
+          if (list[i].type !== 'bar' && list[i].field !== 'floodHighLevel' && list[i].field !== 'floodLevel') {
             let obj = Object.assign({}, list[i], {
               // smooth: true, //关键点，为true是不支持虚线，实线就用true
               itemStyle: {
@@ -251,6 +252,8 @@ export default {
               },
             })
             allList.push(obj)
+          } else {
+            allList.push(list[i])
           }
         }
         this.chartAxis.series = allList

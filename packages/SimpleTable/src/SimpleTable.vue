@@ -313,6 +313,7 @@ export default {
         return
       }
       if (source !== 'loadData') {
+        let selectedRange = this.hotInstance.getSelectedRange()
         // 添加修改触发
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {
@@ -372,7 +373,6 @@ export default {
             }
           }
         })
-        let selectedRange = this.hotInstance.getSelectedRange()
         this.selectedRange = selectedRange
         this.updateShow()
       }

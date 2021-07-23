@@ -24,7 +24,7 @@
                     :targetChartIndex="targetChartIndex"
                     :splitIndex="splitIndex"
                     :tableData="newTableData"
-                    :setting="setting"
+                    :setting="newSetting"
                     :tableColumns="newTableColumns"
                     @cellEditDone="cellEditDone"></simple-table>
     </div>
@@ -83,6 +83,10 @@ export default {
     chartTitle: {
       type: Array,
     },
+    editable: {
+      type: Boolean,
+      default: true
+    }
   },
   components: {
     SimpleTable,
@@ -160,6 +164,9 @@ export default {
       // 备份表格数据
       this.newTableData = JSON.parse(JSON.stringify(this.tableData))
       this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns))
+      this.newSetting = Object.assign({}, this.setting, {
+        readOnly: !this.editable
+      })
       this.clearData()
       let showTypeList = this.tableColumns
         .map((el) => {

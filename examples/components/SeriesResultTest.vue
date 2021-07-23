@@ -8,6 +8,7 @@
       :tableColumns="tableColumns"
       :tableData="tableData"
       :setting="{ rowHeaders: true }"
+      :editable="false"
     />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>
