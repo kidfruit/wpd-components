@@ -52,7 +52,7 @@
       <h2>TreeSimpleTableGroup：树表联动组件(SimpleTable基础表)</h2>
       <tree-simple-table-group-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SeriesQZTest：通用过程线表过程组件</h2>
       <series-q-z-test />
     </div>
@@ -60,7 +60,7 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
@@ -92,6 +92,10 @@
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>
+    <div v-if="true">
+      <h2>DispatchRuleCompTest: 调度规则控件</h2>
+      <DispatchRuleCompTest/>
+    </div>
   </div>
 </template>
 
@@ -121,8 +125,10 @@ import WpdTimePickerTest from './WpdTimePickerTest.vue';
 import SchemeComparisonChartTest from "./SchemeComparisonChartTest";
 import StatusInfoCompTest from "@/components/StatusInfoCompTest";
 import SelectAndSortCompTest from "@/components/SelectAndSortCompTest";
+import DispatchRuleCompTest from "@/components/DispatchRuleCompTest";
 export default {
   components: {
+    DispatchRuleCompTest,
     TableChartTest,
     SchemeTableTest,
     SimpleTableTest,

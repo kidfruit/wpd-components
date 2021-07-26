@@ -19,8 +19,7 @@ import ChartsProcess from "./ChartsProcess/src/ChartsProcess.vue";
 import ChartsSingle from "./ChartsSingle/src/ChartsSingle.vue";
 import WpdTimePicker from "./WpdTimePicker/src/WpdTimePicker.vue";
 import SchemeComparisonChart from "./SchemeComparisonChart/src/SchemeComparisonChart";
-import StatusInfoComp from "./StatusInfoComp/src/StatusInfoComp";
-import SelectAndSortComp from "./SelectAndSortComp/src/SelectAndSortComp";
+
 import SeriesQZ from "./SeriesQZ/src/SeriesQZ";
 
 import testDirective from "./testDirective/src/testDirective";
@@ -29,6 +28,10 @@ import WpdTimePickerUtile from "./WpdTimePickerUtile/src/WpdTimePickerUtile";
 import MultiOptionTable from "./MultiOptionTable/src/MultiOptionTable.vue";
 import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGroup.vue";
 
+//comp组件
+import StatusInfoComp from "./StatusInfoComp/src/StatusInfoComp";
+import SelectAndSortComp from "./SelectAndSortComp/src/SelectAndSortComp";
+import DispatchRuleComp from "./DispatchRuleComp/src/DispatchRuleComp";
 
 
 // 存储组件列表
@@ -57,7 +60,8 @@ const components = [
   SchemeComparisonChart,
   StatusInfoComp,
   SelectAndSortComp,
-  SeriesQZ
+  SeriesQZ,
+  DispatchRuleComp
 ];
 
 // 存储指令映射
@@ -67,10 +71,10 @@ export const directives = {
 };
 
 // 定义 install 方法，接收 Vue 作为参数。如果使用 use 注册插件，则所有的组件都将被注册
-const install = function(Vue) {
+const install = function (Vue) {
   // 遍历注册全局组件
   components.map((component) => Vue.component(component.name, component));
-
+  
   // 遍历注册指令
   Reflect.ownKeys(directives).map((name) =>
     Vue.directive(name, directives[name])
@@ -111,6 +115,6 @@ export default {
   StatusInfoComp,
   SelectAndSortComp,
   SeriesQZ,
-
+  DispatchRuleComp,
   ...directives,
 };

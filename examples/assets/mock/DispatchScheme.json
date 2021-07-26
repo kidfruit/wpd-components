@@ -1,0 +1,167 @@
+[
+  {
+    "name": "三峡",
+    "stcd": "60106980",
+    "schemes": [
+      {
+        "controlObject": "沙市",
+        "requirements": [
+          [
+            {
+              "referId": "60107400",
+              "referName": "枝城",
+              "predictTime": 0,
+              "referVariable": "流量",
+              "threshold": [
+                56700,
+                999999
+              ]
+            }
+          ]
+        ],
+        "operations": [
+          {
+            "conditions": [
+              {
+                "referId": "60106980",
+                "referName": "三峡",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  145,
+                  171
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "补偿",
+                "target": "枝城",
+                "targetId": "60107400",
+                "controlVariable": "流量",
+                "controlValue": 56700
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "referId": "60107400",
+                "referName": "枝城",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  80000,
+                  999999
+                ]
+              },
+              {
+                "referId": "60106980",
+                "referName": "三峡",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  171,
+                  175
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "补偿",
+                "target": "枝城",
+                "targetId": "60107400",
+                "controlVariable": "流量",
+                "controlValue": 80000
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "controlObject": "城陵矶",
+        "requirements": [
+          [
+            {
+              "referId": "60111200",
+              "referName": "莲花塘",
+              "predictTime": 48,
+              "referVariable": "水位",
+              "threshold": [
+                34.4,
+                999999
+              ]
+            },
+            {
+              "referId": "60106980",
+              "referName": "三峡",
+              "predictTime": 0,
+              "referVariable": "水位",
+              "threshold": [
+                145,
+                158
+              ]
+            }
+          ],
+          [
+            {
+              "referId": "60111300",
+              "referName": "螺山",
+              "predictTime": 48,
+              "referVariable": "流量",
+              "threshold": [
+                60000,
+                999999
+              ]
+            },
+            {
+              "referId": "60106980",
+              "referName": "三峡",
+              "predictTime": 0,
+              "referVariable": "水位",
+              "threshold": [
+                145,
+                158
+              ]
+            }
+          ]
+        ],
+        "operations": [
+          {
+            "conditions": [
+              {
+                "referId": "60111300",
+                "referName": "螺山",
+                "predictTime": 48,
+                "referVariable": "流量",
+                "threshold": [
+                  60000,
+                  999999
+                ]
+              },
+              {
+                "referId": "60106980",
+                "referName": "三峡",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  145,
+                  158
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "补偿",
+                "target": "螺山",
+                "targetId": "60111300",
+                "controlVariable": "流量",
+                "controlValue": 60000
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,5 +1,196 @@
 {
-	"splitIndex": 5,
-	"tableColumns": [{"field":"time","title":"时间","readOnly":true},{"dataUnit":{"viewShow":"m³/s","standardShow":"m³/s","name":"流量","description":null,"formatPrecision":2,"id":"FLOW","dbX":1,"formatType":2,"showX":1},"field":"FR_RCH_UPQ_P","title":"上边界流量(m³/s)","showType":null,"smooth":true},{"dataUnit":{"viewShow":"m³/s","standardShow":"m³/s","name":"流量","description":null,"formatPrecision":2,"id":"FLOW","dbX":1,"formatType":2,"showX":1},"field":"FR_RCH_DOWNQ_P","title":"下边界流量(m³/s)","showType":null,"smooth":true},{"dataUnit":{"viewShow":"m","standardShow":"m","name":"水位","description":null,"formatPrecision":2,"id":"LEVEL","dbX":1,"formatType":2,"showX":1},"field":"FR_RCH_UPZ_P","title":"上边界水位(m)","showType":"1-L","smooth":true,"areaStyle":{},"color":"rgba(188,225,255,0.8)"},{"dataUnit":{"viewShow":"m","standardShow":"m","name":"水位","description":null,"formatPrecision":2,"id":"LEVEL","dbX":1,"formatType":2,"showX":1},"field":"FR_RCH_DOWNZ_P","title":"下边界水位(m)","showType":"1-L","smooth":true,"areaStyle":{},"color":"rgba(188,225,255,0.8)"}],
-	"tableData": [{"time":"2021-07-07 14","FR_RCH_UPQ_P":18690.6,"FR_RCH_DOWNQ_P":21654.29,"FR_RCH_UPZ_P":0,"FR_RCH_DOWNZ_P":66.22},{"time":"2021-07-07 20","FR_RCH_UPQ_P":32012.57,"FR_RCH_DOWNQ_P":32112.1,"FR_RCH_UPZ_P":0,"FR_RCH_DOWNZ_P":66.15},{"time":"2021-07-08 02","FR_RCH_UPQ_P":28114.61,"FR_RCH_DOWNQ_P":29530.88,"FR_RCH_UPZ_P":0,"FR_RCH_DOWNZ_P":66.04},{"time":"2021-07-08 08","FR_RCH_UPQ_P":30586.47,"FR_RCH_DOWNQ_P":31000.6,"FR_RCH_UPZ_P":0,"FR_RCH_DOWNZ_P":66.07},{"time":"2021-07-08 14","FR_RCH_UPQ_P":28305,"FR_RCH_DOWNQ_P":30640.03,"FR_RCH_UPZ_P":0,"FR_RCH_DOWNZ_P":65.99},{"time":"2021-07-08 20","FR_RCH_UPQ_P":13071.72,"FR_RCH_DOWNQ_P":16771.72,"FR_RCH_UPZ_P":65.28,"FR_RCH_DOWNZ_P":65.99},{"time":"2021-07-09 02","FR_RCH_UPQ_P":8000,"FR_RCH_DOWNQ_P":16771.72,"FR_RCH_UPZ_P":66.08,"FR_RCH_DOWNZ_P":65.99},{"time":"2021-07-09 08","FR_RCH_UPQ_P":8000,"FR_RCH_DOWNQ_P":8584.53,"FR_RCH_UPZ_P":66.11,"FR_RCH_DOWNZ_P":65.99},{"time":"2021-07-09 14","FR_RCH_UPQ_P":8000,"FR_RCH_DOWNQ_P":7845.26,"FR_RCH_UPZ_P":66.11,"FR_RCH_DOWNZ_P":65.99},{"time":"2021-07-09 20","FR_RCH_UPQ_P":8000,"FR_RCH_DOWNQ_P":8034.1,"FR_RCH_UPZ_P":66.11,"FR_RCH_DOWNZ_P":65.99},{"time":"2021-07-10 02","FR_RCH_UPQ_P":8000,"FR_RCH_DOWNQ_P":7990.9,"FR_RCH_UPZ_P":66.11,"FR_RCH_DOWNZ_P":65.99},{"time":"2021-07-10 08","FR_RCH_UPQ_P":842.59,"FR_RCH_DOWNQ_P":8001.99,"FR_RCH_UPZ_P":66.11,"FR_RCH_DOWNZ_P":65.1},{"time":"2021-07-10 14","FR_RCH_UPQ_P":0,"FR_RCH_DOWNQ_P":1865.98,"FR_RCH_UPZ_P":65.07,"FR_RCH_DOWNZ_P":63},{"time":"2021-07-10 20","FR_RCH_UPQ_P":0,"FR_RCH_DOWNQ_P":1925.02,"FR_RCH_UPZ_P":62.99,"FR_RCH_DOWNZ_P":63},{"time":"2021-07-11 02","FR_RCH_UPQ_P":0,"FR_RCH_DOWNQ_P":0,"FR_RCH_UPZ_P":62.98,"FR_RCH_DOWNZ_P":63},{"time":"2021-07-11 08","FR_RCH_UPQ_P":0,"FR_RCH_DOWNQ_P":100,"FR_RCH_UPZ_P":63,"FR_RCH_DOWNZ_P":63},{"time":"2021-07-11 14","FR_RCH_UPQ_P":0,"FR_RCH_DOWNQ_P":0,"FR_RCH_UPZ_P":63,"FR_RCH_DOWNZ_P":63}]
+  "chartTitle": [],
+  "classes": ["processResultInterChart"],
+  "setting": {
+    "rowHeaders": true
+  },
+  "splitIndex": 9,
+  "tableColumns": [
+    {
+      "field": "time",
+      "title": "时间",
+      "readOnly": true
+    },
+    {
+      "dataUnit": {
+        "viewShow": "m³/s",
+        "standardShow": "m³/s",
+        "name": "流量",
+        "description": null,
+        "formatPrecision": 3,
+        "id": "FLOW",
+        "dbX": 1,
+        "formatType": 2,
+        "showX": 1
+      },
+      "field": "RD_FDA_Q_P",
+      "title": "分洪流量(m³/s)",
+      "showType": "1-R",
+      "smooth": true
+    },
+    {
+      "dataUnit": {
+        "viewShow": "m",
+        "standardShow": "m",
+        "name": "水位",
+        "description": null,
+        "formatPrecision": 2,
+        "id": "LEVEL",
+        "dbX": 1,
+        "formatType": 2,
+        "showX": 1
+      },
+      "field": "RD_FDA_Z_P",
+      "title": "蓄洪水位(m)",
+      "showType": "1-L",
+      "smooth": true,
+      "areaStyle": {},
+      "color": "rgba(188,225,255,0.8)"
+    },
+    {
+      "dataUnit": {
+        "viewShow": "百万m³",
+        "standardShow": "百万m³",
+        "name": "库容",
+        "description": null,
+        "formatPrecision": 3,
+        "id": "STORAGE",
+        "dbX": 1,
+        "formatType": 2,
+        "showX": 1
+      },
+      "field": "RD_FDA_V_P",
+      "title": "蓄洪容积(百万m³)",
+      "showType": "2-L",
+      "smooth": true
+    }
+  ],
+  "tableData": [
+    {
+      "time": "2020-07-13 08",
+      "RD_FDA_Q_P": 0,
+      "RD_FDA_Z_P": 0,
+      "RD_FDA_V_P": 0
+    },
+    {
+      "time": "2020-07-13 14",
+      "RD_FDA_Q_P": 0,
+      "RD_FDA_Z_P": 0,
+      "RD_FDA_V_P": 0
+    },
+    {
+      "time": "2020-07-13 20",
+      "RD_FDA_Q_P": 0,
+      "RD_FDA_Z_P": 0,
+      "RD_FDA_V_P": 0
+    },
+    {
+      "time": "2020-07-14 02",
+      "RD_FDA_Q_P": 0,
+      "RD_FDA_Z_P": 0,
+      "RD_FDA_V_P": 0
+    },
+    {
+      "time": "2020-07-14 08",
+      "RD_FDA_Q_P": 0,
+      "RD_FDA_Z_P": 0,
+      "RD_FDA_V_P": 0
+    },
+    {
+      "time": "2020-07-14 14",
+      "RD_FDA_Q_P": 0,
+      "RD_FDA_Z_P": 0,
+      "RD_FDA_V_P": 0
+    },
+    {
+      "time": "2020-07-14 20",
+      "RD_FDA_Q_P": 0,
+      "RD_FDA_Z_P": 0,
+      "RD_FDA_V_P": 0
+    },
+    {
+      "time": "2020-07-15 02",
+      "RD_FDA_Q_P": 0,
+      "RD_FDA_Z_P": 0,
+      "RD_FDA_V_P": 0
+    },
+    {
+      "time": "2020-07-15 08",
+      "RD_FDA_Q_P": 0,
+      "RD_FDA_Z_P": 0,
+      "RD_FDA_V_P": 0
+    },
+    {
+      "time": "2020-07-15 14",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-15 20",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-16 02",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-16 08",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-16 14",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-16 20",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-17 02",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-17 08",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-17 14",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-17 20",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-18 02",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    },
+    {
+      "time": "2020-07-18 08",
+      "RD_FDA_Q_P": 100,
+      "RD_FDA_Z_P": 200,
+      "RD_FDA_V_P": 300
+    }
+  ]
 }
