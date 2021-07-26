@@ -40,9 +40,11 @@
       okText="确定"
       cancelText="取消"
       v-model="saveFileModalVisible"
+      :destroyOnClose="true"
       @ok="saveFile"
     >
       <a-input
+        type="text"
         placeholder="请输入你想要保存的文件名"
         v-model="saveFileInput"
         @pressEnter="saveFile"
@@ -53,9 +55,11 @@
       okText="确定"
       cancelText="取消"
       v-model="scaleModalVisible"
+      :destroyOnClose="true"
       @ok="scale"
     >
       <a-input
+        type="number"
         placeholder="请输入你想要缩放的倍数"
         v-model="scaleInput"
         @pressEnter="scale"
@@ -66,9 +70,11 @@
       okText="确定"
       cancelText="取消"
       v-model="sameIncreaseDecreaseModalVisible"
+      :destroyOnClose="true"
       @ok="sameIncreaseDecrease"
     >
       <a-input
+        type="number"
         placeholder="请输入你想要增加的数目"
         v-model="sameIncreaseDecreaseInput"
         @pressEnter="sameIncreaseDecrease"
@@ -155,18 +161,21 @@ export default {
             interpolation: {
               name: '内插',
               callback: () => {
+                this.selectedRange = null
                 this.handleInterpolationCallback()
               },
             },
             scale: {
               name: '倍比缩放',
               callback: () => {
+                this.selectedRange = null
                 this.handleScaleCallback()
               },
             },
             sameIncreaseDecrease: {
               name: '同增同减',
               callback: () => {
+                this.selectedRange = null
                 this.handleSameIncreaseDecreaseCallback()
               },
             },
@@ -174,6 +183,7 @@ export default {
             saveFile: {
               name: '数据下载',
               callback: () => {
+                this.selectedRange = null
                 this.handleSaveFileCallback()
               },
             },
@@ -313,7 +323,6 @@ export default {
         return
       }
       if (source !== 'loadData') {
-        let selectedRange = this.hotInstance.getSelectedRange()
         // 添加修改触发
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {
@@ -373,7 +382,6 @@ export default {
             }
           }
         })
-        this.selectedRange = selectedRange
         this.updateShow()
       }
     },
@@ -489,45 +497,81 @@ export default {
     moveUp() {
       let selectedRange = this.hotInstance.getSelectedRange()
       let selectedArray = []
-      if (selectedRange && selectedRange[0].from.row === -1) {
-        selectedRange[0].from.row = 0
+      let firstRow = selectedRange[0].from.row
+      let endRow = selectedRange[0].to.row
+      if (selectedRange && firstRow === -1) {
+        firstRow = 0
       }
       if (selectedRange && selectedRange.length > 0) {
         // selected框
-        if (selectedRange[0].from.row === 0) {
-          return
+        if (firstRow < endRow) {
+          if (firstRow === 0) {
+            return
+          }
+          selectedRange.forEach((item) => {
+            selectedArray.push([item.from.row, item.to.row])
+            item.from.row = item.from.row - 1
+            item.to.row = item.to.row - 1
+          })
+          this.selectedRange = selectedRange
+          selectedArray.forEach((item) => {
+            const arr = this.hotData.splice(item[0], item[1] - item[0] + 1)
+            this.hotData.splice(item[0] - 1, 0, ...arr)
+          })
+        } else {
+          if (endRow === 0) {
+            return
+          }
+          selectedRange.forEach((item) => {
+            selectedArray.push([item.from.row, item.to.row])
+            item.from.row = item.from.row - 1
+            item.to.row = item.to.row - 1
+          })
+          this.selectedRange = selectedRange
+          selectedArray.forEach((item) => {
+            const arr = this.hotData.splice(item[1], item[0] - item[1] + 1)
+            this.hotData.splice(item[1] - 1, 0, ...arr)
+          })
         }
-        selectedRange.forEach((item) => {
-          selectedArray.push([item.from.row, item.to.row])
-          item.from.row = item.from.row - 1
-          item.to.row = item.to.row - 1
-        })
-        this.selectedRange = selectedRange
-        selectedArray.forEach((item) => {
-          const arr = this.hotData.splice(item[0], item[1] - item[0] + 1)
-          this.hotData.splice(item[0] - 1, 0, ...arr)
-        })
       }
       this.$emit('moveDone', this.hotData)
     },
     moveDown() {
       let selectedRange = this.hotInstance.getSelectedRange()
-      const rowLength = this.hotInstance.getData().length
       let selectedArray = []
+      let firstRow = selectedRange[0].from.row
+      let endRow = selectedRange[0].to.row
+      const rowLength = this.hotInstance.getData().length
       if (selectedRange && selectedRange.length > 0) {
-        if (selectedRange[selectedRange.length - 1].to.row === rowLength - 1) {
-          return
+        if (firstRow < endRow) {
+          if (endRow === rowLength - 1) {
+            return
+          }
+          selectedRange.forEach((item) => {
+            selectedArray.push([item.from.row, item.to.row])
+            item.from.row = item.from.row + 1
+            item.to.row = item.to.row + 1
+          })
+          this.selectedRange = selectedRange
+          selectedArray.forEach((item) => {
+            const arr = this.hotData.splice(item[0], item[1] - item[0] + 1)
+            this.hotData.splice(item[0] + 1, 0, ...arr)
+          })
+        } else {
+          if (firstRow === rowLength - 1) {
+            return
+          }
+          selectedRange.forEach((item) => {
+            selectedArray.push([item.from.row, item.to.row])
+            item.from.row = item.from.row + 1
+            item.to.row = item.to.row + 1
+          })
+          this.selectedRange = selectedRange
+          selectedArray.forEach((item) => {
+            const arr = this.hotData.splice(item[1], item[0] - item[1] + 1)
+            this.hotData.splice(item[1] + 1, 0, ...arr)
+          })
         }
-        selectedRange.forEach((item) => {
-          selectedArray.push([item.from.row, item.to.row])
-          item.from.row = item.from.row + 1
-          item.to.row = item.to.row + 1
-        })
-        this.selectedRange = selectedRange
-        selectedArray.forEach((item) => {
-          const arr = this.hotData.splice(item[0], item[1] - item[0] + 1)
-          this.hotData.splice(item[0] + 1, 0, ...arr)
-        })
       }
       this.$emit('moveDone', this.hotData)
     },
@@ -555,7 +599,7 @@ export default {
       const field = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][field]
       const endData = +this.hotData[selectedRange[0].to.row][field]
-      const selectedMidRows = selectedRange[0].to.row - selectedRange[0].from.row
+      const selectedMidRows = Math.abs(selectedRange[0].to.row - selectedRange[0].from.row)
       const stepNumber = Math.abs((endData - firstData) / selectedMidRows)
       const currentCol = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
@@ -590,15 +634,15 @@ export default {
             for (let i = 0; i < selectedMidRows - 1; i++) {
               const newValue = +(firstData - stepNumber * (i + 1)).toFixed(2)
               const oldValue =
-                this.hotData[selectedRange[0].from.row + i + 1][field]
-              const rowIndex = selectedRange[0].from.row + i + 1
+                this.hotData[selectedRange[0].from.row - i - 1][field]
+              const rowIndex = selectedRange[0].from.row - i - 1
               this.$emit('cellEditDone', {
                 rowIndex,
                 field,
                 newValue,
                 oldValue,
               })
-              this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
+              this.hotData[selectedRange[0].from.row - i - 1][field] = newValue
             }
           }
           this.hotTableRandomKey =
@@ -637,20 +681,39 @@ export default {
       this.scaleModalVisible = false
       let selectedRange = this.hotInstance.getSelectedRange()
       const field = this.columns[selectedRange[0].from.col].field
-      const stepNumber = selectedRange[0].to.row - selectedRange[0].from.row + 1
-      for (let i = 0; i < stepNumber; i++) {
-        const newValue = +(
-          +this.hotData[selectedRange[0].from.row + i][field] * +this.scaleInput
-        ).toFixed(2)
-        const oldValue = this.hotData[selectedRange[0].from.row + i][field]
-        const rowIndex = selectedRange[0].from.row + i
-        this.$emit('cellEditDone', {
-          rowIndex,
-          field,
-          newValue,
-          oldValue,
-        })
-        this.hotData[selectedRange[0].from.row + i][field] = newValue
+      const firstRow = selectedRange[0].from.row
+      const endRow = selectedRange[0].to.row
+      const stepNumber = Math.abs(selectedRange[0].to.row - selectedRange[0].from.row) + 1
+      if (firstRow < endRow) {
+        for (let i = 0; i < stepNumber; i++) {
+          const newValue = +(
+              +this.hotData[selectedRange[0].from.row + i][field] * +this.scaleInput
+          ).toFixed(2)
+          const oldValue = this.hotData[selectedRange[0].from.row + i][field]
+          const rowIndex = selectedRange[0].from.row + i
+          this.$emit('cellEditDone', {
+            rowIndex,
+            field,
+            newValue,
+            oldValue,
+          })
+          this.hotData[selectedRange[0].from.row + i][field] = newValue
+        }
+      } else {
+        for (let i = 0; i < stepNumber; i++) {
+          const newValue = +(
+              +this.hotData[selectedRange[0].from.row - i][field] * +this.scaleInput
+          ).toFixed(2)
+          const oldValue = this.hotData[selectedRange[0].from.row - i][field]
+          const rowIndex = selectedRange[0].from.row - i
+          this.$emit('cellEditDone', {
+            rowIndex,
+            field,
+            newValue,
+            oldValue,
+          })
+          this.hotData[selectedRange[0].from.row - i][field] = newValue
+        }
       }
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
@@ -684,29 +747,48 @@ export default {
     sameIncreaseDecrease() {
       this.sameIncreaseDecreaseModalVisible = false
       let selectedRange = this.hotInstance.getSelectedRange()
-      this.selectedRange = selectedRange
       const field = this.columns[selectedRange[0].from.col].field
-      const stepNumber = selectedRange[0].to.row - selectedRange[0].from.row + 1
-      for (let i = 0; i < stepNumber; i++) {
-        const newValue = +(
-          +this.hotData[selectedRange[0].from.row + i][field] +
-          +this.sameIncreaseDecreaseInput
-        ).toFixed(2)
-        const oldValue = this.hotData[selectedRange[0].from.row + i][field]
-        const rowIndex = selectedRange[0].from.row + i
-        this.$emit('cellEditDone', {
-          rowIndex,
-          field,
-          newValue,
-          oldValue,
-        })
-        this.hotData[selectedRange[0].from.row + i][field] = newValue
+      const firstRow = selectedRange[0].from.row
+      const endRow = selectedRange[0].to.row
+      const stepNumber = Math.abs(selectedRange[0].to.row - selectedRange[0].from.row) + 1
+      if (firstRow < endRow) {
+        for (let i = 0; i < stepNumber; i++) {
+          const newValue = +(
+              +this.hotData[selectedRange[0].from.row + i][field] +
+              +this.sameIncreaseDecreaseInput
+          ).toFixed(2)
+          const oldValue = this.hotData[selectedRange[0].from.row + i][field]
+          const rowIndex = selectedRange[0].from.row + i
+          this.$emit('cellEditDone', {
+            rowIndex,
+            field,
+            newValue,
+            oldValue,
+          })
+          this.hotData[selectedRange[0].from.row + i][field] = newValue
+        }
+      } else {
+        for (let i = 0; i < stepNumber; i++) {
+          const newValue = +(
+              +this.hotData[selectedRange[0].from.row - i][field] +
+              +this.sameIncreaseDecreaseInput
+          ).toFixed(2)
+          const oldValue = this.hotData[selectedRange[0].from.row - i][field]
+          const rowIndex = selectedRange[0].from.row - i
+          this.$emit('cellEditDone', {
+            rowIndex,
+            field,
+            newValue,
+            oldValue,
+          })
+          this.hotData[selectedRange[0].from.row - i][field] = newValue
+        }
       }
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
     afterOnCellCornerDblClick() {
+      this.selectedRange = null
       let selectedRange = this.hotInstance.getSelectedRange()
-      this.selectedRange = selectedRange
       if (selectedRange[0].from.row === -1) {
         selectedRange[0].from.row = 0
       }
