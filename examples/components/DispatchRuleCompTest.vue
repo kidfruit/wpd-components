@@ -4,7 +4,8 @@
       ref="dispatchRuleRef"
       :classes="classNames"
       :ruleData="ruleData"
-      :currentId="'60106980'"
+      :editable="true"
+      @getData="getData"
     />
   </div>
 </template>
@@ -26,7 +27,11 @@ export default {
   mounted() {
 
   },
-  methods: {}
+  methods: {
+    getData(data){
+      console.log(data)
+    }
+  }
 };
 </script>
 

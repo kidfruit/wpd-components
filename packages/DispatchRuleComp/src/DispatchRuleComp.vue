@@ -2,6 +2,8 @@
   <div
       :class="classes"
   >
+    <a-button @click="resetData" v-if="editable">重置</a-button>
+    <a-button @click="getData">获取数据</a-button>
     <div
         v-for="(schemeInfo,i) in schemeData"
         :key="schemeInfo.controlObject + i"
@@ -26,15 +28,28 @@
           >
             <div class="item-div">
               <a-tag v-if="(idx > 0 )" color="pink" class="and-tag">且</a-tag>
-              当
-              <a-tag color="blue">{{ r.referName + '(' + r.referId + ')' }}</a-tag>
-              预报
-              <a-tag color="blue">{{ r.predictTime }}</a-tag>
-              小时后
-              <a-tag color="blue">{{ r.referVariable }}</a-tag>
-              大于
-              <a-tag color="blue">{{ r.threshold[0] }}</a-tag>
-              {{ unitLib[r.referVariable] }}
+              <a-space class="control-row">当
+                <a-popover trigger="click" v-if="editable">
+                  <a-tag color="blue">{{ r.referId }}</a-tag>
+                  <a-input slot="content" v-model="updateValue"/>
+                  <a slot="content" @click="updateData('requirements','referId',i,j,idx)">确认</a>
+                </a-popover>
+                <a-tag color="blue" v-if="!editable">{{ r.referId }}</a-tag>
+                预报
+                <a-popover trigger="click" v-if="editable">
+                  <a-tag color="blue">{{ r.predictTime }}</a-tag>
+                  <a-input slot="content" v-model="updateValue"/>
+                  <a slot="content" @click="updateData('requirements','predictTime',i,j,idx)">确认</a>
+                </a-popover>
+                <a-tag color="blue" v-if="!editable">{{ r.predictTime }}</a-tag>
+                小时后
+                <a-tag color="blue">{{ r.referVariable }}</a-tag>
+                大于
+                <a-tag color="blue">{{ r.threshold[0] }}</a-tag>
+                {{ unitLib[r.referVariable] }}
+                <a-button v-if="editable" type="link" icon="minus-circle" class="del-btn"
+                          @click="deleteRow('requirements',i,j,idx)"/>
+              </a-space>
             </div>
           </div>
         </div>
@@ -56,7 +71,7 @@
             <div class="item-div">
               <a-tag v-if="(idx > 0 )" color="pink" class="and-tag">且</a-tag>
               当
-              <a-tag color="blue">{{ cd.referName + '(' + cd.referId + ')' }}</a-tag>
+              <a-tag color="blue">{{ cd.referId }}</a-tag>
               预报
               <a-tag color="blue">{{ cd.predictTime }}</a-tag>
               小时后
@@ -64,7 +79,8 @@
               大于
               <a-tag color="blue">{{ cd.threshold[0] }}</a-tag>
               <template v-if="cd.threshold[1] !== 999999">
-                且小于<a-tag color="blue">{{ cd.threshold[1] }}</a-tag>
+                且小于
+                <a-tag color="blue">{{ cd.threshold[1] }}</a-tag>
               </template>
               {{ unitLib[cd.referVariable] }}
             </div>
@@ -78,7 +94,7 @@
               采用
               <a-tag color="blue">{{ mt.name }}</a-tag>
               调度，控制
-              <a-tag color="blue">{{ mt.target + '(' + mt.targetId + ')' }}</a-tag>
+              <a-tag color="blue">{{ mt.targetId }}</a-tag>
               <a-tag color="blue">{{ mt.controlVariable }}</a-tag>
               小于
               <a-tag color="blue">{{ mt.controlValue }}</a-tag>
@@ -102,15 +118,22 @@ export default {
       type: Array,
       required: true
     },
-    currentId: {
+    selectId: {
       type: String,
       required: false
+    },
+    editable: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
     return {
       currentRuleData: {},
-      schemeData: [],
+      schemeData: [],//操作数据
+      schemeDataCopy: [],//备份数据
+      updateValue: "",
       unitLib: {
         "流量": "m³/s",
         "水位": "m"
@@ -121,6 +144,9 @@ export default {
     classes() {
       return ['dispatch-rule-comp'].concat(this.classNames)
     },
+    currentId() {
+      return this.selectId ? this.selectId : this.ruleData[0].stcd
+    }
   },
   watch: {
     currentId: {
@@ -131,13 +157,32 @@ export default {
     }
   },
   mounted() {
-    console.log(this.ruleData)
+    //console.log(this.ruleData)
   },
   methods: {
     filterData(id) {
       this.currentRuleData = this.ruleData.find(rd => rd.stcd === id)
       if (this.currentRuleData) {
         this.schemeData = this.currentRuleData.schemes
+        this.schemeDataCopy = JSON.parse(JSON.stringify(this.schemeData))
+      }
+    },
+    resetData() {
+      //console.log(this.schemeDataCopy)
+      this.schemeData = JSON.parse(JSON.stringify(this.schemeDataCopy))
+    },
+    getData() {
+      this.$emit('getData', this.schemeData)
+    },
+    deleteRow(type, i, j, idx) {
+      console.log("方案idx", i, "第一层", j, "第二层", idx)
+      this.schemeData[i][type][j].splice(idx, 1)
+    },
+    updateData(type, field, i, j, idx) {
+      //console.log(this.updateValue)
+      if(this.updateValue){
+        this.schemeData[i][type][j][idx][field] = this.updateValue
+        this.updateValue = ""
       }
     }
   }
@@ -155,15 +200,16 @@ export default {
     .scheme-card-title {
       text-align: left
     }
-    .scheme-requirement{
-      border:1px solid #40a9ff;
+
+    .scheme-requirement {
+      border: 1px solid #40a9ff;
       padding: 5px;
     }
 
-    .scheme-operations{
-      border:1px solid yellowgreen;
+    .scheme-operations {
+      border: 1px solid yellowgreen;
       padding: 5px;
-      margin-top:5px;
+      margin-top: 5px;
     }
 
     .and-div {
@@ -177,7 +223,9 @@ export default {
     }
 
     .item-div {
+      .del-btn {
 
+      }
     }
 
     .or-tag-div {
