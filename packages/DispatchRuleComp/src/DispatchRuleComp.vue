@@ -1,112 +1,309 @@
 <template>
-  <div
-      :class="classes"
-  >
+  <div :class="classes">
     <a-button @click="resetData" v-if="editable">重置</a-button>
     <a-button @click="getData">获取数据</a-button>
+    <a-button @click="addSchemes">增加目标对象</a-button>
     <div
-        v-for="(schemeInfo,i) in schemeData"
-        :key="schemeInfo.controlObject + i"
-        class="scheme-card"
+      class="scheme-card"
+      v-for="(schemeInfo,i) in schemeData"
+      :key="schemeInfo.controlObject + i"
     >
-      <div class="scheme-card-title">目标对象：{{ schemeInfo.controlObject }}</div>
+      <div class="scheme-card-title">
+        目标对象：
+        <a-popover trigger="click" v-if="editable">
+          <a-tag color="blue">{{ schemeInfo.controlObject }}</a-tag>
+          <a-input slot="content" v-model="updateValue"/>
+          <a slot="content" @click="updateData('controlObject', '', '', i)">确认</a>
+        </a-popover>
+        <a-tag color="blue" v-else>{{ schemeInfo.controlObject }}</a-tag>
+      </div>
       <div class="scheme-requirement">
-        <div>
-          启动时机
-        </div>
+        <div>启动时机</div>
         <div
-            v-for="(rqmt,j) in schemeInfo.requirements"
-            :key="schemeInfo.controlObject + '-require-' + j"
-            class="and-div"
+          class="and-div"
+          v-for="(rqmt,j) in schemeInfo.requirements"
+          :key="schemeInfo.controlObject + '-require-' + j"
         >
-          <div class="or-tag-div">
-            <a-tag v-if="(j > 0 )" class="or-tag" color="cyan">或</a-tag>
-          </div>
           <div
-              v-for="(r,idx) in rqmt"
-              :key="schemeInfo.controlObject + '-require-r' + idx"
+            v-for="(r,idx) in rqmt"
+            :key="schemeInfo.controlObject + '-require-r' + idx"
           >
             <div class="item-div">
               <a-tag v-if="(idx > 0 )" color="pink" class="and-tag">且</a-tag>
-              <a-space class="control-row">当
+              <a-space class="control-row">
+                当
                 <a-popover trigger="click" v-if="editable">
-                  <a-tag color="blue">{{ r.referId }}</a-tag>
+                  <a-tag color="blue">{{ r.referName }}</a-tag>
                   <a-input slot="content" v-model="updateValue"/>
-                  <a slot="content" @click="updateData('requirements','referId',i,j,idx)">确认</a>
+                  <a slot="content" @click="updateData('requirements', '', 'referName',i,j,idx)">确认</a>
                 </a-popover>
-                <a-tag color="blue" v-if="!editable">{{ r.referId }}</a-tag>
+                <a-tag color="blue" v-else>{{ r.referName }}</a-tag>
                 预报
                 <a-popover trigger="click" v-if="editable">
                   <a-tag color="blue">{{ r.predictTime }}</a-tag>
                   <a-input slot="content" v-model="updateValue"/>
-                  <a slot="content" @click="updateData('requirements','predictTime',i,j,idx)">确认</a>
+                  <a slot="content" @click="updateData('requirements', '', 'predictTime',i,j,idx)">确认</a>
                 </a-popover>
-                <a-tag color="blue" v-if="!editable">{{ r.predictTime }}</a-tag>
+                <a-tag color="blue" v-else>{{ r.predictTime }}</a-tag>
                 小时后
-                <a-tag color="blue">{{ r.referVariable }}</a-tag>
+                <a-popover trigger="click" v-if="editable">
+                  <a-tag color="blue">{{ r.referVariable }}</a-tag>
+                  <a-input slot="content" v-model="updateValue"/>
+                  <a slot="content" @click="updateData('requirements', '', 'referVariable',i,j,idx)">确认</a>
+                </a-popover>
+                <a-tag color="blue" v-else>{{ r.referVariable }}</a-tag>
                 大于
-                <a-tag color="blue">{{ r.threshold[0] }}</a-tag>
+                <a-popover trigger="click" v-if="editable">
+                  <a-tag color="blue">{{ r.threshold[0] }}</a-tag>
+                  <a-input slot="content" v-model="updateValue"/>
+                  <a slot="content" @click="updateData('requirements', '', 'threshold',i,j,idx, 0)">确认</a>
+                </a-popover>
+                <a-tag color="blue" v-else>{{ r.threshold[0] }}</a-tag>
+                <template v-if="r.threshold[1] !== 999999">
+                  且小于
+                  <a-popover trigger="click" v-if="editable">
+                    <a-tag color="blue">{{ r.threshold[1] }}</a-tag>
+                    <a-input slot="content" v-model="updateValue"/>
+                    <a slot="content" @click="updateData('requirements', '','threshold',i,j,idx, 1)">确认</a>
+                  </a-popover>
+                  <a-tag color="blue" v-else>{{ r.threshold[1] }}</a-tag>
+                </template>
                 {{ unitLib[r.referVariable] }}
-                <a-button v-if="editable" type="link" icon="minus-circle" class="del-btn"
-                          @click="deleteRow('requirements',i,j,idx)"/>
+                <a-button
+                  v-if="editable"
+                  type="link"
+                  icon="minus-circle"
+                  class="del-btn"
+                  @click="deleteRow('and', 'requirements','',i,j,idx)"
+                />
+                <a-button
+                  v-if="editable"
+                  type="link"
+                  icon="plus-circle"
+                  class="add-btn"
+                  @click="addRow('and', 'requirements', '', i,j,idx)"
+                />
               </a-space>
             </div>
+          </div>
+          <div class="or-tag-div">
+            <a-tag class="or-tag" color="cyan">或</a-tag>
+            <a-button
+              v-if="editable"
+              type="link"
+              icon="minus-circle"
+              class="del-btn"
+              @click="deleteRow('or', 'requirements', '',i,j)"
+            />
+            <a-button
+              v-if="editable"
+              type="link"
+              icon="plus-circle"
+              class="add-btn"
+              @click="addRow('or', 'requirements', '', i,j)"
+            />
           </div>
         </div>
       </div>
       <div class="scheme-operations">
-        <div>
-          调度方式
-        </div>
+        <div>调度方式</div>
         <div
-            v-for="(opt,j) in schemeInfo.operations"
-            :key="schemeInfo.controlObject + '-operation-' + j"
-            class="and-div"
+          class="and-div"
+          v-for="(opt,j) in schemeInfo.operations"
+          :key="schemeInfo.controlObject + '-operation-' + j"
         >
           <div
-              v-for="(cd,idx) in opt.conditions"
-              :key="schemeInfo.controlObject + '-operation-cd' + idx"
+            v-for="(cd,idx) in opt.conditions"
+            :key="schemeInfo.controlObject + '-operation-cd' + idx"
           >
-
             <div class="item-div">
               <a-tag v-if="(idx > 0 )" color="pink" class="and-tag">且</a-tag>
               当
-              <a-tag color="blue">{{ cd.referId }}</a-tag>
+              <a-popover trigger="click" v-if="editable">
+                <a-tag color="blue">{{ cd.referName }}</a-tag>
+                <a-input slot="content" v-model="updateValue"/>
+                <a slot="content" @click="updateData('operations', 'conditions','referName',i,j,idx)">确认</a>
+              </a-popover>
+              <a-tag color="blue" v-else>{{ cd.referName }}</a-tag>
               预报
-              <a-tag color="blue">{{ cd.predictTime }}</a-tag>
+              <a-popover trigger="click" v-if="editable">
+                <a-tag color="blue">{{ cd.predictTime }}</a-tag>
+                <a-input slot="content" v-model="updateValue"/>
+                <a slot="content" @click="updateData('operations', 'conditions','predictTime',i,j,idx)">确认</a>
+              </a-popover>
+              <a-tag color="blue" v-else>{{ cd.predictTime }}</a-tag>
               小时后
-              <a-tag color="blue">{{ cd.referVariable }}</a-tag>
+              <a-popover trigger="click" v-if="editable">
+                <a-tag color="blue">{{ cd.referVariable }}</a-tag>
+                <a-input slot="content" v-model="updateValue"/>
+                <a slot="content" @click="updateData('operations', 'conditions','referVariable',i,j,idx)">确认</a>
+              </a-popover>
+              <a-tag color="blue" v-else>{{ cd.referVariable }}</a-tag>
               大于
-              <a-tag color="blue">{{ cd.threshold[0] }}</a-tag>
+              <a-popover trigger="click" v-if="editable">
+                <a-tag color="blue">{{ cd.threshold[0] }}</a-tag>
+                <a-input slot="content" v-model="updateValue"/>
+                <a slot="content" @click="updateData('operations', 'conditions','threshold',i,j,idx, 0)">确认</a>
+              </a-popover>
+              <a-tag color="blue" v-else>{{ cd.threshold[0] }}</a-tag>
               <template v-if="cd.threshold[1] !== 999999">
                 且小于
-                <a-tag color="blue">{{ cd.threshold[1] }}</a-tag>
+                <a-popover trigger="click" v-if="editable">
+                  <a-tag color="blue">{{ cd.threshold[1] }}</a-tag>
+                  <a-input slot="content" v-model="updateValue"/>
+                  <a slot="content" @click="updateData('operations', 'conditions','threshold',i,j,idx, 1)">确认</a>
+                </a-popover>
+                <a-tag color="blue" v-else>{{ cd.threshold[1] }}</a-tag>
               </template>
               {{ unitLib[cd.referVariable] }}
+              <a-button
+                v-if="editable"
+                type="link"
+                icon="minus-circle"
+                class="del-btn"
+                @click="deleteRow('and', 'operations', 'conditions',i,j,idx)"
+              />
+              <a-button
+                v-if="editable"
+                type="link"
+                icon="plus-circle"
+                class="add-btn"
+                @click="addRow('and', 'operations', 'conditions', i,j,idx)"
+              />
             </div>
           </div>
           <div
-              v-for="(mt,idx) in opt.methods"
-              :key="schemeInfo.controlObject + '-operation-mt' + idx"
+            v-for="(mt,idx) in opt.methods"
+            :key="schemeInfo.controlObject + '-operation-mt' + idx"
           >
-            <a-tag v-if="(idx > 0 )" color="pink" class="and-tag">且</a-tag>
             <div class="item-div">
+              <a-tag v-if="(idx > 0 )" color="pink" class="and-tag">且</a-tag>
               采用
-              <a-tag color="blue">{{ mt.name }}</a-tag>
+              <a-popover trigger="click" v-if="editable">
+                <a-tag color="blue">{{ mt.name }}</a-tag>
+                <a-input slot="content" v-model="updateValue"/>
+                <a slot="content" @click="updateData('operations', 'methods','name',i,j,idx)">确认</a>
+              </a-popover>
+              <a-tag color="blue" v-else>{{ mt.name }}</a-tag>
               调度，控制
-              <a-tag color="blue">{{ mt.targetId }}</a-tag>
-              <a-tag color="blue">{{ mt.controlVariable }}</a-tag>
+              <a-popover trigger="click" v-if="editable">
+                <a-tag color="blue">{{ mt.targetName }}</a-tag>
+                <a-input slot="content" v-model="updateValue"/>
+                <a slot="content" @click="updateData('operations', 'methods','targetName',i,j,idx)">确认</a>
+              </a-popover>
+              <a-tag color="blue" v-else>{{ mt.targetName }}</a-tag>
+              <a-popover trigger="click" v-if="editable">
+                <a-tag color="blue">{{ mt.controlVariable }}</a-tag>
+                <a-input slot="content" v-model="updateValue"/>
+                <a slot="content" @click="updateData('operations', 'methods','controlVariable',i,j,idx)">确认</a>
+              </a-popover>
+              <a-tag color="blue" v-else>{{ mt.controlVariable }}</a-tag>
               小于
-              <a-tag color="blue">{{ mt.controlValue }}</a-tag>
+              <a-popover trigger="click" v-if="editable">
+                <a-tag color="blue">{{ mt.controlValue }}</a-tag>
+                <a-input slot="content" v-model="updateValue"/>
+                <a slot="content" @click="updateData('operations', 'methods','controlValue',i,j,idx)">确认</a>
+              </a-popover>
+              <a-tag color="blue" v-else>{{ mt.controlValue }}</a-tag>
               {{ unitLib[mt.controlVariable] }}
+              <a-button
+                v-if="editable"
+                type="link"
+                icon="minus-circle"
+                class="del-btn"
+                @click="deleteRow('and', 'operations', 'methods',i,j,idx)"
+              />
+              <a-button
+                v-if="editable"
+                type="link"
+                icon="plus-circle"
+                class="add-btn"
+                @click="addRow('and', 'operations', 'methods', i,j,idx)"
+              />
             </div>
+          </div>
+          <div class="or-tag-div">
+            <a-tag class="or-tag" color="cyan">或</a-tag>
+            <a-button
+              v-if="editable"
+              type="link"
+              icon="minus-circle"
+              class="del-btn"
+              @click="deleteRow('or', 'operations', '',i,j)"
+            />
+            <a-button
+              v-if="editable"
+              type="link"
+              icon="plus-circle"
+              class="add-btn"
+              @click="addRow('or', 'operations', '', i,j)"
+            />
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script>
+import lodash from 'lodash'
+const defaultScheme = {
+  controlObject: '城陵矶',
+  requirements: [
+    [
+      {
+        referName: '三峡(60106980)',
+        referId: '60106980',
+        predictTime: 0,
+        referVariable: '水位',
+        threshold: [145, 158]
+      }
+    ]
+  ],
+  operations: [
+    {
+      conditions: [
+        {
+          referName: '三峡(60106980)',
+          referId: '60106980',
+          predictTime: 0,
+          referVariable: '水位',
+          threshold: [145, 158]
+        }
+      ],
+      methods: [
+        {
+          name: '补偿',
+          targetName: '三峡(60106980)',
+          targetId: '60106980',
+          controlVariable: '流量',
+          controlValue: 60000
+        }
+      ]
+    }
+  ]
+}
+const defaultRequirement = {
+  referName: '三峡(60106980)',
+  referId: '60106980',
+  predictTime: 0,
+  referVariable: '水位',
+  threshold: [145, 158]
+}
+const defaultOperationCondition = {
+  referName: '三峡(60106980)',
+  referId: '60106980',
+  predictTime: 0,
+  referVariable: '水位',
+  threshold: [145, 158]
+}
+const defaultOperationMethod = {
+  name: '补偿',
+  targetName: '三峡(60106980)',
+  targetId: '60106980',
+  controlVariable: '流量',
+  controlValue: 60000
+}
 export default {
   name: 'DispatchRuleComp',
   props: {
@@ -174,15 +371,99 @@ export default {
     getData() {
       this.$emit('getData', this.schemeData)
     },
-    deleteRow(type, i, j, idx) {
-      console.log("方案idx", i, "第一层", j, "第二层", idx)
-      this.schemeData[i][type][j].splice(idx, 1)
+    addSchemes() {
+      this.schemeData.push(lodash.cloneDeep(defaultScheme))
     },
-    updateData(type, field, i, j, idx) {
-      //console.log(this.updateValue)
+    deleteRow(method, type, dispatch, i, j, idx) {
+      console.log("方案idx", i, "第一层", j, "第二层", idx)
+      if (method === 'and') {
+        switch (type) {
+          case 'requirements':
+            this.schemeData[i][type][j].splice(idx, 1)
+            break
+          case 'operations':
+            this.schemeData[i][type][j][dispatch].splice(idx, 1)
+            break
+          default:
+            break
+        }
+      } else if (method === 'or') {
+        switch (type) {
+          case 'requirements':
+            console.log(this.schemeData[i][type])
+            this.schemeData[i][type].splice(j + 1, 1)
+            break
+          case 'operations':
+            console.log(this.schemeData[i][type])
+            this.schemeData[i][type].splice(j + 1, 1)
+            break
+          default:
+            break
+        }
+      }
+    },
+    addRow(method, type, dispatch, i, j, idx) {
+      console.log("方案idx", i, "第一层", j, "第二层", idx)
+      if (method === 'and') {
+        switch (type) {
+          case 'requirements':
+            this.schemeData[i][type][j].splice(idx + 1, 0, lodash.cloneDeep(defaultRequirement))
+            break
+          case 'operations':
+            if (dispatch === 'conditions') {
+              this.schemeData[i][type][j][dispatch].splice(idx + 1, 0, lodash.cloneDeep(defaultOperationCondition))
+            } else if (dispatch === 'methods') {
+              this.schemeData[i][type][j][dispatch].splice(idx + 1, 0, lodash.cloneDeep(defaultOperationMethod))
+            }
+            break
+          default:
+            break
+        }
+      } else if (method === 'or') {
+        switch (type) {
+          case 'requirements':
+            this.schemeData[i][type].splice(j + 1, 0, [lodash.cloneDeep(defaultRequirement)])
+            break
+          case 'operations':
+            this.schemeData[i][type].splice(j + 1, 0, {
+              conditions: [lodash.cloneDeep(defaultOperationCondition)],
+              methods: [lodash.cloneDeep(defaultOperationMethod)]
+            })
+            break
+          default:
+            break
+        }
+      }
+    },
+    updateData(type, dispatch, field, i, j, idx, thresholdIndex) {
+      // console.log(this.updateValue)
       if(this.updateValue){
-        this.schemeData[i][type][j][idx][field] = this.updateValue
-        this.updateValue = ""
+        switch (type) {
+          case 'controlObject':
+            this.schemeData[i][type] = this.updateValue
+            this.updateValue = ''
+            break
+          case 'requirements':
+            if (field === 'threshold') {
+              this.schemeData[i][type][j][idx][field][thresholdIndex] = this.updateValue
+              this.updateValue = ""
+            } else {
+              this.schemeData[i][type][j][idx][field] = this.updateValue
+              this.updateValue = ""
+            }
+            break
+          case 'operations':
+            if (field === 'threshold') {
+              this.schemeData[i][type][j][dispatch][idx][field][thresholdIndex] = this.updateValue
+              this.updateValue = ""
+            } else {
+              this.schemeData[i][type][j][dispatch][idx][field] = this.updateValue
+              this.updateValue = ""
+            }
+            break
+          default:
+            break
+        }
       }
     }
   }
