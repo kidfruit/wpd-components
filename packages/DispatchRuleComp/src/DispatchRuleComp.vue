@@ -375,7 +375,7 @@ export default {
       this.schemeData.push(lodash.cloneDeep(defaultScheme))
     },
     deleteRow(method, type, dispatch, i, j, idx) {
-      console.log("方案idx", i, "第一层", j, "第二层", idx)
+      // console.log("方案idx", i, "第一层", j, "第二层", idx)
       if (method === 'and') {
         switch (type) {
           case 'requirements':
@@ -390,11 +390,9 @@ export default {
       } else if (method === 'or') {
         switch (type) {
           case 'requirements':
-            console.log(this.schemeData[i][type])
             this.schemeData[i][type].splice(j + 1, 1)
             break
           case 'operations':
-            console.log(this.schemeData[i][type])
             this.schemeData[i][type].splice(j + 1, 1)
             break
           default:
@@ -403,7 +401,7 @@ export default {
       }
     },
     addRow(method, type, dispatch, i, j, idx) {
-      console.log("方案idx", i, "第一层", j, "第二层", idx)
+      // console.log("方案idx", i, "第一层", j, "第二层", idx)
       if (method === 'and') {
         switch (type) {
           case 'requirements':
