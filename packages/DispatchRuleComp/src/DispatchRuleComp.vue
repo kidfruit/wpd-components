@@ -217,7 +217,7 @@
                     <a-slider :min="0" :max="999999" v-model="secondSlider"/>
                   </div>
                   <div class="content-right">
-                    <a-input-number v-model="secondSlider" :min="0" :max="999999"/>
+                    <a-input-number v-model="secondSlider" :min="0" :max="999999" @change="handleChangeInput"/>
                   </div>
                 </div>
                 <a slot="content" @click="updateData('operations', 'methods', 'controlValue',i,j,idx)">确认</a>
@@ -385,15 +385,18 @@ export default {
       this.firstSliderCenter = val
     },
     handleChangeLeftInput(val) {
-      this.firstSliderCenter = [val, this.firstSliderRightInput]
+      this.firstSliderCenter = [+val, this.firstSliderRightInput]
     },
     handleChangeRightInput(val) {
-      this.firstSliderCenter = [this.firstSliderLeftInput, val]
+      this.firstSliderCenter = [this.firstSliderLeftInput, +val]
     },
     handleChangeSlider(val) {
       this.firstSliderLeftInput = val[0]
       this.firstSliderRightInput = val[1]
       this.firstSliderCenter = val
+    },
+    handleChangeInput(val) {
+      this.secondSlider = +val
     },
     showSecondPopoverCallback(val) {
       this.secondSlider = val
