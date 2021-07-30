@@ -11,7 +11,7 @@
       <div class="scheme-card-title">
         目标对象：
         <a-popover trigger="click" v-if="editable">
-          <a-tag color="blue" @click="showPopoverCallback(schemeInfo.controlObject)">{{ schemeInfo.controlObject }}</a-tag>
+          <a-tag color="blue" @click="showInputPopoverCallback(schemeInfo.controlObject)">{{ schemeInfo.controlObject }}</a-tag>
           <a-input slot="content" v-model="updateValue" />
           <a slot="content" @click="updateData('controlObject', '', '', i)">确认</a>
         </a-popover>
@@ -33,36 +33,36 @@
               <a-space class="control-row">
                 当
                 <a-popover trigger="click" v-if="editable">
-                  <a-tag color="blue" @click="showPopoverCallback(r.referName)">{{ r.referName }}</a-tag>
+                  <a-tag color="blue" @click="showInputPopoverCallback(r.referName)">{{ r.referName }}</a-tag>
                   <a-input slot="content" v-model="updateValue" />
                   <a slot="content" @click="updateData('requirements', '', 'referName',i,j,idx)">确认</a>
                 </a-popover>
                 <a-tag color="blue" v-else>{{ r.referName }}</a-tag>
                 预报
                 <a-popover trigger="click" v-if="editable">
-                  <a-tag color="blue" @click="showPopoverCallback(r.predictTime)">{{ r.predictTime }}</a-tag>
+                  <a-tag color="blue" @click="showInputPopoverCallback(r.predictTime)">{{ r.predictTime }}</a-tag>
                   <a-input slot="content" v-model="updateValue" />
                   <a slot="content" @click="updateData('requirements', '', 'predictTime',i,j,idx)">确认</a>
                 </a-popover>
                 <a-tag color="blue" v-else>{{ r.predictTime }}</a-tag>
                 小时后
                 <a-popover trigger="click" v-if="editable">
-                  <a-tag color="blue" @click="showPopoverCallback(r.referVariable)">{{ r.referVariable }}</a-tag>
-                  <a-input slot="content" v-model="updateValue" />
+                  <a-tag color="blue" @click="showSelectPopoverCallback(r.referVariable)">{{ r.referVariable }}</a-tag>
+                  <a-select slot="content" v-model="selectedValue" :options="selectOptions" style="width: 100px;margin-right: 10px;" />
                   <a slot="content" @click="updateData('requirements', '', 'referVariable',i,j,idx)">确认</a>
                 </a-popover>
                 <a-tag color="blue" v-else>{{ r.referVariable }}</a-tag>
                 <a-popover trigger="click" :getPopupContainer="() => $el" v-if="editable">
-                  <a-tag color="blue" v-if="r.threshold[1] !== 999999" @click="showFirstPopoverCallback(r.threshold)">
+                  <a-tag color="blue" v-if="r.threshold[1] !== 999999" @click="showFirstSliderPopoverCallback(r.threshold)">
                     大于 {{r.threshold[0]}} 且小于 {{r.threshold[1]}}
                   </a-tag>
-                  <a-tag color="blue" v-else @click="showFirstPopoverCallback(r.threshold)">大于 {{r.threshold[0]}}</a-tag>
+                  <a-tag color="blue" v-else @click="showFirstSliderPopoverCallback(r.threshold)">大于 {{r.threshold[0]}}</a-tag>
                   <div slot="content" class="slot-content">
                     <div class="content-left">
                       <a-input-number v-model="firstSliderLeftInput" :min="0" :max="999999" @change="handleChangeLeftInput"/>
                     </div>
                     <div class="content-center">
-                      <a-slider range :min="0" :max="999999" v-model="firstSliderCenter" @change="handleChangeSlider"/>
+                      <a-slider range :min="0" :max="999999" v-model="firstSliderCenter" @change="handleChangeCenterSlider"/>
                     </div>
                     <div class="content-right">
                       <a-input-number v-model="firstSliderRightInput" :min="0" :max="999999" @change="handleChangeRightInput"/>
@@ -126,36 +126,36 @@
               <a-tag v-if="(idx > 0 )" color="pink" class="and-tag">且</a-tag>
               当
               <a-popover trigger="click" v-if="editable">
-                <a-tag color="blue" @click="showPopoverCallback(cd.referName)">{{ cd.referName }}</a-tag>
+                <a-tag color="blue" @click="showInputPopoverCallback(cd.referName)">{{ cd.referName }}</a-tag>
                 <a-input slot="content" v-model="updateValue" />
                 <a slot="content" @click="updateData('operations', 'conditions','referName',i,j,idx)">确认</a>
               </a-popover>
               <a-tag color="blue" v-else>{{ cd.referName }}</a-tag>
               预报
               <a-popover trigger="click" v-if="editable">
-                <a-tag color="blue" @click="showPopoverCallback(cd.predictTime)">{{ cd.predictTime }}</a-tag>
+                <a-tag color="blue" @click="showInputPopoverCallback(cd.predictTime)">{{ cd.predictTime }}</a-tag>
                 <a-input slot="content" v-model="updateValue" />
                 <a slot="content" @click="updateData('operations', 'conditions','predictTime',i,j,idx)">确认</a>
               </a-popover>
               <a-tag color="blue" v-else>{{ cd.predictTime }}</a-tag>
               小时后
               <a-popover trigger="click" v-if="editable">
-                <a-tag color="blue" @click="showPopoverCallback(cd.referVariable)">{{ cd.referVariable }}</a-tag>
-                <a-input slot="content" v-model="updateValue" />
+                <a-tag color="blue" @click="showSelectPopoverCallback(cd.referVariable)">{{ cd.referVariable }}</a-tag>
+                <a-select slot="content" v-model="selectedValue" :options="selectOptions" style="width: 100px;margin-right: 10px;" />
                 <a slot="content" @click="updateData('operations', 'conditions','referVariable',i,j,idx)">确认</a>
               </a-popover>
               <a-tag color="blue" v-else>{{ cd.referVariable }}</a-tag>
               <a-popover trigger="click" :getPopupContainer="() => $el" v-if="editable">
-                <a-tag color="blue" v-if="cd.threshold[1] !== 999999" @click="showFirstPopoverCallback(cd.threshold)">
+                <a-tag color="blue" v-if="cd.threshold[1] !== 999999" @click="showFirstSliderPopoverCallback(cd.threshold)">
                   大于 {{cd.threshold[0]}} 且小于 {{cd.threshold[1]}}
                 </a-tag>
-                <a-tag color="blue" v-else @click="showFirstPopoverCallback(cd.threshold)">大于 {{cd.threshold[0]}}</a-tag>
+                <a-tag color="blue" v-else @click="showFirstSliderPopoverCallback(cd.threshold)">大于 {{cd.threshold[0]}}</a-tag>
                 <div slot="content" class="slot-content">
                   <div class="content-left">
                     <a-input-number v-model="firstSliderLeftInput" :min="0" :max="999999" @change="handleChangeLeftInput"/>
                   </div>
                   <div class="content-center">
-                    <a-slider range :min="0" :max="999999" v-model="firstSliderCenter" @change="handleChangeSlider"/>
+                    <a-slider range :min="0" :max="999999" v-model="firstSliderCenter" @change="handleChangeCenterSlider"/>
                   </div>
                   <div class="content-right">
                     <a-input-number v-model="firstSliderRightInput" :min="0" :max="999999" @change="handleChangeRightInput"/>
@@ -192,26 +192,26 @@
               <a-tag v-if="(idx > 0 )" color="pink" class="and-tag">且</a-tag>
               采用
               <a-popover trigger="click" v-if="editable">
-                <a-tag color="blue" @click="showPopoverCallback(mt.name)">{{ mt.name }}</a-tag>
+                <a-tag color="blue" @click="showInputPopoverCallback(mt.name)">{{ mt.name }}</a-tag>
                 <a-input slot="content" v-model="updateValue" />
                 <a slot="content" @click="updateData('operations', 'methods','name',i,j,idx)">确认</a>
               </a-popover>
               <a-tag color="blue" v-else>{{ mt.name }}</a-tag>
               调度，控制
               <a-popover trigger="click" v-if="editable">
-                <a-tag color="blue" @click="showPopoverCallback(mt.targetName)">{{ mt.targetName }}</a-tag>
+                <a-tag color="blue" @click="showInputPopoverCallback(mt.targetName)">{{ mt.targetName }}</a-tag>
                 <a-input slot="content" v-model="updateValue" />
                 <a slot="content" @click="updateData('operations', 'methods','targetName',i,j,idx)">确认</a>
               </a-popover>
               <a-tag color="blue" v-else>{{ mt.targetName }}</a-tag>
               <a-popover trigger="click" v-if="editable">
-                <a-tag color="blue" @click="showPopoverCallback(mt.controlVariable)">{{ mt.controlVariable }}</a-tag>
-                <a-input slot="content" v-model="updateValue" />
+                <a-tag color="blue" @click="showSelectPopoverCallback(mt.controlVariable)">{{ mt.controlVariable }}</a-tag>
+                <a-select slot="content" v-model="selectedValue" :options="selectOptions" style="width: 100px;margin-right: 10px;" />
                 <a slot="content" @click="updateData('operations', 'methods','controlVariable',i,j,idx)">确认</a>
               </a-popover>
               <a-tag color="blue" v-else>{{ mt.controlVariable }}</a-tag>
               <a-popover trigger="click" :getPopupContainer="() => $el" v-if="editable">
-                <a-tag color="blue" @click="showSecondPopoverCallback(mt.controlValue)">小于 {{mt.controlValue}}</a-tag>
+                <a-tag color="blue" @click="showSecondSliderPopoverCallback(mt.controlValue)">小于 {{mt.controlValue}}</a-tag>
                 <div slot="content" class="slot-content">
                   <div class="content-center" style="width: 300px;">
                     <a-slider :min="0" :max="999999" v-model="secondSlider"/>
@@ -357,6 +357,11 @@ export default {
       firstSliderRightInput: 999999,
       firstSliderCenter: [],
       secondSlider: 2000,
+      selectOptions: [
+        {value: '流量', label: '流量'},
+        {value: '水位', label: '水位'}
+      ],
+      selectedValue: ''
     }
   },
   computed: {
@@ -379,7 +384,7 @@ export default {
     //console.log(this.ruleData)
   },
   methods: {
-    showFirstPopoverCallback(val) {
+    showFirstSliderPopoverCallback(val) {
       this.firstSliderLeftInput = val[0]
       this.firstSliderRightInput = val[1]
       this.firstSliderCenter = val
@@ -390,7 +395,7 @@ export default {
     handleChangeRightInput(val) {
       this.firstSliderCenter = [this.firstSliderLeftInput, +val]
     },
-    handleChangeSlider(val) {
+    handleChangeCenterSlider(val) {
       this.firstSliderLeftInput = val[0]
       this.firstSliderRightInput = val[1]
       this.firstSliderCenter = val
@@ -398,11 +403,14 @@ export default {
     handleChangeInput(val) {
       this.secondSlider = +val
     },
-    showSecondPopoverCallback(val) {
+    showSecondSliderPopoverCallback(val) {
       this.secondSlider = val
     },
-    showPopoverCallback(val) {
+    showInputPopoverCallback(val) {
       this.updateValue = val
+    },
+    showSelectPopoverCallback(val) {
+      this.selectedValue = val
     },
     filterData(id) {
       this.currentRuleData = this.ruleData.find(rd => rd.stcd === id)
@@ -481,31 +489,32 @@ export default {
       }
     },
     updateData(type, dispatch, field, i, j, idx) {
-      // console.log(this.updateValue)
-      if(this.updateValue || this.firstSliderCenter){
-        switch (type) {
-          case 'controlObject':
-            this.schemeData[i][type] = this.updateValue
-            break
-          case 'requirements':
-            if (field === 'threshold') {
-              this.schemeData[i][type][j][idx][field] = this.firstSliderCenter
-            } else {
-              this.schemeData[i][type][j][idx][field] = this.updateValue
-            }
-            break
-          case 'operations':
-            if (field === 'threshold') {
-              this.schemeData[i][type][j][dispatch][idx][field] = this.firstSliderCenter
-            } else if (field === 'controlValue') {
-              this.schemeData[i][type][j][dispatch][idx][field] = this.secondSlider
-            } else {
-              this.schemeData[i][type][j][dispatch][idx][field] = this.updateValue
-            }
-            break
-          default:
-            break
-        }
+      switch (type) {
+        case 'controlObject':
+          this.schemeData[i][type] = this.updateValue
+          break
+        case 'requirements':
+          if (field === 'threshold') {
+            this.schemeData[i][type][j][idx][field] = this.firstSliderCenter
+          } else if (field === 'referVariable') {
+            this.schemeData[i][type][j][idx][field] = this.selectedValue
+          } else {
+            this.schemeData[i][type][j][idx][field] = this.updateValue
+          }
+          break
+        case 'operations':
+          if (field === 'threshold') {
+            this.schemeData[i][type][j][dispatch][idx][field] = this.firstSliderCenter
+          } else if (field === 'controlValue') {
+            this.schemeData[i][type][j][dispatch][idx][field] = this.secondSlider
+          } else if (field === 'referVariable' || field === 'controlVariable') {
+            this.schemeData[i][type][j][dispatch][idx][field] = this.selectedValue
+          } else {
+            this.schemeData[i][type][j][dispatch][idx][field] = this.updateValue
+          }
+          break
+        default:
+          break
       }
     }
   }
