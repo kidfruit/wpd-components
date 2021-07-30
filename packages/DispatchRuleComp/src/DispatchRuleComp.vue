@@ -2,7 +2,7 @@
   <div :class="classes">
     <a-button @click="resetData" v-if="editable">重置</a-button>
     <a-button @click="getData">获取数据</a-button>
-    <a-button @click="addSchemes">增加目标对象</a-button>
+    <a-button @click="addSchemes" v-if="editable">增加目标对象</a-button>
     <div
       class="scheme-card"
       v-for="(schemeInfo,i) in schemeData"
@@ -24,6 +24,9 @@
           v-for="(rqmt,j) in schemeInfo.requirements"
           :key="schemeInfo.controlObject + '-require-' + j"
         >
+          <div class="or-tag-div" v-if="!editable">
+            <a-tag v-if="(j > 0 )" class="or-tag" color="cyan">或</a-tag>
+          </div>
           <div
             v-for="(r,idx) in rqmt"
             :key="schemeInfo.controlObject + '-require-r' + idx"
@@ -70,10 +73,10 @@
                   </div>
                   <a slot="content" @click="updateData('requirements', '', 'threshold',i,j,idx)">确认</a>
                 </a-popover>
-                <div v-else>
+                <span v-else>
                   <a-tag color="blue" v-if="r.threshold[1] !== 999999">大于{{r.threshold[0]}}且小于{{r.threshold[1]}}</a-tag>
                   <a-tag color="blue" v-else>大于 {{r.threshold[0]}}</a-tag>
-                </div>
+                </span>
                 {{ unitLib[r.referVariable] }}
                 <a-button
                   v-if="editable"
@@ -92,17 +95,15 @@
               </a-space>
             </div>
           </div>
-          <div class="or-tag-div">
+          <div class="or-tag-div"  v-if="editable">
             <a-tag class="or-tag" color="cyan">或</a-tag>
             <a-button
-              v-if="editable"
               type="link"
               icon="minus-circle"
               class="del-btn"
               @click="deleteRow('or', 'requirements', '',i,j)"
             />
             <a-button
-              v-if="editable"
               type="link"
               icon="plus-circle"
               class="add-btn"
@@ -118,6 +119,9 @@
           v-for="(opt,j) in schemeInfo.operations"
           :key="schemeInfo.controlObject + '-operation-' + j"
         >
+          <div class="or-tag-div" v-if="!editable">
+            <a-tag v-if="(j > 0 )" class="or-tag" color="cyan">或</a-tag>
+          </div>
           <div
             v-for="(cd,idx) in opt.conditions"
             :key="schemeInfo.controlObject + '-operation-cd' + idx"
@@ -163,10 +167,10 @@
                 </div>
                 <a slot="content" @click="updateData('operations', 'conditions', 'threshold',i,j,idx)">确认</a>
               </a-popover>
-              <div v-else>
+              <span v-else>
                 <a-tag color="blue" v-if="cd.threshold[1] !== 999999">大于{{cd.threshold[0]}}且小于{{cd.threshold[1]}}</a-tag>
                 <a-tag color="blue" v-else>大于 {{cd.threshold[0]}}</a-tag>
-              </div>
+              </span>
               {{ unitLib[cd.referVariable] }}
               <a-button
                 v-if="editable"
@@ -211,7 +215,7 @@
               </a-popover>
               <a-tag color="blue" v-else>{{ mt.controlVariable }}</a-tag>
               <a-popover trigger="click" :getPopupContainer="() => $el" v-if="editable">
-                <a-tag color="blue" @click="showSecondSliderPopoverCallback(mt.controlValue)">小于 {{mt.controlValue}}</a-tag>
+                <a-tag color="blue" @click="showSecondSliderPopoverCallback(mt.controlValue)">小于等于 {{mt.controlValue}}</a-tag>
                 <div slot="content" class="slot-content">
                   <div class="content-center" style="width: 300px;">
                     <a-slider :min="0" :max="999999" v-model="secondSlider"/>
@@ -222,7 +226,7 @@
                 </div>
                 <a slot="content" @click="updateData('operations', 'methods', 'controlValue',i,j,idx)">确认</a>
               </a-popover>
-              <a-tag color="blue" v-else>{{ mt.controlValue }}</a-tag>
+              <a-tag color="blue" v-else>小于等于 {{ mt.controlValue }}</a-tag>
               {{ unitLib[mt.controlVariable] }}
               <a-button
                 v-if="editable"
@@ -240,17 +244,15 @@
               />
             </div>
           </div>
-          <div class="or-tag-div">
+          <div class="or-tag-div" v-if="editable">
             <a-tag class="or-tag" color="cyan">或</a-tag>
             <a-button
-              v-if="editable"
               type="link"
               icon="minus-circle"
               class="del-btn"
               @click="deleteRow('or', 'operations', '',i,j)"
             />
             <a-button
-              v-if="editable"
               type="link"
               icon="plus-circle"
               class="add-btn"
