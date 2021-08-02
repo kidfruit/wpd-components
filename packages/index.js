@@ -19,8 +19,8 @@ import ChartsProcess from "./ChartsProcess/src/ChartsProcess.vue";
 import ChartsSingle from "./ChartsSingle/src/ChartsSingle.vue";
 import WpdTimePicker from "./WpdTimePicker/src/WpdTimePicker.vue";
 import SchemeComparisonChart from "./SchemeComparisonChart/src/SchemeComparisonChart";
-
 import SeriesQZ from "./SeriesQZ/src/SeriesQZ";
+import DispatchRuleRelationshipMap from "./DispatchRuleRelationshipMap/src/DispatchRuleRelationshipMap";
 
 import testDirective from "./testDirective/src/testDirective";
 import WpdTimePickerUtile from "./WpdTimePickerUtile/src/WpdTimePickerUtile";
@@ -61,7 +61,8 @@ const components = [
   StatusInfoComp,
   SelectAndSortComp,
   SeriesQZ,
-  DispatchRuleComp
+  DispatchRuleComp,
+  DispatchRuleRelationshipMap
 ];
 
 // 存储指令映射
@@ -74,7 +75,7 @@ export const directives = {
 const install = function (Vue) {
   // 遍历注册全局组件
   components.map((component) => Vue.component(component.name, component));
-  
+
   // 遍历注册指令
   Reflect.ownKeys(directives).map((name) =>
     Vue.directive(name, directives[name])
@@ -116,5 +117,6 @@ export default {
   SelectAndSortComp,
   SeriesQZ,
   DispatchRuleComp,
+  DispatchRuleRelationshipMap,
   ...directives,
 };

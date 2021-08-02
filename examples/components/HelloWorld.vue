@@ -96,6 +96,10 @@
       <h2>DispatchRuleCompTest: 调度规则控件</h2>
       <DispatchRuleCompTest/>
     </div>
+    <div v-if="true">
+      <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
+      <DispatchRuleRelationshipMapTest/>
+    </div>
   </div>
 </template>
 
@@ -126,6 +130,7 @@ import SchemeComparisonChartTest from "./SchemeComparisonChartTest";
 import StatusInfoCompTest from "@/components/StatusInfoCompTest";
 import SelectAndSortCompTest from "@/components/SelectAndSortCompTest";
 import DispatchRuleCompTest from "@/components/DispatchRuleCompTest";
+import DispatchRuleRelationshipMapTest from "@/components/DispatchRuleRelationshipMapTest";
 export default {
   components: {
     DispatchRuleCompTest,
@@ -153,7 +158,8 @@ export default {
     WpdTimePickerTest,
     SchemeComparisonChartTest,
     StatusInfoCompTest,
-    SelectAndSortCompTest
+    SelectAndSortCompTest,
+    DispatchRuleRelationshipMapTest
   },
   name: 'HelloWorld',
   methods: {
