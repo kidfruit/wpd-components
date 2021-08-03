@@ -272,7 +272,7 @@ const defaultScheme = {
   requirements: [
     [
       {
-        referName: '三峡(60106980)',
+        referName: '三峡',
         referId: '60106980',
         predictTime: 0,
         referVariable: '水位',
@@ -284,7 +284,7 @@ const defaultScheme = {
     {
       conditions: [
         {
-          referName: '三峡(60106980)',
+          referName: '三峡',
           referId: '60106980',
           predictTime: 0,
           referVariable: '水位',
@@ -294,7 +294,7 @@ const defaultScheme = {
       methods: [
         {
           name: '补偿',
-          targetName: '三峡(60106980)',
+          targetName: '三峡',
           targetId: '60106980',
           controlVariable: '流量',
           controlValue: 60000
@@ -304,14 +304,14 @@ const defaultScheme = {
   ]
 }
 const defaultRequirement = {
-  referName: '三峡(60106980)',
+  referName: '三峡',
   referId: '60106980',
   predictTime: 0,
   referVariable: '水位',
   threshold: [145, 158]
 }
 const defaultOperationCondition = {
-  referName: '三峡(60106980)',
+  referName: '三峡',
   referId: '60106980',
   predictTime: 0,
   referVariable: '水位',
@@ -319,7 +319,7 @@ const defaultOperationCondition = {
 }
 const defaultOperationMethod = {
   name: '补偿',
-  targetName: '三峡(60106980)',
+  targetName: '三峡',
   targetId: '60106980',
   controlVariable: '流量',
   controlValue: 60000

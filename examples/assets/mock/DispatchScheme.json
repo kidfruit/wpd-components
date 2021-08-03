@@ -72,7 +72,7 @@
         "requirements": [
           [
             {
-              "referName": "枝城(60107400)",
+              "referName": "枝城",
               "referId": "60107400",
               "predictTime": 0,
               "referVariable": "流量",
@@ -87,7 +87,7 @@
           {
             "conditions": [
               {
-                "referName": "三峡(60106980)",
+                "referName": "三峡",
                 "referId": "60106980",
                 "predictTime": 0,
                 "referVariable": "水位",
@@ -100,7 +100,7 @@
             "methods": [
               {
                 "name": "补偿",
-                "targetName": "枝城(60107400)",
+                "targetName": "枝城",
                 "targetId": "60107400",
                 "controlVariable": "流量",
                 "controlValue": 56700
@@ -110,7 +110,7 @@
           {
             "conditions": [
               {
-                "referName": "枝城(60107400)",
+                "referName": "枝城",
                 "referId": "60107400",
                 "predictTime": 0,
                 "referVariable": "流量",
@@ -120,7 +120,7 @@
                 ]
               },
               {
-                "referName": "三峡(60106980)",
+                "referName": "三峡",
                 "referId": "60106980",
                 "predictTime": 0,
                 "referVariable": "水位",
@@ -133,7 +133,7 @@
             "methods": [
               {
                 "name": "补偿",
-                "targetName": "枝城(60107400)",
+                "targetName": "枝城",
                 "targetId": "60107400",
                 "controlVariable": "流量",
                 "controlValue": 80000
@@ -147,7 +147,7 @@
         "requirements": [
           [
             {
-              "referName": "莲花塘(60111200)",
+              "referName": "莲花塘",
               "referId": "60111200",
               "predictTime": 48,
               "referVariable": "水位",
@@ -157,7 +157,7 @@
               ]
             },
             {
-              "referName": "三峡(60106980)",
+              "referName": "三峡",
               "referId": "60106980",
               "predictTime": 0,
               "referVariable": "水位",
@@ -169,7 +169,7 @@
           ],
           [
             {
-              "referName": "螺山(60111300)",
+              "referName": "螺山",
               "referId": "60111300",
               "predictTime": 48,
               "referVariable": "流量",
@@ -179,7 +179,7 @@
               ]
             },
             {
-              "referName": "三峡(60106980)",
+              "referName": "三峡",
               "referId": "60106980",
               "predictTime": 0,
               "referVariable": "水位",
@@ -194,7 +194,7 @@
           {
             "conditions": [
               {
-                "referName": "螺山(60111300)",
+                "referName": "螺山",
                 "referId": "60111300",
                 "predictTime": 48,
                 "referVariable": "流量",
@@ -204,7 +204,7 @@
                 ]
               },
               {
-                "referName": "三峡(60106980)",
+                "referName": "三峡",
                 "referId": "60106980",
                 "predictTime": 0,
                 "referVariable": "水位",
@@ -217,7 +217,7 @@
             "methods": [
               {
                 "name": "补偿",
-                "targetName": "螺山(60111300)",
+                "targetName": "螺山",
                 "targetId": "60111300",
                 "controlVariable": "流量",
                 "controlValue": 60000
