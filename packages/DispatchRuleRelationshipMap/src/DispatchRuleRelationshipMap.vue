@@ -12,7 +12,7 @@ export default {
   name: "DispatchRuleRelationshipMap",
   props: {
     ruleData: {
-      type: Array,
+      type: Object,
       required: true
     }
   },
@@ -43,14 +43,13 @@ export default {
       echartsInstance.setOption(option)
     },
     initRelationshipMapOption() {
-      console.log(this.ruleData[0])
+      // console.log(this.ruleData)
       const seriesData = []
-      let allNames = []
 
       // push 调度规则对象
-      const name = this.ruleData[0].name
       seriesData.push({
-        name,
+        value: this.ruleData.name,
+        id: this.randomKey(),
         symbolSize: 80,
         itemStyle: {
           normal: {
@@ -58,172 +57,150 @@ export default {
           }
         }
       })
-      allNames = allNames.concat(name)
 
       const controlObjects = []
-      const referNames = []
-      const conditionsReferNames = []
-      const methodNames = []
-      this.ruleData[0].schemes.forEach((item, index) => {
-        controlObjects.push(item.controlObject)
+      const requirements = []
+      const conditions = []
+      const methods = []
+      this.ruleData.schemes.forEach((item, index) => {
         // push 防洪对象
-        if (!allNames.includes(item.controlObject)) {
-          seriesData.push({
-            name: item.controlObject,
-            symbolSize: 65,
-            itemStyle: {
-              normal: {
-                color: '#ED7D31'
-              }
+        seriesData.push({
+          value: item.controlObject,
+          id: `controlObject-${index}-${this.randomKey()}`,
+          symbolSize: 65,
+          itemStyle: {
+            normal: {
+              color: '#ED7D31'
             }
-          })
-          allNames = allNames.concat(controlObjects)
-        }
+          }
+        })
+        controlObjects.push(lodash.cloneDeep(seriesData).pop())
 
-        referNames.push([])
-        item.requirements.forEach(element => {
-          element.forEach(val => {
-            referNames[index].push(val.referName)
-            // push 代表站
-            if (!allNames.includes(val.referName)) {
-              seriesData.push({
-                name: val.referName,
-                symbolSize: 50,
-                itemStyle: {
-                  normal: {
-                    color: '#4472C4'
-                  }
+        // push requirement代表站
+        item.requirements.forEach((element, idx) => {
+          element.forEach((val, key) => {
+            seriesData.push({
+              value: val.referName,
+              id: `requirement-${index}-${idx}-${key}-${this.randomKey()}`,
+              symbolSize: 50,
+              itemStyle: {
+                normal: {
+                  color: '#4472C4'
                 }
-              })
-              allNames = lodash.union(allNames.concat(...referNames))
-            }
+              }
+            })
+            requirements.push(lodash.cloneDeep(seriesData).pop())
           })
         })
 
-        conditionsReferNames.push([])
-        methodNames.push([])
-        item.operations.forEach((element, key) => {
-          conditionsReferNames[index].push([])
-          methodNames[index].push([])
-          element.conditions.forEach(val => {
-            conditionsReferNames[index][key].push(val.referName)
-            // push 代表站(conditions)
-            if (!allNames.includes(val.referName)) {
-              seriesData.push({
-                name: val.referName,
-                symbolSize: 50,
-                itemStyle: {
-                  normal: {
-                    color: '#4472C4'
-                  }
+        // push conditions代表站
+        item.operations.forEach((element, idx) => {
+          element.conditions.forEach((val, key) => {
+            seriesData.push({
+              value: val.referName,
+              id: `condition-${index}-${idx}-${key}-${this.randomKey()}`,
+              symbolSize: 50,
+              itemStyle: {
+                normal: {
+                  color: '#4472C4'
                 }
-              })
-              allNames = lodash.union(allNames.concat(...lodash.flatten(conditionsReferNames)))
-            }
+              }
+            })
+            conditions.push(lodash.cloneDeep(seriesData).pop())
           })
 
-          element.methods.forEach(val => {
-            const methodName = `${val.name}控制${val.targetName}${val.controlVariable}不超过${val.controlValue}${this.unitLib[val.controlVariable]}`
-            methodNames[index][key].push(methodName)
-            // push 调度方式
-            if (!allNames.includes(methodName)) {
-              seriesData.push({
-                name: methodName,
-                symbolSize: 30,
-                itemStyle: {
-                  normal: {
-                    color: '#70AD47'
-                  }
+          // push 调度方式
+          element.methods.forEach((val, key) => {
+            const methodName =
+                `${val.name}控制${val.targetName}${val.controlVariable}不超过${val.controlValue}${this.unitLib[val.controlVariable]}`
+            seriesData.push({
+              value: methodName,
+              id: `method-${index}-${idx}-${key}-${this.randomKey()}`,
+              symbolSize: 30,
+              itemStyle: {
+                normal: {
+                  color: '#70AD47'
                 }
-              })
-              allNames = lodash.union(allNames.concat(...lodash.flatten(methodNames)))
-            }
+              }
+            })
+            methods.push(lodash.cloneDeep(seriesData).pop())
           })
         })
       })
 
-      const seriesLinks = []
       // console.log(seriesData)
-      // console.log(name)
       // console.log(controlObjects)
-      // console.log(referNames)
-      // console.log(conditionsReferNames)
-      // console.log(methodNames)
-      // console.log(allNames)
+      // console.log(requirements)
+      // console.log(conditions)
+      // console.log(methods)
+
+      const seriesLinks = []
+
+      // push 防洪对象
       controlObjects.forEach(item => {
         seriesLinks.push({
-          source: name,
-          target: item,
+          source: seriesData[0].id,
+          target: item.id,
           name: '防洪对象'
         })
       })
 
-      controlObjects.forEach((item, index) => {
-        referNames[index].forEach(val => {
-          if (val !== name) {
+      // push 代表站
+      controlObjects.forEach(item => {
+        requirements.forEach(el => {
+          if (item.id.split('-')[1] === el.id.split('-')[1]) {
             seriesLinks.push({
-              source: item,
-              target: val,
+              source: item.id,
+              target: el.id,
               name: '代表站'
             })
           }
         })
       })
 
-      referNames.forEach((item, index) => {
-        item.forEach(el => {
-          conditionsReferNames[index].forEach((val, key) => {
-            if (!val.includes(el)) {
-              // console.log(item, index, el, val, key)
-              // console.log(methodNames[index][key])
-              const temp = this.ruleData[0].schemes[index].requirements
-              let tempName = ''
-              temp.forEach(j => {
-                j.forEach(k => {
-                  // console.log(k)
-                  if (k.referName === el) {
-                    tempName = this.tempName(k)
-                  }
-                })
-              })
-
-              const tempTargets = methodNames[index][key]
-              tempTargets.forEach(element => {
-                seriesLinks.push({
-                  source: el,
-                  target: element,
-                  name: tempName
-                })
-              })
-            }
-          })
-        })
-      })
-
-
-      methodNames.forEach((item, index) => {
-        item.forEach((el, idx) => {
-          // console.log(el)
-          // console.log(conditionsReferNames[index][idx])
-          // console.log(index, idx)
-          conditionsReferNames[index][idx].forEach((val, key) => {
-            // console.log(val)
-            // console.log(this.ruleData[0].schemes[index].operations[idx].conditions[key])
-            const temp = this.ruleData[0].schemes[index].operations[idx].conditions[key]
-
+      // push requirements -> methods
+      requirements.forEach(item => {
+        methods.forEach(el => {
+          if (item.id.split('-')[1] === el.id.split('-')[1]) {
+            // console.log(item, el)
+            const item1 = +item.id.split('-')[1]
+            const item2 = +item.id.split('-')[2]
+            const item3 = +item.id.split('-')[3]
+            const temp = this.ruleData.schemes[item1].requirements[item2][item3]
+            // console.log(temp)
             seriesLinks.push({
-              source: val,
-              target: el,
+              source: item.id,
+              target: el.id,
               name: this.tempName(temp)
             })
-          })
+          }
         })
       })
 
+      // push conditions -> methods
+      conditions.forEach(item => {
+        methods.forEach(el => {
+          if (item.id.split('-')[1] === el.id.split('-')[1]) {
+            if (item.id.split('-')[2] === el.id.split('-')[2]) {
+              // console.log(item, el)
+              const item1 = +item.id.split('-')[1]
+              const item2 = +item.id.split('-')[2]
+              const item3 = +item.id.split('-')[3]
+              const temp = this.ruleData.schemes[item1].operations[item2].conditions[item3]
+              // console.log(temp)
+              seriesLinks.push({
+                source: item.id,
+                target: el.id,
+                name: this.tempName(temp)
+              })
+            }
+          }
+        })
+      })
 
       let option = {
         title: {
-          text: `${this.ruleData[0].name}调度规则关系图谱`,
+          text: `${this.ruleData.name}调度规则关系图谱`,
           left: 'center'
         },
         series: [{
@@ -258,7 +235,7 @@ export default {
           label: {
             normal: {
               show: true,
-              // formatter: params => params.data.value
+              formatter: params => params.data.value
             }
           },
           data: seriesData,
@@ -277,6 +254,9 @@ export default {
       if (this.$refs.DispatchRuleRelationshipMap) {
         echartsInstance.resize()
       }
+    },
+    randomKey() {
+      return  +new Date() + (Math.random() * 1000).toFixed(0)
     },
     tempName(temp) {
       if (temp.referVariable === '流量') {

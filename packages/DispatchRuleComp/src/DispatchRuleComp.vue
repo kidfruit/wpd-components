@@ -3,6 +3,7 @@
     <a-button @click="resetData" v-if="editable">重置</a-button>
     <a-button @click="getData">获取数据</a-button>
     <a-button @click="addSchemes" v-if="editable">增加目标对象</a-button>
+    <a-button @click="updateRelationshipMap" v-if="editable">更新</a-button>
     <div
       class="scheme-card"
       v-for="(schemeInfo,i) in schemeData"
@@ -262,10 +263,15 @@
         </div>
       </div>
     </div>
+    <DispatchRuleRelationshipMap
+      ref="DispatchRuleRelationshipMap"
+      :ruleData="currentRuleData"
+    />
   </div>
 </template>
 
 <script>
+import DispatchRuleRelationshipMap from "~/DispatchRuleRelationshipMap/src/DispatchRuleRelationshipMap";
 import lodash from 'lodash'
 const defaultScheme = {
   controlObject: '城陵矶',
@@ -326,6 +332,7 @@ const defaultOperationMethod = {
 }
 export default {
   name: 'DispatchRuleComp',
+  components: { DispatchRuleRelationshipMap },
   props: {
     className: {
       type: String,
@@ -430,6 +437,9 @@ export default {
     },
     addSchemes() {
       this.schemeData.push(lodash.cloneDeep(defaultScheme))
+    },
+    updateRelationshipMap() {
+      this.$refs.DispatchRuleRelationshipMap.setRelationshipMapOption()
     },
     deleteRow(method, type, dispatch, i, j, idx) {
       // console.log("方案idx", i, "第一层", j, "第二层", idx)

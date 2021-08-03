@@ -96,7 +96,7 @@
       <h2>DispatchRuleCompTest: 调度规则控件</h2>
       <DispatchRuleCompTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleRelationshipMapTest/>
     </div>
