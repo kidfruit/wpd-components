@@ -1,5 +1,69 @@
 [
   {
+    "name":"梨园",
+    "stcd":"60101398",
+    "schemes":[{
+      "controlObject":"长江中下游",
+      "requirements":[
+        [{
+          "referId":"60107400",
+          "referName":"枝城(60107400)",
+          "predictTime":0,
+          "referVariable":"流量",
+          "threshold":[56700,999999]
+        }],
+        [{
+          "referId":"60111200",
+          "referName":"莲花塘(60111200)",
+          "predictTime":48,
+          "referVariable":"水位",
+          "threshold":[34.4,999999]
+        }],
+        [{
+          "referId":"60111300",
+          "referName":"螺山(60111300)",
+          "predictTime":48,
+          "referVariable":"流量",
+          "threshold":[60000,999999]
+        }]
+      ],
+      "operations":[
+        {
+          "conditions":[{
+            "referId":"60101398",
+            "referName":"梨园(60101398)",
+            "predictTime":0,
+            "referVariable":"流量",
+            "threshold":[0,5000]
+          }],
+          "methods":[{
+            "name":"控蓄",
+            "targetName": "梨园(60101398)",
+            "targetId": "60101398",
+            "controlVariable":"流量",
+            "controlValue":1500
+          }]
+        },
+        {
+          "conditions":[{
+            "referId":"60101398",
+            "referName":"梨园(60101398)",
+            "predictTime":0,
+            "referVariable":"流量",
+            "threshold":[5000,999999]
+          }],
+          "methods":[{
+            "name":"控蓄",
+            "targetName": "梨园(60101398)",
+            "targetId": "60101398",
+            "controlVariable":"流量",
+            "controlValue":2000
+          }]
+        }
+      ]
+    }]
+  },
+  {
     "name": "三峡",
     "stcd": "60106980",
     "schemes": [

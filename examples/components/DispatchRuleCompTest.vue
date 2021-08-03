@@ -4,7 +4,7 @@
       ref="dispatchRuleRef"
       :classes="classNames"
       :ruleData="ruleData"
-      :editable="false"
+      :editable="true"
       @getData="getData"
     />
   </div>
