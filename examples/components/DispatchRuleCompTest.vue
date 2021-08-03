@@ -5,6 +5,7 @@
       :classes="classNames"
       :ruleData="ruleData"
       :editable="true"
+      :selectId="'60106980'"
       @getData="getData"
     />
   </div>
