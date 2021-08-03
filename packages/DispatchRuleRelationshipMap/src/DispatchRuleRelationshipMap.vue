@@ -50,8 +50,7 @@ export default {
       // push 调度规则对象
       const name = this.ruleData[0].name
       seriesData.push({
-        name: name,
-        // id: this.randomKey(),
+        name,
         symbolSize: 80,
         itemStyle: {
           normal: {
@@ -71,7 +70,6 @@ export default {
         if (!allNames.includes(item.controlObject)) {
           seriesData.push({
             name: item.controlObject,
-            // id: this.randomKey(),
             symbolSize: 65,
             itemStyle: {
               normal: {
@@ -90,7 +88,6 @@ export default {
             if (!allNames.includes(val.referName)) {
               seriesData.push({
                 name: val.referName,
-                // id: this.randomKey(),
                 symbolSize: 50,
                 itemStyle: {
                   normal: {
@@ -114,7 +111,6 @@ export default {
             if (!allNames.includes(val.referName)) {
               seriesData.push({
                 name: val.referName,
-                // id: this.randomKey(),
                 symbolSize: 50,
                 itemStyle: {
                   normal: {
@@ -133,7 +129,6 @@ export default {
             if (!allNames.includes(methodName)) {
               seriesData.push({
                 name: methodName,
-                // id: this.randomKey(),
                 symbolSize: 30,
                 itemStyle: {
                   normal: {
@@ -148,13 +143,13 @@ export default {
       })
 
       const seriesLinks = []
-      console.log(seriesData)
-      console.log(name)
-      console.log(controlObjects)
-      console.log(referNames)
-      console.log(conditionsReferNames)
-      console.log(methodNames)
-      console.log(allNames)
+      // console.log(seriesData)
+      // console.log(name)
+      // console.log(controlObjects)
+      // console.log(referNames)
+      // console.log(conditionsReferNames)
+      // console.log(methodNames)
+      // console.log(allNames)
       controlObjects.forEach(item => {
         seriesLinks.push({
           source: name,
@@ -175,33 +170,51 @@ export default {
         })
       })
 
+      referNames.forEach((item, index) => {
+        item.forEach(el => {
+          conditionsReferNames[index].forEach((val, key) => {
+            if (!val.includes(el)) {
+              // console.log(item, index, el, val, key)
+              // console.log(methodNames[index][key])
+              const temp = this.ruleData[0].schemes[index].requirements
+              let tempName = ''
+              temp.forEach(j => {
+                j.forEach(k => {
+                  // console.log(k)
+                  if (k.referName === el) {
+                    tempName = this.tempName(k)
+                  }
+                })
+              })
+
+              const tempTargets = methodNames[index][key]
+              tempTargets.forEach(element => {
+                seriesLinks.push({
+                  source: el,
+                  target: element,
+                  name: tempName
+                })
+              })
+            }
+          })
+        })
+      })
+
+
       methodNames.forEach((item, index) => {
         item.forEach((el, idx) => {
-          console.log(el)
-          console.log(conditionsReferNames[index][idx])
-          console.log(index, idx)
+          // console.log(el)
+          // console.log(conditionsReferNames[index][idx])
+          // console.log(index, idx)
           conditionsReferNames[index][idx].forEach((val, key) => {
-            console.log(val)
-            console.log(this.ruleData[0].schemes[index].operations[idx].conditions[key])
+            // console.log(val)
+            // console.log(this.ruleData[0].schemes[index].operations[idx].conditions[key])
             const temp = this.ruleData[0].schemes[index].operations[idx].conditions[key]
-            let tempName = ''
-            if (temp.referVariable === '流量') {
-              if (temp.threshold[1] === 999999) {
-                tempName = `流量大于${temp.threshold[0]}m³/s`
-              } else {
-                tempName = `流量大于${temp.threshold[0]}且小于${temp.threshold[1]}m³/s`
-              }
-            } else {
-              if (temp.threshold[1] === 999999) {
-                tempName = `水位大于${temp.threshold[0]}m`
-              } else {
-                tempName = `水位大于${temp.threshold[0]}且小于${temp.threshold[1]}m`
-              }
-            }
+
             seriesLinks.push({
               source: val,
               target: el,
-              name: tempName
+              name: this.tempName(temp)
             })
           })
         })
@@ -265,8 +278,20 @@ export default {
         echartsInstance.resize()
       }
     },
-    randomKey() {
-      return  +new Date() + (Math.random() * 1000).toFixed(0)
+    tempName(temp) {
+      if (temp.referVariable === '流量') {
+        if (temp.threshold[1] === 999999) {
+          return `预报${temp.predictTime}小时后流量大于${temp.threshold[0]}m³/s`
+        } else {
+          return `预报${temp.predictTime}小时后流量大于${temp.threshold[0]}且小于${temp.threshold[1]}m³/s`
+        }
+      } else {
+        if (temp.threshold[1] === 999999) {
+          return `预报${temp.predictTime}小时后水位大于${temp.threshold[0]}m`
+        } else {
+          return `预报${temp.predictTime}小时后水位大于${temp.threshold[0]}且小于${temp.threshold[1]}m`
+        }
+      }
     }
   }
 }
