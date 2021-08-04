@@ -8,6 +8,7 @@
         :tableColumns="tableColumns"
         :setting="setting"
         :tableData="data"
+        :checkedTreeData="checkedTreeData"
         @checkedKeys="checkedKeys"
         @cellEditDone="cellEditDone"
       />
@@ -115,6 +116,12 @@ export default {
       ],
       data: mock_Table,
       pickedModels: [],
+      checkedTreeData: [
+        "RCH301",
+        "12",
+        "13",
+        "RCH303"
+      ]
     }
   },
   methods: {

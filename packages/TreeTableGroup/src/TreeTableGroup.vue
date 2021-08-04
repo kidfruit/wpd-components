@@ -1,22 +1,23 @@
 <template>
   <div :class="classNames">
-    <div class="tree-container"
-         :style="treeStyle">
-      <a-tree v-model="checkedNode"
-              :treeData="treeData"
-              defaultExpandAll
-              checkable
-              @check="_onTreeCheck" />
+    <div class="tree-container" :style="treeStyle">
+      <a-tree
+        v-model="checkedNode"
+        :treeData="treeData"
+        defaultExpandAll
+        checkable
+        @check="_onTreeCheck"
+      />
     </div>
-    <div class="table-container"
-         :style="tableStyle">
-      <MultiOptionTable ref="tableRef"
-                        :setting="setting"
-                        :tableData="m_tableData"
-                        :tableColumns="tableColumns"
-                        @cellEditDone="_cellEditDone" />
+    <div class="table-container" :style="tableStyle">
+      <MultiOptionTable
+        ref="tableRef"
+        :setting="setting"
+        :tableData="m_tableData"
+        :tableColumns="tableColumns"
+        @cellEditDone="_cellEditDone"
+      />
     </div>
-
   </div>
 </template>
 <script>
@@ -77,9 +78,18 @@ export default {
         return undefined
       },
     },
+    checkedTreeData: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
   },
   data() {
-    return { checkedNode: [], defaultTableData: [] }
+    return {
+      checkedNode: [],
+      defaultTableData: []
+    }
   },
 
   created() {
@@ -88,7 +98,12 @@ export default {
      */
     let list = []
     treeToList(this.treeData, list)
-    this.checkedNode = list.map((i) => i.key)
+    // console.log(list)
+    if (this.checkedTreeData) {
+      this.checkedNode = this.checkedTreeData
+    } else {
+      this.checkedNode = list.map((i) => i.key)
+    }
     /**
      * 讲数据备份一次并加入selected参数
      */
