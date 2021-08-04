@@ -43,13 +43,14 @@ export default {
       echartsInstance.setOption(option)
     },
     initRelationshipMapOption() {
-      // console.log(this.ruleData)
+      console.log(this.ruleData)
       const seriesData = []
+      let allNames = []
 
       // push 调度规则对象
+      const name = this.ruleData.name
       seriesData.push({
-        value: this.ruleData.name,
-        id: this.randomKey(),
+        name,
         symbolSize: 80,
         itemStyle: {
           normal: {
@@ -57,146 +58,184 @@ export default {
           }
         }
       })
+      allNames = allNames.concat(name)
 
       const controlObjects = []
       const requirements = []
       const conditions = []
       const methods = []
       this.ruleData.schemes.forEach((item, index) => {
+        controlObjects.push(item.controlObject)
         // push 防洪对象
-        seriesData.push({
-          value: item.controlObject,
-          id: `controlObject-${index}-${this.randomKey()}`,
-          symbolSize: 65,
-          itemStyle: {
-            normal: {
-              color: '#ED7D31'
+        if (!allNames.includes(item.controlObject)) {
+          seriesData.push({
+            name: item.controlObject,
+            symbolSize: 65,
+            itemStyle: {
+              normal: {
+                color: '#ED7D31'
+              }
             }
-          }
-        })
-        controlObjects.push(lodash.cloneDeep(seriesData).pop())
+          })
+          allNames = allNames.concat(controlObjects)
+        }
 
-        // push requirement代表站
-        item.requirements.forEach((element, idx) => {
-          element.forEach((val, key) => {
-            seriesData.push({
-              value: val.referName,
-              id: `requirement-${index}-${idx}-${key}-${this.randomKey()}`,
-              symbolSize: 50,
-              itemStyle: {
-                normal: {
-                  color: '#4472C4'
+        requirements.push([])
+        item.requirements.forEach(element => {
+          element.forEach(val => {
+            requirements[index].push(val.referName)
+            // push 启动时机(requirements)
+            if (!allNames.includes(val.referName)) {
+              seriesData.push({
+                name: val.referName,
+                symbolSize: 50,
+                itemStyle: {
+                  normal: {
+                    color: '#4472C4'
+                  }
                 }
-              }
-            })
-            requirements.push(lodash.cloneDeep(seriesData).pop())
+              })
+              allNames = lodash.union(allNames.concat(...requirements))
+            }
           })
         })
 
-        // push conditions代表站
-        item.operations.forEach((element, idx) => {
-          element.conditions.forEach((val, key) => {
-            seriesData.push({
-              value: val.referName,
-              id: `condition-${index}-${idx}-${key}-${this.randomKey()}`,
-              symbolSize: 50,
-              itemStyle: {
-                normal: {
-                  color: '#4472C4'
+        conditions.push([])
+        methods.push([])
+        item.operations.forEach((element, key) => {
+          conditions[index].push([])
+          methods[index].push([])
+          element.conditions.forEach(val => {
+            conditions[index][key].push(val.referName)
+            // push 启动时机(conditions)
+            if (!allNames.includes(val.referName)) {
+              seriesData.push({
+                name: val.referName,
+                symbolSize: 50,
+                itemStyle: {
+                  normal: {
+                    color: '#4472C4'
+                  }
                 }
-              }
-            })
-            conditions.push(lodash.cloneDeep(seriesData).pop())
+              })
+              allNames = lodash.union(allNames.concat(...lodash.flatten(conditions)))
+            }
           })
 
-          // push 调度方式
-          element.methods.forEach((val, key) => {
+          element.methods.forEach(val => {
             const methodName =
                 `${val.name}控制${val.targetName}${val.controlVariable}不超过${val.controlValue}${this.unitLib[val.controlVariable]}`
-            seriesData.push({
-              value: methodName,
-              id: `method-${index}-${idx}-${key}-${this.randomKey()}`,
-              symbolSize: 30,
-              itemStyle: {
-                normal: {
-                  color: '#70AD47'
+            methods[index][key].push(methodName)
+            // push 调度方式(methods)
+            if (!allNames.includes(methodName)) {
+              seriesData.push({
+                name: methodName,
+                symbolSize: 30,
+                itemStyle: {
+                  normal: {
+                    color: '#70AD47'
+                  }
                 }
-              }
-            })
-            methods.push(lodash.cloneDeep(seriesData).pop())
+              })
+              allNames = lodash.union(allNames.concat(...lodash.flatten(methods)))
+            }
           })
         })
       })
 
+
+      let seriesLinks = []
       // console.log(seriesData)
+      // console.log(name)
       // console.log(controlObjects)
       // console.log(requirements)
       // console.log(conditions)
       // console.log(methods)
-
-      const seriesLinks = []
-
-      // push 防洪对象
+      // console.log(allNames)
+      // push name -> controlObjects
       controlObjects.forEach(item => {
         seriesLinks.push({
-          source: seriesData[0].id,
-          target: item.id,
-          name: '防洪对象'
+          source: name,
+          target: item,
+          value: '防洪对象',
+          id: this.randomKey()
         })
       })
 
-      // push 代表站
-      controlObjects.forEach(item => {
-        requirements.forEach(el => {
-          if (item.id.split('-')[1] === el.id.split('-')[1]) {
+      // push controlObjects -> requirements
+      controlObjects.forEach((item, index) => {
+        requirements[index].forEach(val => {
+          if (val !== name) {
             seriesLinks.push({
-              source: item.id,
-              target: el.id,
-              name: '代表站'
+              source: item,
+              target: val,
+              value: '启动时机',
+              id: this.randomKey()
             })
           }
         })
       })
 
       // push requirements -> methods
-      requirements.forEach(item => {
-        methods.forEach(el => {
-          if (item.id.split('-')[1] === el.id.split('-')[1]) {
-            // console.log(item, el)
-            const item1 = +item.id.split('-')[1]
-            const item2 = +item.id.split('-')[2]
-            const item3 = +item.id.split('-')[3]
-            const temp = this.ruleData.schemes[item1].requirements[item2][item3]
-            // console.log(temp)
-            seriesLinks.push({
-              source: item.id,
-              target: el.id,
-              name: this.tempName(temp)
+      requirements.forEach((item, index) => {
+        item.forEach((el, idx) => {
+          methods[index].forEach(val => {
+            val.forEach(m => {
+              // index 第几个目标对象 idx 第几个启动时机
+              const temp = lodash.flattenDeep(this.ruleData.schemes[index].requirements)[idx]
+              seriesLinks.push({
+                source: el,
+                target: m,
+                value: this.tempName(temp),
+                id: this.randomKey()
+              })
             })
-          }
+          })
         })
       })
 
       // push conditions -> methods
-      conditions.forEach(item => {
-        methods.forEach(el => {
-          if (item.id.split('-')[1] === el.id.split('-')[1]) {
-            if (item.id.split('-')[2] === el.id.split('-')[2]) {
-              // console.log(item, el)
-              const item1 = +item.id.split('-')[1]
-              const item2 = +item.id.split('-')[2]
-              const item3 = +item.id.split('-')[3]
-              const temp = this.ruleData.schemes[item1].operations[item2].conditions[item3]
-              // console.log(temp)
+      conditions.forEach((item, index) => {
+        item.forEach((el, idx) => {
+          el.forEach((val, key) => {
+            // index 第几个目标对象 idx 第几个调度方式 key 调度方式项
+            methods[index][idx].forEach(m => {
+              const temp = this.ruleData.schemes[index].operations[idx].conditions[key]
+              // console.log(methods[index][idx], key)
               seriesLinks.push({
-                source: item.id,
-                target: el.id,
-                name: this.tempName(temp)
+                source: val,
+                target: m,
+                value: this.tempName(temp),
+                id: this.randomKey()
               })
-            }
-          }
+            })
+          })
         })
       })
+
+
+      // 相同站点多根线增加弧度
+      const tempSeriesLinks = []
+      this.sortClass(seriesLinks, 'source').forEach(item => {
+        tempSeriesLinks.push(this.sortClass(item, 'target'))
+      })
+      tempSeriesLinks.forEach(item => {
+        item.forEach(el => {
+          if (el.length > 1) {
+            el.forEach((val, key) => {
+              if (key > 0) {
+                // console.log(val)
+                val.lineStyle = {
+                  curveness: 0.1 * key
+                }
+              }
+            })
+          }
+
+        })
+      })
+      seriesLinks = lodash.flattenDeep(tempSeriesLinks)
+      // console.log(seriesLinks)
 
       let option = {
         title: {
@@ -212,13 +251,23 @@ export default {
           edgeLabel: {
             normal: {
               show: true,
-              formatter: (x) => x.data.name
+              formatter: (x) => x.data.value
+            },
+            emphasis: {
+              color: 'red'
             }
           },
           label: {
             normal: {
               show: true,
-              formatter: params => params.data.value
+              // formatter: params => params.data.value
+            }
+          },
+          legendHoverLink : true,//是否启用图例 hover(悬停) 时的联动高亮。
+          hoverAnimation : true,//是否开启鼠标悬停节点的显示动画
+          lineStyle: {
+            emphasis: {
+              color: 'red'
             }
           },
           data: seriesData,
@@ -255,6 +304,22 @@ export default {
           return `预报${temp.predictTime}小时后水位大于${temp.threshold[0]}且小于${temp.threshold[1]}m`
         }
       }
+    },
+    sortClass(sortData, type){
+      const groupBy = (array, f) => {
+        let groups = {}
+        array.forEach((o) => {
+          let group = JSON.stringify(f(o))
+          groups[group] = groups[group] || []
+          groups[group].push(o)
+        })
+        return Object.keys(groups).map((group) => {
+          return groups[group]
+        })
+      }
+      return groupBy(sortData, (item) => {
+        return item[type] // 返回需要分组的对象
+      })
     }
   }
 }

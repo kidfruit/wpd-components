@@ -8,7 +8,6 @@
         :tableColumns="tableColumns"
         :setting="setting"
         :tableData="data"
-        :checkedTreeData="checkedTreeData"
         @checkedKeys="checkedKeys"
         @cellEditDone="cellEditDone"
       />
@@ -17,6 +16,7 @@
     <button @click="renderTable">刷新表格</button>
     <button @click="highlightRow('13')">高亮</button>
      <button @click="highlightRow('103039')">高亮2</button>
+    <button @click="changeCheckedTreeData">changeCheckedTreeData</button>
     <!-- <button @click="fetchData">获取数据123</button> -->
   </div>
 </template>
@@ -139,6 +139,9 @@ export default {
     },
     renderTable() {
       this.$refs['treeTableGroup'].render()
+    },
+    changeCheckedTreeData() {
+      this.$refs.treeTableGroup.changeCheckedTreeData(this.checkedTreeData)
     }
   }
 };

@@ -77,12 +77,6 @@ export default {
       default() {
         return undefined
       },
-    },
-    checkedTreeData: {
-      type: Array,
-      default() {
-        return []
-      }
     }
   },
   data() {
@@ -99,11 +93,7 @@ export default {
     let list = []
     treeToList(this.treeData, list)
     // console.log(list)
-    if (this.checkedTreeData) {
-      this.checkedNode = this.checkedTreeData
-    } else {
-      this.checkedNode = list.map((i) => i.key)
-    }
+    this.checkedNode = list.map((i) => i.key)
     /**
      * 讲数据备份一次并加入selected参数
      */
@@ -253,6 +243,9 @@ export default {
       //刷新table
       this.$refs['tableRef'].render()
     },
+    changeCheckedTreeData(val) {
+      this.checkedNode = val
+    }
   },
   watch: {
     checkedNode: {
