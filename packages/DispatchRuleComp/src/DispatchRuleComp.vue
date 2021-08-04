@@ -385,6 +385,11 @@ export default {
     currentId: {
       handler(value) {
         this.filterData(value)
+        // console.log(this.currentRuleData)
+        this.$nextTick(() => {
+          this.$refs.DispatchRuleRelationshipMap
+          && this.$refs.DispatchRuleRelationshipMap.setRelationshipMapOption()
+        })
       },
       immediate: true
     }
@@ -431,6 +436,8 @@ export default {
     resetData() {
       //console.log(this.schemeDataCopy)
       this.schemeData = JSON.parse(JSON.stringify(this.schemeDataCopy))
+      this.currentRuleData.schemes = this.schemeData
+      // console.log(this.currentRuleData)
     },
     getData() {
       this.$emit('getData', this.schemeData)

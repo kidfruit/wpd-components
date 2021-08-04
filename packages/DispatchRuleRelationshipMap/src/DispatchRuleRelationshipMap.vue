@@ -205,27 +205,10 @@ export default {
         },
         series: [{
           type: 'graph',
-          layout: 'force',
+          layout: 'circular',
           roam: true,
           edgeSymbol: ['circle', 'arrow'],
           edgeSymbolSize: [4, 10],
-          force: {
-            repulsion: 2500,
-            edgeLength: [10, 500]
-          },
-          draggable: true,
-          itemStyle: {
-            normal: {
-              color: '#4b565b'
-            }
-          },
-          lineStyle: {
-            normal: {
-              width: 2,
-              color: '#4b565b'
-
-            }
-          },
           edgeLabel: {
             normal: {
               show: true,
