@@ -176,19 +176,32 @@ export default {
         })
       })
 
-      // push requirements -> methods
+      // push requirements -> methods (需判断与conditions的关系)
       requirements.forEach((item, index) => {
         item.forEach((el, idx) => {
-          methods[index].forEach(val => {
+          methods[index].forEach((val, key) => {
             val.forEach(m => {
+              // console.log(el, idx, val, key, m)
               // index 第几个目标对象 idx 第几个启动时机
-              const temp = lodash.flattenDeep(this.ruleData.schemes[index].requirements)[idx]
-              seriesLinks.push({
-                source: el,
-                target: m,
-                value: this.tempName(temp),
-                id: this.randomKey()
+              const tempConditions = this.ruleData.schemes[index].operations[key].conditions
+              const tempRequirements = lodash.flattenDeep(this.ruleData.schemes[index].requirements)[idx]
+              let temp = true
+              tempConditions.forEach(j => {
+                if (j.referName === el && j.referVariable === tempRequirements.referVariable) {
+                  // console.log(123, j, tempRequirements, tempConditions)
+                  if (j.threshold[0] !== tempRequirements.threshold[0] || j.threshold[1] !== tempRequirements.threshold[1]) {
+                    temp = false
+                  }
+                }
               })
+              if (temp) {
+                seriesLinks.push({
+                  source: el,
+                  target: m,
+                  value: this.tempName(tempRequirements),
+                  id: this.randomKey()
+                })
+              }
             })
           })
         })
@@ -254,7 +267,9 @@ export default {
               formatter: (x) => x.data.value
             },
             emphasis: {
-              color: 'red'
+              color: 'red',
+              opacity: 1,
+              fontWeight: 700
             }
           },
           label: {
@@ -263,11 +278,13 @@ export default {
               // formatter: params => params.data.value
             }
           },
-          legendHoverLink : true,//是否启用图例 hover(悬停) 时的联动高亮。
-          hoverAnimation : true,//是否开启鼠标悬停节点的显示动画
+          legendHoverLink: true,//是否启用图例 hover(悬停) 时的联动高亮。
+          hoverAnimation: true,//是否开启鼠标悬停节点的显示动画
           lineStyle: {
             emphasis: {
-              color: 'red'
+              color: 'red',
+              opacity: 1,
+              width: 2
             }
           },
           data: seriesData,

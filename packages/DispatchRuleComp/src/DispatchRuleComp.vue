@@ -10,13 +10,14 @@
       :key="schemeInfo.controlObject + i"
     >
       <div class="scheme-card-title">
-        目标对象：
+        对
         <a-popover trigger="click" v-if="editable">
           <a-tag color="blue" @click="showInputPopoverCallback(schemeInfo.controlObject)">{{ schemeInfo.controlObject }}</a-tag>
           <a-input slot="content" v-model="updateValue" />
           <a slot="content" @click="updateData('controlObject', '', '', i)">确认</a>
         </a-popover>
         <a-tag color="blue" v-else>{{ schemeInfo.controlObject }}</a-tag>
+        防洪
       </div>
       <div class="scheme-requirement">
         <div>启动时机</div>
