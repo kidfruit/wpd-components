@@ -85,25 +85,9 @@ export default {
       defaultTableData: []
     }
   },
-
-  created() {
-    /**
-     * 初始化进来先选中所有 treeNode
-     */
-    let list = []
-    treeToList(this.treeData, list)
-    // console.log(list)
-    this.checkedNode = list.map((i) => i.key)
-    /**
-     * 讲数据备份一次并加入selected参数
-     */
-    this.defaultTableData = JSON.parse(JSON.stringify(this.tableData)).map(
-      (i) => ({
-        ...i,
-        selected: true,
-      })
-    )
-  },
+  // created() {
+  //   this.initDefaultData()
+  // },
   computed: {
     classNames() {
       return ['tree-table-group'].concat(this.classes)
@@ -113,6 +97,24 @@ export default {
     },
   },
   methods: {
+    initDefaultData() {
+      /**
+       * 初始化进来先选中所有 treeNode
+       */
+      let list = []
+      treeToList(this.treeData, list)
+      // console.log(list)
+      this.checkedNode = list.map((i) => i.key)
+      /**
+       * 讲数据备份一次并加入selected参数
+       */
+      this.defaultTableData = JSON.parse(JSON.stringify(this.tableData)).map(
+          (i) => ({
+            ...i,
+            selected: true,
+          })
+      )
+    },
     _cellEditDone(value) {
       const { field, newValue, oldValue, rowIndex } = value
       const m_tableData = this.defaultTableData.filter((i) => i.selected)
@@ -258,6 +260,13 @@ export default {
         })
       },
     },
+    tableData: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.initDefaultData()
+      },
+    }
   },
 }
 </script>
