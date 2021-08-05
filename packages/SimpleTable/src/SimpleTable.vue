@@ -496,13 +496,13 @@ export default {
     },
     moveUp() {
       let selectedRange = this.hotInstance.getSelectedRange()
-      let selectedArray = []
-      let firstRow = selectedRange[0].from.row
-      let endRow = selectedRange[0].to.row
-      if (selectedRange && firstRow === -1) {
-        firstRow = 0
-      }
       if (selectedRange && selectedRange.length > 0) {
+        let selectedArray = []
+        let firstRow = selectedRange[0].from.row
+        let endRow = selectedRange[0].to.row
+        if (selectedRange && firstRow === -1) {
+          firstRow = 0
+        }
         // selected框
         if (firstRow < endRow) {
           if (firstRow === 0) {
@@ -538,11 +538,11 @@ export default {
     },
     moveDown() {
       let selectedRange = this.hotInstance.getSelectedRange()
-      let selectedArray = []
-      let firstRow = selectedRange[0].from.row
-      let endRow = selectedRange[0].to.row
-      const rowLength = this.hotInstance.getData().length
       if (selectedRange && selectedRange.length > 0) {
+        let selectedArray = []
+        let firstRow = selectedRange[0].from.row
+        let endRow = selectedRange[0].to.row
+        const rowLength = this.hotInstance.getData().length
         if (firstRow < endRow) {
           if (endRow === rowLength - 1) {
             return
