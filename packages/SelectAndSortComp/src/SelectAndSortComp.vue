@@ -19,7 +19,7 @@
               :key="item.id"
               :id="item.id"
               :defaultChecked="item.check"
-              @change="onCheckChange"
+              @change="onCheckChange($event,group.groupName)"
             >
               {{item.name}}
             </a-checkbox>
@@ -131,8 +131,8 @@ export default {
       this.sortTableData = []
       this.initSortTableData()
     },
-    onCheckChange(e) {
-      console.log(e)
+    onCheckChange(e,groupName) {
+      //console.log(e,groupName)
       this.checkData.forEach(group => {
         group.data.forEach(item => {
           if (item.id === e.target.id) {
@@ -142,6 +142,9 @@ export default {
       })
       this.sortTableData = []
       this.initSortTableData()
+      setTimeout(() => {
+        this.moveUp(groupName)
+      },0)
     },
     moveUp(e) {
       this.currentGroupName = e
