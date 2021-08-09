@@ -136,6 +136,7 @@ export default {
     },
     highlightRow(value) {
       this.$refs['treeTableGroup'].highlightRow(value)
+      // this.data.pop()
     },
     renderTable() {
       this.$refs['treeTableGroup'].render()

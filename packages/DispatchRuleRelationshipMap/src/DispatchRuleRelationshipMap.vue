@@ -261,6 +261,9 @@ export default {
           roam: true,
           edgeSymbol: ['circle', 'arrow'],
           edgeSymbolSize: [4, 10],
+          emphasis: {
+            focus: 'adjacency'
+          },
           edgeLabel: {
             normal: {
               show: true,
