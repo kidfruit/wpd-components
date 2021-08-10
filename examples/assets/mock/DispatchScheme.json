@@ -227,5 +227,456 @@
         ]
       }
     ]
+  },
+  {
+    "name": "溪洛渡",
+    "stcd": "60103165",
+    "schemes": [
+      {
+        "controlObject": "长江中下游",
+        "requirements": [
+          [
+            [
+              {
+                "referId": "60107400",
+                "referName": "枝城(60107400)",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  56700,
+                  999999
+                ]
+              }
+            ],
+            [
+              {
+                "referId": "60106980",
+                "referName": "三峡(60106980)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  158,
+                  175
+                ]
+              }
+            ],
+            [
+              {
+                "referId": "60103165",
+                "referName": "溪洛渡(60103165)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  560,
+                  573.1
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              {
+                "referId": "60107400",
+                "referName": "枝城(60107400)",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  56700,
+                  999999
+                ]
+              }
+            ],
+            [
+              {
+                "referId": "60106980",
+                "referName": "三峡(60106980)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  158,
+                  175
+                ]
+              }
+            ],
+            [
+              {
+                "referId": "60103165",
+                "referName": "溪洛渡(60103165)",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  28000,
+                  999999
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              {
+                "referId": "60107400",
+                "referName": "枝城(60107400)",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  56700,
+                  999999
+                ]
+              }
+            ],
+            [
+              {
+                "referId": "60106980",
+                "referName": "三峡(60106980)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  158,
+                  175
+                ]
+              }
+            ],
+            [
+              {
+                "referId": "60103385",
+                "referName": "向家坝(60103385)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  378,
+                  9999
+                ]
+              }
+            ]
+          ]
+        ],
+        "operations": [
+          {
+            "conditions": [
+              {
+                "referId": "60106980",
+                "referName": "三峡(60106980)",
+                "predictTime": 48,
+                "referVariable": "流量",
+                "threshold": [
+                  0,
+                  55000
+                ]
+              },
+              {
+                "referId": "60103165",
+                "referName": "溪洛渡(60103165)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  560,
+                  588.3051
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "控蓄",
+                "targetName": "溪洛渡(60103165)",
+                "targetId": "60103165",
+                "controlVariable": "流量",
+                "controlValue": 2000
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "referId": "60106980",
+                "referName": "三峡(60106980)",
+                "predictTime": 48,
+                "referVariable": "流量",
+                "threshold": [
+                  55000,
+                  60000
+                ]
+              },
+              {
+                "referId": "60103165",
+                "referName": "溪洛渡(60103165)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  560,
+                  588.3051
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "控蓄",
+                "targetName": "溪洛渡(60103165)",
+                "targetId": "60103165",
+                "controlVariable": "流量",
+                "controlValue": 4000
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "referId": "60106980",
+                "referName": "三峡(60106980)",
+                "predictTime": 48,
+                "referVariable": "流量",
+                "threshold": [
+                  60000,
+                  70000
+                ]
+              },
+              {
+                "referId": "60103165",
+                "referName": "溪洛渡(60103165)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  560,
+                  588.3051
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "控蓄",
+                "targetName": "溪洛渡(60103165)",
+                "targetId": "60103165",
+                "controlVariable": "流量",
+                "controlValue": 6000
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "referId": "60106980",
+                "referName": "三峡(60106980)",
+                "predictTime": 48,
+                "referVariable": "流量",
+                "threshold": [
+                  70000,
+                  999999
+                ]
+              },
+              {
+                "referId": "60103165",
+                "referName": "溪洛渡(60103165)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  560,
+                  588.3051
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "控蓄",
+                "targetName": "溪洛渡(60103165)",
+                "targetId": "60103165",
+                "controlVariable": "流量",
+                "controlValue": 10000
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "controlObject": "宜宾",
+        "requirements": [
+          [
+            {
+              "referId": "60104100",
+              "referName": "李庄(60104100)",
+              "predictTime": 0,
+              "referVariable": "流量",
+              "threshold": [
+                25000,
+                99999
+              ]
+            }
+          ]
+        ],
+        "operations": [
+          {
+            "conditions": [
+              {
+                "referId": "60103165",
+                "referName": "溪洛渡(60103165)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  0,
+                  573.1
+                ]
+              },
+              {
+                "referId": "60104100",
+                "referName": "李庄(60104100)",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  25000,
+                  51000
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "控蓄",
+                "targetName": "溪洛渡(60103165)",
+                "targetId": "60103165",
+                "controlVariable": "流量",
+                "controlValue": 25000
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "referId": "60103165",
+                "referName": "溪洛渡(60103165)",
+                "predictTime": 0,
+                "referVariable": "水位",
+                "threshold": [
+                  573.1,
+                  600
+                ]
+              },
+              {
+                "referId": "60104100",
+                "referName": "李庄(60104100)",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  25000,
+                  51000
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "控蓄",
+                "targetName": "溪洛渡(60103165)",
+                "targetId": "60103165",
+                "controlVariable": "流量",
+                "controlValue": 0
+              }
+            ]
+          },
+          {
+            "conditions": [
+              {
+                "referId": "60104100",
+                "referName": "李庄(60104100)",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  51000,
+                  999999
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "补偿",
+                "targetName": "李庄(60104100)",
+                "targetId": "60104100",
+                "controlVariable": "流量",
+                "controlValue": 51000
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "controlObject": "泸州",
+        "requirements": [
+          [
+            {
+              "referId": "60104800",
+              "referName": "朱沱(60104800)",
+              "predictTime": 0,
+              "referVariable": "流量",
+              "threshold": [
+                52600,
+                999999
+              ]
+            }
+          ]
+        ],
+        "operations": [
+          {
+            "conditions": [
+              {
+                "referId": "60104800",
+                "referName": "朱沱(60104800)",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  52600,
+                  999999
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "补偿",
+                "targetName": "朱沱(60104800)",
+                "targetId": "60104800",
+                "controlVariable": "流量",
+                "controlValue": 52600
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "controlObject": "重庆",
+        "requirements": [
+          [
+            {
+              "referId": "60105400",
+              "referName": "寸滩(60105400)",
+              "predictTime": 0,
+              "referVariable": "流量",
+              "threshold": [
+                83100,
+                999999
+              ]
+            }
+          ]
+        ],
+        "operations": [
+          {
+            "conditions": [
+              {
+                "referId": "60105400",
+                "referName": "寸滩(60105400)",
+                "predictTime": 0,
+                "referVariable": "流量",
+                "threshold": [
+                  83100,
+                  999999
+                ]
+              }
+            ],
+            "methods": [
+              {
+                "name": "补偿",
+                "targetName": "寸滩(60105400)",
+                "targetId": "60105400",
+                "controlVariable": "流量",
+                "controlValue": 83100
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
