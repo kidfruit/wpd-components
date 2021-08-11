@@ -351,7 +351,7 @@ export default {
   height: 100%;
   #dispatch-rule-relationship-map {
     width: 100%;
-    height: 800px;
+    height: 100%;
   }
 }
 </style>
