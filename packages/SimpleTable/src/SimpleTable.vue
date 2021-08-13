@@ -130,9 +130,15 @@ export default {
   },
   mounted() {
     this.getHotInstance()
+    this.$nextTick(() => {
+      this.changeSingleDropdown()
+    })
   },
   updated() {
     this.getHotInstance()
+    this.$nextTick(() => {
+      this.changeSingleDropdown()
+    })
   },
   data() {
     return {
@@ -317,6 +323,63 @@ export default {
         }
         return item
       })
+      this.hotData.forEach((item, index) => {
+        if (item.dropdown) {
+          this.tableColumns.forEach((key, val) => {
+            if (item.dropdown.id === key.field) {
+              // index 行  val 列
+              // console.log(item.dropdown.value)
+              // console.log(index, val)
+              key.renderer = (instance, td, row, col, prop, value, cellProperties) => {
+                // console.log(index, val, row, col)
+                if (row === index && col === val) {
+                  // console.log(td, row, col)
+                  const select = document.createElement('select')
+                  // console.log(select)
+                  select.classList.add('single-dropdown')
+                  if (td.childNodes.length === 0) {
+                    td.appendChild(select)
+                    item.dropdown.value.forEach(el => {
+                      // console.log(el)
+                      // console.log(item)
+                      const option = document.createElement('option')
+                      option.value = el.id
+                      option.innerHTML = el.name
+                      if (item[key.field] === el.id) {
+                        option.selected = true
+                      }
+                      // console.log(option)
+                      select.appendChild(option)
+                      // td.childNodes.append(option)
+                    })
+                  }
+                } else {
+                  td.innerHTML = value
+                }
+              }
+            }
+          })
+        }
+      })
+      // console.log(this.hotData)
+    },
+    changeSingleDropdown() {
+      let singleDropdownDom = document.querySelector('.single-dropdown')
+      if (singleDropdownDom) {
+        singleDropdownDom.addEventListener('change', (e) => {
+          let selected = this.hotInstance.getSelected()[0]
+          let field = this.tableColumns[selected[1]].field
+          let oldValue = this.hotData[selected[0]][field]
+          this.hotData[selected[0]][field] = e.target.value
+          this.$emit('cellEditDone', {
+            rowIndex: selected[0],
+            field,
+            newValue: e.target.value,
+            oldValue
+          })
+          // console.log(this.hotData)
+        })
+      }
     },
     afterChange(changes, source) {
       if (changes == null) {
@@ -593,13 +656,15 @@ export default {
     },
     handleInterpolationCallback() {
       let selectedRange = this.hotInstance.getSelectedRange()
-      if (selectedRange[0].from.row === -1) {
-        selectedRange[0].from.row = 0
+      let firstRow = selectedRange[0].from.row
+      let endRow = selectedRange[0].to.row
+      if (firstRow === -1) {
+        firstRow = 0
       }
       const field = this.columns[selectedRange[0].from.col].field
-      const firstData = +this.hotData[selectedRange[0].from.row][field]
-      const endData = +this.hotData[selectedRange[0].to.row][field]
-      const selectedMidRows = Math.abs(selectedRange[0].to.row - selectedRange[0].from.row)
+      const firstData = +this.hotData[firstRow][field]
+      const endData = +this.hotData[endRow][field]
+      const selectedMidRows = Math.abs(endRow - firstRow)
       const stepNumber = Math.abs((endData - firstData) / selectedMidRows)
       const currentCol = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
@@ -610,39 +675,71 @@ export default {
           return
         }
         if (
-          typeof this.hotData[selectedRange[0].from.row][field] === 'boolean'
+          typeof this.hotData[firstRow][field] === 'boolean'
         ) {
           return
         }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
           console.log('内插')
-          if (firstData < endData) {
-            for (let i = 0; i < selectedMidRows - 1; i++) {
-              const newValue = +(firstData + stepNumber * (i + 1)).toFixed(2)
-              const oldValue =
-                this.hotData[selectedRange[0].from.row + i + 1][field]
-              const rowIndex = selectedRange[0].from.row + i + 1
-              this.$emit('cellEditDone', {
-                rowIndex,
-                field,
-                newValue,
-                oldValue,
-              })
-              this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
+          if (firstRow < endRow) {
+            if (firstData < endData) {
+              for (let i = 0; i < selectedMidRows - 1; i++) {
+                const newValue = +(firstData + stepNumber * (i + 1)).toFixed(2)
+                const oldValue =
+                    this.hotData[firstRow + i + 1][field]
+                const rowIndex = firstRow + i + 1
+                this.$emit('cellEditDone', {
+                  rowIndex,
+                  field,
+                  newValue,
+                  oldValue,
+                })
+                this.hotData[firstRow + i + 1][field] = newValue
+              }
+            } else {
+              for (let i = 0; i < selectedMidRows - 1; i++) {
+                const newValue = +(firstData - stepNumber * (i + 1)).toFixed(2)
+                const oldValue =
+                    this.hotData[firstRow + i + 1][field]
+                const rowIndex = firstRow + i + 1
+                this.$emit('cellEditDone', {
+                  rowIndex,
+                  field,
+                  newValue,
+                  oldValue,
+                })
+                this.hotData[firstRow + i + 1][field] = newValue
+              }
             }
           } else {
-            for (let i = 0; i < selectedMidRows - 1; i++) {
-              const newValue = +(firstData - stepNumber * (i + 1)).toFixed(2)
-              const oldValue =
-                this.hotData[selectedRange[0].from.row - i - 1][field]
-              const rowIndex = selectedRange[0].from.row - i - 1
-              this.$emit('cellEditDone', {
-                rowIndex,
-                field,
-                newValue,
-                oldValue,
-              })
-              this.hotData[selectedRange[0].from.row - i - 1][field] = newValue
+            if (firstData < endData) {
+              for (let i = 0; i < selectedMidRows - 1; i++) {
+                const newValue = +(firstData + stepNumber * (i + 1)).toFixed(2)
+                const oldValue =
+                    this.hotData[firstRow - i - 1][field]
+                const rowIndex = firstRow - i - 1
+                this.$emit('cellEditDone', {
+                  rowIndex,
+                  field,
+                  newValue,
+                  oldValue,
+                })
+                this.hotData[firstRow - i - 1][field] = newValue
+              }
+            } else {
+              for (let i = 0; i < selectedMidRows - 1; i++) {
+                const newValue = +(firstData - stepNumber * (i + 1)).toFixed(2)
+                const oldValue =
+                    this.hotData[firstRow - i - 1][field]
+                const rowIndex = firstRow - i - 1
+                this.$emit('cellEditDone', {
+                  rowIndex,
+                  field,
+                  newValue,
+                  oldValue,
+                })
+                this.hotData[firstRow - i - 1][field] = newValue
+              }
             }
           }
           this.hotTableRandomKey =
@@ -888,6 +985,14 @@ export default {
     &.preheat-rows {
       background-color: rgba(204, 204, 204, 0.45);
     }
+  }
+  .single-dropdown {
+    width: 100%;
+    border: none;
+    text-align-last: center;
+  }
+  .single-dropdown:focus-visible {
+    outline: none;
   }
 }
 </style>
