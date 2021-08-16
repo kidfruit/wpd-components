@@ -20,6 +20,7 @@
       :settings="hotSettings"
       :data="hotData"
       :after-change="afterChange"
+      :id="`hot-table-${hotTableRandomKey}`"
       :key="hotTableRandomKey"
     >
       <hot-column
@@ -131,12 +132,14 @@ export default {
   mounted() {
     this.getHotInstance()
     this.$nextTick(() => {
+      this.initSingleDropdownHtml()
       this.changeSingleDropdown()
     })
   },
   updated() {
     this.getHotInstance()
     this.$nextTick(() => {
+      this.initSingleDropdownHtml()
       this.changeSingleDropdown()
     })
   },
@@ -323,63 +326,61 @@ export default {
         }
         return item
       })
+    },
+    initSingleDropdownHtml() {
+      let singleDropdownArr = []
       this.hotData.forEach((item, index) => {
         if (item.dropdown) {
-          this.tableColumns.forEach((key, val) => {
-            if (item.dropdown.id === key.field) {
-              // index 行  val 列
-              // console.log(item.dropdown.value)
-              // console.log(index, val)
-              key.renderer = (instance, td, row, col, prop, value, cellProperties) => {
-                // console.log(index, val, row, col)
-                if (row === index && col === val) {
-                  // console.log(td, row, col)
-                  const select = document.createElement('select')
-                  // console.log(select)
-                  select.classList.add('single-dropdown')
-                  if (td.childNodes.length === 0) {
-                    td.appendChild(select)
-                    item.dropdown.value.forEach(el => {
-                      // console.log(el)
-                      // console.log(item)
-                      const option = document.createElement('option')
-                      option.value = el.id
-                      option.innerHTML = el.name
-                      if (item[key.field] === el.id) {
-                        option.selected = true
-                      }
-                      // console.log(option)
-                      select.appendChild(option)
-                      // td.childNodes.append(option)
-                    })
-                  }
-                } else {
-                  td.innerHTML = value
-                }
-              }
+          this.tableColumns.forEach((value, key) => {
+            if (item.dropdown.id === value.field) {
+              singleDropdownArr.push([index, key])
             }
           })
         }
       })
-      // console.log(this.hotData)
+      singleDropdownArr.forEach(item => {
+        const simpleTableDom = document.querySelector(`#hot-table-${this.hotTableRandomKey} .htCore tbody`)
+        if (simpleTableDom) {
+          const singleDropdownDom = simpleTableDom.childNodes[item[0]].lastChild
+          singleDropdownDom.removeAttribute('class')
+          singleDropdownDom.innerHTML = null
+          const select = document.createElement('select')
+          select.classList.add('single-dropdown')
+          singleDropdownDom.appendChild(select)
+          const field = this.hotData[item[0]].dropdown.id
+          // console.log(this.hotData[item[0]].dropdown.value)
+          this.hotData[item[0]].dropdown.value.forEach(el => {
+            const option = document.createElement('option')
+            option.value = el.id
+            option.innerHTML = el.name
+            if (el.id === this.hotData[item[0]][field]) {
+              option.selected = true
+            }
+            select.appendChild(option)
+          })
+        }
+      })
     },
     changeSingleDropdown() {
-      let singleDropdownDom = document.querySelector('.single-dropdown')
-      if (singleDropdownDom) {
-        singleDropdownDom.addEventListener('change', (e) => {
-          let selected = this.hotInstance.getSelected()[0]
-          let field = this.tableColumns[selected[1]].field
-          let oldValue = this.hotData[selected[0]][field]
-          this.hotData[selected[0]][field] = e.target.value
-          this.$emit('cellEditDone', {
-            rowIndex: selected[0],
-            field,
-            newValue: e.target.value,
-            oldValue
+      let singleDropdownDom = document.getElementsByClassName('single-dropdown')
+      // console.log(singleDropdownDom)
+      singleDropdownDom.forEach(item => {
+        if (item) {
+          item.addEventListener('change', (e) => {
+            let selected = this.hotInstance.getSelected()[0]
+            let field = this.tableColumns[selected[1]].field
+            let oldValue = this.hotData[selected[0]][field]
+            this.hotData[selected[0]][field] = e.target.value
+            this.$emit('cellEditDone', {
+              rowIndex: selected[0],
+              field,
+              newValue: e.target.value,
+              oldValue
+            })
+            // console.log(this.hotData)
           })
-          // console.log(this.hotData)
-        })
-      }
+        }
+      })
     },
     afterChange(changes, source) {
       if (changes == null) {
