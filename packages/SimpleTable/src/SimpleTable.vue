@@ -135,6 +135,7 @@ export default {
       this.initSingleDropdownHtml()
       this.changeSingleDropdown()
     })
+    window.addEventListener('resize', this.updateShow)
   },
   updated() {
     this.getHotInstance()
@@ -142,6 +143,7 @@ export default {
       this.initSingleDropdownHtml()
       this.changeSingleDropdown()
     })
+    window.addEventListener('resize', this.updateShow)
   },
   data() {
     return {

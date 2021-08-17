@@ -16,29 +16,11 @@ const defaultOption = {
   },
   tooltip: {
     trigger: 'axis',
-    formatter(params) {
-      let list = []
-      params.map((i) => {
-        if (
-          !list.find(
-            (j) => i.value === j.value && i.seriesName === j.seriesName
-          )
-        ) {
-          list.push(i)
-        }
-      })
-      return list
-        .map((item) => {
-          if (item.value === null || item.value === '-') return ''
-          else
-            return (
-              item.marker +
-              item.seriesName +
-              `<b style="margin-left:5px;">${item.value}</b>`
-            )
-        })
-        .filter((i) => i)
-        .join('<br />')
+    axisPointer: {
+      type: 'cross',
+      label: {
+        backgroundColor: '#6a7985'
+      }
     },
   },
   grid: {},
