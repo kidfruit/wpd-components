@@ -135,12 +135,12 @@ const yAxisOption = {
     },
   },
   max: function (value) {
-    return value.max + (value.max - value.min) * 0.15
+    return +(value.max + (value.max - value.min) * 0.15).toFixed(2)
   },
   min: function (value) {
-    let minV = value.min - (value.max - value.min) * 0.15
+    let minV = +(value.min - (value.max - value.min) * 0.15).toFixed(2)
     return minV >= 0 ? minV : 0
-  },
+  }
 }
 let echartsInstance = null
 export default {
@@ -374,6 +374,7 @@ export default {
         option.title.x = this.chartOption.title.x
       }
       option.xAxis.name = this.chartAxis.xAxis.title
+      console.log(this.chartAxis.yAxis.title)
       option.yAxis = {
         name: this.chartAxis.yAxis.title,
         type: 'value',
@@ -475,6 +476,7 @@ export default {
         selected: true,
         yAxisIndex: 0,
       })
+      console.log(series)
       let option = Object.assign({}, defaultOption, this.chartOption)
 
       //x轴
