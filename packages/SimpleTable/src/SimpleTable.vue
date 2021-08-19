@@ -169,6 +169,14 @@ export default {
         licenseKey: 'non-commercial-and-evaluation',
         contextMenu: {
           items: {
+            saveFile: {
+              name: '数据下载',
+              callback: () => {
+                this.selectedRange = null
+                this.handleSaveFileCallback()
+              },
+            },
+            separator1: '---------',
             interpolation: {
               name: '内插',
               callback: () => {
@@ -190,14 +198,21 @@ export default {
                 this.handleSameIncreaseDecreaseCallback()
               },
             },
-            separator: '---------',
-            saveFile: {
-              name: '数据下载',
+            separator2: '---------',
+            mergeCells: {
+              name: '合并单元格',
               callback: () => {
                 this.selectedRange = null
-                this.handleSaveFileCallback()
-              },
+                this.handleMergeCellsCallback()
+              }
             },
+            unmergeCells: {
+              name: '拆分单元格',
+              callback: () => {
+                this.selectedRange = null
+                this.handleUnmergeCellsCallback()
+              }
+            }
           },
         },
         language: zhCN.languageCode,
@@ -231,7 +246,14 @@ export default {
       let rowHeaders = false
       // console.log(this.setting.rowHeaders)
       if (this.setting && this.setting.rowHeaders) {
-        rowHeaders = this.setting.rowHeaders
+        rowHeaders = (index) => {
+          let newIndex = index - this.splitIndex
+          if (newIndex < 0) {
+            return null
+          } else {
+            return newIndex
+          }
+        }
       } else {
         rowHeaders = false
       }
@@ -242,7 +264,7 @@ export default {
       for (let i = 0; i < this.splitIndex; i++) {
         hideRows.push(i)
       }
-      this.splitIndex
+      // this.splitIndex
       hiddenRows = this.preheat.show
         ? {}
         : {
@@ -252,9 +274,9 @@ export default {
       //   }
       return Object.assign(
         {},
-        this.defaultHotSettings,
-        { rowHeaders, hiddenRows },
-        this.setting
+      this.defaultHotSettings,
+          this.setting,
+          { rowHeaders, hiddenRows },
       )
     },
     columns() {
@@ -388,7 +410,10 @@ export default {
       if (changes == null) {
         return
       }
-      if (source !== 'loadData') {
+      if (source === 'populateFromArray') {
+        return
+      }
+      if (source === 'edit' || source === 'loadData') {
         // 添加修改触发
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {
@@ -448,7 +473,7 @@ export default {
             }
           }
         })
-        this.updateShow()
+        this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
     },
     processOptionColumn(item, fromV, toV) {
@@ -648,7 +673,7 @@ export default {
     },
     saveFile() {
       this.saveFileModalVisible = false
-      const exportFile = this.$refs.hotTableRef.hotInstance.getPlugin('exportFile')
+      let exportFile = this.hotInstance.getPlugin('exportFile')
       exportFile.downloadFile('csv', {
         filename: this.saveFileInput === '' ? '我的表格' : this.saveFileInput,
         exportHiddenRows: true,
@@ -923,6 +948,38 @@ export default {
         this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
     },
+    handleMergeCellsCallback() {
+      console.log('合并单元格')
+      let mergeCells = this.hotInstance.getPlugin('mergeCells')
+      mergeCells.enablePlugin()
+      // console.log(mergeCells)
+      let selected = this.hotInstance.getSelected()
+      // console.log(selected[0])
+      // console.log(this.hotInstance.getData())
+      if (selected[0][1] !== selected[0][3]) return
+      if (this.tableColumns[selected[0][1]].readOnly) return
+      if (this.tableColumns[selected[0][1]].type !== 'dropdown') return
+      mergeCells.merge(...selected[0])
+      // console.log(mergeCells.mergedCellsCollection.mergedCells)
+      this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
+      this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+    },
+    handleUnmergeCellsCallback() {
+      console.log('拆分单元格')
+      let mergeCells = this.hotInstance.getPlugin('mergeCells')
+      mergeCells.enablePlugin()
+      // console.log(mergeCells)
+      let selected = this.hotInstance.getSelected()
+      // console.log(selected[0])
+      mergeCells.unmerge(...selected[0])
+      this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
+      let funcType = this.hotData[selected[0][0]].funcType
+      // console.log(funcType, this.hotData)
+      for (let i = 0; i < (selected[0][2] - selected[0][0] + 1); i++) {
+        this.hotData[selected[0][0] + i].funcType = funcType
+      }
+      this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+    }
   },
   watch: {
     tableData: {
