@@ -179,6 +179,7 @@ export default {
             separator1: '---------',
             interpolation: {
               name: '内插',
+              hidden: () => this.handleInterpolationScaleSameIncreaseDecreaseHidden(),
               callback: () => {
                 this.selectedRange = null
                 this.handleInterpolationCallback()
@@ -186,6 +187,7 @@ export default {
             },
             scale: {
               name: '倍比缩放',
+              hidden: () => this.handleInterpolationScaleSameIncreaseDecreaseHidden(),
               callback: () => {
                 this.selectedRange = null
                 this.handleScaleCallback()
@@ -193,6 +195,7 @@ export default {
             },
             sameIncreaseDecrease: {
               name: '同增同减',
+              hidden: () => this.handleInterpolationScaleSameIncreaseDecreaseHidden(),
               callback: () => {
                 this.selectedRange = null
                 this.handleSameIncreaseDecreaseCallback()
@@ -201,6 +204,7 @@ export default {
             separator2: '---------',
             mergeCells: {
               name: '合并单元格',
+              hidden: () => this.handleMergeUnmergeCellsHidden(),
               callback: () => {
                 this.selectedRange = null
                 this.handleMergeCellsCallback()
@@ -208,6 +212,7 @@ export default {
             },
             unmergeCells: {
               name: '拆分单元格',
+              hidden: () => this.handleMergeUnmergeCellsHidden(),
               callback: () => {
                 this.selectedRange = null
                 this.handleUnmergeCellsCallback()
@@ -682,6 +687,20 @@ export default {
         rowHeaders: true,
       })
     },
+    handleInterpolationScaleSameIncreaseDecreaseHidden() {
+      let isHidden
+      let selected = this.hotInstance.getSelected()
+      if (selected[0][1] === selected[0][3]){
+        if (!this.tableColumns[selected[0][1]].type) {
+          isHidden = this.tableColumns[selected[0][1]].readOnly;
+        } else {
+          isHidden = true
+        }
+      } else {
+        isHidden = true
+      }
+      return isHidden
+    },
     handleInterpolationCallback() {
       let selectedRange = this.hotInstance.getSelectedRange()
       let firstRow = selectedRange[0].from.row
@@ -694,19 +713,7 @@ export default {
       const endData = +this.hotData[endRow][field]
       const selectedMidRows = Math.abs(endRow - firstRow)
       const stepNumber = Math.abs((endData - firstData) / selectedMidRows)
-      const currentCol = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
-        if (currentCol !== selectedRange[0].to.col) {
-          return
-        }
-        if (this.tableColumns[currentCol].readOnly === true) {
-          return
-        }
-        if (
-          typeof this.hotData[firstRow][field] === 'boolean'
-        ) {
-          return
-        }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
           console.log('内插')
           if (firstRow < endRow) {
@@ -782,19 +789,7 @@ export default {
       }
       const field = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][field]
-      const currentCol = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
-        if (currentCol !== selectedRange[0].to.col) {
-          return
-        }
-        if (this.tableColumns[currentCol].readOnly === true) {
-          return
-        }
-        if (
-          typeof this.hotData[selectedRange[0].from.row][field] === 'boolean'
-        ) {
-          return
-        }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
           console.log('倍比缩放')
           this.scaleModalVisible = true
@@ -849,19 +844,7 @@ export default {
       }
       const field = this.columns[selectedRange[0].from.col].field
       const firstData = +this.hotData[selectedRange[0].from.row][field]
-      const currentCol = selectedRange[0].from.col
       if (selectedRange && selectedRange.length > 0) {
-        if (currentCol !== selectedRange[0].to.col) {
-          return
-        }
-        if (this.tableColumns[currentCol].readOnly === true) {
-          return
-        }
-        if (
-          typeof this.hotData[selectedRange[0].from.row][field] === 'boolean'
-        ) {
-          return
-        }
         if (typeof firstData === 'number' && !isNaN(firstData)) {
           console.log('同增同减')
           this.sameIncreaseDecreaseModalVisible = true
@@ -917,21 +900,11 @@ export default {
       if (selectedRange[0].from.row === -1) {
         selectedRange[0].from.row = 0
       }
-      const currentCol = selectedRange[0].from.col
       const currentRow = selectedRange[0].from.row
       const field = this.columns[selectedRange[0].from.col].field
       const currentData = this.hotData[selectedRange[0].from.row][field]
       const rowLength = this.hotInstance.getData().length
       if (selectedRange && selectedRange.length > 0) {
-        if (currentCol !== selectedRange[0].to.col) {
-          return
-        }
-        if (currentRow !== selectedRange[0].to.row) {
-          return
-        }
-        if (this.tableColumns[currentCol].readOnly === true) {
-          return
-        }
         console.log('afterOnCellCornerDblClick')
         for (let i = 0; i < rowLength - currentRow - 1; i++) {
           const oldValue = this.hotData[selectedRange[0].from.row + i + 1][field]
@@ -947,6 +920,20 @@ export default {
         }
         this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
+    },
+    handleMergeUnmergeCellsHidden() {
+      let isHidden
+      let selected = this.hotInstance.getSelected()
+      if (selected[0][1] === selected[0][3]){
+        if (!this.tableColumns[selected[0][1]].readOnly) {
+          isHidden = this.tableColumns[selected[0][1]].type !== 'dropdown';
+        } else {
+          isHidden = true
+        }
+      } else {
+        isHidden = true
+      }
+      return isHidden
     },
     handleMergeCellsCallback() {
       console.log('合并单元格')
