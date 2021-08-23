@@ -116,7 +116,7 @@ export default {
     },
     splitIndex: {
       type: Number,
-      default: -1,
+      default: 0,
     },
   },
   components: {
@@ -256,7 +256,7 @@ export default {
           if (newIndex < 0) {
             return null
           } else {
-            return newIndex
+            return newIndex + 1
           }
         }
       } else {
