@@ -418,7 +418,7 @@ export default {
       if (source === 'populateFromArray') {
         return
       }
-      if (source === 'edit' || source === 'loadData') {
+      if (source !== 'loadData') {
         // 添加修改触发
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {
