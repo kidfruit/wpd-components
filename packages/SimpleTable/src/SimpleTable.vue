@@ -205,9 +205,8 @@ export default {
             mergeCells: {
               name: '合并单元格',
               hidden: () => this.handleMergeUnmergeCellsHidden(),
-              callback: () => {
-                this.selectedRange = null
-                this.handleMergeCellsCallback()
+              submenu: {
+                items: []
               }
             },
             unmergeCells: {
@@ -241,6 +240,7 @@ export default {
       sameIncreaseDecreaseModalVisible: false,
       sameIncreaseDecreaseInput: '',
       hotTableRandomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      sourceRightLinkIndex: null
     }
   },
   computed: {
@@ -270,18 +270,29 @@ export default {
         hideRows.push(i)
       }
       // this.splitIndex
-      hiddenRows = this.preheat.show
-        ? {}
-        : {
-            rows: hideRows,
-            indicators: false,
-          }
+      hiddenRows = this.preheat.show ? {} : {rows: hideRows, indicators: false,}
       //   }
+      this.initMergeCellSubItems()
+      this.tableColumns.forEach(item => {
+        if (item.sourceRight) {
+          item.sourceRight.forEach(el => {
+            this.defaultHotSettings.contextMenu.items.mergeCells.submenu.items.push({
+              name: el.name,
+              key: `mergeCells:${el.name}`,
+              callback: (val) => {
+                this.selectedRange = null
+                this.handleMergeCellsCallback(val, item)
+              }
+            })
+          })
+        }
+      })
+      // console.log(this.defaultHotSettings)
       return Object.assign(
-        {},
-      this.defaultHotSettings,
+          {},
+          this.defaultHotSettings,
           this.setting,
-          { rowHeaders, hiddenRows },
+          { rowHeaders, hiddenRows }
       )
     },
     columns() {
@@ -309,6 +320,9 @@ export default {
     },
   },
   methods: {
+    initMergeCellSubItems() {
+      this.defaultHotSettings.contextMenu.items.mergeCells.submenu.items = []
+    },
     preheatSwitch() {
       if (this.splitIndex >= 0) {
         this.preheat.show = !this.preheat.show
@@ -416,6 +430,9 @@ export default {
         return
       }
       if (source === 'populateFromArray') {
+        return
+      }
+      if (source === 'MergeCells') {
         return
       }
       if (source !== 'loadData') {
@@ -925,30 +942,39 @@ export default {
       let isHidden
       let selected = this.hotInstance.getSelected()
       if (selected[0][1] === selected[0][3]){
-        if (!this.tableColumns[selected[0][1]].readOnly) {
-          isHidden = this.tableColumns[selected[0][1]].type !== 'dropdown';
-        } else {
-          isHidden = true
-        }
+        isHidden = !this.tableColumns[selected[0][1]].sourceRight;
       } else {
         isHidden = true
       }
       return isHidden
     },
-    handleMergeCellsCallback() {
-      console.log('合并单元格')
+    handleMergeCellsCallback(val, item) {
+      console.log('合并单元格', val, item)
       let mergeCells = this.hotInstance.getPlugin('mergeCells')
       mergeCells.enablePlugin()
       // console.log(mergeCells)
       let selected = this.hotInstance.getSelected()
       // console.log(selected[0])
       // console.log(this.hotInstance.getData())
-      if (selected[0][1] !== selected[0][3]) return
-      if (this.tableColumns[selected[0][1]].readOnly) return
-      if (this.tableColumns[selected[0][1]].type !== 'dropdown') return
-      mergeCells.merge(...selected[0])
+      this.sourceRightLinkIndex = [selected[0][1]]
+      this.tableColumns.forEach((el, idx) => {
+        item.sourceRightLink.forEach(element => {
+          if (element === el.field) {
+            this.sourceRightLinkIndex.push(idx)
+          }
+        })
+      })
+      // console.log(this.sourceRightLinkIndex, ...selected[0])
+      // mergeCells.merge(...selected[0])
+      this.sourceRightLinkIndex.forEach(item => {
+        mergeCells.merge(selected[0][0], item, selected[0][2], item)
+      })
       // console.log(mergeCells.mergedCellsCollection.mergedCells)
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
+      // console.log(this.hotData, selected[0])
+      let field = this.tableColumns[selected[0][1]].field
+      // console.log(val.split(':')[1])
+      this.hotData[selected[0][0]][field] = val.split(':')[1]
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
     handleUnmergeCellsCallback() {
@@ -958,13 +984,17 @@ export default {
       // console.log(mergeCells)
       let selected = this.hotInstance.getSelected()
       // console.log(selected[0])
-      mergeCells.unmerge(...selected[0])
+      this.sourceRightLinkIndex.forEach(item => {
+        mergeCells.unmerge(selected[0][0], item, selected[0][2], item)
+        let field = this.tableColumns[item].field
+        let unmergeValue = this.hotData[selected[0][0]][field]
+        // console.log(funcType, this.hotData)
+        for (let i = 0; i < (selected[0][2] - selected[0][0] + 1); i++) {
+          this.hotData[selected[0][0] + i][field] = unmergeValue
+        }
+      })
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
-      let funcType = this.hotData[selected[0][0]].funcType
-      // console.log(funcType, this.hotData)
-      for (let i = 0; i < (selected[0][2] - selected[0][0] + 1); i++) {
-        this.hotData[selected[0][0] + i].funcType = funcType
-      }
+      // console.log(this.hotData)
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     }
   },

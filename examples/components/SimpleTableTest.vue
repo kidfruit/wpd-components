@@ -241,6 +241,21 @@ export default {
               id: 'FPC_FUNC_CONF',
             },
           ],
+          sourceRight: [
+            {
+              name: '河道演算功能',
+              id: 'FR_FUNC_CONF',
+            },
+            {
+              name: '水库回水功能',
+              id: 'BW_FUNC_CONF',
+            },
+            {
+              name: '水库溃坝功能',
+              id: 'DB_FUNC_CONF',
+            },
+          ],
+          sourceRightLink:["dim1","dim2"]
         },
         {
           field: 'checkbox',
