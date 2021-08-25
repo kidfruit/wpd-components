@@ -203,14 +203,14 @@ export default {
             },
             separator2: '---------',
             mergeCells: {
-              name: '合并单元格',
+              name: '批量设置',
               hidden: () => this.handleMergeUnmergeCellsHidden(),
               submenu: {
                 items: []
               }
             },
             unmergeCells: {
-              name: '拆分单元格',
+              name: '批量还原',
               hidden: () => this.handleMergeUnmergeCellsHidden(),
               callback: () => {
                 this.selectedRange = null
@@ -1035,6 +1035,9 @@ export default {
         mergeCells.merge(selected[0][0], item, selected[0][2], item)
       })
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
+      this.$emit('cellEditDone', {
+        mergeCells: this.hotSettings.mergeCells
+      })
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       console.log(this.hotData)
     },
@@ -1075,6 +1078,9 @@ export default {
         mergeCells.unmerge(...item)
       })
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
+      this.$emit('cellEditDone', {
+        mergeCells: this.hotSettings.mergeCells
+      })
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       console.log(this.hotData)
     }

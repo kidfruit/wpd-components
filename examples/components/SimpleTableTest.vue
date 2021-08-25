@@ -33,7 +33,32 @@ export default {
       splitIndex:4,
       visible: true,
       classNames: ['testTable'],
-      setting: { rowHeaders:true },
+      setting: {
+        rowHeaders: true,
+        mergeCells: [
+          {
+            "row": 7,
+            "col": 4,
+            "rowspan": 4,
+            "colspan": 1,
+            "removed": false
+          },
+          {
+            "row": 7,
+            "col": 2,
+            "rowspan": 4,
+            "colspan": 1,
+            "removed": false
+          },
+          {
+            "row": 7,
+            "col": 3,
+            "rowspan": 4,
+            "colspan": 1,
+            "removed": false
+          }
+        ]
+      },
       tableData: [
         {
           dim2: 0,
