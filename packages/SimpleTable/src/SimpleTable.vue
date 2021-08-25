@@ -939,6 +939,7 @@ export default {
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
     afterOnCellCornerDblClick() {
+      console.log('afterOnCellCornerDblClick')
       this.selectedRange = null
       let selectedRange = this.hotInstance.getSelectedRange()
       if (selectedRange[0].from.row === -1) {
@@ -948,19 +949,34 @@ export default {
       const field = this.columns[selectedRange[0].from.col].field
       const currentData = this.hotData[selectedRange[0].from.row][field]
       const rowLength = this.hotInstance.getData().length
+      // console.log(field, this.columns)
       if (selectedRange && selectedRange.length > 0) {
-        console.log('afterOnCellCornerDblClick')
-        for (let i = 0; i < rowLength - currentRow - 1; i++) {
-          const oldValue = this.hotData[selectedRange[0].from.row + i + 1][field]
-          const newValue = currentData
-          const rowIndex = selectedRange[0].from.row + i + 1
-          this.$emit('cellEditDone', {
-            rowIndex,
-            field,
-            newValue,
-            oldValue,
-          })
-          this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
+        if (this.columns[selectedRange[0].from.col].source) {
+          for (let i = 0; i < rowLength - currentRow - 1; i++) {
+            const oldValue = this.hotData[selectedRange[0].from.row + i + 1][field]
+            const newValue = currentData
+            const rowIndex = selectedRange[0].from.row + i + 1
+            this.$emit('cellEditDone', {
+              rowIndex,
+              field,
+              newValue: this.dropdownHash[field].find(p => p.name === newValue).id,
+              oldValue: this.dropdownHash[field].find(p => p.name === oldValue).id
+            })
+            this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
+          }
+        } else {
+          for (let i = 0; i < rowLength - currentRow - 1; i++) {
+            const oldValue = this.hotData[selectedRange[0].from.row + i + 1][field]
+            const newValue = currentData
+            const rowIndex = selectedRange[0].from.row + i + 1
+            this.$emit('cellEditDone', {
+              rowIndex,
+              field,
+              newValue,
+              oldValue,
+            })
+            this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
+          }
         }
         this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
