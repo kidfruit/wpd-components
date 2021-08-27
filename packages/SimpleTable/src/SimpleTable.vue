@@ -358,6 +358,43 @@ export default {
       })
     },
     prepareData(data) {
+      // mergeCells
+      this.tableColumns.forEach((item, index) => {
+        if (item.sourceRightLink) {
+          let sourceRightArr = []
+          item.sourceRight.forEach(val => {
+            sourceRightArr.push(val.id)
+          })
+          let field = item.field
+          let row = null
+          let col = null
+          let rowspan = null
+          let mergeCells = []
+          for (let i = 0; i < this.tableData.length; i++) {
+            if (sourceRightArr.includes(this.tableData[i][field])) {
+              // i 为行 index 为列
+              row = i
+              col = index
+              // 起点 field row
+              let startField = this.tableData[i][field]
+              this.recursion({
+                item,
+                i,
+                startField,
+                field,
+                row,
+                col,
+                rowspan,
+                mergeCells,
+                sourceRightArr,
+              })
+            }
+          }
+          console.log(mergeCells)
+          this.hotSettings.mergeCells = mergeCells
+        }
+      })
+
       this.hotData = data.map((item, index) => {
         for (let k in item) {
           const list = this.tableColumns.filter((cl) => cl.field === k)[0]
@@ -368,6 +405,60 @@ export default {
         }
         return item
       })
+    },
+    recursion(value) {
+      let { sourceRightArr, item, i, startField, field, row, rowspan, col, mergeCells } = value
+      let tempI = i + 1
+      if (tempI >= this.tableData.length) {
+        rowspan = tempI - row
+        this.tableColumns.forEach((val, key) => {
+          item.sourceRightLink.forEach(element => {
+            if (element === val.field) {
+              mergeCells.push({row, col: key, rowspan, colspan: 1, removed: false})
+            }
+          })
+        })
+        mergeCells.push({row, col, rowspan, colspan: 1, removed: false})
+      } else {
+        // 下一行 field
+        let nextField = this.tableData[tempI][field]
+        // 下一行 link值
+        if (startField === nextField) {
+          let nextValArr = []
+          item.sourceRightLink.forEach(val => {
+            let nextVal = this.tableData[tempI][val]
+            if (nextVal === 0) {
+              nextValArr.push(nextVal)
+            }
+          })
+
+          if (item.sourceRightLink.length === nextValArr.length) {
+            if (tempI < this.tableData.length) {
+              this.recursion({
+                item,
+                i: tempI,
+                startField,
+                field,
+                row,
+                col,
+                rowspan,
+                mergeCells,
+                sourceRightArr,
+              })
+            }
+          }
+        } else {
+          rowspan = tempI - row
+          this.tableColumns.forEach((val, key) => {
+            item.sourceRightLink.forEach(element => {
+              if (element === val.field) {
+                mergeCells.push({row, col: key, rowspan, colspan: 1, removed: false})
+              }
+            })
+          })
+          mergeCells.push({row, col, rowspan, colspan: 1, removed: false})
+        }
+      }
     },
     initSingleDropdownHtml() {
       let singleDropdownArr = []
@@ -439,54 +530,26 @@ export default {
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {
             let element = changes[i]
-            let selected = this.hotInstance.getSelected()
-            // console.log(selected[0])
             if (element[2] !== element[3]) {
               if (Object.keys(this.dropdownHash).includes(element[1])) {
                 // 下拉框列
-                if (source === 'edit' && selected[0][0] !== selected[0][2]) {
-                  for (let j = 0; j <= selected[0][2] - selected[0][0]; j++) {
-                    this.$emit('cellEditDone', {
-                      rowIndex: selected[0][0] + j,
-                      field: element[1],
-                      newValue: this.dropdownHash[element[1]].find((p) => {
-                        return p.name === element[3]
-                      }).id,
-                      oldValue: this.dropdownHash[element[1]].find((p) => {
-                        return p.name === element[2]
-                      }).id,
-                    })
-                  }
-                } else {
-                  this.$emit('cellEditDone', {
-                    rowIndex: element[0],
-                    field: element[1],
-                    newValue: this.dropdownHash[element[1]].find((p) => {
-                      return p.name === element[3]
-                    }).id,
-                    oldValue: this.dropdownHash[element[1]].find((p) => {
-                      return p.name === element[2]
-                    }).id,
-                  })
-                }
+                this.$emit('cellEditDone', {
+                  rowIndex: element[0],
+                  field: element[1],
+                  newValue: this.dropdownHash[element[1]].find((p) => {
+                    return p.name === element[3]
+                  }).id,
+                  oldValue: this.dropdownHash[element[1]].find((p) => {
+                    return p.name === element[2]
+                  }).id,
+                })
               } else {
-                if (source === 'edit' && selected[0][0] !== selected[0][2]) {
-                  for (let j = 0; j <= selected[0][2] - selected[0][0]; j++) {
-                    this.$emit('cellEditDone', {
-                      rowIndex: selected[0][0] + j,
-                      field: element[1],
-                      newValue: element[3],
-                      oldValue: element[2],
-                    })
-                  }
-                } else {
-                  this.$emit('cellEditDone', {
-                    rowIndex: element[0],
-                    field: element[1],
-                    newValue: element[3],
-                    oldValue: element[2],
-                  })
-                }
+                this.$emit('cellEditDone', {
+                  rowIndex: element[0],
+                  field: element[1],
+                  newValue: element[3],
+                  oldValue: element[2],
+                })
               }
               this.editCols.push(element[1])
               this.editCells.push(element[1] + '#' + element[0])
@@ -994,7 +1057,12 @@ export default {
     handleMergeCellsCallback(mergeVal, mergeItem) {
       console.log('合并单元格', mergeVal, mergeItem)
       let selected = this.hotInstance.getSelected()
-
+      if (selected[0][0] > selected[0][2]) {
+        let temp = selected[0][0]
+        selected[0][0] = selected[0][2]
+        selected[0][2] = temp
+      }
+      console.log(selected[0])
       let sourceRightLinkIndex = [selected[0][1]]
       this.tableColumns.forEach((el, idx) => {
         mergeItem.sourceRightLink.forEach(element => {
@@ -1004,6 +1072,7 @@ export default {
         })
       })
 
+      // 先触发cellEditDone -- （合并后oldValue都为空）
       sourceRightLinkIndex.forEach(item => {
         let field = this.tableColumns[item].field
         for (let i = selected[0][0]; i <= selected[0][2]; i++) {
@@ -1014,17 +1083,25 @@ export default {
             this.$emit('cellEditDone', {
               rowIndex: i,
               field,
-              newValue: this.dropdownHash[field].find(p => p.name === this.hotData[i][field]).id,
+              newValue: mergeItem.sourceRight.find(p => p.name === mergeVal.split(':')[1]).id,
               oldValue: this.dropdownHash[field].find(p => p.name === oldValue).id
             })
           } else {
-            this.hotData[i][field] = this.hotData[selected[0][2]][field]
-            this.$emit('cellEditDone', {
-              rowIndex: i,
-              field,
-              newValue: this.hotData[selected[0][2]][field],
-              oldValue
-            })
+            if (i === selected[0][0]) {
+              this.$emit('cellEditDone', {
+                rowIndex: i,
+                field,
+                newValue: this.hotData[i][field],
+                oldValue
+              })
+            } else {
+              this.$emit('cellEditDone', {
+                rowIndex: i,
+                field,
+                newValue: 0,
+                oldValue
+              })
+            }
           }
         }
       })
@@ -1035,52 +1112,58 @@ export default {
         mergeCells.merge(selected[0][0], item, selected[0][2], item)
       })
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
-      this.$emit('cellEditDone', {
-        mergeCells: this.hotSettings.mergeCells
-      })
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      console.log(this.hotSettings.mergeCells)
       console.log(this.hotData)
     },
     handleUnmergeCellsCallback() {
-      console.log('拆分单元格')
+      console.log('拆分单元格', this.hotData)
       let selected = this.hotInstance.getSelected()
       let mergeCells = this.hotInstance.getPlugin('mergeCells')
       let sourceRightLink = []
-      // let mergeField = this.tableColumns[selected[0][1]].field
+      let mergeField = this.tableColumns[selected[0][1]].field
       mergeCells.enablePlugin()
       mergeCells.mergedCellsCollection.mergedCells.forEach(item => {
         if (item.row === selected[0][0]) {
           let field = this.tableColumns[item.col].field
           // console.log(item, field, selected[0])
           for (let i = 0; i < item.rowspan; i++) {
-            // let oldValue = this.hotData[(item.row)][field]
-            this.hotData[(item.row + i)][field] = this.hotData[selected[0][0]][field]
-            // if (field === mergeField) {
-            //   this.$emit('cellEditDone', {
-            //     rowIndex: item.row + i,
-            //     field,
-            //     newValue: this.dropdownHash[field].find(p => p.name === this.hotData[selected[0][0]][field]).id,
-            //     oldValue: this.dropdownHash[field].find(p => p.name === oldValue).id
-            //   })
-            // } else {
-            //   this.$emit('cellEditDone', {
-            //     rowIndex: item.row + i,
-            //     field,
-            //     newValue: this.hotData[selected[0][0]][field],
-            //     oldValue
-            //   })
-            // }
+            let oldValue = this.hotData[(item.row + i)][field]
+            if (field === mergeField) {
+              this.hotData[(item.row + i)][field] = this.dropdownHash[field][0].name
+              this.$emit('cellEditDone', {
+                rowIndex: item.row + i,
+                field,
+                newValue: this.dropdownHash[field].find(p => p.name === this.hotData[selected[0][0]][field]).id,
+                oldValue: this.dropdownHash[field].find(p => p.name === oldValue) && this.dropdownHash[field].find(p => p.name === oldValue).id
+              })
+            } else {
+              this.hotData[(item.row + i)][field] = 0
+              if (selected[0][0] === item.row + i) {
+                this.$emit('cellEditDone', {
+                  rowIndex: item.row + i,
+                  field,
+                  newValue: 0,
+                  oldValue
+                })
+              } else {
+                this.$emit('cellEditDone', {
+                  rowIndex: item.row + i,
+                  field,
+                  newValue: 0,
+                  oldValue
+                })
+              }
+            }
           }
           sourceRightLink.push([selected[0][0], item.col, selected[0][2], item.col])
         }
       })
+
       sourceRightLink.forEach(item => {
         mergeCells.unmerge(...item)
       })
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
-      this.$emit('cellEditDone', {
-        mergeCells: this.hotSettings.mergeCells
-      })
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       console.log(this.hotData)
     }
