@@ -14,6 +14,7 @@ export default {
         {
           name: '荆江河段',
           index: 1,
+          id:'jingjiang',
           stationCode: '60108300',
           children: [
             {
@@ -41,6 +42,7 @@ export default {
         {
           name: '城陵矶河段',
           index: 2,
+          id:'chenglingji',
           stationCode: '61512000',
           children: [
             {
@@ -118,6 +120,7 @@ export default {
         {
           name: '武汉河段',
           index: 3,
+          id:'wuhan',
           stationCode: '60112200',
           children: [
             {
@@ -145,6 +148,7 @@ export default {
         {
           name: '沙洋河段',
           index: 3,
+          id:'shayang',
           stationCode: '61804210',
           children: [
             {
@@ -172,6 +176,7 @@ export default {
         {
           name: '湖口河段',
           index: 4,
+          id:'hukou',
           stationCode: '62601600',
           children: [
             {
@@ -249,6 +254,7 @@ export default {
         {
           name: '湖口-大通河段',
           index: 3,
+          id:'hukoudatong',
           stationCode: '60112200',
           children: [
             {
