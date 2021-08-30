@@ -32,6 +32,7 @@ import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGrou
 import StatusInfoComp from "./StatusInfoComp/src/StatusInfoComp";
 import SelectAndSortComp from "./SelectAndSortComp/src/SelectAndSortComp";
 import DispatchRuleComp from "./DispatchRuleComp/src/DispatchRuleComp";
+import UsageSettingComp from "./UsageSettingComp/src/UsageSettingComp";
 
 
 // 存储组件列表
@@ -62,7 +63,8 @@ const components = [
   SelectAndSortComp,
   SeriesQZ,
   DispatchRuleComp,
-  DispatchRuleRelationshipMap
+  DispatchRuleRelationshipMap,
+  UsageSettingComp
 ];
 
 // 存储指令映射
@@ -118,5 +120,6 @@ export default {
   SeriesQZ,
   DispatchRuleComp,
   DispatchRuleRelationshipMap,
+  UsageSettingComp,
   ...directives,
 };

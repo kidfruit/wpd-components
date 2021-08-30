@@ -92,7 +92,7 @@
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>DispatchRuleCompTest: 调度规则控件</h2>
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleCompTest/>
@@ -100,6 +100,10 @@
     <div v-if="false">
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleRelationshipMapTest/>
+    </div>
+    <div v-if="true">
+      <h2>UsageSettingCompTest: 洲滩民垸使用设置控件</h2>
+      <UsageSettingCompTest/>
     </div>
   </div>
 </template>
@@ -132,6 +136,8 @@ import StatusInfoCompTest from "@/components/StatusInfoCompTest";
 import SelectAndSortCompTest from "@/components/SelectAndSortCompTest";
 import DispatchRuleCompTest from "@/components/DispatchRuleCompTest";
 import DispatchRuleRelationshipMapTest from "@/components/DispatchRuleRelationshipMapTest";
+import UsageSettingCompTest from "./UsageSettingCompTest";
+
 export default {
   components: {
     DispatchRuleCompTest,
@@ -160,7 +166,8 @@ export default {
     SchemeComparisonChartTest,
     StatusInfoCompTest,
     SelectAndSortCompTest,
-    DispatchRuleRelationshipMapTest
+    DispatchRuleRelationshipMapTest,
+    UsageSettingCompTest
   },
   name: 'HelloWorld',
   methods: {
