@@ -1,6 +1,11 @@
 <template>
   <div>
-    <usage-setting-comp/>
+    <UsageSettingComp
+      :className="className"
+      :usageData="mockUsageData[usageDataIndex]"
+      @getUsageData="getUsageData"
+    />
+    <button @click="changeData">切换数据</button>
   </div>
 </template>
 <script>
@@ -10,7 +15,8 @@ export default {
   name: 'UsageSettingCompTest',
   data() {
     return {
-      usageData: [
+      className: 'usage-setting-comp-test',
+      mockUsageData: [
         {
           name: '荆江河段',
           index: 1,
@@ -21,7 +27,7 @@ export default {
               name: '上荆江',
               id: 'ZTMYJJ0001',
               capacity: 8.6,
-              isOpen: false,
+              isOpen: true,
               v: 0,
               time: '',
               used: 0,
@@ -279,9 +285,23 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      usageDataIndex: 0
     }
   },
+  methods: {
+    changeData() {
+      if (this.usageDataIndex === 5) {
+        this.usageDataIndex = 0
+      } else {
+        this.usageDataIndex++
+      }
+    },
+    getUsageData(val) {
+      console.log('getUsageData', val)
+      this.mockUsageData[this.usageDataIndex] = val
+    }
+  }
 }
 </script>
 <style scoped></style>
