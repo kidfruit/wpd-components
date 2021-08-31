@@ -86,7 +86,7 @@
 <script>
 import { HotTable, HotColumn } from '@handsontable/vue'
 import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
-
+import lodash from 'lodash'
 registerLanguageDictionary(zhCN)
 export default {
   name: 'SimpleTable',
@@ -118,6 +118,12 @@ export default {
       type: Number,
       default: 0,
     },
+    textAlignment: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
   },
   components: {
     HotTable,
@@ -225,6 +231,9 @@ export default {
           if (this.splitIndex >= 0 && row < this.splitIndex) {
             cellProperties = { className: 'preheat-rows'}
           }
+          this.textAlignment.forEach(item => {
+            cellProperties.className = cellProperties.className + ' ' + item
+          })
           return cellProperties
         },
         afterOnCellCornerDblClick: this.afterOnCellCornerDblClick,
@@ -370,6 +379,7 @@ export default {
           let col = null
           let rowspan = null
           let mergeCells = []
+          let rowArr = []
           for (let i = 0; i < this.tableData.length; i++) {
             if (sourceRightArr.includes(this.tableData[i][field])) {
               // i 为行 index 为列
@@ -388,10 +398,31 @@ export default {
                 mergeCells,
                 sourceRightArr,
               })
+              rowArr.push(row)
             }
           }
-          console.log(mergeCells)
-          this.hotSettings.mergeCells = mergeCells
+          // 过滤
+          let newRowArr = rowArr.reduce((newRowArr, value) => {
+            if (newRowArr.length && (value - newRowArr[0][0]) === 1) {
+              newRowArr[0].unshift(value)
+            } else {
+              newRowArr.unshift([value])
+            }
+            return newRowArr
+          }, []).reverse().map(a => a.reverse())
+          let mergeRowArr = []
+          newRowArr.forEach(item => {
+            mergeRowArr.push(item[0])
+          })
+
+          let newMergeCells = []
+          mergeCells.forEach(item => {
+            if (mergeRowArr.includes(item.row)) {
+              newMergeCells.push(item)
+            }
+          })
+          console.log(newMergeCells)
+          this.hotSettings.mergeCells = newMergeCells
         }
       })
 
@@ -1062,7 +1093,13 @@ export default {
         selected[0][0] = selected[0][2]
         selected[0][2] = temp
       }
-      console.log(selected[0])
+      // console.log(selected[0], this.hotSettings.mergeCells)
+      // this.hotSettings.mergeCells && this.hotSettings.mergeCells.forEach(item => {
+      //   if (item.row ===  selected[0][0] && item.col === selected[0][1]) {
+      //     console.log(item)
+      //   }
+      // })
+
       let sourceRightLinkIndex = [selected[0][1]]
       this.tableColumns.forEach((el, idx) => {
         mergeItem.sourceRightLink.forEach(element => {
@@ -1084,7 +1121,7 @@ export default {
               rowIndex: i,
               field,
               newValue: mergeItem.sourceRight.find(p => p.name === mergeVal.split(':')[1]).id,
-              oldValue: this.dropdownHash[field].find(p => p.name === oldValue).id
+              oldValue: oldValue == null ? null : this.dropdownHash[field].find(p => p.name === oldValue).id
             })
           } else {
             if (i === selected[0][0]) {

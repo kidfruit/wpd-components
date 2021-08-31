@@ -6,6 +6,7 @@
       :tableData="tableData"
       :setting="setting"
       :tableColumns="tableColumns"
+      :textAlignment="textAlignment"
       @cellEditDone="cellEditDone"
       @moveDone="moveDone"
     ></simple-table>
@@ -33,6 +34,7 @@ export default {
       splitIndex:4,
       visible: true,
       classNames: ['testTable'],
+      textAlignment: ['htCenter', 'htMiddle'],
       setting: {
         rowHeaders: true,
         // mergeCells: [
