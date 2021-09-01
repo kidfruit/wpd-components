@@ -1,6 +1,7 @@
 <template>
   <div :class="classes">
     <a-table
+      :title="() => usageTitle"
       :pagination="false"
       :columns="usageColumns"
       :dataSource="usageDataSource"
@@ -139,6 +140,10 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-
+<style lang="less">
+.usage-setting-comp {
+  .ant-table-title {
+    font-size: 25px;font-weight: bold;
+  }
+}
 </style>
