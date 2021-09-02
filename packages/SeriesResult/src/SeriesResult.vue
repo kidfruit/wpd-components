@@ -3,30 +3,38 @@
     <div class="chart-box">
       <div class="chart-switch-button">
         <a-select v-model="targetChartIndex">
-          <a-select-option v-for="(title, i) in d_chartTitle"
-                           :value="i"
-                           :key="i"> {{ title }} </a-select-option>
+          <a-select-option
+            v-for="(title, i) in d_chartTitle"
+            :value="i"
+            :key="i"
+          >
+            {{ title }}
+          </a-select-option>
         </a-select>
       </div>
       <div class="chart-content">
-        <chart :key="chartList[targetChartIndex].id"
-               ref="chartRef"
-               :chartOption="chartList[targetChartIndex].chartOption"
-               :chartAxis="chartList[targetChartIndex].chartAxis"
-               :id="chartList[targetChartIndex].id"
-               :splitIndex="splitIndex"
-               :classes="['series-result-chart']"
-               :chartData="chartList[targetChartIndex].chartData" />
+        <chart
+          :key="chartList[targetChartIndex].id"
+          ref="chartRef"
+          :chartOption="chartList[targetChartIndex].chartOption"
+          :chartAxis="chartList[targetChartIndex].chartAxis"
+          :id="chartList[targetChartIndex].id"
+          :splitIndex="splitIndex"
+          :classes="['series-result-chart']"
+          :chartData="chartList[targetChartIndex].chartData"
+        />
       </div>
     </div>
     <div class="table-box">
-      <simple-table ref="tableRef"
-                    :targetChartIndex="targetChartIndex"
-                    :splitIndex="splitIndex"
-                    :tableData="newTableData"
-                    :setting="newSetting"
-                    :tableColumns="newTableColumns"
-                    @cellEditDone="cellEditDone"></simple-table>
+      <simple-table
+        ref="tableRef"
+        :targetChartIndex="targetChartIndex"
+        :splitIndex="splitIndex"
+        :tableData="newTableData"
+        :setting="newSetting"
+        :tableColumns="newTableColumns"
+        @cellEditDone="cellEditDone"
+      />
     </div>
     <!-- <div class="reset">
         <a-button icon="undo" @click="handleReset" shape="circle"> </a-button>
@@ -56,7 +64,7 @@ function uniqueObj(origin, key) {
   let temp = {}
   return origin
     .reverse()
-    .filter((item) => (item[key] in temp ? false : (temp[item[key]] = true)))
+    .filter((item) => (item.echartsOptions[key] in temp ? false : (temp[item.echartsOptions[key]] = true)))
 }
 export default {
   name: 'SeriesResult',
@@ -75,7 +83,7 @@ export default {
       type: Object,
     },
     topmargin:{
-        type: Number,
+      type: Number,
     },
     splitIndex: {
       type: Number,
@@ -169,22 +177,25 @@ export default {
       })
       this.clearData()
       let showTypeList = this.tableColumns
-        .map((el) => {
-          return {
-            showType: el.showType,
-            field: el.field,
-            title: el.title,
-            echartstype: el.echartstype,
-            areaStyle: el.areaStyle,
-            step: el.step,
-            color: el.color,
-            smooth:el.smooth
-          }
-        })
-        .filter((el) => el.showType)
+          .map((el) => {
+            return {
+              // showType: el.showType,
+              field: el.field,
+              title: el.title,
+              echartsOptions: el.echartsOptions
+              // echartstype: el.echartstype,
+              // areaStyle: el.areaStyle,
+              // step: el.step,
+              // color: el.color,
+              // smooth:el.smooth
+            }
+          })
+          .filter((el) => el.echartsOptions && el.echartsOptions.showType)
 
-      let filterList = showTypeList.map((el) => el.showType.split('-')[0])
+      let filterList = showTypeList.map((el) => el.echartsOptions.showType.split('-')[0])
       let carouselCount = unique(filterList)
+
+      console.log(carouselCount, showTypeList)
       this.generateChartData(carouselCount, showTypeList)
     },
     handleReset() {
@@ -199,16 +210,16 @@ export default {
     },
     generateChartLegend(showTypeList, current) {
       let legendList = showTypeList.filter(
-        (el) => el.showType.indexOf(current) !== -1
+          (el) => el.echartsOptions.showType.indexOf(current) !== -1
       )
       let legends = []
       let leftTop = 0,
-        rightTop = 0
+          rightTop = 0
       legendList = legendList.sort((a, b) => {
-        if (a.showType < b.showType) {
+        if (a.echartsOptions.showType < b.echartsOptions.showType) {
           return -1
         }
-        if (a.showType > b.showType) {
+        if (a.echartsOptions.showType > b.echartsOptions.showType) {
           return 1
         }
         return 0
@@ -222,7 +233,7 @@ export default {
           data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
         }
         //console.log("positionMaps[legendList[i].showType.split('-')[1]]",positionMaps)
-        let leftRight = positionMaps[legendList[i].showType.split('-')[1]]
+        let leftRight = positionMaps[legendList[i].echartsOptions.showType.split('-')[1]]
         if (leftRight === 'left') {
           obj = Object.assign({}, obj, {
             top: this.topmargin+ leftTop * 24, //调整位置
@@ -242,7 +253,7 @@ export default {
     },
     generateChartYaxis(showTypeList, current) {
       let yAxisList = showTypeList.filter(
-        (el) => el.showType.indexOf(current) !== -1
+          (el) => el.echartsOptions.showType.indexOf(current) !== -1
       )
 
       yAxisList = uniqueObj(yAxisList, 'showType')
@@ -267,7 +278,7 @@ export default {
               color: '#40a9ff  ',
             },
           },
-          position: positionMaps[yAxisList[i].showType.split('-')[1]],
+          position: positionMaps[yAxisList[i].echartsOptions.showType.split('-')[1]],
           min: (v) => MinMaxFunction('min', v),
           max: (v) => MinMaxFunction('max', v),
         })
@@ -283,38 +294,37 @@ export default {
       }
       if (firstTime !== '') {
         let list = showTypeList
-          .filter((el) => el.showType.indexOf(current) !== -1)
-          .map((el, index) => {
-            //console.log(el,"----------------------")
-            return {
-              type: el.echartstype,
-              areaStyle: el.areaStyle,
-              color: el.color,
-              step: el.step,
-              field: el.field,
-              title: el.title,
-              smooth:el.smooth,
-              selected: true,
-              yAxisIndex:
-                positionMaps[el.showType.split('-')[1]] === 'left' ? 1 : 0,
-              markLine: el.echartstype!='bar'? {
-                symbol: 'none',
-                data: [
-                  {
-                    name: '标记线',
-                    xAxis: firstTime,
-                    lineStyle: {
-                      //警戒线的样式  ，虚实  颜色
-                      type: 'solid',
-                      color: '#000',
+            .filter((el) => el.echartsOptions.showType.indexOf(current) !== -1)
+            .map((el, index) => {
+              // console.log(el,"----------------------")
+              return {
+                type: el.echartsOptions.echartstype,
+                areaStyle: el.echartsOptions.areaStyle,
+                color: el.echartsOptions.color,
+                step: el.echartsOptions.step,
+                field: el.field,
+                title: el.title,
+                smooth:el.echartsOptions.smooth,
+                selected: true,
+                yAxisIndex: positionMaps[el.echartsOptions.showType.split('-')[1]] === 'left' ? 1 : 0,
+                markLine: el.echartsOptions.echartstype !== 'bar' ? {
+                  symbol: 'none',
+                  data: [
+                    {
+                      name: '标记线',
+                      xAxis: firstTime,
+                      lineStyle: {
+                        //警戒线的样式  ，虚实  颜色
+                        type: 'solid',
+                        color: '#000',
+                      },
                     },
-                  },
-                ],
-                label: { show: true, position: 'end' },
-                silent: true,
-              } :null,
-            }
-          })
+                  ],
+                  label: { show: true, position: 'end' },
+                  silent: true,
+                } :null,
+              }
+            })
 
         const listYAxisIndexArray = []
         list.forEach(item => {
@@ -332,19 +342,19 @@ export default {
         let allList = []
         for (let i = 0; i < list.length; i++) {
           allList.push(list[i])
-          if (list[i].type != 'bar') {//如果为柱状图则不需要实现虚线
-              let obj = Object.assign({}, list[i], {
-                // smooth: true, //关键点，为true是不支持虚线，实线就用true
-                itemStyle: {
-                  normal: {
-                    lineStyle: {
-                      width: 2,
-                      type: 'dotted', //'dotted'虚线 'solid'实线
-                    },
+          if (list[i].type !== 'bar') {//如果为柱状图则不需要实现虚线
+            let obj = Object.assign({}, list[i], {
+              // smooth: true, //关键点，为true是不支持虚线，实线就用true
+              itemStyle: {
+                normal: {
+                  lineStyle: {
+                    width: 2,
+                    type: 'dotted', //'dotted'虚线 'solid'实线
                   },
                 },
-              })
-              allList.push(obj)
+              },
+            })
+            allList.push(obj)
           }
         }
         allList = allList.sort((a, b) => {
@@ -353,16 +363,16 @@ export default {
         return allList
       } else {
         return showTypeList
-          .filter((el) => el.showType.indexOf(current) !== -1)
-          .map((el, index) => {
-            return {
-              field: el.field,
-              title: el.title,
-              selected: true,
-              yAxisIndex:
-                positionMaps[el.showType.split('-')[1]] === 'left' ? 1 : 0,
-            }
-          })
+            .filter((el) => el.echartsOptions.showType.indexOf(current) !== -1)
+            .map((el, index) => {
+              return {
+                field: el.field,
+                title: el.title,
+                selected: true,
+                yAxisIndex:
+                    positionMaps[el.echartsOptions.showType.split('-')[1]] === 'left' ? 1 : 0,
+              }
+            })
       }
     },
     generateChartData(carouselCount, showTypeList) {
@@ -385,16 +395,16 @@ export default {
           series: [],
         }
         chartAxis.yAxis = this.generateChartYaxis(
-          showTypeList,
-          carouselCount[i]
+            showTypeList,
+            carouselCount[i]
         )
         chartAxis.series = this.generateChartSeries(
-          showTypeList,
-          carouselCount[i]
+            showTypeList,
+            carouselCount[i]
         )
         chartOption.legend = this.generateChartLegend(
-          showTypeList,
-          carouselCount[i]
+            showTypeList,
+            carouselCount[i]
         )
         chartOption.grid.top =20
         //   Math.max(...chartOption.legend.map((i) => i.top || 0)) + 34
