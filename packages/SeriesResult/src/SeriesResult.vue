@@ -230,6 +230,7 @@ export default {
           itemHeight: 16,
           show: true,
           textStyle: { fontSize: 14 },
+          itemStyle: legendList[i].echartsOptions.lineStyle,
           data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
         }
         //console.log("positionMaps[legendList[i].showType.split('-')[1]]",positionMaps)
@@ -344,10 +345,9 @@ export default {
               // smooth: true, //关键点，为true是不支持虚线，实线就用true
               itemStyle: {
                 normal: {
-                  lineStyle: {
-                    width: 2,
+                  lineStyle: Object.assign({}, list[i].lineStyle, {
                     type: 'dotted', //'dotted'虚线 'solid'实线
-                  },
+                  }),
                 },
               },
             })

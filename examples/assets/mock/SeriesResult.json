@@ -48,7 +48,8 @@
       "echartsOptions":{
         "smooth": true,
         "areaStyle": {},
-        "color": "rgba(188,225,255,0.8)"
+        "color": "rgba(188,225,255,0.8)",
+        "lineStyle": {"color":"#5470C6","width":5}
       }
     },
     {
