@@ -64,7 +64,7 @@ function uniqueObj(origin, key) {
   let temp = {}
   return origin
     .reverse()
-    .filter((item) => (item.echartsOptions[key] in temp ? false : (temp[item.echartsOptions[key]] = true)))
+    .filter((item) => (item[key] in temp ? false : (temp[item[key]] = true)))
 }
 export default {
   name: 'SeriesResult',
@@ -179,9 +179,9 @@ export default {
       let showTypeList = this.tableColumns
           .map((el) => {
             return {
-              // showType: el.showType,
               field: el.field,
               title: el.title,
+              showType: el.showType,
               echartsOptions: el.echartsOptions
               // echartstype: el.echartstype,
               // areaStyle: el.areaStyle,
@@ -190,9 +190,9 @@ export default {
               // smooth:el.smooth
             }
           })
-          .filter((el) => el.echartsOptions && el.echartsOptions.showType)
+          .filter((el) => el.showType)
 
-      let filterList = showTypeList.map((el) => el.echartsOptions.showType.split('-')[0])
+      let filterList = showTypeList.map((el) => el.showType.split('-')[0])
       let carouselCount = unique(filterList)
 
       console.log(carouselCount, showTypeList)
@@ -210,16 +210,16 @@ export default {
     },
     generateChartLegend(showTypeList, current) {
       let legendList = showTypeList.filter(
-          (el) => el.echartsOptions.showType.indexOf(current) !== -1
+          (el) => el.showType.indexOf(current) !== -1
       )
       let legends = []
       let leftTop = 0,
           rightTop = 0
       legendList = legendList.sort((a, b) => {
-        if (a.echartsOptions.showType < b.echartsOptions.showType) {
+        if (a.showType < b.showType) {
           return -1
         }
-        if (a.echartsOptions.showType > b.echartsOptions.showType) {
+        if (a.showType > b.showType) {
           return 1
         }
         return 0
@@ -233,7 +233,7 @@ export default {
           data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
         }
         //console.log("positionMaps[legendList[i].showType.split('-')[1]]",positionMaps)
-        let leftRight = positionMaps[legendList[i].echartsOptions.showType.split('-')[1]]
+        let leftRight = positionMaps[legendList[i].showType.split('-')[1]]
         if (leftRight === 'left') {
           obj = Object.assign({}, obj, {
             top: this.topmargin+ leftTop * 24, //调整位置
@@ -253,7 +253,7 @@ export default {
     },
     generateChartYaxis(showTypeList, current) {
       let yAxisList = showTypeList.filter(
-          (el) => el.echartsOptions.showType.indexOf(current) !== -1
+          (el) => el.showType.indexOf(current) !== -1
       )
 
       yAxisList = uniqueObj(yAxisList, 'showType')
@@ -278,7 +278,7 @@ export default {
               color: '#40a9ff  ',
             },
           },
-          position: positionMaps[yAxisList[i].echartsOptions.showType.split('-')[1]],
+          position: positionMaps[yAxisList[i].showType.split('-')[1]],
           min: (v) => MinMaxFunction('min', v),
           max: (v) => MinMaxFunction('max', v),
         })
@@ -294,19 +294,15 @@ export default {
       }
       if (firstTime !== '') {
         let list = showTypeList
-            .filter((el) => el.echartsOptions.showType.indexOf(current) !== -1)
+            .filter((el) => el.showType.indexOf(current) !== -1)
             .map((el, index) => {
               // console.log(el,"----------------------")
-              return {
-                type: el.echartsOptions.echartstype,
-                areaStyle: el.echartsOptions.areaStyle,
-                color: el.echartsOptions.color,
-                step: el.echartsOptions.step,
+
+              let obj = {
                 field: el.field,
                 title: el.title,
-                smooth:el.echartsOptions.smooth,
                 selected: true,
-                yAxisIndex: positionMaps[el.echartsOptions.showType.split('-')[1]] === 'left' ? 1 : 0,
+                yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 1 : 0,
                 markLine: el.echartsOptions.echartstype !== 'bar' ? {
                   symbol: 'none',
                   data: [
@@ -324,6 +320,7 @@ export default {
                   silent: true,
                 } :null,
               }
+              return Object.assign(obj, el.echartsOptions)
             })
 
         const listYAxisIndexArray = []
@@ -363,14 +360,14 @@ export default {
         return allList
       } else {
         return showTypeList
-            .filter((el) => el.echartsOptions.showType.indexOf(current) !== -1)
+            .filter((el) => el.showType.indexOf(current) !== -1)
             .map((el, index) => {
               return {
                 field: el.field,
                 title: el.title,
                 selected: true,
                 yAxisIndex:
-                    positionMaps[el.echartsOptions.showType.split('-')[1]] === 'left' ? 1 : 0,
+                    positionMaps[el.showType.split('-')[1]] === 'left' ? 1 : 0,
               }
             })
       }

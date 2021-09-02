@@ -25,8 +25,8 @@
       },
       "field": "RD_FDA_Q_P",
       "title": "分洪流量(m³/s)",
+      "showType": "1-R",
       "echartsOptions": {
-        "showType": "1-R",
         "smooth": true
       }
     },
@@ -44,8 +44,8 @@
       },
       "field": "RD_FDA_Z_P",
       "title": "蓄洪水位(m)",
+      "showType": "1-L",
       "echartsOptions":{
-        "showType": "1-L",
         "smooth": true,
         "areaStyle": {},
         "color": "rgba(188,225,255,0.8)"
@@ -65,8 +65,8 @@
       },
       "field": "RD_FDA_V_P",
       "title": "蓄洪容积(百万m³)",
+      "showType": "2-L",
       "echartsOptions": {
-        "showType": "2-L",
         "smooth": true
       }
     }
