@@ -184,9 +184,9 @@ export default {
           if (item.itemStyle) {
             list.forEach(val => {
               if (item.data[0].name === val.seriesName) {
-                let tempMarker1 = val.marker.split('rgba')[0]
-                let tempMarker2 = val.marker.split('rgba')[1].split(';')[1]
-                val.marker = tempMarker1 + item.itemStyle.color + tempMarker2
+                let tempMarker1 = val.marker.split('background-color')[0]
+                let tempMarker2 = val.marker.split('background-color')[1].split(';')[1]
+                val.marker = `${tempMarker1}background-color:${item.itemStyle.color};${tempMarker2}`
               }
             })
           }
