@@ -182,7 +182,8 @@ export default {
               field: el.field,
               title: el.title,
               showType: el.showType,
-              echartsOptions: el.echartsOptions
+              echartsOptions_l: el.echartsOptions_l,
+              echartsOptions_r: el.echartsOptions_r
               // echartstype: el.echartstype,
               // areaStyle: el.areaStyle,
               // step: el.step,
@@ -230,7 +231,7 @@ export default {
           itemHeight: 16,
           show: true,
           textStyle: { fontSize: 14 },
-          itemStyle: legendList[i].echartsOptions.lineStyle,
+          itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
           data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
         }
         //console.log("positionMaps[legendList[i].showType.split('-')[1]]",positionMaps)
@@ -304,7 +305,7 @@ export default {
                 title: el.title,
                 selected: true,
                 yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 1 : 0,
-                markLine: el.echartsOptions.echartstype !== 'bar' ? {
+                markLine: el.echartsOptions_l && el.echartsOptions_l.echartstype !== 'bar' ? {
                   symbol: 'none',
                   data: [
                     {
@@ -321,7 +322,7 @@ export default {
                   silent: true,
                 } :null,
               }
-              return Object.assign(obj, el.echartsOptions)
+              return Object.assign(obj, el.echartsOptions_l)
             })
 
         const listYAxisIndexArray = []
@@ -336,22 +337,26 @@ export default {
           })
         }
 
+        // console.log(list)
         // 将3个series处理成一半实线一半虚线的series，一起应该6个series
         let allList = []
         for (let i = 0; i < list.length; i++) {
           allList.push(list[i])
           if (list[i].type !== 'bar') {//如果为柱状图则不需要实现虚线
-            let obj = Object.assign({}, list[i], {
-              // smooth: true, //关键点，为true是不支持虚线，实线就用true
-              itemStyle: {
-                normal: {
-                  lineStyle: Object.assign({}, list[i].lineStyle, {
-                    type: 'dotted', //'dotted'虚线 'solid'实线
-                  }),
-                },
-              },
+            showTypeList.forEach(item => {
+              if (item.field === list[i].field) {
+                let obj = Object.assign({}, list[i], {
+                  // smooth: true, //关键点，为true是不支持虚线，实线就用true
+                  itemStyle: {
+                    normal: {
+                      lineStyle: Object.assign({}, list[i].lineStyle, item.echartsOptions_r.lineStyle),
+                    },
+                  },
+                })
+                // console.log(obj)
+                allList.push(obj)
+              }
             })
-            allList.push(obj)
           }
         }
         allList = allList.sort((a, b) => {

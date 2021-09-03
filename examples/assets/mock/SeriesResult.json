@@ -26,7 +26,10 @@
       "field": "RD_FDA_Q_P",
       "title": "分洪流量(m³/s)",
       "showType": "1-R",
-      "echartsOptions": {
+      "echartsOptions_l": {
+        "smooth": true
+      },
+      "echartsOptions_r": {
         "smooth": true
       }
     },
@@ -45,11 +48,17 @@
       "field": "RD_FDA_Z_P",
       "title": "蓄洪水位(m)",
       "showType": "1-L",
-      "echartsOptions":{
+      "echartsOptions_l":{
         "smooth": true,
         "areaStyle": {},
         "color": "rgba(188,225,255,0.8)",
-        "lineStyle": {"color":"red","width":5}
+        "lineStyle": {"color":"red","width":5,"type":"solid"}
+      },
+      "echartsOptions_r":{
+        "smooth": true,
+        "areaStyle": {},
+        "color": "rgba(188,225,255,0.8)",
+        "lineStyle": {"color":"orange","width":3,"type":"dashed"}
       }
     },
     {
@@ -67,7 +76,10 @@
       "field": "RD_FDA_V_P",
       "title": "蓄洪容积(百万m³)",
       "showType": "2-L",
-      "echartsOptions": {
+      "echartsOptions_l": {
+        "smooth": true
+      },
+      "echartsOptions_r": {
         "smooth": true
       }
     }
