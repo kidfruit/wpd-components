@@ -86,7 +86,6 @@
 <script>
 import { HotTable, HotColumn } from '@handsontable/vue'
 import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
-import lodash from 'lodash'
 registerLanguageDictionary(zhCN)
 export default {
   name: 'SimpleTable',
