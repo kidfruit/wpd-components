@@ -28,7 +28,7 @@ export default {
               id: 'ZTMYJJ0001',
               capacity: 8.6,
               isOpen: true,
-              v: 0,
+              v: 2.3,
               time: '',
               used: 0,
               duration: 2

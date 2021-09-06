@@ -20,8 +20,9 @@
         type="number"
         style="width: 200px;"
         :defaultValue="text"
+        :value="record.v"
         :disabled="!record.isOpen"
-        :max="record.capacity - record.used"
+        :max="record.available"
         :min="0"
         @change="handleChangeV(record, index, $event)"
       />
@@ -130,10 +131,13 @@ export default {
     },
     handleChangeV(record, index, event) {
       // console.log(record, index, event.target.value)
-      if (+event.target.value > record.capacity - record.used) {
+      if (event.target.value > record.capacity - record.used) {
         this.$message.error('本次使用不能大于可用容积')
+        event.target.value = record.available
+        this.deepCloneUsageData.children[index].v = +event.target.value
+        this.$emit('getUsageData', this.deepCloneUsageData)
       } else {
-        this.deepCloneUsageData.children[index].v = event.target.value
+        this.deepCloneUsageData.children[index].v = +event.target.value
         this.$emit('getUsageData', this.deepCloneUsageData)
       }
     },
