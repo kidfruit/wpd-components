@@ -23,7 +23,7 @@
         :disabled="!record.isOpen"
         :max="record.capacity - record.used"
         :min="0"
-        @change="handleChangeV(index, $event)"
+        @change="handleChangeV(record, index, $event)"
       />
       <a-date-picker
         slot="time"
@@ -128,9 +128,14 @@ export default {
       this.deepCloneUsageData.children[index].isOpen = event
       this.$emit('getUsageData', this.deepCloneUsageData)
     },
-    handleChangeV(index, event) {
-      this.deepCloneUsageData.children[index].v = event.target.value
-      this.$emit('getUsageData', this.deepCloneUsageData)
+    handleChangeV(record, index, event) {
+      // console.log(record, index, event.target.value)
+      if (+event.target.value > record.capacity - record.used) {
+        this.$message.error('本次使用不能大于可用容积')
+      } else {
+        this.deepCloneUsageData.children[index].v = event.target.value
+        this.$emit('getUsageData', this.deepCloneUsageData)
+      }
     },
     handleChangeTime(index, event) {
       this.deepCloneUsageData.children[index].time = moment(event).format(this.formatTimeStr)

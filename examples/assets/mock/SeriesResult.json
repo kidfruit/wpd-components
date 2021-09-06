@@ -27,10 +27,16 @@
       "title": "分洪流量(m³/s)",
       "showType": "1-R",
       "echartsOptions_l": {
-        "smooth": true
+        "smooth": true,
+        "lineStyle": {
+          "type": "solid"
+        }
       },
       "echartsOptions_r": {
-        "smooth": true
+        "smooth": true,
+        "lineStyle": {
+          "type": "dashed"
+        }
       }
     },
     {
