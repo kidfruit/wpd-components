@@ -196,7 +196,7 @@ export default {
       let filterList = showTypeList.map((el) => el.showType.split('-')[0])
       let carouselCount = unique(filterList)
 
-      console.log(carouselCount, showTypeList)
+      // console.log(carouselCount, showTypeList)
       this.generateChartData(carouselCount, showTypeList)
     },
     handleReset() {
@@ -432,12 +432,11 @@ export default {
 
 <style lang="scss">
 .series-result {
-  padding: 40px 10px 10px;
-  .chart-box,
+  .chart-box {
+    height: 350px;
+  }
   .table-box {
-    height: 50%;
-    position: relative;
-    min-height: 250px;
+    height: calc(100% - 350px);
   }
   .show-hide {
     position: absolute;

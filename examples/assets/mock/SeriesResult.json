@@ -55,12 +55,14 @@
       "title": "蓄洪水位(m)",
       "showType": "1-L",
       "echartsOptions_l":{
+        "symbol": "none",
         "smooth": true,
         "areaStyle": {},
         "color": "rgba(188,225,255,0.8)",
         "lineStyle": {"color":"red","width":5,"type":"solid"}
       },
       "echartsOptions_r":{
+        "symbol": "none",
         "smooth": true,
         "areaStyle": {},
         "color": "rgba(188,225,255,0.8)",
