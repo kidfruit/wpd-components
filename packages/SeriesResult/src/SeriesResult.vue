@@ -1,5 +1,5 @@
 <template>
-  <div :class="classNames">
+  <div :class="classNames" :key="seriesResultRandomKey">
     <div class="chart-box">
       <div class="chart-switch-button">
         <a-select v-model="targetChartIndex">
@@ -36,9 +36,6 @@
         @cellEditDone="cellEditDone"
       />
     </div>
-    <!-- <div class="reset">
-        <a-button icon="undo" @click="handleReset" shape="circle"> </a-button>
-      </div> -->
   </div>
 </template>
 
@@ -118,6 +115,7 @@ export default {
       editCells: [],
       targetChartIndex: 0,
       d_chartTitle: [],
+      seriesResultRandomKey: +new Date() + (Math.random() * 1000).toFixed(0)
     }
   },
   created() {
@@ -304,7 +302,7 @@ export default {
                 field: el.field,
                 title: el.title,
                 selected: true,
-                yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 1 : 0,
+                yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
                 markLine: el.echartsOptions_l && el.echartsOptions_l.echartstype !== 'bar' ? {
                   symbol: 'none',
                   data: [
@@ -372,7 +370,7 @@ export default {
                 title: el.title,
                 selected: true,
                 yAxisIndex:
-                    positionMaps[el.showType.split('-')[1]] === 'left' ? 1 : 0,
+                    positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
               }
             })
       }
@@ -426,6 +424,9 @@ export default {
         this.d_chartTitle = this.chartList.map((j, i) => `图表（${i + 1}）`)
       }
     },
+    updateShow() {
+      this.seriesResultRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+    }
   },
 }
 </script>
