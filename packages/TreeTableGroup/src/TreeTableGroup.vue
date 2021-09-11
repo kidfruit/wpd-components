@@ -280,13 +280,13 @@ export default {
 
   .tree-container {
     flex: 0 0 auto;
-    width: 20%;
+    width: 15%;
     overflow: auto;
   }
 
   .table-container {
     flex: 0 0 auto;
-    width: 80%;
+    width: 85%;
     overflow: hidden;
     height: 100%;
   }
