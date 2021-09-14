@@ -19,7 +19,7 @@
 <script>
 import SeriesResult from '../../packages/SeriesResult/src/SeriesResult.vue';
 import fakeData from '../assets/mock/SeriesResult.json';
-import fakeData2 from '../assets/mock/SeriesResult2.json';
+// import fakeData from '../assets/mock/SeriesResult2.json';
 export default {
   components: {
     SeriesResult

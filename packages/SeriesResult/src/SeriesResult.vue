@@ -260,7 +260,7 @@ export default {
       //console.log("555555555555555",yAxisList)
       let yAxis = []
       for (let i = 0; i < yAxisList.length; i++) {
-        yAxis.push({
+        let yAxisItem = {
           title: '',
           // title: yAxisList[i].title,
           type: 'value',
@@ -281,7 +281,12 @@ export default {
           position: positionMaps[yAxisList[i].showType.split('-')[1]],
           min: (v) => MinMaxFunction('min', v),
           max: (v) => MinMaxFunction('max', v),
-        })
+        }
+        if (yAxisList[i].showType.split('-')[1] === 'L') {
+          yAxis[0] = yAxisItem
+        } else {
+          yAxis[1] = yAxisItem
+        }
       }
 
       return yAxis
