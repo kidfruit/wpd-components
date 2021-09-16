@@ -4,6 +4,7 @@
       ref="seriesResult"
       :classes="['test-series-result']"
       :splitIndex="splitIndex"
+      :showSplitIndex="false"
       :topmargin="topmargin"
       :tableColumns="tableColumns"
       :tableData="tableData"
@@ -18,8 +19,8 @@
 
 <script>
 import SeriesResult from '../../packages/SeriesResult/src/SeriesResult.vue';
-import fakeData from '../assets/mock/SeriesResult.json';
-// import fakeData from '../assets/mock/SeriesResult2.json';
+// import fakeData from '../assets/mock/SeriesResult.json';
+import fakeData from '../assets/mock/SeriesResult2.json';
 export default {
   components: {
     SeriesResult

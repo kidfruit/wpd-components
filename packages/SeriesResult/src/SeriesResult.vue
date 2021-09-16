@@ -19,7 +19,7 @@
           :chartOption="chartList[targetChartIndex].chartOption"
           :chartAxis="chartList[targetChartIndex].chartAxis"
           :id="chartList[targetChartIndex].id"
-          :splitIndex="splitIndex"
+          :splitIndex="showSplitIndex ? splitIndex : 0"
           :classes="['series-result-chart']"
           :chartData="chartList[targetChartIndex].chartData"
         />
@@ -84,6 +84,10 @@ export default {
     },
     splitIndex: {
       type: Number,
+    },
+    showSplitIndex: {
+      type: Boolean,
+      default: true
     },
     chartTitle: {
       type: Array,
@@ -182,11 +186,6 @@ export default {
               showType: el.showType,
               echartsOptions_l: el.echartsOptions_l,
               echartsOptions_r: el.echartsOptions_r
-              // echartstype: el.echartstype,
-              // areaStyle: el.areaStyle,
-              // step: el.step,
-              // color: el.color,
-              // smooth:el.smooth
             }
           })
           .filter((el) => el.showType)
@@ -292,42 +291,106 @@ export default {
       return yAxis
     },
     generateChartSeries(showTypeList, current) {
-      // console.log(showTypeList, current)
-      let firstTime = ''
-      if (this.splitIndex) {
-        firstTime = this.newTableData[this.splitIndex].time
-      }
-      if (firstTime !== '') {
-        let list = showTypeList
-            .filter((el) => el.showType.indexOf(current) !== -1)
-            .map((el, index) => {
-              // console.log(el,"----------------------")
+      // console.log(showTypeList, current, this.showSplitIndex)
+      if (this.showSplitIndex) {
+        let firstTime = ''
+        if (this.splitIndex) {
+          firstTime = this.newTableData[this.splitIndex].time
+        }
+        if (firstTime !== '') {
+          let list = showTypeList
+              .filter((el) => el.showType.indexOf(current) !== -1)
+              .map((el, index) => {
+                // console.log(el,"----------------------")
 
+                let obj = {
+                  field: el.field,
+                  title: el.title,
+                  selected: true,
+                  yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
+                  markLine: el.echartsOptions_l && el.echartsOptions_l.echartstype !== 'bar' ? {
+                    symbol: 'none',
+                    data: [
+                      {
+                        name: '标记线',
+                        xAxis: firstTime,
+                        lineStyle: {
+                          //警戒线的样式  ，虚实  颜色
+                          type: 'solid',
+                          color: '#000',
+                        },
+                      },
+                    ],
+                    label: { show: true, position: 'end' },
+                    silent: true,
+                  } :null,
+                }
+                return Object.assign(obj, el.echartsOptions_l)
+              })
+
+          const listYAxisIndexArray = []
+          list.forEach(item => {
+            listYAxisIndexArray.push(item.yAxisIndex)
+          })
+          // console.log(listYAxisIndexArray)
+          // console.log(!listYAxisIndexArray.includes(0))
+          if (!listYAxisIndexArray.includes(0)) {
+            list.forEach(item => {
+              item.yAxisIndex = 0
+            })
+          }
+
+          // 将3个series处理成一半实线一半虚线的series，一起应该6个series
+          let allList = []
+          for (let i = 0; i < list.length; i++) {
+            allList.push(list[i])
+            if (list[i].type !== 'bar') {//如果为柱状图则不需要实现虚线
+              showTypeList.forEach(item => {
+                if (item.field === list[i].field) {
+                  let obj = Object.assign({}, list[i], {
+                    // smooth: true, //关键点，为true是不支持虚线，实线就用true
+                    itemStyle: {
+                      normal: {
+                        lineStyle: Object.assign({}, list[i].lineStyle, item.echartsOptions_r.lineStyle),
+                      },
+                    },
+                  })
+                  // console.log(obj)
+                  allList.push(obj)
+                }
+              })
+            }
+          }
+          allList = allList.sort((a, b) => {
+            return a.name - b.name
+          })
+          return allList
+        } else {
+          return showTypeList
+              .filter((el) => el.showType.indexOf(current) !== -1)
+              .map((el, index) => {
+                return {
+                  field: el.field,
+                  title: el.title,
+                  selected: true,
+                  yAxisIndex:
+                      positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
+                }
+              })
+        }
+      } else {
+        console.log(showTypeList)
+        let list = showTypeList
+            .filter(el => el.showType.indexOf(current) !== -1)
+            .map(el => {
               let obj = {
                 field: el.field,
                 title: el.title,
                 selected: true,
                 yAxisIndex: positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
-                markLine: el.echartsOptions_l && el.echartsOptions_l.echartstype !== 'bar' ? {
-                  symbol: 'none',
-                  data: [
-                    {
-                      name: '标记线',
-                      xAxis: firstTime,
-                      lineStyle: {
-                        //警戒线的样式  ，虚实  颜色
-                        type: 'solid',
-                        color: '#000',
-                      },
-                    },
-                  ],
-                  label: { show: true, position: 'end' },
-                  silent: true,
-                } :null,
               }
-              return Object.assign(obj, el.echartsOptions_l)
+              return Object.assign(obj, el.echartsOptions_r)
             })
-
         const listYAxisIndexArray = []
         list.forEach(item => {
           listYAxisIndexArray.push(item.yAxisIndex)
@@ -340,44 +403,7 @@ export default {
           })
         }
 
-        // console.log(list)
-        // 将3个series处理成一半实线一半虚线的series，一起应该6个series
-        let allList = []
-        for (let i = 0; i < list.length; i++) {
-          allList.push(list[i])
-          if (list[i].type !== 'bar') {//如果为柱状图则不需要实现虚线
-            showTypeList.forEach(item => {
-              if (item.field === list[i].field) {
-                let obj = Object.assign({}, list[i], {
-                  // smooth: true, //关键点，为true是不支持虚线，实线就用true
-                  itemStyle: {
-                    normal: {
-                      lineStyle: Object.assign({}, list[i].lineStyle, item.echartsOptions_r.lineStyle),
-                    },
-                  },
-                })
-                // console.log(obj)
-                allList.push(obj)
-              }
-            })
-          }
-        }
-        allList = allList.sort((a, b) => {
-          return a.name - b.name
-        })
-        return allList
-      } else {
-        return showTypeList
-            .filter((el) => el.showType.indexOf(current) !== -1)
-            .map((el, index) => {
-              return {
-                field: el.field,
-                title: el.title,
-                selected: true,
-                yAxisIndex:
-                    positionMaps[el.showType.split('-')[1]] === 'left' ? 0 : 1,
-              }
-            })
+        return list
       }
     },
     generateChartData(carouselCount, showTypeList) {
@@ -407,13 +433,20 @@ export default {
             showTypeList,
             carouselCount[i]
         )
+        console.log(chartAxis.series)
         chartOption.legend = this.generateChartLegend(
             showTypeList,
             carouselCount[i]
         )
         chartOption.grid.top =20
         //   Math.max(...chartOption.legend.map((i) => i.top || 0)) + 34
-        let chartData = this.tableData
+        let chartData
+        if (this.showSplitIndex) {
+          chartData = this.tableData
+        } else {
+          chartData = this.tableData.slice(this.splitIndex)
+        }
+        console.log(chartData)
         this.chartList.push({
           chartOption,
           chartAxis,

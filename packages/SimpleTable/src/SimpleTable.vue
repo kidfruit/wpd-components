@@ -818,8 +818,8 @@ export default {
       let exportFile = this.hotInstance.getPlugin('exportFile')
       exportFile.downloadFile('csv', {
         filename: this.saveFileInput === '' ? '我的表格' : this.saveFileInput,
-        exportHiddenRows: true,
-        exportHiddenColumns: true,
+        exportHiddenRows: false,
+        exportHiddenColumns: false,
         columnHeaders: true,
         rowHeaders: true,
       })
