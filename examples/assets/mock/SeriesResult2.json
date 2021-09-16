@@ -25,7 +25,7 @@
       },
       "field": "RD_FDA_Q_P",
       "title": "分洪流量(m³/s)",
-      "showType": "1-R",
+      "showType": "1-L-L",
       "echartsOptions_l": {
         "smooth": true,
         "symbol": "none",
@@ -57,7 +57,7 @@
       },
       "field": "RD_FDA_Z_P",
       "title": "蓄洪水位(m)",
-      "showType": "1-L",
+      "showType": "1-R-L",
       "echartsOptions_l":{
         "symbol": "none",
         "smooth": true,
@@ -91,7 +91,7 @@
       },
       "field": "RD_FDA_V_P",
       "title": "蓄洪容积(百万m³)",
-      "showType": "2-L",
+      "showType": "2-L-L",
       "echartsOptions_l": {
         "smooth": true,
         "lineStyle": {

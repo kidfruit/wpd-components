@@ -105,6 +105,10 @@
       <h2>UsageSettingCompTest: 洲滩民垸使用设置控件</h2>
       <UsageSettingCompTest/>
     </div>
+    <div v-if="false">
+      <h2>TimePlayControl: 时间播放控制组件</h2>
+      <TimePlayControlTest/>
+    </div>
   </div>
 </template>
 
@@ -137,6 +141,7 @@ import SelectAndSortCompTest from "@/components/SelectAndSortCompTest";
 import DispatchRuleCompTest from "@/components/DispatchRuleCompTest";
 import DispatchRuleRelationshipMapTest from "@/components/DispatchRuleRelationshipMapTest";
 import UsageSettingCompTest from "./UsageSettingCompTest";
+import TimePlayControlTest from "@/components/TimePlayControlTest";
 
 export default {
   components: {
@@ -167,7 +172,8 @@ export default {
     StatusInfoCompTest,
     SelectAndSortCompTest,
     DispatchRuleRelationshipMapTest,
-    UsageSettingCompTest
+    UsageSettingCompTest,
+    TimePlayControlTest
   },
   name: 'HelloWorld',
   methods: {

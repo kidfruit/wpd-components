@@ -182,10 +182,11 @@ export default {
           .map((el) => {
             return {
               field: el.field,
-              title: el.title,
+              title: el.title.split('(')[0],
               showType: el.showType,
               echartsOptions_l: el.echartsOptions_l,
-              echartsOptions_r: el.echartsOptions_r
+              echartsOptions_r: el.echartsOptions_r,
+              dataUnit: el.dataUnit
             }
           })
           .filter((el) => el.showType)
@@ -193,7 +194,7 @@ export default {
       let filterList = showTypeList.map((el) => el.showType.split('-')[0])
       let carouselCount = unique(filterList)
 
-      // console.log(carouselCount, showTypeList)
+      console.log(carouselCount, showTypeList)
       this.generateChartData(carouselCount, showTypeList)
     },
     handleReset() {
@@ -222,6 +223,7 @@ export default {
         }
         return 0
       })
+      console.log('legendList', legendList)
       for (let i = 0; i < legendList.length; i++) {
         let obj = {
           itemWidth: 27,
@@ -231,8 +233,8 @@ export default {
           itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
           data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
         }
-        //console.log("positionMaps[legendList[i].showType.split('-')[1]]",positionMaps)
-        let leftRight = positionMaps[legendList[i].showType.split('-')[1]]
+
+        let leftRight = positionMaps[legendList[i].showType.split('-')[2]]
         if (leftRight === 'left') {
           obj = Object.assign({}, obj, {
             top: this.topmargin+ leftTop * 24, //调整位置
@@ -248,6 +250,7 @@ export default {
         }
         legends.push(obj)
       }
+      console.log('legends', legends)
       return legends
     },
     generateChartYaxis(showTypeList, current) {
@@ -256,12 +259,11 @@ export default {
       )
 
       yAxisList = uniqueObj(yAxisList, 'showType')
-      //console.log("555555555555555",yAxisList)
+      console.log('yAxisList', yAxisList)
       let yAxis = []
       for (let i = 0; i < yAxisList.length; i++) {
         let yAxisItem = {
-          title: '',
-          // title: yAxisList[i].title,
+          title: `${yAxisList[i].dataUnit.name}(${yAxisList[i].dataUnit.standardShow})`,
           type: 'value',
           axisLabel: {
             show: true,
@@ -379,7 +381,7 @@ export default {
               })
         }
       } else {
-        console.log(showTypeList)
+        // console.log(showTypeList)
         let list = showTypeList
             .filter(el => el.showType.indexOf(current) !== -1)
             .map(el => {
@@ -433,12 +435,12 @@ export default {
             showTypeList,
             carouselCount[i]
         )
-        console.log(chartAxis.series)
+        // console.log(chartAxis.series)
         chartOption.legend = this.generateChartLegend(
             showTypeList,
             carouselCount[i]
         )
-        chartOption.grid.top =20
+        chartOption.grid.top = 30
         //   Math.max(...chartOption.legend.map((i) => i.top || 0)) + 34
         let chartData
         if (this.showSplitIndex) {
@@ -446,7 +448,7 @@ export default {
         } else {
           chartData = this.tableData.slice(this.splitIndex)
         }
-        console.log(chartData)
+        // console.log(chartData)
         this.chartList.push({
           chartOption,
           chartAxis,
