@@ -5,7 +5,7 @@
         v-model="checkedNode"
         :treeData="treeData"
         defaultExpandAll
-        checkable
+        :checkable = "isEdit"
         @check="_onTreeCheck"
       />
     </div>
@@ -15,6 +15,7 @@
         :setting="setting"
         :tableData="m_tableData"
         :tableColumns="tableColumns"
+        :isEdit = "isEdit"
         @cellEditDone="_cellEditDone"
       />
     </div>
@@ -77,6 +78,12 @@ export default {
       default() {
         return undefined
       },
+    },
+    isEdit:{
+      type:Boolean,
+      default(){
+        return true
+      }
     }
   },
   data() {

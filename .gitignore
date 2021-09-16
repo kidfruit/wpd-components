@@ -26,3 +26,4 @@ package-lock.json
 
 # npm lock files
 package-lock.json
+lib

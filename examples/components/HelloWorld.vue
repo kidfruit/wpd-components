@@ -44,7 +44,7 @@
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>TreeTableGroup：树表联动组件</h2>
       <tree-table-group-test />
     </div>
