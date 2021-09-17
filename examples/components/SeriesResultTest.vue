@@ -6,6 +6,7 @@
       :splitIndex="splitIndex"
       :showSplitIndex="false"
       :topmargin="topmargin"
+      :chartOption="chartOption"
       :tableColumns="tableColumns"
       :tableData="tableData"
       :setting="{ rowHeaders: true }"
@@ -30,7 +31,15 @@ export default {
       tableData: [],
       tableColumns: [],
       splitIndex: 0,
-      topmargin:40
+      topmargin:40,
+      chartOption: {
+        grid: {
+          top: 30,
+          right: 50,
+          bottom: 50,
+          left: 200
+        }
+      }
     };
   },
   created() {

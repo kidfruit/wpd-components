@@ -76,6 +76,9 @@ export default {
     tableColumns: {
       type: Array,
     },
+    chartOption: {
+      type: Object
+    },
     setting: {
       type: Object,
     },
@@ -194,7 +197,7 @@ export default {
       let filterList = showTypeList.map((el) => el.showType.split('-')[0])
       let carouselCount = unique(filterList)
 
-      console.log(carouselCount, showTypeList)
+      // console.log(carouselCount, showTypeList)
       this.generateChartData(carouselCount, showTypeList)
     },
     handleReset() {
@@ -223,7 +226,7 @@ export default {
         }
         return 0
       })
-      console.log('legendList', legendList)
+      // console.log('legendList', legendList)
       for (let i = 0; i < legendList.length; i++) {
         let obj = {
           itemWidth: 27,
@@ -235,22 +238,22 @@ export default {
         }
 
         let leftRight = positionMaps[legendList[i].showType.split('-')[2]]
-        if (leftRight === 'left') {
+        if (leftRight === 'right') {
           obj = Object.assign({}, obj, {
             top: this.topmargin+ leftTop * 24, //调整位置
-            left: '1%',
+            right: '1%',
           })
           leftTop++
         } else {
           obj = Object.assign({}, obj, {
             top: rightTop * 24, //调整位置
-            right: '1%',
+            left: '1%',
           })
           rightTop++
         }
         legends.push(obj)
       }
-      console.log('legends', legends)
+      // console.log('legends', legends)
       return legends
     },
     generateChartYaxis(showTypeList, current) {
@@ -259,7 +262,7 @@ export default {
       )
 
       yAxisList = uniqueObj(yAxisList, 'showType')
-      console.log('yAxisList', yAxisList)
+      // console.log('yAxisList', yAxisList)
       let yAxis = []
       for (let i = 0; i < yAxisList.length; i++) {
         let yAxisItem = {
@@ -415,12 +418,7 @@ export default {
             text: '',
             left: 'center',
           },
-          legend: [],
-          grid: {
-            left: 200,
-            right: 200,
-            bottom: 50,
-          },
+          legend: []
         }
         let chartAxis = {
           xAxis: 'time',
@@ -440,7 +438,7 @@ export default {
             showTypeList,
             carouselCount[i]
         )
-        chartOption.grid.top = 30
+        chartOption = Object.assign(chartOption, this.chartOption)
         //   Math.max(...chartOption.legend.map((i) => i.top || 0)) + 34
         let chartData
         if (this.showSplitIndex) {

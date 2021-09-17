@@ -36,7 +36,7 @@
       <h2>DraggableChart：可连贯拖拽，图表联动的echarts图组件</h2>
       <coherent-draggable-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SectionInit：树表图组件(动态展示不同树节点的图表和表格数据)</h2>
       <SectionInitTest />
     </div>
@@ -60,7 +60,7 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
