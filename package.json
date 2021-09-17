@@ -1,7 +1,7 @@
 {
   "name": "wpd-components",
   "description": "npm wcp",
-  "version": "0.2.43",
+  "version": "0.2.44",
   "author": "cjwsjy",
   "private": false,
   "scripts": {
