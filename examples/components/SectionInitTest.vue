@@ -10,7 +10,7 @@
       :chartOption="chartOption"
       :extraOptions="extraOptions"
       :rawData="rawData"
-      :chartAxis="{ legend: { right: 150 } }"
+      :chartAxis="{ legend: { left: 'center' } }"
       @cellEditDone="cellEditDone"
     />
   </div>

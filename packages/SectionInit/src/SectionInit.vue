@@ -7,15 +7,20 @@
       align="middle"
     >
       <a-col :span="4" class="tree-container">
-        <simple-tree
-          ref="treeRef"
+        <a-tree
+          defaultExpandAll
           :treeData="treeData"
+          :selectedKeys="selectedKeys"
           @select="handleSelect"
-        ></simple-tree>
+        />
       </a-col>
       <a-col :span="20" style="height: 100%;">
-        <a-row v-if="!isShowSection" class="radio-button" style="margin-bottom: 10px;display: flex">
-          <a-radio-group default-value="a" button-style="solid" @change="handleChangeButton">
+        <a-row v-if="!isShowSection && isShowTab" class="radio-button" style="margin-bottom: 10px;display: flex">
+          <a-radio-group
+            default-value="a"
+            button-style="solid"
+            @change="handleChangeButton"
+          >
             <a-radio-button value="a">
               断面信息
             </a-radio-button>
@@ -152,7 +157,7 @@ export default {
   components: {
     StandardChart,
     SimpleTable,
-    SimpleTree,
+    // SimpleTree,
   },
   props: {
     classes: {
@@ -203,6 +208,7 @@ export default {
       instance: null,
       newOption: null,
       isShowSection: false,
+      isShowTab: null
     }
   },
   computed: {
@@ -211,6 +217,7 @@ export default {
     },
   },
   created() {
+    this.isShowTab = !!this.rawData.WPSectionGroup[0].data;
     this.handleData()
   },
   beforeMount() {},
@@ -343,7 +350,12 @@ export default {
       }, 10)
 
       let sectionContaminantsInfo = null
-      this.columns = []
+      this.columns = [{
+        field: 'time',
+        title: '时间',
+        titleAlign: 'center',
+        columnAlign: 'center',
+      }]
       this.rawData.WPSectionGroup.forEach(item => {
         if (this.treeData[0].children[item.id.split('_')[1] - 1].key === this.selectedKeys[0]) {
           sectionContaminantsInfo = item
@@ -364,19 +376,34 @@ export default {
         timeSeries: true,
         yAxis: [
           {
-            title: '值',
+            title: '流量(m³/s)',
             yAxisIndex: 0,
+          },
+          {
+            title: '含量(mg/L)',
+            yAxisIndex: 1,
           },
         ]
       }, this.chartAxis)
       this.newAxis.series = []
-      this.columns.forEach(item => {
-        this.newAxis.series.push({
-          field: item.field,
-          title: item.title,
-          selected: true,
-          yAxisIndex: 0,
-        })
+      this.columns.forEach((item, index) => {
+        if (index > 0) {
+          if (item.field === 'FR_RCH_CONTAMINATEQ_P') {
+            this.newAxis.series.push({
+              field: item.field,
+              title: item.title,
+              selected: true,
+              yAxisIndex: 0,
+            })
+          } else {
+            this.newAxis.series.push({
+              field: item.field,
+              title: item.title,
+              selected: true,
+              yAxisIndex: 1,
+            })
+          }
+        }
       })
 
       console.log(sectionContaminantsInfo)
@@ -425,19 +452,19 @@ export default {
       console.log(this.selectedKeys[0])
       console.log(val)
       if (this.selectedKeys[0]) {
-        let id = null
+        let nodeId = null
         this.treeData[0].children.forEach((item, index) => {
           if (this.selectedKeys[0] === item.key) {
-            id = `${this.rawData.riverReachId}_${index + 1}`
+            nodeId = `${this.rawData.riverReachId}_${index + 1}`
           }
         })
         this.$emit('cellEditDone', {
-          id,
+          nodeId,
           ...val
         })
       } else {
         this.$emit('cellEditDone', {
-          id: this.rawData.riverReachId,
+          nodeId: this.rawData.riverReachId,
           ...val
         })
       }
