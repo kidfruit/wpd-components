@@ -286,10 +286,15 @@ export default {
           min: (v) => MinMaxFunction('min', v),
           max: (v) => MinMaxFunction('max', v),
         }
-        if (yAxisList[i].showType.split('-')[1] === 'L') {
+        // console.log(yAxisList)
+        if (yAxisList.length === 1) {
           yAxis[0] = yAxisItem
         } else {
-          yAxis[1] = yAxisItem
+          if (yAxisList[i].showType.split('-')[1] === 'L') {
+            yAxis[0] = yAxisItem
+          } else {
+            yAxis[1] = yAxisItem
+          }
         }
       }
 
