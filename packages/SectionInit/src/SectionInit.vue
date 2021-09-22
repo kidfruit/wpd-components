@@ -57,8 +57,6 @@
 <script>
 import StandardChart from '../../StandardChart/src/StandardChart.vue'
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
-import SimpleTree from '../../SimpleTree/src/SimpleTree.vue'
-import * as echarts from 'echarts'
 let rCols = [
   {
     field: 'sectionCode',
@@ -124,7 +122,6 @@ let rAxis = {
   ],
   series: [],
 }
-
 let qAxis = {
   xAxis: 'diArray',
   timeSeries: true,
@@ -156,8 +153,7 @@ export default {
   name: 'SectionInit',
   components: {
     StandardChart,
-    SimpleTable,
-    // SimpleTree,
+    SimpleTable
   },
   props: {
     classes: {
@@ -216,16 +212,15 @@ export default {
       return ['section-init'].concat(this.classes)
     },
   },
-  created() {
-    this.isShowTab = !!this.rawData.WPSectionGroup[0].data;
-    this.handleData()
-  },
-  beforeMount() {},
-  mounted() {
-    // this.handleData()
-    // setTimeout(() => {
-    //   this.setTableWidth('100%')
-    // }, 10)
+  watch: {
+    rawData: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.isShowTab = !!this.rawData.WPSectionGroup[0].data;
+        this.handleData()
+      }
+    }
   },
   methods: {
     initqzChartTable() {
@@ -331,7 +326,7 @@ export default {
       this.updateShow()
     },
     initSectionContaminants() {
-      console.log(this.selectedKeys)
+      // console.log(this.selectedKeys)
       // 清除殘留的圖表數據
       this.$refs.chartRef.clear()
       this.newOption = Object.assign(
@@ -369,7 +364,7 @@ export default {
           })
         }
       })
-      console.log(this.columns)
+      // console.log(this.columns)
 
       this.newAxis = Object.assign({
         xAxis: 'time',
@@ -406,7 +401,7 @@ export default {
         }
       })
 
-      console.log(sectionContaminantsInfo)
+      // console.log(sectionContaminantsInfo)
       this.rawData.time.forEach(item => {
         this.newData.push({
           time: item
@@ -417,7 +412,7 @@ export default {
           item[val.dataId] = val.data[index]
         })
       })
-      console.log(this.newData)
+      // console.log(this.newData)
     },
     handleSelect(keys, e) {
       this.selectedKeys = keys
@@ -436,7 +431,7 @@ export default {
       }
     },
     handleChangeButton(e) {
-      console.log(e, e.target.value)
+      // console.log(e, e.target.value)
       if (e.target.value === 'a') {
         this.newData = []
         this.initSectionInfo()
@@ -449,8 +444,8 @@ export default {
       this.randomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
     cellEditDone(val) {
-      console.log(this.selectedKeys[0])
-      console.log(val)
+      // console.log(this.selectedKeys[0])
+      // console.log(val)
       if (this.selectedKeys[0]) {
         let nodeId = null
         this.treeData[0].children.forEach((item, index) => {
