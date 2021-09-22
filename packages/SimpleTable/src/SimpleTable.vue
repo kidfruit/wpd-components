@@ -6,7 +6,7 @@
   >
     <div
       class="preheat-switch"
-      v-if="splitIndex >= 0"
+      v-if="splitIndex > 0"
       :title="preheat.show ? '关闭预热数据' : '展开预热数据'"
     >
       <span class="ops" @click="preheatSwitch">
