@@ -142,7 +142,7 @@ let qAxis = {
 }
 let rGrid = [
   //0降雨
-  { x: '10%', y: '10%', bottom: 50 },
+  { bottom: 50 },
   //1水位流量
   // { x: "7%", y2: "7%", height: "35%", left: "10%", bottom: "7%" },
 ]
