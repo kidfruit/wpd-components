@@ -211,49 +211,53 @@ export default {
       this.editCells = []
     },
     generateChartLegend(showTypeList, current) {
-      let legendList = showTypeList.filter(
-          (el) => el.showType.indexOf(current) !== -1
-      )
-      let legends = []
-      let leftTop = 0,
-          rightTop = 0
-      legendList = legendList.sort((a, b) => {
-        if (a.showType < b.showType) {
-          return -1
-        }
-        if (a.showType > b.showType) {
-          return 1
-        }
-        return 0
-      })
+      // 图例控制在左右两边
+      // let legendList = showTypeList.filter(
+      //     (el) => el.showType.indexOf(current) !== -1
+      // )
+      // let legends = []
+      // let leftTop = 0,
+      //     rightTop = 0
+      // legendList = legendList.sort((a, b) => {
+      //   if (a.showType < b.showType) {
+      //     return -1
+      //   }
+      //   if (a.showType > b.showType) {
+      //     return 1
+      //   }
+      //   return 0
+      // })
       // console.log('legendList', legendList)
-      for (let i = 0; i < legendList.length; i++) {
-        let obj = {
-          itemWidth: 27,
-          itemHeight: 16,
-          show: true,
-          textStyle: { fontSize: 14 },
-          itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
-          data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
-        }
-
-        let leftRight = positionMaps[legendList[i].showType.split('-')[2]]
-        if (leftRight === 'right') {
-          obj = Object.assign({}, obj, {
-            top: this.topmargin+ leftTop * 24, //调整位置
-            right: '1%',
-          })
-          leftTop++
-        } else {
-          obj = Object.assign({}, obj, {
-            top: rightTop * 24, //调整位置
-            left: '1%',
-          })
-          rightTop++
-        }
-        legends.push(obj)
-      }
+      // for (let i = 0; i < legendList.length; i++) {
+      //   let obj = {
+      //     itemWidth: 27,
+      //     itemHeight: 16,
+      //     show: true,
+      //     textStyle: { fontSize: 14 },
+      //     itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
+      //     data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
+      //   }
+      //
+      //   let leftRight = positionMaps[legendList[i].showType.split('-')[2]]
+      //   if (leftRight === 'right') {
+      //     obj = Object.assign({}, obj, {
+      //       top: this.topmargin+ leftTop * 24, //调整位置
+      //       right: '1%',
+      //     })
+      //     leftTop++
+      //   } else {
+      //     obj = Object.assign({}, obj, {
+      //       top: rightTop * 24, //调整位置
+      //       left: '1%',
+      //     })
+      //     rightTop++
+      //   }
+      //   legends.push(obj)
+      // }
       // console.log('legends', legends)
+      let legends = [{
+        bottom: 0
+      }]
       return legends
     },
     generateChartYaxis(showTypeList, current) {

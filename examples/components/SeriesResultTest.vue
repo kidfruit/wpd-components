@@ -34,10 +34,8 @@ export default {
       topmargin:40,
       chartOption: {
         grid: {
-          top: 30,
           right: 50,
-          bottom: 50,
-          left: 200
+          left: 50
         }
       }
     };

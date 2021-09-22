@@ -142,12 +142,12 @@ let qAxis = {
 }
 let rGrid = [
   //0降雨
-  { x: '9%', y: '9%', height: '84%', left: '5%', right: '5%' },
+  { x: '10%', y: '10%', bottom: 50 },
   //1水位流量
   // { x: "7%", y2: "7%", height: "35%", left: "10%", bottom: "7%" },
 ]
 let qGrid = {
-  bottom: 70,
+  bottom: 50,
 }
 export default {
   name: 'SectionInit',
@@ -224,7 +224,7 @@ export default {
   },
   methods: {
     initqzChartTable() {
-      this.newOption = Object.assign({}, this.chartOption, { grid: rGrid })
+      this.newOption = Object.assign({}, this.chartOption, { grid: rGrid, legend: { bottom: 0} })
       this.columns = rCols
       const eidtDataCols = []
       this.rawData.eidtData.forEach(item => {
@@ -305,7 +305,7 @@ export default {
       this.newOption = Object.assign(
           {},
           this.chartOption,
-          { grid: qGrid },
+          { grid: qGrid, legend: { bottom: 0} },
           this.extraOptions
       )
       setTimeout(() => {
@@ -337,7 +337,8 @@ export default {
             title: {
               text: '断面污染物',
               left: 'center',
-            }
+            },
+            legend: { bottom: 0}
           }
       )
       setTimeout(() => {
