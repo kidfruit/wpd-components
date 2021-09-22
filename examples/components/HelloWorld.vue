@@ -20,7 +20,7 @@
       <h2>MultiOptionTable：流程模型选择专用表组件</h2>
       <multi-option-table-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>ResultHydroDynamic：水动力成果展示组件</h2>
       <result-hydro-dynamic-test />
     </div>
@@ -44,7 +44,7 @@
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>TreeTableGroup：树表联动组件</h2>
       <tree-table-group-test />
     </div>
@@ -92,7 +92,7 @@
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>DispatchRuleCompTest: 调度规则控件</h2>
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleCompTest/>
