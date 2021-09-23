@@ -615,7 +615,7 @@ export default {
             }
           }
         })
-        this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+        // this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
     },
     processOptionColumn(item, fromV, toV) {

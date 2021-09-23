@@ -165,6 +165,11 @@ export default {
         this.newData.push(newDataItem)
       })
 
+      // 图例位置调整
+      this.chartOption.legend = {
+        top: 25
+      }
+
       this.localSetting = Object.assign({}, this.setting)
     },
     handleChangeSelected(value) {
