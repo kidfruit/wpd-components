@@ -12,30 +12,6 @@ const defaultOption = {
   },
   tooltip: {
     trigger: 'axis',
-    formatter(params) {
-      let list = []
-      params.map((i) => {
-        if (
-          !list.find(
-            (j) => i.value === j.value && i.seriesName === j.seriesName
-          )
-        ) {
-          list.push(i)
-        }
-      })
-      return list
-        .map((item) => {
-          if (item.value === null || item.value === '-') return ''
-          else
-            return (
-              item.marker +
-              item.seriesName +
-              `<b style="margin-left:5px;">${item.value}</b>`
-            )
-        })
-        .filter((i) => i)
-        .join('<br />')
-    },
   },
   grid: {},
   legend: {
@@ -189,6 +165,44 @@ export default {
         this.chartAxis.yAxis = this.chartAxis.yAxis.sort((a, b) => {
           return a['yAxisIndex'] - b['yAxisIndex']
         })
+      }
+
+      // tooltip
+      option.tooltip.formatter = (params) => {
+        let list = []
+        params.map((i) => {
+          if (
+              !list.find(
+                  (j) => i.value === j.value && i.seriesName === j.seriesName
+              )
+          ) {
+            list.push(i)
+          }
+        })
+        // console.log(list, option.legend)
+        option.legend.forEach(item => {
+          if (item.itemStyle) {
+            list.forEach(val => {
+              if (item.data[0].name === val.seriesName) {
+                let tempMarker1 = val.marker.split('background-color')[0]
+                let tempMarker2 = val.marker.split('background-color')[1].split(';')[1]
+                val.marker = `${tempMarker1}background-color:${item.itemStyle.color};${tempMarker2}`
+              }
+            })
+          }
+        })
+        return list
+            .map((item) => {
+              if (item.value === null || item.value === '-') return ''
+              else
+                return (
+                    item.marker +
+                    item.seriesName +
+                    `<b style="margin-left:5px;">${item.value}</b>`
+                )
+            })
+            .filter((i) => i)
+            .join('<br />')
       }
 
       option.yAxis = this.chartAxis.yAxis.map(

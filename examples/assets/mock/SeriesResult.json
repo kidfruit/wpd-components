@@ -1,6 +1,8 @@
 {
   "chartTitle": [],
-  "classes": ["processResultInterChart"],
+  "classes": [
+    "processResultInterChart"
+  ],
   "setting": {
     "rowHeaders": true
   },
@@ -17,16 +19,31 @@
         "standardShow": "m³/s",
         "name": "流量",
         "description": null,
-        "formatPrecision": 3,
+        "formatPrecision": 2,
         "id": "FLOW",
         "dbX": 1,
         "formatType": 2,
         "showX": 1
       },
-      "field": "RD_FDA_Q_P",
-      "title": "分洪流量(m³/s)",
-      "showType": "1-R",
-      "smooth": true
+      "field": "FR_ST_Q_P",
+      "title": "流量(m³/s)",
+      "showType": "1-L",
+      "echartsOptions_l": {
+        "smooth": true,
+        "symbol": "none",
+        "lineStyle": {
+          "type": "solid",
+          "color": "#5470c6"
+        }
+      },
+      "echartsOptions_r": {
+        "smooth": true,
+        "symbol": "none",
+        "lineStyle": {
+          "type": "dashed",
+          "color": "#5470c6"
+        }
+      }
     },
     {
       "dataUnit": {
@@ -40,157 +57,109 @@
         "formatType": 2,
         "showX": 1
       },
-      "field": "RD_FDA_Z_P",
-      "title": "蓄洪水位(m)",
-      "showType": "1-L",
-      "smooth": true,
-      "areaStyle": {},
-      "color": "rgba(188,225,255,0.8)"
-    },
-    {
-      "dataUnit": {
-        "viewShow": "百万m³",
-        "standardShow": "百万m³",
-        "name": "库容",
-        "description": null,
-        "formatPrecision": 3,
-        "id": "STORAGE",
-        "dbX": 1,
-        "formatType": 2,
-        "showX": 1
+      "field": "FR_ST_Z_P",
+      "title": "水位(m)",
+      "showType": "1-R",
+      "echartsOptions_l": {
+        "smooth": true,
+        "symbol": "none",
+        "lineStyle": {
+          "color": "#1E90FF",
+          "width": 3,
+          "type": "solid"
+        }
       },
-      "field": "RD_FDA_V_P",
-      "title": "蓄洪容积(百万m³)",
-      "showType": "2-L",
-      "smooth": true
+      "echartsOptions_r": {
+        "smooth": true,
+        "symbol": "none",
+        "lineStyle": {
+          "color": "#1E90FF",
+          "width": 3,
+          "type": "dashed"
+        }
+      }
     }
   ],
   "tableData": [
     {
-      "time": "2020-07-13 08",
-      "RD_FDA_Q_P": 0,
-      "RD_FDA_Z_P": 0,
-      "RD_FDA_V_P": 0
+      "time": "2021-09-13 08",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-13 14",
-      "RD_FDA_Q_P": 0,
-      "RD_FDA_Z_P": 0,
-      "RD_FDA_V_P": 0
+      "time": "2021-09-13 20",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-13 20",
-      "RD_FDA_Q_P": 0,
-      "RD_FDA_Z_P": 0,
-      "RD_FDA_V_P": 0
+      "time": "2021-09-14 08",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-14 02",
-      "RD_FDA_Q_P": 0,
-      "RD_FDA_Z_P": 0,
-      "RD_FDA_V_P": 0
+      "time": "2021-09-14 20",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-14 08",
-      "RD_FDA_Q_P": 0,
-      "RD_FDA_Z_P": 0,
-      "RD_FDA_V_P": 0
+      "time": "2021-09-15 08",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-14 14",
-      "RD_FDA_Q_P": 0,
-      "RD_FDA_Z_P": 0,
-      "RD_FDA_V_P": 0
+      "time": "2021-09-15 20",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-14 20",
-      "RD_FDA_Q_P": 0,
-      "RD_FDA_Z_P": 0,
-      "RD_FDA_V_P": 0
+      "time": "2021-09-16 08",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-15 02",
-      "RD_FDA_Q_P": 0,
-      "RD_FDA_Z_P": 0,
-      "RD_FDA_V_P": 0
+      "time": "2021-09-16 20",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-15 08",
-      "RD_FDA_Q_P": 0,
-      "RD_FDA_Z_P": 0,
-      "RD_FDA_V_P": 0
+      "time": "2021-09-17 08",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-15 14",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
+      "time": "2021-09-17 20",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-15 20",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
+      "time": "2021-09-18 08",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-16 02",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
+      "time": "2021-09-18 20",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-16 08",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
+      "time": "2021-09-19 08",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-16 14",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
+      "time": "2021-09-19 20",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-16 20",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
+      "time": "2021-09-20 08",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     },
     {
-      "time": "2020-07-17 02",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
-    },
-    {
-      "time": "2020-07-17 08",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
-    },
-    {
-      "time": "2020-07-17 14",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
-    },
-    {
-      "time": "2020-07-17 20",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
-    },
-    {
-      "time": "2020-07-18 02",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
-    },
-    {
-      "time": "2020-07-18 08",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
+      "time": "2021-09-20 20",
+      "FR_ST_Q_P": 0,
+      "FR_ST_Z_P": 0
     }
   ]
 }

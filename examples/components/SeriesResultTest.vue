@@ -4,11 +4,13 @@
       ref="seriesResult"
       :classes="['test-series-result']"
       :splitIndex="splitIndex"
+      :showSplitIndex="false"
       :topmargin="topmargin"
+      :chartOption="chartOption"
       :tableColumns="tableColumns"
       :tableData="tableData"
       :setting="{ rowHeaders: true }"
-      :editable="false"
+      :editable="true"
     />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>
@@ -18,8 +20,8 @@
 
 <script>
 import SeriesResult from '../../packages/SeriesResult/src/SeriesResult.vue';
-import fakeData from '../assets/mock/SeriesResult.json';
-import fakeData2 from '../assets/mock/SeriesResult2.json';
+// import fakeData from '../assets/mock/SeriesResult.json';
+import fakeData from '../assets/mock/SeriesResult2.json';
 export default {
   components: {
     SeriesResult
@@ -29,7 +31,13 @@ export default {
       tableData: [],
       tableColumns: [],
       splitIndex: 0,
-      topmargin:40
+      topmargin:40,
+      chartOption: {
+        grid: {
+          right: 50,
+          left: 50
+        }
+      }
     };
   },
   created() {

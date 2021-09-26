@@ -10,9 +10,10 @@
       :chartOption="chartOption"
       :extraOptions="extraOptions"
       :rawData="rawData"
-      :chartAxis="{ legend: { right: 150 } }"
+      :chartAxis="{ legend: { left: 'center' } }"
       @cellEditDone="cellEditDone"
     />
+    <button @click="update">刷新</button>
   </div>
 </template>
 
@@ -72,6 +73,9 @@ export default {
   methods: {
     cellEditDone(val) {
       console.log(val)
+    },
+    update() {
+      this.$refs.SectionInit.updateShow()
     }
   }
 }

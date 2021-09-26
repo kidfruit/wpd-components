@@ -6,6 +6,7 @@
       :tableData="tableData"
       :setting="setting"
       :tableColumns="tableColumns"
+      :textAlignment="textAlignment"
       @cellEditDone="cellEditDone"
       @moveDone="moveDone"
     ></simple-table>
@@ -33,128 +34,154 @@ export default {
       splitIndex:4,
       visible: true,
       classNames: ['testTable'],
-      setting: { rowHeaders:true },
+      textAlignment: ['htCenter', 'htMiddle'],
+      setting: {
+        rowHeaders: true,
+        // mergeCells: [
+        //   {
+        //     "row": 7,
+        //     "col": 4,
+        //     "rowspan": 4,
+        //     "colspan": 1,
+        //     "removed": false
+        //   },
+        //   {
+        //     "row": 7,
+        //     "col": 2,
+        //     "rowspan": 4,
+        //     "colspan": 1,
+        //     "removed": false
+        //   },
+        //   {
+        //     "row": 7,
+        //     "col": 3,
+        //     "rowspan": 4,
+        //     "colspan": 1,
+        //     "removed": false
+        //   }
+        // ]
+      },
       tableData: [
         {
-          dim2: 0,
-          dim1: 374,
-          time: '2021-03-29T15:00:00',
-          index: 1,
-          funcType: 'SYN_FUNC_CONF',
-          checkbox: true,
+          "dim2": 0,
+          "dim1": 374,
+          "time": "2021-03-29T15:00:00",
+          "index": 1,
+          "funcType": "SYN_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 52.3,
-          dim1: 400,
-          time: '2021-03-29T21:00:00',
-          index: 2,
-          funcType: 'DSP_FUNC_CONF',
-          checkbox: true,
+          "dim2": 52.3,
+          "dim1": 400,
+          "time": "2021-03-29T21:00:00",
+          "index": 2,
+          "funcType": "DSP_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 681.7,
-          dim1: 450,
-          time: '2021-03-30T03:00:00',
-          index: 3,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 681.7,
+          "dim1": 450,
+          "time": "2021-03-30T03:00:00",
+          "index": 3,
+          "funcType": "FSA_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 2483,
-          dim1: 500,
-          time: '2021-03-30T09:00:00',
-          index: 4,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 2483,
+          "dim1": 500,
+          "time": "2021-03-30T09:00:00",
+          "index": 4,
+          "funcType": "FSA_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 4341.4,
-          dim1: 530,
-          time: '2021-03-30T15:00:00',
-          index: 5,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 4341.4,
+          "dim1": 530,
+          "time": "2021-03-30T15:00:00",
+          "index": 5,
+          "funcType": "BW_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 5112.2,
-          dim1: 540,
-          time: '2021-03-30T21:00:00',
-          index: 6,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 0,
+          "dim1": 0,
+          "time": "2021-03-30T21:00:00",
+          "index": 6,
+          "funcType": "BW_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 5973.9,
-          dim1: 550,
-          time: '2021-03-31T03:00:00',
-          index: 7,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 0,
+          "dim1": 0,
+          "time": "2021-03-31T03:00:00",
+          "index": 7,
+          "funcType": "BW_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 6923,
-          dim1: 560,
-          time: '2021-03-31T09:00:00',
-          index: 8,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 6923,
+          "dim1": 560,
+          "time": "2021-03-31T09:00:00",
+          "index": 8,
+          "funcType": "FSA_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 7953.3,
-          dim1: 570,
-          time: '2021-03-31T15:00:00',
-          index: 9,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 7953.3,
+          "dim1": "5701",
+          "time": "2021-03-31T15:00:00",
+          "index": 9,
+          "funcType": "DB_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 9075.4,
-          dim1: 580,
-          time: '2021-03-31T21:00:00',
-          index: 10,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 0,
+          "dim1": 0,
+          "time": "2021-03-31T21:00:00",
+          "index": 10,
+          "funcType": "DB_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 10281.4,
-          dim1: 590,
-          time: '2021-04-01T03:00:00',
-          index: 11,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 0,
+          "dim1": 0,
+          "time": "2021-04-01T03:00:00",
+          "index": 11,
+          "funcType": "DB_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 11573.8,
-          dim1: 600,
-          time: '2021-04-01T09:00:00',
-          index: 12,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 11573.8,
+          "dim1": 600,
+          "time": "2021-04-01T09:00:00",
+          "index": 12,
+          "funcType": "FSA_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 12955.3,
-          dim1: 610,
-          time: '2021-04-01T15:00:00',
-          index: 13,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 12955.3,
+          "dim1": 610,
+          "time": "2021-04-01T15:00:00",
+          "index": 13,
+          "funcType": "FR_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 14433.3,
-          dim1: 620,
-          time: '2021-04-01T21:00:00',
-          index: 14,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
+          "dim2": 0,
+          "dim1": 0,
+          "time": "2021-04-01T21:00:00",
+          "index": 14,
+          "funcType": "FR_FUNC_CONF",
+          "checkbox": true
         },
         {
-          dim2: 17699.7,
-          dim1: 640,
-          time: '2021-04-02T03:00:00',
-          index: 15,
-          funcType: 'FSA_FUNC_CONF',
-          checkbox: true,
-        },
+          "dim2": 0,
+          "dim1": 0,
+          "time": "2021-04-02T03:00:00",
+          "index": 15,
+          "funcType": "FR_FUNC_CONF",
+          "checkbox": true
+        }
       ],
       tableColumns: [
         {
@@ -241,6 +268,21 @@ export default {
               id: 'FPC_FUNC_CONF',
             },
           ],
+          sourceRight: [
+            {
+              name: '河道演算功能',
+              id: 'FR_FUNC_CONF',
+            },
+            {
+              name: '水库回水功能',
+              id: 'BW_FUNC_CONF',
+            },
+            {
+              name: '水库溃坝功能',
+              id: 'DB_FUNC_CONF',
+            },
+          ],
+          sourceRightLink:["dim1","dim2"]
         },
         {
           field: 'checkbox',
@@ -292,7 +334,10 @@ export default {
       console.log(this.$refs['tableChart']._getSelectData('checkbox'))
     },
     cellEditDone(value) {
+      const { rowIndex, field, newValue, oldValue } = value
       console.log('cellEditDone', value)
+      this.tableData[rowIndex][field] = newValue
+      console.log(this.tableData)
     },
     moveDone(value) {
       console.log('moveDone', value)
