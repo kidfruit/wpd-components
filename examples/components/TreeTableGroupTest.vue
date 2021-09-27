@@ -8,6 +8,7 @@
         :tableColumns="tableColumns"
         :setting="setting"
         :tableData="data"
+        :isEdit="false"
         @checkedKeys="checkedKeys"
         @cellEditDone="cellEditDone"
       />

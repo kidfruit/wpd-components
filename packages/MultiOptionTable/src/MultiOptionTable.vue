@@ -65,6 +65,12 @@ export default {
     tableColumns: {
       type: Array,
     },
+    isEdit:{
+      type:Boolean,
+      default(){
+        return true
+      }
+    }
   },
   components: {
     HotTable,
@@ -165,6 +171,7 @@ export default {
             _this.refreshColumn()
           })
         },
+        readOnly: !this.isEdit
       })
     },
     columns() {

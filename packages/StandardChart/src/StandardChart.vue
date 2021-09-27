@@ -60,8 +60,7 @@ const yAxisOption = {
     return +(value.max + (value.max - value.min) * 0.15).toFixed(2)
   },
   min: function (value) {
-    let minV = +(value.min - (value.max - value.min) * 0.15).toFixed(2)
-    return minV >= 0 ? minV : 0
+    return +(value.min - (value.max - value.min) * 0.15).toFixed(2)
   }
 }
 let echartsInstance = null

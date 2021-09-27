@@ -21,6 +21,7 @@ import WpdTimePicker from "./WpdTimePicker/src/WpdTimePicker.vue";
 import SchemeComparisonChart from "./SchemeComparisonChart/src/SchemeComparisonChart";
 import SeriesQZ from "./SeriesQZ/src/SeriesQZ";
 import DispatchRuleRelationshipMap from "./DispatchRuleRelationshipMap/src/DispatchRuleRelationshipMap";
+import TimePlayControl from "./TimePlayControl/src/TimePlayControl";
 
 import testDirective from "./testDirective/src/testDirective";
 import WpdTimePickerUtile from "./WpdTimePickerUtile/src/WpdTimePickerUtile";
@@ -64,7 +65,8 @@ const components = [
   SeriesQZ,
   DispatchRuleComp,
   DispatchRuleRelationshipMap,
-  UsageSettingComp
+  UsageSettingComp,
+  TimePlayControl
 ];
 
 // 存储指令映射
@@ -121,5 +123,6 @@ export default {
   DispatchRuleComp,
   DispatchRuleRelationshipMap,
   UsageSettingComp,
+  TimePlayControl,
   ...directives,
 };

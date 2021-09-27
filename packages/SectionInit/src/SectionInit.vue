@@ -7,13 +7,29 @@
       align="middle"
     >
       <a-col :span="4" class="tree-container">
-        <simple-tree
-          ref="treeRef"
+        <a-tree
+          defaultExpandAll
           :treeData="treeData"
+          :selectedKeys="selectedKeys"
           @select="handleSelect"
-        ></simple-tree>
+        />
       </a-col>
       <a-col :span="20" style="height: 100%;">
+        <a-row v-if="!isShowSection && isShowTab" class="radio-button" style="margin-bottom: 10px;display: flex">
+          <a-radio-group
+            default-value="a"
+            button-style="solid"
+            @change="handleChangeButton"
+          >
+            <a-radio-button value="a">
+              断面信息
+            </a-radio-button>
+            <a-radio-button value="b">
+              断面污染物
+            </a-radio-button>
+          </a-radio-group>
+        </a-row>
+        <a-row v-else style="height: 42px;"></a-row>
         <a-row class="chart-container">
           <standard-chart
             ref="chartRef"
@@ -41,8 +57,6 @@
 <script>
 import StandardChart from '../../StandardChart/src/StandardChart.vue'
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
-import SimpleTree from '../../SimpleTree/src/SimpleTree.vue'
-import * as echarts from 'echarts'
 let rCols = [
   {
     field: 'sectionCode',
@@ -108,7 +122,6 @@ let rAxis = {
   ],
   series: [],
 }
-
 let qAxis = {
   xAxis: 'diArray',
   timeSeries: true,
@@ -129,19 +142,18 @@ let qAxis = {
 }
 let rGrid = [
   //0降雨
-  { x: '9%', y: '9%', height: '84%', left: '5%', right: '5%' },
+  { bottom: 50 },
   //1水位流量
   // { x: "7%", y2: "7%", height: "35%", left: "10%", bottom: "7%" },
 ]
 let qGrid = {
-  bottom: 70,
+  bottom: 50,
 }
 export default {
   name: 'SectionInit',
   components: {
     StandardChart,
-    SimpleTable,
-    SimpleTree,
+    SimpleTable
   },
   props: {
     classes: {
@@ -191,6 +203,8 @@ export default {
       selectedKeys: [],
       instance: null,
       newOption: null,
+      isShowSection: false,
+      isShowTab: null
     }
   },
   computed: {
@@ -198,144 +212,258 @@ export default {
       return ['section-init'].concat(this.classes)
     },
   },
-  created() {
-    this.handleData()
-  },
-  beforeMount() {},
-  mounted() {
-    // this.handleData()
-    // setTimeout(() => {
-    //   this.setTableWidth('100%')
-    // }, 10)
+  watch: {
+    rawData: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.isShowTab = !!this.rawData.WPSectionGroup[0].data;
+        this.handleData()
+      }
+    }
   },
   methods: {
-    // setTableWidth(width) {
-    //   // 也可以动态设置handsontable的宽度
-    //   this.$refs.tableRef.updateWidth(width)
-    // },
-    handleSelect(keys) {
+    initqzChartTable() {
+      this.newOption = Object.assign({}, this.chartOption, { grid: rGrid, legend: { bottom: 0} })
+      this.columns = rCols
+      const eidtDataCols = []
+      this.rawData.eidtData.forEach(item => {
+        eidtDataCols.push({
+          field: item.key,
+          title: item.title
+        })
+      })
+      this.columns = this.columns.concat(eidtDataCols)
+      rAxis.xAxis.forEach((el) => {
+        el.data = this.rawData.sectionDataList.map((el) => el.sectionCode)
+      })
+      // console.log(eidtDataCols)
+      rAxis.series = [
+        {
+          field: 'SECTION_BEG_Z_SET',
+          title: '各断面期初水位(m)',
+          selected: true,
+          yAxisIndex: 0,
+          xAxisIndex: 0,
+        },
+        {
+          field: 'SECTION_BEG_Q_SET',
+          title: '各断面期初流量(m³/s)',
+          selected: true,
+          yAxisIndex: 1,
+          xAxisIndex: 0,
+        },
+      ]
+      // console.log(rAxis.series)
+      eidtDataCols.forEach(item => {
+        if (item.field === 'SECTION_BEG_Z_SET' || item.field === 'SECTION_BEG_Q_SET') {
+          return
+        }
+        rAxis.series.push({
+          field: item.field,
+          title: item.title,
+          selected: false,
+          yAxisIndex: 0,
+          xAxisIndex: 0,
+        })
+      })
+      // console.log(rAxis)
+
+      this.newAxis = Object.assign(rAxis, this.chartAxis)
+      this.rawData.sectionDataList.forEach((el, index) => {
+        this.newData.push({
+          sectionCode: el.sectionCode,
+          sectionDistanceArray: this.rawData.sectionDistanceArray[index],
+          // sectionQArray: this.rawData.sectionQArray[index],
+          // sectionZArray: this.rawData.sectionZArray[index],
+          rough: el.rough,
+        })
+      })
+
+      this.newData.forEach((item, index) => {
+        eidtDataCols.forEach(element => {
+          this.rawData.eidtData.forEach(value => {
+            if (value.key === element.field) {
+              item[element.field] = value.value[index]
+            }
+          })
+        })
+      })
+
+
+      setTimeout(() => {
+        this.$refs.chartRef.setDynamicOption()
+      }, 10)
+      if (this.selectedKeys[0] === this.rawData.riverReachId) {
+        this.updateShow()
+      }
+    },
+    initSectionInfo() {
+      // 清除殘留的圖表數據
+      this.$refs.chartRef.clear()
+
+      this.newOption = Object.assign(
+          {},
+          this.chartOption,
+          { grid: qGrid, legend: { bottom: 0} },
+          this.extraOptions
+      )
+      setTimeout(() => {
+        this.$refs.chartRef.setDynamicOption()
+      }, 10)
+
+      this.columns = qCols
+      this.newAxis = Object.assign(qAxis, this.chartAxis)
+      let item = this.rawData.sectionDataList.find(
+          (el) => el.sectionCode === this.selectedKeys[0]
+      )
+      item.diArray.forEach((el, index) => {
+        this.newData.push({
+          diArray: el,
+          zbArray: item.zbArray[index],
+        })
+      })
+      this.updateShow()
+    },
+    initSectionContaminants() {
+      // console.log(this.selectedKeys)
+      // 清除殘留的圖表數據
+      this.$refs.chartRef.clear()
+      this.newOption = Object.assign(
+          {},
+          this.chartOption,
+          {
+            grid: qGrid,
+            title: {
+              text: '断面污染物',
+              left: 'center',
+            },
+            legend: { bottom: 0}
+          }
+      )
+      setTimeout(() => {
+        this.$refs.chartRef.setDynamicOption()
+      }, 10)
+
+      let sectionContaminantsInfo = null
+      this.columns = [{
+        field: 'time',
+        title: '时间',
+        titleAlign: 'center',
+        columnAlign: 'center',
+      }]
+      this.rawData.WPSectionGroup.forEach(item => {
+        if (this.treeData[0].children[item.id.split('_')[1] - 1].key === this.selectedKeys[0]) {
+          sectionContaminantsInfo = item
+          item.data.forEach(val => {
+            this.columns.push({
+              field: val.dataId,
+              title: val.title,
+              titleAlign: 'center',
+              columnAlign: 'center',
+            })
+          })
+        }
+      })
+      // console.log(this.columns)
+
+      this.newAxis = Object.assign({
+        xAxis: 'time',
+        timeSeries: true,
+        yAxis: [
+          {
+            title: '流量(m³/s)',
+            yAxisIndex: 0,
+          },
+          {
+            title: '含量(mg/L)',
+            yAxisIndex: 1,
+          },
+        ]
+      }, this.chartAxis)
+      this.newAxis.series = []
+      this.columns.forEach((item, index) => {
+        if (index > 0) {
+          if (item.field === 'FR_RCH_CONTAMINATEQ_P') {
+            this.newAxis.series.push({
+              field: item.field,
+              title: item.title,
+              selected: true,
+              yAxisIndex: 0,
+            })
+          } else {
+            this.newAxis.series.push({
+              field: item.field,
+              title: item.title,
+              selected: true,
+              yAxisIndex: 1,
+            })
+          }
+        }
+      })
+
+      // console.log(sectionContaminantsInfo)
+      this.rawData.time.forEach(item => {
+        this.newData.push({
+          time: item
+        })
+      })
+      this.newData.forEach((item, index) => {
+        sectionContaminantsInfo.data.forEach(val => {
+          item[val.dataId] = val.data[index]
+        })
+      })
+      // console.log(this.newData)
+    },
+    handleSelect(keys, e) {
       this.selectedKeys = keys
       this.$nextTick(() => {
         this.handleData()
       })
     },
     handleData() {
-      this.newData = []
-      if (
-        this.selectedKeys.length === 0 ||
-        this.selectedKeys[0] === this.rawData.riverReachId
-      ) {
-        this.newOption = Object.assign({}, this.chartOption, { grid: rGrid })
-        this.columns = rCols
-        const eidtDataCols = []
-        this.rawData.eidtData.forEach(item => {
-          eidtDataCols.push({
-            field: item.key,
-            title: item.title
-          })
-        })
-        this.columns = this.columns.concat(eidtDataCols)
-        rAxis.xAxis.forEach((el) => {
-          el.data = this.rawData.sectionDataList.map((el) => el.sectionCode)
-        })
-        // console.log(eidtDataCols)
-        rAxis.series = [
-          {
-            field: 'SECTION_BEG_Z_SET',
-            title: '各断面期初水位(m)',
-            selected: true,
-            yAxisIndex: 0,
-            xAxisIndex: 0,
-          },
-          {
-            field: 'SECTION_BEG_Q_SET',
-            title: '各断面期初流量(m³/s)',
-            selected: true,
-            yAxisIndex: 1,
-            xAxisIndex: 0,
-          },
-        ]
-        // console.log(rAxis.series)
-        eidtDataCols.forEach(item => {
-          if (item.field === 'SECTION_BEG_Z_SET' || item.field === 'SECTION_BEG_Q_SET') {
-            return
-          }
-          rAxis.series.push({
-            field: item.field,
-            title: item.title,
-            selected: false,
-            yAxisIndex: 0,
-            xAxisIndex: 0,
-          })
-        })
-        // console.log(rAxis)
-
-        this.newAxis = Object.assign(rAxis, this.chartAxis)
-        this.rawData.sectionDataList.forEach((el, index) => {
-          this.newData.push({
-            sectionCode: el.sectionCode,
-            sectionDistanceArray: this.rawData.sectionDistanceArray[index],
-            // sectionQArray: this.rawData.sectionQArray[index],
-            // sectionZArray: this.rawData.sectionZArray[index],
-            rough: el.rough,
-          })
-        })
-
-        this.newData.forEach((item, index) => {
-          eidtDataCols.forEach(element => {
-            this.rawData.eidtData.forEach(value => {
-              if (value.key === element.field) {
-                item[element.field] = value.value[index]
-              }
-            })
-          })
-        })
-
-
-        setTimeout(() => {
-          this.$refs.chartRef.setDynamicOption()
-        }, 10)
-        if (this.selectedKeys[0] === this.rawData.riverReachId) {
-          this.updateShow()
-        }
+      this.isShowSection = this.selectedKeys.length === 0 || this.selectedKeys[0] === this.rawData.riverReachId
+      if (this.isShowSection) {
+        this.newData = []
+        this.initqzChartTable()
       } else {
-        // this.instance = echarts.getInstanceByDom(
-        //   document.getElementsByClassName("chart tree-chart")[0]
-        // );
-        // 清除殘留的圖表數據
-        this.$refs.chartRef.clear()
-
-        this.newOption = Object.assign(
-          {},
-          this.chartOption,
-          { grid: qGrid },
-          this.extraOptions
-        )
-        setTimeout(() => {
-          this.$refs.chartRef.setDynamicOption()
-        }, 10)
-
-        this.columns = qCols
-        this.newAxis = Object.assign(qAxis, this.chartAxis)
-        let item = this.rawData.sectionDataList.find(
-          (el) => el.sectionCode === this.selectedKeys[0]
-        )
-        item.diArray.forEach((el, index) => {
-          this.newData.push({
-            diArray: el,
-            zbArray: item.zbArray[index],
-          })
-        })
-        // this.$refs.tableRef.reset()
-        // this.$refs.tableRef.updateShow()
-        this.updateShow()
+        this.newData = []
+        this.initSectionInfo()
+      }
+    },
+    handleChangeButton(e) {
+      // console.log(e, e.target.value)
+      if (e.target.value === 'a') {
+        this.newData = []
+        this.initSectionInfo()
+      } else {
+        this.newData = []
+        this.initSectionContaminants()
       }
     },
     updateShow() {
       this.randomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
     cellEditDone(val) {
-      this.$emit('cellEditDone', val)
+      // console.log(this.selectedKeys[0])
+      // console.log(val)
+      if (this.selectedKeys[0]) {
+        let nodeId = null
+        this.treeData[0].children.forEach((item, index) => {
+          if (this.selectedKeys[0] === item.key) {
+            nodeId = `${this.rawData.riverReachId}_${index + 1}`
+          }
+        })
+        this.$emit('cellEditDone', {
+          nodeId,
+          ...val
+        })
+      } else {
+        this.$emit('cellEditDone', {
+          nodeId: this.rawData.riverReachId,
+          ...val
+        })
+      }
     }
   },
 }
@@ -354,7 +482,7 @@ export default {
   }
   .table-container {
     overflow: hidden;
-    height: calc(100% - 320px);
+    height: calc(100% - 362px);
     .simple-table {
       height: 100% !important;
     }

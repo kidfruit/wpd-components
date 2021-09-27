@@ -6,7 +6,7 @@
   >
     <div
       class="preheat-switch"
-      v-if="splitIndex >= 0"
+      v-if="splitIndex > 0"
       :title="preheat.show ? '关闭预热数据' : '展开预热数据'"
     >
       <span class="ops" @click="preheatSwitch">
@@ -615,7 +615,7 @@ export default {
             }
           }
         })
-        this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+        // this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       }
     },
     processOptionColumn(item, fromV, toV) {
@@ -818,8 +818,8 @@ export default {
       let exportFile = this.hotInstance.getPlugin('exportFile')
       exportFile.downloadFile('csv', {
         filename: this.saveFileInput === '' ? '我的表格' : this.saveFileInput,
-        exportHiddenRows: true,
-        exportHiddenColumns: true,
+        exportHiddenRows: false,
+        exportHiddenColumns: false,
         columnHeaders: true,
         rowHeaders: true,
       })

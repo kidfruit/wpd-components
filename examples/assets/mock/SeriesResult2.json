@@ -28,14 +28,18 @@
       "showType": "1-R",
       "echartsOptions_l": {
         "smooth": true,
+        "symbol": "none",
         "lineStyle": {
-          "type": "solid"
+          "type": "solid",
+          "color": "blue"
         }
       },
       "echartsOptions_r": {
         "smooth": true,
+        "symbol": "none",
         "lineStyle": {
-          "type": "dashed"
+          "type": "dotted",
+          "color": "blue"
         }
       }
     },
@@ -53,20 +57,24 @@
       },
       "field": "RD_FDA_Z_P",
       "title": "蓄洪水位(m)",
-      "showType": "1-L",
+      "showType": "1-R",
       "echartsOptions_l":{
         "symbol": "none",
         "smooth": true,
-        "areaStyle": {},
-        "color": "rgba(188,225,255,0.8)",
-        "lineStyle": {"color":"red","width":5,"type":"solid"}
+        "lineStyle": {
+          "color":"red",
+          "width":3,
+          "type":"solid"
+        }
       },
       "echartsOptions_r":{
         "symbol": "none",
         "smooth": true,
-        "areaStyle": {},
-        "color": "rgba(188,225,255,0.8)",
-        "lineStyle": {"color":"orange","width":3,"type":"dashed"}
+        "lineStyle": {
+          "color":"red",
+          "width":3,
+          "type":"dotted"
+        }
       }
     },
     {
@@ -83,12 +91,20 @@
       },
       "field": "RD_FDA_V_P",
       "title": "蓄洪容积(百万m³)",
-      "showType": "2-L",
+      "showType": "2-L-L",
       "echartsOptions_l": {
-        "smooth": true
+        "smooth": true,
+        "lineStyle": {
+          "color":"green",
+          "type":"solid"
+        }
       },
       "echartsOptions_r": {
-        "smooth": true
+        "smooth": true,
+        "lineStyle": {
+          "color":"green",
+          "type":"dotted"
+        }
       }
     }
   ],
@@ -156,31 +172,31 @@
     {
       "time": "2020-07-15 20",
       "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
+      "RD_FDA_Z_P": 150,
       "RD_FDA_V_P": 300
     },
     {
       "time": "2020-07-16 02",
       "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
+      "RD_FDA_Z_P": 250,
       "RD_FDA_V_P": 300
     },
     {
       "time": "2020-07-16 08",
       "RD_FDA_Q_P": 100,
       "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
+      "RD_FDA_V_P": 350
     },
     {
       "time": "2020-07-16 14",
-      "RD_FDA_Q_P": 100,
+      "RD_FDA_Q_P": 50,
       "RD_FDA_Z_P": 200,
-      "RD_FDA_V_P": 300
+      "RD_FDA_V_P": 250
     },
     {
       "time": "2020-07-16 20",
-      "RD_FDA_Q_P": 100,
-      "RD_FDA_Z_P": 200,
+      "RD_FDA_Q_P": 150,
+      "RD_FDA_Z_P": 250,
       "RD_FDA_V_P": 300
     },
     {
