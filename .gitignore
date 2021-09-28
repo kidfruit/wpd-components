@@ -24,6 +24,6 @@ package-lock.json
 *.sln
 *.sw?
 
-# npm lock files
-package-lock.json
-lib
+## npm lock files
+#package-lock.json
+#lib
