@@ -1,0 +1,655 @@
+[
+  {
+    "children": [
+      {
+        "type": "WPStationRR",
+        "title": "梨园",
+        "key": "60101398"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "阿海",
+        "key": "60101498"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "金安桥",
+        "key": "60101698"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "龙开口",
+        "key": "60101750"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "鲁地拉",
+        "key": "60101850"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "观音岩",
+        "key": "60101998"
+      },
+      {
+        "children": [
+          {
+            "type": "WPStationRR",
+            "title": "锦屏一级",
+            "key": "603KW000"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "二滩",
+            "key": "603KD005"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRiver",
+        "title": "雅砻江",
+        "key": "FA000000000L"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "溪洛渡",
+        "key": "60103165"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "向家坝",
+        "key": "60103385"
+      },
+      {
+        "type": "WPRiverReach",
+        "title": "向家坝-三峡",
+        "key": "RCHCJ19"
+      },
+      {
+        "children": [
+          {
+            "type": "WPStationRR",
+            "title": "紫坪铺",
+            "key": "606KA001"
+          },
+          {
+            "children": [
+              {
+                "type": "WPStationRR",
+                "title": "瀑布沟",
+                "key": "606KT012"
+              }
+            ],
+            "disabled": true,
+            "type": "WPRiver",
+            "title": "大渡河",
+            "key": "FB000000000L"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRiver",
+        "title": "岷江",
+        "key": "FBC00000000L"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "type": "WPStationRR",
+                "title": "碧口",
+                "key": "60706825"
+              },
+              {
+                "type": "WPStationRR",
+                "title": "宝珠寺",
+                "key": "607KH001"
+              }
+            ],
+            "disabled": true,
+            "type": "WPRiver",
+            "title": "白龙江",
+            "key": "FCB00000000R"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "亭子口",
+            "key": "607KH002"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "草街",
+            "key": "60703780"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRiver",
+        "title": "嘉陵江",
+        "key": "FE0102"
+      },
+      {
+        "children": [
+          {
+            "type": "WPStationRR",
+            "title": "构皮滩",
+            "key": "60802450"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "思林",
+            "key": "60801650"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "沙沱",
+            "key": "60802350"
+          },
+          {
+            "type": "WPStationRR",
+            "title": "彭水",
+            "key": "60802620"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRiver",
+        "title": "乌江",
+        "key": "FF0303"
+      },
+      {
+        "type": "WPStationRR",
+        "title": "三峡",
+        "key": "60106980"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "枝城",
+        "key": "60107400"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "沙市",
+        "key": "60108300"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "石首",
+        "key": "60109400"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "监利",
+        "key": "60110500"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "type": "WPStationRR",
+                "title": "柘溪",
+                "key": "61201300"
+              },
+              {
+                "type": "WPStationZQ",
+                "title": "桃江",
+                "key": "61202100"
+              }
+            ],
+            "disabled": true,
+            "type": "WPRiver",
+            "title": "资水",
+            "key": "FE1C0000000H"
+          },
+          {
+            "children": [
+              {
+                "type": "WPStationRR",
+                "title": "凤滩",
+                "key": "61312550"
+              },
+              {
+                "type": "WPStationRR",
+                "title": "五强溪",
+                "key": "61302350"
+              },
+              {
+                "type": "WPStationZQ",
+                "title": "桃源",
+                "key": "61302800"
+              }
+            ],
+            "disabled": true,
+            "type": "WPRiver",
+            "title": "沅江",
+            "key": "FE1B0000000H"
+          },
+          {
+            "children": [
+              {
+                "type": "WPStationRR",
+                "title": "江垭",
+                "key": "61401900"
+              },
+              {
+                "children": [
+                  {
+                    "type": "WPStationRR",
+                    "title": "皂市",
+                    "key": "61402350"
+                  }
+                ],
+                "disabled": true,
+                "type": "WPRiver",
+                "title": "渫水",
+                "key": "FE1AB000000L"
+              },
+              {
+                "type": "WPStationZQ",
+                "title": "石门",
+                "key": "61400900"
+              }
+            ],
+            "disabled": true,
+            "type": "WPRiver",
+            "title": "澧水",
+            "key": "FE1A0000000H"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRiver",
+        "title": "洞庭湖",
+        "key": "FDTH00000000"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "莲花塘",
+        "key": "60111200"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "螺山",
+        "key": "60111300"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "汉口",
+        "key": "60112200"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "九江",
+        "key": "60112900"
+      },
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "type": "WPStationRR",
+                "title": "万安",
+                "key": "62301230"
+              },
+              {
+                "type": "WPStationRR",
+                "title": "峡江",
+                "key": "62301780"
+              },
+              {
+                "type": "WPStationZQ",
+                "title": "樟树",
+                "key": "62302000"
+              },
+              {
+                "type": "WPStationZQ",
+                "title": "外洲",
+                "key": "62302250"
+              }
+            ],
+            "disabled": true,
+            "type": "WPRiver",
+            "title": "赣江",
+            "key": "FG1B0000000E"
+          },
+          {
+            "children": [
+              {
+                "type": "WPStationRR",
+                "title": "洪门",
+                "key": "62403400"
+              },
+              {
+                "type": "WPStationRR",
+                "title": "廖坊",
+                "key": "62401300"
+              },
+              {
+                "type": "WPStationZQ",
+                "title": "廖家湾",
+                "key": "62401800"
+              },
+              {
+                "type": "WPStationZQ",
+                "title": "李家渡",
+                "key": "62402400"
+              }
+            ],
+            "disabled": true,
+            "type": "WPRiver",
+            "title": "抚河",
+            "key": "FG1C0000000H"
+          },
+          {
+            "children": [
+              {
+                "type": "WPStationRR",
+                "title": "柘林",
+                "key": "62512600"
+              },
+              {
+                "type": "WPStationZQ",
+                "title": "虬津",
+                "key": "62513000"
+              },
+              {
+                "type": "WPStationZQ",
+                "title": "永修",
+                "key": "62513200"
+              }
+            ],
+            "disabled": true,
+            "type": "WPRiver",
+            "title": "修水",
+            "key": "FG1A0000000H"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRiver",
+        "title": "鄱阳湖",
+        "key": "FPYH00000000"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "湖口",
+        "key": "62601600"
+      },
+      {
+        "type": "WPStationZQ",
+        "title": "八里江",
+        "key": "60113500"
+      },
+      {
+        "children": [
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "荆江分洪区",
+            "key": "FFA0000011"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "宛市扩大区",
+            "key": "FFF1400251"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "虎西备蓄区",
+            "key": "FFF1500261"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "人民大垸",
+            "key": "FFA0000021"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRegion",
+        "title": "荆江地区",
+        "key": "FDAJJVR"
+      },
+      {
+        "children": [
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "钱粮湖垸",
+            "key": "FFF0000191"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "共双茶垸",
+            "key": "FFF0000131"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "大通湖东垸",
+            "key": "FFF0000231"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "澧南垸",
+            "key": "FFF0000061"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "围堤湖垸",
+            "key": "FFF0000011"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "民主垸",
+            "key": "FFF0000121"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "城西垸",
+            "key": "FFF0000141"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "西官垸",
+            "key": "FFF0000041"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "建设垸",
+            "key": "FFF0000201"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "九垸",
+            "key": "FFF0000031"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "屈原垸",
+            "key": "FFF0000151"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "建新垸",
+            "key": "FFF0000211"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "江南陆城垸",
+            "key": "FFF0000241"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "六角山垸",
+            "key": "FFF0000021"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "安澧垸",
+            "key": "FFF0000051"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "安昌垸",
+            "key": "FFF0000071"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "安化垸",
+            "key": "FFF0000081"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "南顶垸",
+            "key": "FFF0000091"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "和康垸",
+            "key": "FFF0000101"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "南汉垸",
+            "key": "FFF0000111"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "义合垸",
+            "key": "FFF0000161"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "北湖垸",
+            "key": "FFF0000171"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "集成安合垸",
+            "key": "FFF0000181"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "君山垸",
+            "key": "FFF0000221"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "洪湖东分块",
+            "key": "FFA0000031E"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "洪湖中分块",
+            "key": "FFA0000031M"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "洪湖西分块",
+            "key": "FFA0000031W"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRegion",
+        "title": "城陵矶附近区",
+        "key": "FDACLJVR"
+      },
+      {
+        "children": [
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "杜家台",
+            "key": "FFG0000011"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "西凉湖",
+            "key": "FFA0000041"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "武湖",
+            "key": "FFA0000061"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "涨渡湖",
+            "key": "FFA0000071"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "白潭湖",
+            "key": "FFA0000081"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "东西湖",
+            "key": "FFA0000051"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRegion",
+        "title": "武汉附近区",
+        "key": "FDAWHVR"
+      },
+      {
+        "children": [
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "康山",
+            "key": "FFH0000011"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "珠湖",
+            "key": "FFH0000021"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "黄湖",
+            "key": "FFH0000031"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "方洲斜塘",
+            "key": "FFH0000041"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "华阳河",
+            "key": "FFA0000091"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRegion",
+        "title": "湖口附近区",
+        "key": "FDAHKVR"
+      },
+      {
+        "children": [
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "荒草二圩",
+            "key": "FFAB400011"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "荒草三圩",
+            "key": "FFAB400021"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "蒿子圩",
+            "key": "FFAB400031"
+          },
+          {
+            "type": "WPFloodDetentionArea",
+            "title": "汪波东荡",
+            "key": "FFAB400041"
+          }
+        ],
+        "disabled": true,
+        "type": "WPRegion",
+        "title": "滁河附近区",
+        "key": "FDACHVR"
+      }
+    ],
+    "disabled": true,
+    "type": "WPRiver",
+    "title": "长江",
+    "key": "FB0101"
+  }
+]

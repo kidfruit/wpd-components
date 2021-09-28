@@ -29,6 +29,8 @@ import WpdTimePickerUtile from "./WpdTimePickerUtile/src/WpdTimePickerUtile";
 import MultiOptionTable from "./MultiOptionTable/src/MultiOptionTable.vue";
 import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGroup.vue";
 
+import MultiSeriesResult from "./MultiSeriesResult/src/MultiSeriesResult";
+
 //comp组件
 import StatusInfoComp from "./StatusInfoComp/src/StatusInfoComp";
 import SelectAndSortComp from "./SelectAndSortComp/src/SelectAndSortComp";
@@ -66,7 +68,8 @@ const components = [
   DispatchRuleComp,
   DispatchRuleRelationshipMap,
   UsageSettingComp,
-  TimePlayControl
+  TimePlayControl,
+  MultiSeriesResult
 ];
 
 // 存储指令映射
@@ -124,5 +127,6 @@ export default {
   DispatchRuleRelationshipMap,
   UsageSettingComp,
   TimePlayControl,
+  MultiSeriesResult,
   ...directives,
 };
