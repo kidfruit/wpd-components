@@ -1,6 +1,6 @@
 <template>
   <div :class="classNames" :key="seriesResultRandomKey">
-    <div class="chart-box">
+    <div :class="['chart-box', `${collapseTable}`]">
       <div class="chart-switch-button">
         <a-select v-model="targetChartIndex">
           <a-select-option
@@ -24,8 +24,11 @@
           :chartData="chartList[targetChartIndex].chartData"
         />
       </div>
+      <div class="collapse-table" @click="toggleTableStatus">
+        {{ collapseTable ?  '展开表格' : '折叠表格' }}
+      </div>
     </div>
-    <div class="table-box">
+    <div :class="['table-box', `${collapseTable}`]">
       <simple-table
         ref="tableRef"
         :targetChartIndex="targetChartIndex"
@@ -122,7 +125,8 @@ export default {
       editCells: [],
       targetChartIndex: 0,
       d_chartTitle: [],
-      seriesResultRandomKey: +new Date() + (Math.random() * 1000).toFixed(0)
+      seriesResultRandomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      collapseTable: false
     }
   },
   created() {
@@ -256,7 +260,7 @@ export default {
       // }
       // console.log('legends', legends)
       let legends = [{
-        bottom: 0
+        bottom: 15
       }]
       return legends
     },
@@ -473,8 +477,20 @@ export default {
     },
     updateShow() {
       this.seriesResultRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
-    }
+    },
+    toggleTableStatus() {
+      this.collapseTable = !this.collapseTable
+      // console.log(this.collapseTable)
+    },
   },
+  watch: {
+    collapseTable: {
+      deep: true,
+      handler() {
+        this.updateShow()
+      }
+    }
+  }
 }
 </script>
 
@@ -482,9 +498,22 @@ export default {
 .series-result {
   .chart-box {
     height: 350px;
+    .chart-content {
+      height: calc(100% - 64px);
+    }
+  }
+  .chart-box.true {
+    height: 100%;
+  }
+  .table-box.true {
+    height: 0;
   }
   .table-box {
     height: calc(100% - 350px);
+    .simple-table {
+      height: 100%;
+      overflow: auto;
+    }
   }
   .show-hide {
     position: absolute;
@@ -497,6 +526,12 @@ export default {
       height: 24px;
       cursor: pointer;
     }
+  }
+  .collapse-table {
+    height: 32px;
+    line-height: 32px;
+    background: #F5F5F5;
+    cursor: pointer;
   }
 }
 </style>

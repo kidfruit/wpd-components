@@ -1,6 +1,7 @@
 <template>
   <div>
     <series-result
+      style="height: 800px;"
       ref="seriesResult"
       :classes="['test-series-result']"
       :splitIndex="splitIndex"

@@ -1,6 +1,13 @@
 <template>
   <div>
-    <series-compare ref="seriesCompare" :classes="['test-series-result']" :data="SeriesCompareData" :splitIndex="splitIndex" :setting="{ fixedColumnsLeft: 1, rowHeaders: true }" />
+    <series-compare
+      style="height: 800px;"
+      ref="seriesCompare"
+      :classes="['test-series-result']"
+      :data="SeriesCompareData"
+      :splitIndex="splitIndex"
+      :setting="{ fixedColumnsLeft: 1, rowHeaders: true }"
+    />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>
       <button @click="changeData">改变数据</button>
