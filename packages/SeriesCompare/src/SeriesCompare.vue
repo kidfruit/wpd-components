@@ -1,17 +1,38 @@
 <template>
   <div :class="classNames">
-    <div class="chart-box">
+    <div :class="['chart-box', `${collapseTable}`]">
       <!-- checkAttribute.list -->
       <div class="chart-switch-button">
-        <a-select v-model="checkAttribute.checked" :style="{ width: checkAttribute.width + 'px' }" @change="chartChange">
-          <a-select-option v-for="item in checkAttribute.list" :value="item.key" :key="item.key"> {{ item.title }} </a-select-option>
+        <a-select
+          v-model="checkAttribute.checked"
+          :style="{ width: checkAttribute.width + 'px' }"
+          @change="chartChange"
+        >
+          <a-select-option
+            v-for="item in checkAttribute.list"
+            :value="item.key"
+            :key="item.key"
+          >
+            {{ item.title }}
+          </a-select-option>
         </a-select>
       </div>
       <div class="chart-content">
-        <chart :key="chartParams.id" v-if="chartParams" ref="chartRef" :chartOption="chartParams.chartOption" :chartAxis="chartParams.chartAxis" :id="chartParams.id" :chartData="chartParams.chartData" />
+        <chart
+          ref="chartRef"
+          :key="chartParams.id"
+          v-if="chartParams"
+          :chartOption="chartParams.chartOption"
+          :chartAxis="chartParams.chartAxis"
+          :id="chartParams.id"
+          :chartData="chartParams.chartData"
+        />
+      </div>
+      <div class="collapse-table" @click="toggleTableStatus">
+        {{ collapseTable ?  '展开表格' : '折叠表格' }}
       </div>
     </div>
-    <div class="table-box">
+    <div :class="['table-box', `${collapseTable}`]">
       <!-- <div class="reset">
         <a-popover placement="left" trigger="click">
           <template slot="title">选择对比的属性</template>
@@ -23,7 +44,14 @@
           <a-button icon="fund" @click="handleReset" shape="circle"> </a-button>
         </a-popover>
       </div> -->
-      <simple-table ref="tableRef" :splitIndex="splitIndex" :tableData="newTableData" :setting="newSetting" :tableColumns="newTableColumns"></simple-table>
+      <simple-table
+        ref="tableRef"
+        v-if="!collapseTable"
+        :splitIndex="splitIndex"
+        :tableData="newTableData"
+        :setting="newSetting"
+        :tableColumns="newTableColumns"
+      />
     </div>
   </div>
 </template>
@@ -107,7 +135,8 @@ export default {
         list: [],
         checked: ''
       },
-      schemeList: []
+      schemeList: [],
+      collapseTable: false
     };
   },
   methods: {
@@ -350,6 +379,10 @@ export default {
     },
     chartChange() {
       this.generateChartData();
+    },
+    toggleTableStatus() {
+      this.collapseTable = !this.collapseTable
+      // console.log(this.collapseTable)
     }
   },
   watch: {
@@ -386,13 +419,19 @@ export default {
         }
         this.transData();
       }
-    }
+    },
     // 'checkAttribute.checked': {
     //   deep: true,
     //   handler(val) {
     //     this.$emit('update:attribute', val);
     //   }
     // }
+    collapseTable: {
+      deep: true,
+      handler() {
+        this.chartParams.id = guid()
+      }
+    }
   }
 };
 </script>
@@ -457,9 +496,21 @@ export default {
     position: relative;
     min-height: 250px;
   }
+  .chart-box {
+    .chart-content {
+      height: calc(100% - 64px);
+    }
+  }
   .table-box {
     width: 100%;
     overflow: hidden;
+  }
+  .chart-box.true {
+    height: 100%;
+  }
+  .table-box.true {
+    height: 0;
+    min-height: 0;
   }
   .show-hide {
     position: absolute;
@@ -472,6 +523,12 @@ export default {
       height: 24px;
       cursor: pointer;
     }
+  }
+  .collapse-table {
+    height: 32px;
+    line-height: 32px;
+    background: #F5F5F5;
+    cursor: pointer;
   }
 }
 </style>

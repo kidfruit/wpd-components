@@ -1,7 +1,7 @@
 <template>
   <div ref="chartRef"
        :class="classNames"
-       style="width: 100%; height: 100%; min-height: 300px"
+       style="width: 100%; height: 100%;"
        :id="id"></div>
 </template>
 <script>
@@ -266,6 +266,7 @@ export default {
           markLine: yax.markLine,
           color: yax.color,
           itemStyle: yax.itemStyle,
+          symbol: yax.symbol ? yax.symbol : null
         }
         seriesObj.data = this.chartData.map((cd) => cd[yax.field])
 
