@@ -233,12 +233,12 @@ export default {
       })
       // console.log('legendList', legendList)
       let legendListNum = legendList.length
-      let temp = (legendListNum - 1) * 6 / 2
+      let temp = (legendListNum - 1) * 10 / 2
       for (let i = 0; i < legendListNum; i++) {
         legends.push({
           bottom: 15,
-          left: `${47 - temp + i * 6}%`,
-          itemWidth: 35,
+          left: `${47 - temp + i * 10}%`,
+          itemWidth: 30,
           show: true,
           textStyle: { fontSize: 14 },
           itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,

@@ -180,7 +180,7 @@ export default {
           }
         })
         // console.log(list, option.legend)
-        option.legend.forEach(item => {
+        option.legend && option.legend.forEach(item => {
           if (item.itemStyle) {
             list.forEach(val => {
               if (item.data[0].name === val.seriesName) {
