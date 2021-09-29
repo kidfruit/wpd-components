@@ -216,52 +216,36 @@ export default {
     },
     generateChartLegend(showTypeList, current) {
       // 图例控制在左右两边
-      // let legendList = showTypeList.filter(
-      //     (el) => el.showType.indexOf(current) !== -1
-      // )
-      // let legends = []
+      let legendList = showTypeList.filter(
+          (el) => el.showType.indexOf(current) !== -1
+      )
+      let legends = []
       // let leftTop = 0,
       //     rightTop = 0
-      // legendList = legendList.sort((a, b) => {
-      //   if (a.showType < b.showType) {
-      //     return -1
-      //   }
-      //   if (a.showType > b.showType) {
-      //     return 1
-      //   }
-      //   return 0
-      // })
+      legendList = legendList.sort((a, b) => {
+        if (a.showType < b.showType) {
+          return -1
+        }
+        if (a.showType > b.showType) {
+          return 1
+        }
+        return 0
+      })
       // console.log('legendList', legendList)
-      // for (let i = 0; i < legendList.length; i++) {
-      //   let obj = {
-      //     itemWidth: 27,
-      //     itemHeight: 16,
-      //     show: true,
-      //     textStyle: { fontSize: 14 },
-      //     itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
-      //     data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
-      //   }
-      //
-      //   let leftRight = positionMaps[legendList[i].showType.split('-')[2]]
-      //   if (leftRight === 'right') {
-      //     obj = Object.assign({}, obj, {
-      //       top: this.topmargin+ leftTop * 24, //调整位置
-      //       right: '1%',
-      //     })
-      //     leftTop++
-      //   } else {
-      //     obj = Object.assign({}, obj, {
-      //       top: rightTop * 24, //调整位置
-      //       left: '1%',
-      //     })
-      //     rightTop++
-      //   }
-      //   legends.push(obj)
-      // }
+      let legendListNum = legendList.length
+      let temp = (legendListNum - 1) * 6 / 2
+      for (let i = 0; i < legendListNum; i++) {
+        legends.push({
+          bottom: 15,
+          left: `${47 - temp + i * 6}%`,
+          itemWidth: 35,
+          show: true,
+          textStyle: { fontSize: 14 },
+          itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
+          data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
+        })
+      }
       // console.log('legends', legends)
-      let legends = [{
-        bottom: 15
-      }]
       return legends
     },
     generateChartYaxis(showTypeList, current) {
@@ -446,7 +430,7 @@ export default {
             showTypeList,
             carouselCount[i]
         )
-        // console.log(chartAxis.series)
+        console.log(chartAxis.series)
         chartOption.legend = this.generateChartLegend(
             showTypeList,
             carouselCount[i]
@@ -497,7 +481,7 @@ export default {
 <style lang="scss">
 .series-result {
   .chart-box {
-    height: 350px;
+    height: 400px;
     .chart-content {
       height: calc(100% - 64px);
     }
@@ -509,7 +493,7 @@ export default {
     height: 0;
   }
   .table-box {
-    height: calc(100% - 350px);
+    height: calc(100% - 400px);
     .simple-table {
       height: 100%;
       overflow: auto;
