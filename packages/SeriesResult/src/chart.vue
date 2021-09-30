@@ -1,7 +1,7 @@
 <template>
   <div ref="chartRef"
        :class="classNames"
-       style="width: 100%; height: 100%; min-height: 300px"
+       style="width: 100%; height: 100%;"
        :id="id"></div>
 </template>
 <script>
@@ -180,7 +180,7 @@ export default {
           }
         })
         // console.log(list, option.legend)
-        option.legend.forEach(item => {
+        option.legend && option.legend.forEach(item => {
           if (item.itemStyle) {
             list.forEach(val => {
               if (item.data[0].name === val.seriesName) {
@@ -266,6 +266,7 @@ export default {
           markLine: yax.markLine,
           color: yax.color,
           itemStyle: yax.itemStyle,
+          symbol: yax.symbol ? yax.symbol : null
         }
         seriesObj.data = this.chartData.map((cd) => cd[yax.field])
 

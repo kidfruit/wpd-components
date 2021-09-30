@@ -1,6 +1,6 @@
 <template>
   <div :class="classNames" :key="seriesResultRandomKey">
-    <div class="chart-box">
+    <div :class="['chart-box', `${collapseTable}`]">
       <div class="chart-switch-button">
         <a-select v-model="targetChartIndex">
           <a-select-option
@@ -24,8 +24,11 @@
           :chartData="chartList[targetChartIndex].chartData"
         />
       </div>
+      <div class="collapse-table" @click="toggleTableStatus">
+        {{ collapseTable ?  '展开表格' : '折叠表格' }}
+      </div>
     </div>
-    <div class="table-box">
+    <div :class="['table-box', `${collapseTable}`]">
       <simple-table
         ref="tableRef"
         :targetChartIndex="targetChartIndex"
@@ -122,7 +125,8 @@ export default {
       editCells: [],
       targetChartIndex: 0,
       d_chartTitle: [],
-      seriesResultRandomKey: +new Date() + (Math.random() * 1000).toFixed(0)
+      seriesResultRandomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      collapseTable: false
     }
   },
   created() {
@@ -212,52 +216,36 @@ export default {
     },
     generateChartLegend(showTypeList, current) {
       // 图例控制在左右两边
-      // let legendList = showTypeList.filter(
-      //     (el) => el.showType.indexOf(current) !== -1
-      // )
-      // let legends = []
+      let legendList = showTypeList.filter(
+          (el) => el.showType.indexOf(current) !== -1
+      )
+      let legends = []
       // let leftTop = 0,
       //     rightTop = 0
-      // legendList = legendList.sort((a, b) => {
-      //   if (a.showType < b.showType) {
-      //     return -1
-      //   }
-      //   if (a.showType > b.showType) {
-      //     return 1
-      //   }
-      //   return 0
-      // })
+      legendList = legendList.sort((a, b) => {
+        if (a.showType < b.showType) {
+          return -1
+        }
+        if (a.showType > b.showType) {
+          return 1
+        }
+        return 0
+      })
       // console.log('legendList', legendList)
-      // for (let i = 0; i < legendList.length; i++) {
-      //   let obj = {
-      //     itemWidth: 27,
-      //     itemHeight: 16,
-      //     show: true,
-      //     textStyle: { fontSize: 14 },
-      //     itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
-      //     data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
-      //   }
-      //
-      //   let leftRight = positionMaps[legendList[i].showType.split('-')[2]]
-      //   if (leftRight === 'right') {
-      //     obj = Object.assign({}, obj, {
-      //       top: this.topmargin+ leftTop * 24, //调整位置
-      //       right: '1%',
-      //     })
-      //     leftTop++
-      //   } else {
-      //     obj = Object.assign({}, obj, {
-      //       top: rightTop * 24, //调整位置
-      //       left: '1%',
-      //     })
-      //     rightTop++
-      //   }
-      //   legends.push(obj)
-      // }
+      let legendListNum = legendList.length
+      let temp = (legendListNum - 1) * 10 / 2
+      for (let i = 0; i < legendListNum; i++) {
+        legends.push({
+          bottom: 15,
+          left: `${47 - temp + i * 10}%`,
+          itemWidth: 30,
+          show: true,
+          textStyle: { fontSize: 14 },
+          itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
+          data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
+        })
+      }
       // console.log('legends', legends)
-      let legends = [{
-        bottom: 0
-      }]
       return legends
     },
     generateChartYaxis(showTypeList, current) {
@@ -442,7 +430,7 @@ export default {
             showTypeList,
             carouselCount[i]
         )
-        // console.log(chartAxis.series)
+        console.log(chartAxis.series)
         chartOption.legend = this.generateChartLegend(
             showTypeList,
             carouselCount[i]
@@ -473,18 +461,43 @@ export default {
     },
     updateShow() {
       this.seriesResultRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
-    }
+    },
+    toggleTableStatus() {
+      this.collapseTable = !this.collapseTable
+      // console.log(this.collapseTable)
+    },
   },
+  watch: {
+    collapseTable: {
+      deep: true,
+      handler() {
+        this.updateShow()
+      }
+    }
+  }
 }
 </script>
 
 <style lang="scss">
 .series-result {
   .chart-box {
-    height: 350px;
+    height: 400px;
+    .chart-content {
+      height: calc(100% - 64px);
+    }
+  }
+  .chart-box.true {
+    height: 100%;
+  }
+  .table-box.true {
+    height: 0;
   }
   .table-box {
-    height: calc(100% - 350px);
+    height: calc(100% - 400px);
+    .simple-table {
+      height: 100%;
+      overflow: auto;
+    }
   }
   .show-hide {
     position: absolute;
@@ -497,6 +510,12 @@ export default {
       height: 24px;
       cursor: pointer;
     }
+  }
+  .collapse-table {
+    height: 32px;
+    line-height: 32px;
+    background: #F5F5F5;
+    cursor: pointer;
   }
 }
 </style>
