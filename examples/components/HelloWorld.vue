@@ -68,7 +68,7 @@
       <h2>SeriesCompareTest：通用过程线多方案对比组件</h2>
       <series-compare-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SchemeComparison:方案对比-单值-过程</h2>
       <SchemeComparisonChartTest/>
     </div>
@@ -109,6 +109,10 @@
       <h2>TimePlayControl: 时间播放控制组件</h2>
       <TimePlayControlTest/>
     </div>
+    <div v-if="true">
+      <h2>SelectTimePeriodTest: 时段选择控件</h2>
+      <SelectTimePeriodTest/>
+    </div>
   </div>
 </template>
 
@@ -136,12 +140,13 @@ import ChartsProcessTest from './ChartsProcessTest.vue';
 import ChartsSingleTest from './ChartsSingleTest.vue';
 import WpdTimePickerTest from './WpdTimePickerTest.vue';
 import SchemeComparisonChartTest from "./SchemeComparisonChartTest";
-import StatusInfoCompTest from "@/components/StatusInfoCompTest";
-import SelectAndSortCompTest from "@/components/SelectAndSortCompTest";
-import DispatchRuleCompTest from "@/components/DispatchRuleCompTest";
-import DispatchRuleRelationshipMapTest from "@/components/DispatchRuleRelationshipMapTest";
+import StatusInfoCompTest from "./StatusInfoCompTest";
+import SelectAndSortCompTest from "./SelectAndSortCompTest";
+import DispatchRuleCompTest from "./DispatchRuleCompTest";
+import DispatchRuleRelationshipMapTest from "./DispatchRuleRelationshipMapTest";
 import UsageSettingCompTest from "./UsageSettingCompTest";
-import TimePlayControlTest from "@/components/TimePlayControlTest";
+import TimePlayControlTest from "./TimePlayControlTest";
+import SelectTimePeriodTest from "./SelectTimePeriodTest";
 
 export default {
   components: {
@@ -173,7 +178,8 @@ export default {
     SelectAndSortCompTest,
     DispatchRuleRelationshipMapTest,
     UsageSettingCompTest,
-    TimePlayControlTest
+    TimePlayControlTest,
+    SelectTimePeriodTest
   },
   name: 'HelloWorld',
   methods: {
