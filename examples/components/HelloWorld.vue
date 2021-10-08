@@ -20,7 +20,7 @@
       <h2>MultiOptionTable：流程模型选择专用表组件</h2>
       <multi-option-table-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>ResultHydroDynamic：水动力成果展示组件</h2>
       <result-hydro-dynamic-test />
     </div>
@@ -36,7 +36,7 @@
       <h2>DraggableChart：可连贯拖拽，图表联动的echarts图组件</h2>
       <coherent-draggable-chart-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SectionInit：树表图组件(动态展示不同树节点的图表和表格数据)</h2>
       <SectionInitTest />
     </div>
@@ -68,7 +68,7 @@
       <h2>SeriesCompareTest：通用过程线多方案对比组件</h2>
       <series-compare-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SchemeComparison:方案对比-单值-过程</h2>
       <SchemeComparisonChartTest/>
     </div>

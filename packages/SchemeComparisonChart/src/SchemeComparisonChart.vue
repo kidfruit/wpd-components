@@ -18,7 +18,7 @@
         </a-select>
       </div>
       <div class="single-chart-content">
-        <Chart
+        <StandardChart
             ref="singleChar"
             :classes="singleClassNames"
             :chartOption="singleChartOption"
@@ -44,7 +44,7 @@
         </a-select>
       </div>
       <div class="process-chart-content">
-        <Chart
+        <StandardChart
             ref="processChar"
             :classes="processClassNames"
             :chartOption="processChartOption"
@@ -59,10 +59,11 @@
 
 <script>
 import lodash from 'lodash'
+import StandardChart from "../../StandardChart/src/StandardChart";
 import Chart from '~/SeriesResult/src/chart'
 export default {
   name: "SchemeComparisonChart",
-  components: { Chart },
+  components: { StandardChart },
   props: {
     schemeComparisonData: {
       type: Array,

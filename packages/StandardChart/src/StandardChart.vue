@@ -234,7 +234,7 @@ export default {
       this.chartAxis.series.forEach((yax) => {
         let seriesObj = {
           name: yax.title,
-          type: 'line',
+          type: yax.type ? yax.type : 'line',
           data: [],
           yAxisIndex: yax.yAxisIndex,
           xAxisIndex: yax.xAxisIndex,
