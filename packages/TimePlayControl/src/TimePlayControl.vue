@@ -4,6 +4,7 @@
       <a-icon
         class="time-play-control-icon"
         type="control"
+        @click="handleClickControl"
       />
     </div>
     <div class="control-right">
@@ -29,6 +30,7 @@
           :tooltipVisible="false"
           :max="time.length - 1"
           :min="0"
+          :disabled="isOverall"
         />
       </div>
 
@@ -50,6 +52,7 @@
           style="width: 125px;"
           size="large"
           v-model="inputValue"
+          :disabled="isOverall"
         />
 
         <!-- 右移操作 -->
@@ -69,6 +72,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   name: 'TimePlayControl',
   props: {
@@ -81,12 +85,13 @@ export default {
     return {
       isPlay: true,
       sliderValue: 0,
-      interval: null
+      interval: null,
+      isOverall: false
     }
   },
   computed: {
     inputValue() {
-      return this.time[this.sliderValue]
+      return moment(this.time[this.sliderValue]).format('YYYY-MM-DD')
     }
   },
   watch: {
@@ -94,6 +99,7 @@ export default {
       handler() {
         if (this.sliderValue < 0) this.sliderValue = 0
         if (this.sliderValue >= this.time.length) this.sliderValue = 0
+        this.$emit('getTime', this.sliderValue)
       }
     },
     isPlay: {
@@ -107,9 +113,27 @@ export default {
           clearInterval(this.interval)
         }
       }
+    },
+    isOverall: {
+      handler() {
+        let controlRightDom = document.querySelector('.control-right')
+        if (this.isOverall) {
+          this.handleClickPauseCircle()
+          controlRightDom.style.pointerEvents = 'none'
+          controlRightDom.style.opacity = 0.5
+          this.$emit('getTime', 'overall')
+        } else {
+          this.handleClickPlayCircle()
+          controlRightDom.style.pointerEvents = 'auto'
+          controlRightDom.style.opacity = 1
+        }
+      }
     }
   },
   methods: {
+    handleClickControl() {
+      this.isOverall = !this.isOverall
+    },
     handleClickPauseCircle() {
       this.isPlay = !this.isPlay
     },
@@ -140,11 +164,12 @@ export default {
   border-radius: 8px;
   display: flex;
   flex-direction: row;
+  box-sizing: content-box;
   .control-left {
     width: 50px;
     height: 100px;
     padding: 20px 0;
-    border-right: 1px solid #cccccc;
+    border-right: 2px solid #555555;
     display: flex;
     justify-content: center;
     align-items: center;

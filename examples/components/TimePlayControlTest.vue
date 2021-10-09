@@ -2,6 +2,7 @@
   <div class="time-play-control-test">
     <TimePlayControl
       :time="time"
+      @getTime="getTime"
     />
   </div>
 </template>
@@ -27,6 +28,11 @@ export default {
         '2021-11-01',
         '2021-12-01',
       ]
+    }
+  },
+  methods: {
+    getTime(value) {
+      console.log(value)
     }
   }
 }
