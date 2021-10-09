@@ -512,6 +512,8 @@ export default {
     }
   }
   .collapse-table {
+    display: flex;
+    justify-content: center;
     height: 32px;
     line-height: 32px;
     background: #F5F5F5;
