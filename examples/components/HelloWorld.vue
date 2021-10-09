@@ -105,11 +105,11 @@
       <h2>UsageSettingCompTest: 洲滩民垸使用设置控件</h2>
       <UsageSettingCompTest/>
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>TimePlayControl: 时间播放控制组件</h2>
       <TimePlayControlTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SelectTimePeriodTest: 时段选择控件</h2>
       <SelectTimePeriodTest/>
     </div>

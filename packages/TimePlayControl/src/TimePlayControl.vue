@@ -1,47 +1,178 @@
 <template>
   <div class="time-play-control">
     <div class="control-left">
-      <a-icon class="control-left-global" type="control"/>
+      <a-icon
+        class="time-play-control-icon"
+        type="control"
+      />
     </div>
     <div class="control-right">
-      <a-icon type="play-circle"/>
-      <a-icon type="pause-circle"/>
-      <a-icon type="fast-backward"/>
-      <a-icon type="step-backward"/>
-      <a-icon type="step-forward"/>
-      <a-icon type="fast-forward"/>
+      <div class="control-right-play">
+        <!-- 播放暂停 -->
+        <a-icon
+          class="time-play-control-icon"
+          type="pause-circle"
+          v-if="isPlay"
+          @click="handleClickPauseCircle"
+        />
+        <a-icon
+          class="time-play-control-icon"
+          type="play-circle"
+          v-else
+          @click="handleClickPlayCircle"
+        />
+
+        <!-- 进度条 -->
+        <a-slider
+          style="width: 200px;"
+          v-model="sliderValue"
+          :tooltipVisible="false"
+          :max="time.length - 1"
+          :min="0"
+        />
+      </div>
+
+      <div class="control-right-setting">
+        <!-- 左移操作 -->
+        <a-icon
+          class="time-play-control-icon"
+          type="fast-backward"
+          @click="handleClickFastBackward"
+        />
+        <a-icon
+          class="time-play-control-icon"
+          type="step-backward"
+          @click="handleCLickStepBackward"
+        />
+
+        <!-- 展示框 -->
+        <a-input
+          style="width: 125px;"
+          size="large"
+          v-model="inputValue"
+        />
+
+        <!-- 右移操作 -->
+        <a-icon
+          class="time-play-control-icon"
+          type="step-forward"
+          @click="handleCLickStepForward"
+        />
+        <a-icon
+          class="time-play-control-icon"
+          type="fast-forward"
+          @click="handleCLickFastForward"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TimePlayControl'
+  name: 'TimePlayControl',
+  props: {
+    time: {
+      type: Array,
+      required: true
+    }
+  },
+  data() {
+    return {
+      isPlay: true,
+      sliderValue: 0,
+      interval: null
+    }
+  },
+  computed: {
+    inputValue() {
+      return this.time[this.sliderValue]
+    }
+  },
+  watch: {
+    sliderValue: {
+      handler() {
+        if (this.sliderValue < 0) this.sliderValue = 0
+        if (this.sliderValue >= this.time.length) this.sliderValue = 0
+      }
+    },
+    isPlay: {
+      immediate: true,
+      handler() {
+        if (this.isPlay) {
+          this.interval = setInterval(() => {
+            this.sliderValue ++
+          }, 1000)
+        } else {
+          clearInterval(this.interval)
+        }
+      }
+    }
+  },
+  methods: {
+    handleClickPauseCircle() {
+      this.isPlay = !this.isPlay
+    },
+    handleClickPlayCircle() {
+      this.isPlay = !this.isPlay
+    },
+    handleClickFastBackward() {
+      this.sliderValue = 0
+    },
+    handleCLickStepBackward() {
+      this.sliderValue--
+    },
+    handleCLickStepForward() {
+      this.sliderValue++
+    },
+    handleCLickFastForward() {
+      this.sliderValue = this.time.length - 1
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .time-play-control {
-  width: 500px;
+  width: 600px;
   height: 100px;
-  font-size: 30px;
-  border: 1px solid #cccccc;
+  border: 2px solid #555555;
   border-radius: 8px;
+  display: flex;
+  flex-direction: row;
   .control-left {
-    float: left;
     width: 50px;
     height: 100px;
+    padding: 20px 0;
     border-right: 1px solid #cccccc;
     display: flex;
     justify-content: center;
     align-items: center;
-    .control-left-global {
-      display: block;
+  }
+  .control-right {
+    width: 550px;
+    height: 100px;
+    padding: 20px;
+    display: flex;
+    .control-right-play {
+      width: 275px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .control-right-setting {
+      width: 235px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
   }
-  .content-right {
-    width: 450px;
-    height: 100px;
+
+  /* icon 样式 */
+  .time-play-control-icon {
+    font-size: 30px;
+    color: #555555;
+    cursor: pointer;
   }
 }
 </style>
