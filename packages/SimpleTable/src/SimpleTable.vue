@@ -1205,6 +1205,9 @@ export default {
     },
     getOriginRowData(row){
       return this.$refs.hotTableRef.hotInstance.getDataAtRow(row)
+    },
+    getOriginCellData(row,prop){
+      return this.$refs.hotTableRef.hotInstance.getDataAtRowProp(row,prop)
     }
   },
   watch: {
