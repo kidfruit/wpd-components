@@ -1202,6 +1202,9 @@ export default {
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
       console.log(this.hotData)
+    },
+    getOriginRowData(row){
+      return this.$refs.hotTableRef.hotInstance.getDataAtRow(row)
     }
   },
   watch: {
