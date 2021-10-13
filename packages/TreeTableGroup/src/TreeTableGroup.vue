@@ -124,7 +124,7 @@ export default {
     },
     _cellEditDone(value) {
       const { field, newValue, oldValue, rowIndex } = value
-      const m_tableData = this.defaultTableData.filter((i) => i.selected)
+      const m_tableData = this.defaultTableData
       let group
       let selectedId = ''
       let options = m_tableData[value.rowIndex][value.field].options
