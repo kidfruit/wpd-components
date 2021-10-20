@@ -28,31 +28,31 @@ export default {
           groupName: '荆江分洪区',
           data: [
             {name:'荆江分洪区',id:'A1',check:true,order:1},
-            {name:'宛市扩大区',id:'A2',check:true},
-            {name:'虎西备蓄区',id:'A3',check:false,order:2},
-            {name:'人民大垸',id:'A4',check:false,order:0},
+            {name:'宛市扩大区',id:'A2',check:true,order:0},
+            {name:'虎西备蓄区',id:'A3',check:false,order:null},
+            {name:'人民大垸',id:'A4',check:false,order:null},
           ]
         },
         {
           groupName: '城陵矶分洪区',
           data: [
-            {name:'钱粮湖垸',id:'B1',check:true},
-            {name:'共双茶垸',id:'B2',check:false},
-            {name:'大通湖东垸',id:'B3',check:true},
-            {name:'123垸',id:'B4',check:false},
-            {name:'abc垸',id:'B5',check:true},
-            {name:'asd垸',id:'B6',check:false},
+            {name:'钱粮湖垸',id:'B1',check:true,order:2},
+            {name:'共双茶垸',id:'B2',check:false,order:null},
+            {name:'大通湖东垸',id:'B3',check:true,order:1},
+            {name:'123垸',id:'B4',check:false,order:null},
+            {name:'abc垸',id:'B5',check:true,order:0},
+            {name:'asd垸',id:'B6',check:false,order:null},
           ]
         },
         {
           groupName: '123城陵矶分洪区',
           data: [
-            {name:'钱粮湖垸',id:'c1',check:true},
-            {name:'共双茶垸',id:'c2',check:false},
-            {name:'大通湖东垸',id:'c3',check:false},
-            {name:'123垸',id:'c4',check:false},
-            {name:'abc垸',id:'c5',check:true},
-            {name:'asd垸',id:'c6',check:false},
+            {name:'钱粮湖垸',id:'c1',check:true,order:1},
+            {name:'共双茶垸',id:'c2',check:false,order:null},
+            {name:'大通湖东垸',id:'c3',check:false,order:null},
+            {name:'123垸',id:'c4',check:false,order:null},
+            {name:'abc垸',id:'c5',check:true,order:0},
+            {name:'asd垸',id:'c6',check:false,order:null},
           ]
         }
       ]

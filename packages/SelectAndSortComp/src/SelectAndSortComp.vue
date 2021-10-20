@@ -1,16 +1,18 @@
 <template>
-  <div class="select-and-sort-comp"
-       :style="selectAndSortCompStyle"
-       :class="classes"
+  <div
+    class="select-and-sort-comp"
+    :style="selectAndSortCompStyle"
+    :class="classes"
   >
     <div class="select-comp">
       <div class="select-comp-checkAll">
         <a-checkbox @change="onCheckALlChange">全部蓄滞洪区</a-checkbox>
       </div>
       <div class="select-comp-content">
-        <div class="select-comp-groups"
-             v-for="group in checkData"
-             :key="group.groupName"
+        <div
+          class="select-comp-groups"
+          v-for="group in checkData"
+          :key="group.groupName"
         >
           <div class="select-comp-group-title">{{group.groupName}}</div>
           <div class="select-comp-group-checkbox" :key="checkboxKey">
@@ -30,7 +32,8 @@
     <div class="sort-comp">
       <div class="sort-comp-title">启动顺序调整</div>
       <div class="sort-comp-groups">
-        <div class="sort-comp-group"
+        <div
+          class="sort-comp-group"
           v-for="group in sortTableData"
           :key="group.groupName"
         >
@@ -59,6 +62,7 @@
 </template>
 
 <script>
+import lodash from 'lodash'
 import SimpleTable from '~/SimpleTable/src/SimpleTable'
 export default {
   name: 'SelectAndSortComp',
@@ -104,8 +108,13 @@ export default {
   },
   methods: {
     initSortTableData() {
+      this.sortTableData = []
       this.checkData.forEach(item => {
-        const data = item.data.filter(i => i.check === true)
+        const checkData = item.data.filter(i => i.check === true)
+        let data = []
+        checkData.forEach(val => {
+          data[val.order] = val
+        })
         this.sortTableData.push({
           groupName: item.groupName,
           data,
@@ -118,33 +127,69 @@ export default {
         this.checkData.forEach(group => {
           group.data.forEach(item => {
             item.check = true
+            this.sortTableData.forEach(val => {
+              if (val.groupName === group.groupName) {
+                if (item.order == null) {
+                  item.order = val.data.length
+                  this.initSortTableData()
+                }
+              }
+            })
           })
         })
       } else {
         this.checkData.forEach(group => {
           group.data.forEach(item => {
             item.check = false
+            item.order = null
           })
         })
       }
       this.checkboxKey = +new Date() + (Math.random() * 1000).toFixed(0)
-      this.sortTableData = []
       this.initSortTableData()
     },
     onCheckChange(e,groupName) {
-      //console.log(e,groupName)
-      this.checkData.forEach(group => {
-        group.data.forEach(item => {
-          if (item.id === e.target.id) {
-            item.check = e.target.checked
+      console.log(e,groupName)
+      if (e.target.checked === true) {
+        this.checkData.forEach(group => {
+          group.data.forEach(item => {
+            if (item.id === e.target.id) {
+              item.check = true
+              this.sortTableData.forEach(val => {
+                if (val.groupName === groupName) {
+                  item.order = val.data.length
+                }
+              })
+            }
+          })
+        })
+      } else {
+        this.checkData.forEach(group => {
+          group.data.forEach(item => {
+            if (item.id === e.target.id) {
+              console.log(item)
+              item.check = false
+              item.order = null
+            }
+          })
+        })
+        let checkArr = []
+        this.checkData.forEach(group => {
+          if (group.groupName === groupName) {
+            group.data.forEach(item => {
+              if (item.order !== null) {
+                checkArr.push(item)
+              }
+            })
           }
         })
-      })
-      this.sortTableData = []
+        checkArr = lodash.orderBy(checkArr, 'order')
+        // console.log(checkArr)
+        checkArr.forEach((item, index) => {
+          item.order = index
+        })
+      }
       this.initSortTableData()
-      setTimeout(() => {
-        this.moveUp(groupName)
-      },0)
     },
     moveUp(e) {
       this.currentGroupName = e
@@ -155,6 +200,22 @@ export default {
       this.$refs[e][0].moveDown()
     },
     moveDone(data) {
+      // console.log(data)
+      data.forEach((item, index) => {
+        item.order = index
+      })
+      this.checkData.forEach(group => {
+        if (group.groupName === this.currentGroupName) {
+          group.data.forEach(item => {
+            data.forEach(val => {
+              if (item.id === val.id) {
+                item.order = val.order
+              }
+            })
+          })
+        }
+      })
+      this.initSortTableData()
       const resultData = [{
         groupName: this.currentGroupName,
         data

@@ -516,6 +516,9 @@ export default {
     line-height: 32px;
     background: #F5F5F5;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
