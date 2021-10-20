@@ -27,10 +27,10 @@ export default {
         {
           groupName: '荆江分洪区',
           data: [
-            {name:'荆江分洪区',id:'A1',check:true},
+            {name:'荆江分洪区',id:'A1',check:true,order:1},
             {name:'宛市扩大区',id:'A2',check:true},
-            {name:'虎西备蓄区',id:'A3',check:false},
-            {name:'人民大垸',id:'A4',check:false},
+            {name:'虎西备蓄区',id:'A3',check:false,order:2},
+            {name:'人民大垸',id:'A4',check:false,order:0},
           ]
         },
         {
