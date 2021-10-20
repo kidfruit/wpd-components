@@ -12,7 +12,7 @@
       <h2>StandardChart：数据格式与SimpleTable通用</h2>
       <standard-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SimpleTable：handsontable基础表格组件</h2>
       <simple-table-test />
     </div>
@@ -109,7 +109,11 @@
       <h2>TimePlayControl: 时间播放控制组件</h2>
       <TimePlayControlTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
+      <h2>SelectTimePeriodTest: 时段选择控件</h2>
+      <SelectTimePeriodTest/>
+    </div>
+    <div v-if="false">
       <h2>MultiSeriesResult: 多站点时序值展示控件</h2>
       <MultiSeriesResultText/>
     </div>
@@ -146,6 +150,7 @@ import DispatchRuleCompTest from "@/components/DispatchRuleCompTest";
 import DispatchRuleRelationshipMapTest from "@/components/DispatchRuleRelationshipMapTest";
 import UsageSettingCompTest from "./UsageSettingCompTest";
 import TimePlayControlTest from "@/components/TimePlayControlTest";
+import SelectTimePeriodTest from "./SelectTimePeriodTest";
 import MultiSeriesResultText from "./MultiSeriesResultTest";
 
 export default {
@@ -179,7 +184,8 @@ export default {
     SelectAndSortCompTest,
     DispatchRuleRelationshipMapTest,
     UsageSettingCompTest,
-    TimePlayControlTest
+    TimePlayControlTest,
+    SelectTimePeriodTest
   },
   name: 'HelloWorld',
   methods: {
