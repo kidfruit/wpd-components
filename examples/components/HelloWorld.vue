@@ -44,7 +44,7 @@
       <h2>CurveChart：通用二维曲线</h2>
       <curve-chart-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>TreeTableGroup：树表联动组件</h2>
       <tree-table-group-test />
     </div>
@@ -88,7 +88,7 @@
       <h2>StatusInfoCompTest：信息展示控件</h2>
       <StatusInfoCompTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>

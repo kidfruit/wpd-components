@@ -230,7 +230,7 @@ export default {
   methods: {
     highlightRow(item) {
       this.$nextTick(() => {
-        let list = this.$refs.hotTableRef.hotInstance.getSourceData()
+        let list = this.hotInstance.getSourceData()
         let rows = ''
         for (let i = 0; i < list.length; i++) {
           if (item === list[i].key) {

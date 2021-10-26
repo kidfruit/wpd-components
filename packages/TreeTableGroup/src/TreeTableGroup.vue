@@ -129,7 +129,7 @@ export default {
       let selectedId = ''
       let options = m_tableData[value.rowIndex][value.field].options
       for (let i = 0; i < options.length; i++) {
-        if (options[i].name == value.newValue) {
+        if (options[i].name === value.newValue) {
           group = options[i].group
           selectedId = options[i].id
         }
@@ -138,7 +138,7 @@ export default {
         for (let k = 0; k < m_tableData.length; k++) {
           let select = m_tableData[k][value.field].options
           for (let j = 0; j < select.length; j++) {
-            if (select[j].id == selectedId) {
+            if (select[j].id === selectedId) {
               m_tableData[k][value.field].selectedId = selectedId
             }
           }
@@ -208,14 +208,14 @@ export default {
       let selectedId = ''
       let options = originaldata[choice.rowIndex][choice.field].options
       for (let i = 0; i < options.length; i++) {
-        if (options[i].name == choice.newValue) {
+        if (options[i].name === choice.newValue) {
           selectedId = options[i].id
         }
       }
       for (let k = 0; k < originaldata.length; k++) {
         let select = originaldata[k][choice.field].options
         for (let j = 0; j < select.length; j++) {
-          if (select[j].id == selectedId) {
+          if (select[j].id === selectedId) {
             originaldata[k][choice.field].selectedId = selectedId
           }
         }
