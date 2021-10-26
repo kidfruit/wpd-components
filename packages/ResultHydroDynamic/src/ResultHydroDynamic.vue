@@ -173,7 +173,7 @@ export default {
       this.localSetting = Object.assign({}, this.setting)
     },
     handleChangeSelected(value) {
-      console.log(value)
+      // console.log(value)
       this.newData = []
       this.data.forEach(element => {
         let newDataItem = {}

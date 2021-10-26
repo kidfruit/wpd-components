@@ -303,12 +303,12 @@ export default {
       let tempItemUnit = [];
       let tempYAxisArr = [];
       for (let i = 0; i < plotOrder.length; i++) {
-        console.log(
-          !tempArrOrder.includes(plotOrder[i]),
-          tempArrOrder,
-          plotOrder[i],
-          99
-        );
+        // console.log(
+        //   !tempArrOrder.includes(plotOrder[i]),
+        //   tempArrOrder,
+        //   plotOrder[i],
+        //   99
+        // );
         if (!tempArrOrder.includes(plotOrder[i])) {
           let tempIndex = tempArrOrder.length;
           tempArrOrder[tempIndex] = plotOrder[i];
@@ -362,7 +362,7 @@ export default {
           });
         }
       }
-      console.log("temp", tempYAxisArr, tempArrOrder);
+      // console.log("temp", tempYAxisArr, tempArrOrder);
       return tempYAxisArr;
     },
     getTimeData(timeList, tempData) {
@@ -1021,7 +1021,7 @@ export default {
       };
 
       function moveDownListener(e) {
-        console.log("moveDownListener");
+        // console.log("moveDownListener");
         let controlIndex = _self.getGridIndex(e, myChart);
         if (controlIndex < 0) {
           if (myChart.editingSeriesIndex < 0) {
@@ -1105,7 +1105,7 @@ export default {
       }
 
       function moveMoveListener(e) {
-        console.log("moveMoveListener");
+        // console.log("moveMoveListener");
         let canvasContainer = document.querySelector(".drag-wrapper canvas");
         //设置全局鼠标移动坐标点
         const mousePosi = _self.getEventPosition(e);
@@ -1338,7 +1338,7 @@ export default {
         myChart.setOption(myChart.getOption());
       }
       function moveUpListener(e) {
-        console.log("moveUpListener");
+        // console.log("moveUpListener");
         let sI = myChart.getOption().series[myChart.editingSeriesIndex];
         if (sI) {
           this.$emit("updateData", sI.field, sI.data);
@@ -1370,7 +1370,7 @@ export default {
         divContainer.addEventListener("dblclick", dblClickFunc, true);
       }
       myChart.setOption(option, true);
-      console.log(myChart.getOption());
+      // console.log(myChart.getOption());
       setEndLine &&
         this.setEndLine(dataList, myChart, boxContainer.clientHeight);
     },

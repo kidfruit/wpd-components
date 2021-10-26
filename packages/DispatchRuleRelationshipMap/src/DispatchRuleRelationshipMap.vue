@@ -43,7 +43,7 @@ export default {
       echartsInstance.setOption(option)
     },
     initRelationshipMapOption() {
-      console.log(this.ruleData)
+      // console.log(this.ruleData)
       const seriesData = []
       let allNames = []
 

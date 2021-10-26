@@ -73,7 +73,7 @@ export default {
       document.getElementById(this.id)
       // document.getElementsByClassName("chart draggable-chart")[0]
     );
-    console.log(document.getElementById(this.id))
+    // console.log(document.getElementById(this.id))
     // console.log(document.getElementsByClassName("chart draggable-chart")[0])
     this.dragFields.forEach((item) => {
       arr.push(

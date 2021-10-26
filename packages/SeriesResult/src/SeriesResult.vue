@@ -430,7 +430,7 @@ export default {
             showTypeList,
             carouselCount[i]
         )
-        console.log(chartAxis.series)
+        // console.log(chartAxis.series)
         chartOption.legend = this.generateChartLegend(
             showTypeList,
             carouselCount[i]

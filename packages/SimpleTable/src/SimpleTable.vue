@@ -420,7 +420,7 @@ export default {
               newMergeCells.push(item)
             }
           })
-          console.log(newMergeCells)
+          // console.log(newMergeCells)
           this.hotSettings.mergeCells = newMergeCells
         }
       })
@@ -809,7 +809,7 @@ export default {
       this.$emit('moveDone', this.hotData)
     },
     handleSaveFileCallback() {
-      console.log('数据下载')
+      // console.log('数据下载')
       this.saveFileModalVisible = true
       this.saveFileInput = ''
     },
@@ -852,7 +852,7 @@ export default {
       const stepNumber = Math.abs((endData - firstData) / selectedMidRows)
       if (selectedRange && selectedRange.length > 0) {
         if (typeof firstData === 'number' && !isNaN(firstData)) {
-          console.log('内插')
+          // console.log('内插')
           if (firstRow < endRow) {
             if (firstData < endData) {
               for (let i = 0; i < selectedMidRows - 1; i++) {
@@ -928,7 +928,7 @@ export default {
       const firstData = +this.hotData[selectedRange[0].from.row][field]
       if (selectedRange && selectedRange.length > 0) {
         if (typeof firstData === 'number' && !isNaN(firstData)) {
-          console.log('倍比缩放')
+          // console.log('倍比缩放')
           this.scaleModalVisible = true
           this.scaleInput = ''
         }
@@ -983,7 +983,7 @@ export default {
       const firstData = +this.hotData[selectedRange[0].from.row][field]
       if (selectedRange && selectedRange.length > 0) {
         if (typeof firstData === 'number' && !isNaN(firstData)) {
-          console.log('同增同减')
+          // console.log('同增同减')
           this.sameIncreaseDecreaseModalVisible = true
           this.sameIncreaseDecreaseInput = ''
         }
@@ -1032,7 +1032,7 @@ export default {
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
     },
     afterOnCellCornerDblClick() {
-      console.log('afterOnCellCornerDblClick')
+      // console.log('afterOnCellCornerDblClick')
       this.selectedRange = null
       let selectedRange = this.hotInstance.getSelectedRange()
       if (selectedRange[0].from.row === -1) {
@@ -1085,7 +1085,7 @@ export default {
       return isHidden
     },
     handleMergeCellsCallback(mergeVal, mergeItem) {
-      console.log('合并单元格', mergeVal, mergeItem)
+      // console.log('合并单元格', mergeVal, mergeItem)
       let selected = this.hotInstance.getSelected()
       if (selected[0][0] > selected[0][2]) {
         let temp = selected[0][0]
@@ -1149,11 +1149,11 @@ export default {
       })
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
-      console.log(this.hotSettings.mergeCells)
-      console.log(this.hotData)
+      // console.log(this.hotSettings.mergeCells)
+      // console.log(this.hotData)
     },
     handleUnmergeCellsCallback() {
-      console.log('拆分单元格', this.hotData)
+      // console.log('拆分单元格', this.hotData)
       let selected = this.hotInstance.getSelected()
       let mergeCells = this.hotInstance.getPlugin('mergeCells')
       let sourceRightLink = []
@@ -1201,7 +1201,7 @@ export default {
       })
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
       this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
-      console.log(this.hotData)
+      // console.log(this.hotData)
     },
     getOriginRowData(row){
       return this.$refs.hotTableRef.hotInstance.getDataAtRow(row)

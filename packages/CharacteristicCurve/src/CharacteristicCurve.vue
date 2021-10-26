@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     callback(value) {
-      console.log(value);
+      // console.log(value);
     },
     updateCurrentKey(Key) {
       this.chartTableDatas = []

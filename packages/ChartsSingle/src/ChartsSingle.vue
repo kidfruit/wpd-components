@@ -259,7 +259,7 @@ export default {
       echartsInstances.clear()
     },
     setDynamicOption(data) {
-      console.log(data)
+      // console.log(data)
       let option = data.option
       echartsInstances.setOption(option)
     },

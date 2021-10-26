@@ -122,7 +122,7 @@ export default {
       })
     },
     onCheckALlChange(e) {
-      console.log(e)
+      // console.log(e)
       if (e.target.checked === true) {
         this.checkData.forEach(group => {
           group.data.forEach(item => {
@@ -149,7 +149,7 @@ export default {
       this.initSortTableData()
     },
     onCheckChange(e,groupName) {
-      console.log(e,groupName)
+      // console.log(e,groupName)
       if (e.target.checked === true) {
         this.checkData.forEach(group => {
           group.data.forEach(item => {
@@ -167,7 +167,7 @@ export default {
         this.checkData.forEach(group => {
           group.data.forEach(item => {
             if (item.id === e.target.id) {
-              console.log(item)
+              // console.log(item)
               item.check = false
               item.order = null
             }

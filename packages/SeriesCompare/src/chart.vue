@@ -143,7 +143,7 @@ export default {
     },
     setDynamicOption() {
       let option = this.prepareSeries();
-      console.log(option, 'option');
+      // console.log(option, 'option');
       echartsInstance.setOption(option);
     },
     resizeTheChart() {
