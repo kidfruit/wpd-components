@@ -264,7 +264,7 @@ export default {
     //   console.log(this.finaldata, '0.0.00.0')
     },
     drawChart() {
-      console.log(this.finaldata, '45454545445')
+      // console.log(this.finaldata, '45454545445')
       for (let i = 0; i < this.finaldata.length; i++) {
         echartsInstance = echarts.init(
           document.getElementById(this.finaldata[i].key)
@@ -287,7 +287,7 @@ export default {
       echartsInstance.clear()
     },
     setDynamicOption(data) {
-      console.log(data)
+      // console.log(data)
       let option = data.option
       echartsInstance.setOption(option)
     },

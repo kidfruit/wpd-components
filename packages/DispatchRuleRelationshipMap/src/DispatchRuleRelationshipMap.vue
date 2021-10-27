@@ -294,7 +294,7 @@ export default {
           links: seriesLinks
         }]
       }
-      console.log(option)
+      // console.log(option)
       return option
     },
     getRelationshipMapInstance() {

@@ -41,7 +41,7 @@ export default {
   mounted() {},
   methods: {
     onExpand(expandedKeys) {
-      console.log("onExpand", expandedKeys);
+      // console.log("onExpand", expandedKeys);
       // if not set autoExpandParent to false, if children expanded, parent can not collapse.
       // or, you can remove all expanded children keys.
       this.expandedKeys = expandedKeys;
@@ -49,7 +49,7 @@ export default {
     },
     onSelect(selectedKeys, info) {
       this.selectedKeys = selectedKeys;
-      console.log("onSelect", info, selectedKeys);
+      // console.log("onSelect", info, selectedKeys);
       this.$emit("select", selectedKeys);
     },
   },

@@ -402,7 +402,7 @@ export default {
 
     },
     cellEditDone(value) {
-      console.log(value)
+      // console.log(value)
       const { field, newValue, oldValue, rowIndex } = value
       // this.$set(this.data[rowIndex], field, +newValue)
       this.newData[rowIndex][field] = +newValue

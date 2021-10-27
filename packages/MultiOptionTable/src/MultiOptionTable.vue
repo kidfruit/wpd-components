@@ -102,7 +102,7 @@ export default {
           this.titletop
       }
     } catch (error) {
-      console.log()
+      // console.log()
     }
   },
   data: function () {
