@@ -200,7 +200,10 @@ export default {
           titleAlign: 'center',
           columnAlign: 'center',
           isResize: true,
-          readOnly: true,
+          //readOnly: true,
+          type: 'date',
+          dateFormat: 'YYYY-MM-DD HH:mm:ss',
+          correctFormat: true,
         },
         {
           field: 'dim1',

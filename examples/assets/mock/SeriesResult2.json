@@ -1,6 +1,8 @@
 {
   "chartTitle": [],
-  "classes": ["processResultInterChart"],
+  "classes": [
+    "processResultInterChart"
+  ],
   "setting": {
     "rowHeaders": true
   },
@@ -58,22 +60,22 @@
       "field": "RD_FDA_Z_P",
       "title": "蓄洪水位(m)",
       "showType": "1-R",
-      "echartsOptions_l":{
+      "echartsOptions_l": {
         "symbol": "none",
         "smooth": true,
         "lineStyle": {
-          "color":"red",
-          "width":3,
-          "type":"solid"
+          "color": "red",
+          "width": 3,
+          "type": "solid"
         }
       },
-      "echartsOptions_r":{
+      "echartsOptions_r": {
         "symbol": "none",
         "smooth": true,
         "lineStyle": {
-          "color":"red",
-          "width":3,
-          "type":"dotted"
+          "color": "red",
+          "width": 3,
+          "type": "dotted"
         }
       }
     },
@@ -95,15 +97,15 @@
       "echartsOptions_l": {
         "smooth": true,
         "lineStyle": {
-          "color":"green",
-          "type":"solid"
+          "color": "green",
+          "type": "solid"
         }
       },
       "echartsOptions_r": {
         "smooth": true,
         "lineStyle": {
-          "color":"green",
-          "type":"dotted"
+          "color": "green",
+          "type": "dotted"
         }
       }
     }
@@ -234,6 +236,18 @@
       "RD_FDA_Q_P": 100,
       "RD_FDA_Z_P": 200,
       "RD_FDA_V_P": 300
+    }
+  ],
+  "singleData": [
+    {
+      "title": "汛限水位",
+      "field": "floodLevel",
+      "value": 145
+    },
+    {
+      "title": "防洪高水位",
+      "field": "floodHighLevel",
+      "value": 175
     }
   ]
 }

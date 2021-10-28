@@ -32,6 +32,9 @@
         :className="item.className"
         :renderer="item.renderer"
         :type="item.type"
+        :dateFormat="item.dateFormat"
+        :datePickerConfig="item.datePickerConfig"
+        :timeFormat="item.timeFormat"
         :width="item.width"
         :readOnly="item.readOnly"
       />
@@ -87,6 +90,15 @@
 import { HotTable, HotColumn } from '@handsontable/vue'
 import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
 registerLanguageDictionary(zhCN)
+
+const dateI18n = {
+  previousMonth : '上个月',
+  nextMonth     : '下个月',
+  months        : ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+  weekdays      : ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+  weekdaysShort : ['日','一','二','三','四','五','六']
+}
+
 export default {
   name: 'SimpleTable',
   props: {
@@ -306,6 +318,7 @@ export default {
       return this.tableColumns.map((item, index) => {
         let itemNew = Object.assign({}, item)
         if (Object.prototype.hasOwnProperty.call(itemNew, 'type')) {
+          console.log(itemNew.type)
           switch (itemNew.type) {
             // case 'checkbox':
             //   //   this.checkbox[item.field] = item.checkbox;
@@ -316,6 +329,11 @@ export default {
               // 将dropdown的属性名和列表保存到hash表中，方便对data值进行更改
               this.dropdownHash[item.field] = item.source.slice(0)
               itemNew.source = item.source.map((item) => item.name)
+              break
+            case 'date':
+              itemNew.datePickerConfig = {
+                i18n:dateI18n
+              }
               break
           }
         }
