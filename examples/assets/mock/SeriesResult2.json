@@ -27,7 +27,7 @@
       },
       "field": "RD_FDA_Q_P",
       "title": "分洪流量(m³/s)",
-      "showType": "1-R",
+      "showType": "1-L",
       "echartsOptions_l": {
         "smooth": true,
         "symbol": "none",

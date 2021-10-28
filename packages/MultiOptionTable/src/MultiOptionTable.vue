@@ -228,9 +228,10 @@ export default {
     },
   },
   methods: {
-    highlightRow(item) {
+    highlight(item) {
       let list = this.$refs.hotTableRef.hotInstance.getSourceData()
       let rows = ''
+
       for (let i = 0; i < list.length; i++) {
         if (item === list[i].key) {
           rows = i
@@ -257,6 +258,15 @@ export default {
           console.warn('滚动到指定位置!')
         }
       })
+    },
+    highlightRow(item) {
+      if (this.$refs.hotTableRef) {
+        this.highlight(item)
+      } else {
+        this.$nextTick(() => {
+          this.highlight(item)
+        })
+      }
       //   let list = this.$refs.hotTableRef.hotInstance.getSourceData()
       //   let rows = ''
       //   for (let i = 0; i < list.length; i++) {
