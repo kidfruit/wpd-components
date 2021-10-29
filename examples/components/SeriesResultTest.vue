@@ -5,11 +5,12 @@
       ref="seriesResult"
       :classes="['test-series-result']"
       :splitIndex="splitIndex"
-      :showSplitIndex="false"
+      :showSplitIndex="true"
       :topmargin="topmargin"
       :chartOption="chartOption"
       :tableColumns="tableColumns"
       :tableData="tableData"
+      :singleData="singleData"
       :setting="{ rowHeaders: true }"
       :editable="true"
     />
@@ -32,11 +33,13 @@ export default {
       tableData: [],
       tableColumns: [],
       splitIndex: 0,
+      singleData: [],
       topmargin:40,
       chartOption: {
         grid: {
           right: 50,
-          left: 50
+          left: 50,
+          bottom: 25
         }
       }
     };
@@ -45,6 +48,7 @@ export default {
     this.tableData = fakeData.tableData;
     this.tableColumns = fakeData.tableColumns;
     this.splitIndex = fakeData.splitIndex;
+    this.singleData = fakeData.singleData
   },
   mounted() {
     // setTimeout(() => {

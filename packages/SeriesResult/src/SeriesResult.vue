@@ -24,8 +24,16 @@
           :chartData="chartList[targetChartIndex].chartData"
         />
       </div>
-      <div class="collapse-table" @click="toggleTableStatus">
-        {{ collapseTable ?  '展开表格' : '折叠表格' }}
+      <div class="chart-des" v-if="showSplitIndex">
+        <div
+          class="des-item"
+          v-for="item in currentFields"
+          :key="item.field"
+        >
+          <div class="des-item-title">最大{{item.title}}</div>
+          <div class="des-item-maxValue">{{item.maxValue}}({{item.unit}})</div>
+          <div class="des-item-time">[{{item.time}}]</div>
+        </div>
       </div>
     </div>
     <div :class="['table-box', `${collapseTable}`]">
@@ -38,11 +46,15 @@
         :tableColumns="newTableColumns"
         @cellEditDone="cellEditDone"
       />
+      <div class="collapse-table" @click="toggleTableStatus">
+        {{ collapseTable ?  '展开表格' : '折叠表格' }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
 import { MinMaxFunction } from '../../../utils/'
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
 import Chart from './chart'
@@ -101,6 +113,9 @@ export default {
     editable: {
       type: Boolean,
       default: true
+    },
+    singleData: {
+      type: Array
     }
   },
   components: {
@@ -118,6 +133,9 @@ export default {
       seriesList: [],
       newTableData: [],
       newTableColumns: [],
+      tableAndSingleData: [],
+      tableFields: [],
+      currentFields: [],
       newSetting: {},
       isShow: false,
       activeField: '',
@@ -179,13 +197,19 @@ export default {
     },
     handleData() {
       // 备份表格数据
+      this.tableData.forEach(item => {
+        this.singleData.forEach(val => {
+          item[val.field] = val.value
+        })
+      })
       this.newTableData = JSON.parse(JSON.stringify(this.tableData))
       this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns))
       this.newSetting = Object.assign({}, this.setting, {
         readOnly: !this.editable
       })
       this.clearData()
-      let showTypeList = this.tableColumns
+      this.tableAndSingleData = this.tableColumns.concat(this.singleData)
+      let showTypeList = this.tableAndSingleData
           .map((el) => {
             return {
               field: el.field,
@@ -203,6 +227,19 @@ export default {
 
       // console.log(carouselCount, showTypeList)
       this.generateChartData(carouselCount, showTypeList)
+
+      // chart-des
+      this.tableColumns.forEach(item => {
+        if (item.field !== 'time') {
+          this.tableFields.push({
+            unit: item.dataUnit.standardShow,
+            field: item.field,
+            title: item.title.split('(')[0],
+            chartIndex: +item.showType.split('-')[0] - 1
+          })
+        }
+      })
+      this.chartDes()
     },
     handleReset() {
       this.activeField = ''
@@ -235,15 +272,27 @@ export default {
       let legendListNum = legendList.length
       let temp = (legendListNum - 1) * 12 / 2
       for (let i = 0; i < legendListNum; i++) {
-        legends.push({
-          bottom: 15,
-          left: `${47 - temp + i * 12}%`,
-          itemWidth: 30,
-          show: true,
-          textStyle: { fontSize: 14 },
-          itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
-          data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
-        })
+        if (this.showSplitIndex) {
+          legends.push({
+            top: 15,
+            left: `${47 - temp + i * 12}%`,
+            itemWidth: 30,
+            show: true,
+            textStyle: { fontSize: 14 },
+            itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
+            data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
+          })
+        } else {
+          legends.push({
+            bottom: 15,
+            left: `${47 - temp + i * 12}%`,
+            itemWidth: 30,
+            show: true,
+            textStyle: { fontSize: 14 },
+            itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
+            data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
+          })
+        }
       }
       // console.log('legends', legends)
       return legends
@@ -466,12 +515,36 @@ export default {
       this.collapseTable = !this.collapseTable
       // console.log(this.collapseTable)
     },
+    chartDes() {
+      this.currentFields = []
+      this.tableFields.forEach(item => {
+        if (item.chartIndex === this.targetChartIndex) {
+          this.currentFields.push(item)
+        }
+      })
+
+      this.currentFields.forEach(item => {
+        let tempArr = []
+        this.tableData.forEach(val => {
+          tempArr.push(val[item.field])
+        })
+        item.maxValue = Math.max(...tempArr)
+        let index = tempArr.findIndex(element => element === item.maxValue)
+        item.time = moment(this.tableData[index].time).format('YYYY-MM-DD HH')
+      })
+    }
   },
   watch: {
     collapseTable: {
       deep: true,
       handler() {
         this.updateShow()
+      }
+    },
+    targetChartIndex: {
+      deep: true,
+      handler() {
+        this.chartDes()
       }
     }
   }
@@ -481,9 +554,24 @@ export default {
 <style lang="scss">
 .series-result {
   .chart-box {
-    height: 400px;
+    height: 475px;
     .chart-content {
-      height: calc(100% - 64px);
+      height: calc(100% - 100px);
+    }
+    .chart-des {
+      height: 58px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      .des-item {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .des-item-title, .des-item-maxValue {
+          margin-right: 20px;
+        }
+      }
     }
   }
   .chart-box.true {
@@ -493,10 +581,19 @@ export default {
     height: 0;
   }
   .table-box {
-    height: calc(100% - 400px);
+    max-height: calc(100% - 475px);
     .simple-table {
-      height: 100%;
+      height: calc(100% - 32px);
       overflow: auto;
+    }
+    .collapse-table {
+      height: 32px;
+      line-height: 32px;
+      background: #F5F5F5;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
   .show-hide {
@@ -510,15 +607,6 @@ export default {
       height: 24px;
       cursor: pointer;
     }
-  }
-  .collapse-table {
-    height: 32px;
-    line-height: 32px;
-    background: #F5F5F5;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
 </style>

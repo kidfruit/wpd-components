@@ -6,6 +6,7 @@
         :treeData="treeData"
         :checkable="true"
         :defaultExpandAll="true"
+        @check="handleCheckTree"
       />
     </div>
     <div class="multi-series-result-right">
@@ -61,7 +62,9 @@ export default {
     }
   },
   methods: {
-
+    handleCheckTree(checkedKeys, e) {
+      console.log(checkedKeys, e)
+    }
   }
 }
 </script>

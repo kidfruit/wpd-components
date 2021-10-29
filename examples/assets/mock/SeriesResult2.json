@@ -240,14 +240,70 @@
   ],
   "singleData": [
     {
+      "dataUnit": {
+        "viewShow": "m",
+        "standardShow": "m",
+        "name": "水位",
+        "description": null,
+        "formatPrecision": 2,
+        "id": "LEVEL",
+        "dbX": 1,
+        "formatType": 2,
+        "showX": 1
+      },
       "title": "汛限水位",
       "field": "floodLevel",
-      "value": 145
+      "value": 145,
+      "showType": "1-R",
+      "echartsOptions_l": {
+        "symbol": "none",
+        "smooth": true,
+        "lineStyle": {
+          "color": "cyan",
+          "type": "solid"
+        }
+      },
+      "echartsOptions_r": {
+        "symbol": "none",
+        "smooth": true,
+        "lineStyle": {
+          "color": "cyan",
+          "type": "dotted"
+        }
+      }
     },
     {
+      "dataUnit": {
+        "viewShow": "m",
+        "standardShow": "m",
+        "name": "水位",
+        "description": null,
+        "formatPrecision": 2,
+        "id": "LEVEL",
+        "dbX": 1,
+        "formatType": 2,
+        "showX": 1
+      },
       "title": "防洪高水位",
       "field": "floodHighLevel",
-      "value": 175
+      "value": 175,
+      "showType": "1-R",
+      "echartsOptions_l": {
+        "symbol": "none",
+        "smooth": true,
+        "lineStyle": {
+          "color": "yellowgreen",
+          "type": "solid"
+        }
+      },
+      "echartsOptions_r": {
+        "symbol": "none",
+        "smooth": true,
+        "lineStyle": {
+          "color": "yellowgreen",
+          "type": "dotted"
+        }
+      }
     }
   ]
 }
