@@ -3,9 +3,7 @@
     <multi-series-result
       :classes="classNames"
       :timeLag="timeLag"
-      :treeData="treeData"
       :seriesData="seriesData"
-      @checkedNodeUpdate="checkedNodeUpdate"
     />
   </div>
 </template>
@@ -24,17 +22,11 @@ export default {
       classNames: ['test-multi-series'],
       treeData: mock_Tree,
       timeLag: false,
-      seriesData:[],//当前默认勾选，tree上勾选变多后，这里也变多，
+      seriesData:[fakeData, fakeData, fakeData, fakeData],//当前默认勾选，tree上勾选变多后，这里也变多，
     }
   },
   methods: {
-    checkedNodeUpdate(checkedNode){
-      console.log(checkedNode)
-      this.seriesData = []
-      checkedNode.forEach(() => {
-        this.seriesData.push(fakeData)
-      })
-    }
+
   },
 }
 </script>

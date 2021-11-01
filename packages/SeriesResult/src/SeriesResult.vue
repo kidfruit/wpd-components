@@ -115,7 +115,10 @@ export default {
       default: true
     },
     singleData: {
-      type: Array
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   },
   components: {
@@ -198,7 +201,7 @@ export default {
     handleData() {
       // 备份表格数据
       this.tableData.forEach(item => {
-        this.singleData.forEach(val => {
+        this.singleData && this.singleData.forEach(val => {
           item[val.field] = val.value
         })
       })

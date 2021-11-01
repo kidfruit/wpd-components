@@ -1,26 +1,25 @@
 <template>
   <div :class="[classes, 'multi-series-result']">
-    <div class="multi-series-result-left">
-      <a-tree
-        v-model="checkedNode"
-        :treeData="treeData"
-        :checkable="true"
-        :defaultExpandAll="true"
-        @check="handleCheckTree"
+    <div
+      class="series-result-wrapper"
+      v-for="(item, index) in seriesData"
+      :key="index"
+    >
+      <div class="series-result-title">{{item.stName}}</div>
+      <SeriesResult
+        :splitIndex="item.splitIndex"
+        :tableColumns="item.tableColumns"
+        :tableData="item.tableData"
+        :singleData="item.singleData"
+        :chartOption="{
+          grid: {
+            right: 100,
+            left: 100,
+            top: 70,
+            bottom: 25
+          }
+        }"
       />
-    </div>
-    <div class="multi-series-result-right">
-      <div
-        class="series-result-wrapper"
-        v-for="(item, index) in seriesData"
-        :key="index"
-      >
-        <SeriesResult
-          :splitIndex="item.splitIndex"
-          :tableColumns="item.tableColumns"
-          :tableData="item.tableData"
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -39,10 +38,6 @@ export default {
       type: Boolean,
       required: false
     },
-    treeData: {
-      type: Array,
-      required: true
-    },
     seriesData: {
       type: Array,
       required: true
@@ -50,39 +45,27 @@ export default {
   },
   data() {
     return {
-      checkedNode: []
+
     }
   },
   watch: {
-    checkedNode: {
-      deep: true,
-      handler() {
-        this.$emit('checkedNodeUpdate', this.checkedNode)
-      }
-    }
-  },
-  methods: {
-    handleCheckTree(checkedKeys, e) {
-      console.log(checkedKeys, e)
-    }
+
   }
 }
 </script>
 
 <style lang="less">
 .multi-series-result {
-  .multi-series-result-right {
-    .chart-switch-button {
+  .chart-switch-button {
+    display: none;
+  }
+  .chart-box {
+    .collapse-table {
       display: none;
     }
-    .chart-box {
-      .collapse-table {
-        display: none;
-      }
-    }
-    .table-box {
-      display: none;
-    }
+  }
+  .table-box {
+    display: none;
   }
 }
 </style>
@@ -91,21 +74,19 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
-  .multi-series-result-left {
-    width: 200px;
-    height: 100%;
-    overflow: auto;
-    //background: rosybrown;
-  }
-  .multi-series-result-right {
-    width: calc(100% - 200px);
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    overflow: auto;
-    //background: yellowgreen;
-    .series-result-wrapper {
-      width: 50%;
+  flex-wrap: wrap;
+  overflow: auto;
+  .series-result-wrapper {
+    width: 50%;
+    margin-top: 20px;
+    position: relative;
+    .series-result-title {
+      font-size: 25px;
+      font-weight: bold;
+      color: #3C9FC3;
+      position: absolute;
+      left: 5%;
+      top: 0;
     }
   }
 }

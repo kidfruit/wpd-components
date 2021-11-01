@@ -32,9 +32,7 @@
         :className="item.className"
         :renderer="item.renderer"
         :type="item.type"
-        :dateFormat="item.dateFormat"
-        :datePickerConfig="item.datePickerConfig"
-        :timeFormat="item.timeFormat"
+        :settings="item"
         :width="item.width"
         :readOnly="item.readOnly"
       />
@@ -318,7 +316,7 @@ export default {
       return this.tableColumns.map((item, index) => {
         let itemNew = Object.assign({}, item)
         if (Object.prototype.hasOwnProperty.call(itemNew, 'type')) {
-          console.log(itemNew.type)
+          // console.log(itemNew.type)
           switch (itemNew.type) {
             // case 'checkbox':
             //   //   this.checkbox[item.field] = item.checkbox;
@@ -334,6 +332,7 @@ export default {
               itemNew.datePickerConfig = {
                 i18n:dateI18n
               }
+              // console.log(itemNew)
               break
           }
         }
