@@ -55,6 +55,7 @@
 
 <script>
 import moment from 'moment'
+import lodash from 'lodash'
 import { MinMaxFunction } from '../../../utils/'
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
 import Chart from './chart'
@@ -232,6 +233,7 @@ export default {
       this.generateChartData(carouselCount, showTypeList)
 
       // chart-des
+      this.tableFields = []
       this.tableColumns.forEach(item => {
         if (item.field !== 'time') {
           this.tableFields.push({
@@ -519,12 +521,17 @@ export default {
       // console.log(this.collapseTable)
     },
     chartDes() {
+      const currentFields = []
       this.currentFields = []
       this.tableFields.forEach(item => {
         if (item.chartIndex === this.targetChartIndex) {
-          this.currentFields.push(item)
+          currentFields.push(item)
         }
       })
+
+      this.currentFields = lodash.unionWith(currentFields, lodash.isEqual)
+
+      // console.log(this.currentFields)
 
       this.currentFields.forEach(item => {
         let tempArr = []
@@ -557,34 +564,34 @@ export default {
 <style lang="scss">
 .series-result {
   .chart-box {
-    height: 475px;
+    height: 375px;
     .chart-content {
-      height: calc(100% - 100px);
+      height: calc(100% - 75px);
     }
     .chart-des {
-      height: 58px;
+      height: 65px;
       margin-bottom: 10px;
       display: flex;
       flex-wrap: wrap;
       .des-item {
         width: 50%;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         .des-item-title, .des-item-maxValue {
-          margin-right: 20px;
+          margin-right: 10px;
         }
       }
     }
   }
   .chart-box.true {
-    height: 100%;
+    height: calc(100% - 32px);
   }
   .table-box.true {
     height: 0;
   }
   .table-box {
-    max-height: calc(100% - 475px);
+    height: calc(100% - 375px);
     .simple-table {
       height: calc(100% - 32px);
       overflow: auto;

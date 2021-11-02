@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%;height: 500px;">
+  <div style="width: 1200px;height: 500px;">
     <multi-series-result
       :classes="classNames"
       :timeLag="timeLag"

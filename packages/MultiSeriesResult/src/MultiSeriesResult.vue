@@ -13,8 +13,8 @@
         :singleData="item.singleData"
         :chartOption="{
           grid: {
-            right: 100,
-            left: 100,
+            right: 50,
+            left: 50,
             top: 70,
             bottom: 25
           }
