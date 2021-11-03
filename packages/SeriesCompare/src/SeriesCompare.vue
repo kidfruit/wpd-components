@@ -28,9 +28,6 @@
           :chartData="chartParams.chartData"
         />
       </div>
-      <div class="collapse-table" @click="toggleTableStatus">
-        {{ collapseTable ?  '展开表格' : '折叠表格' }}
-      </div>
     </div>
     <div :class="['table-box', `${collapseTable}`]">
       <!-- <div class="reset">
@@ -52,6 +49,9 @@
         :setting="newSetting"
         :tableColumns="newTableColumns"
       />
+      <div class="collapse-table" @click="toggleTableStatus">
+        {{ collapseTable ?  '展开表格' : '折叠表格' }}
+      </div>
     </div>
   </div>
 </template>
@@ -492,21 +492,33 @@ export default {
   padding: 40px 10px 10px;
   .chart-box,
   .table-box {
-    height: 50%;
     position: relative;
     min-height: 250px;
   }
   .chart-box {
+    height: 332px;
     .chart-content {
-      height: calc(100% - 64px);
+      height: calc(100% - 32px);
     }
   }
   .table-box {
-    width: 100%;
-    overflow: hidden;
+    height: calc(100% - 332px);
+    .simple-table {
+      height: calc(100% - 32px);
+      overflow: auto;
+    }
+    .collapse-table {
+      height: 32px;
+      line-height: 32px;
+      background: #F5F5F5;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
   .chart-box.true {
-    height: 100%;
+    height: calc(100% - 32px);
   }
   .table-box.true {
     height: 0;
@@ -523,15 +535,6 @@ export default {
       height: 24px;
       cursor: pointer;
     }
-  }
-  .collapse-table {
-    height: 32px;
-    line-height: 32px;
-    background: #F5F5F5;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
 </style>

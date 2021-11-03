@@ -1,6 +1,6 @@
 <template>
   <div :class="classNames" :key="seriesResultRandomKey">
-    <div :class="['chart-box', `${collapseTable}`]">
+    <div :class="['chart-box', `${collapseTable}`, isShowMaximum ? '' : 'unShowMaximum']">
       <div class="chart-switch-button">
         <a-select v-model="targetChartIndex">
           <a-select-option
@@ -24,7 +24,7 @@
           :chartData="chartList[targetChartIndex].chartData"
         />
       </div>
-      <div class="chart-des" v-if="showSplitIndex">
+      <div class="chart-des" v-if="isShowMaximum">
         <div
           class="des-item"
           v-for="item in currentFields"
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div :class="['table-box', `${collapseTable}`]">
+    <div :class="['table-box', `${collapseTable}`, isShowMaximum ? '' : 'unShowMaximum']">
       <simple-table
         ref="tableRef"
         :targetChartIndex="targetChartIndex"
@@ -107,6 +107,14 @@ export default {
     showSplitIndex: {
       type: Boolean,
       default: true
+    },
+    isShowMaximum: {
+      type: Boolean,
+      default: false
+    },
+    isMultiSeriesResult: {
+      type: Boolean,
+      default: false
     },
     chartTitle: {
       type: Array,
@@ -233,18 +241,20 @@ export default {
       this.generateChartData(carouselCount, showTypeList)
 
       // chart-des
-      this.tableFields = []
-      this.tableColumns.forEach(item => {
-        if (item.field !== 'time') {
-          this.tableFields.push({
-            unit: item.dataUnit.standardShow,
-            field: item.field,
-            title: item.title.split('(')[0],
-            chartIndex: +item.showType.split('-')[0] - 1
-          })
-        }
-      })
-      this.chartDes()
+     if (this.isShowMaximum) {
+       this.tableFields = []
+       this.tableColumns.forEach(item => {
+         if (item.field !== 'time') {
+           this.tableFields.push({
+             unit: item.dataUnit.standardShow,
+             field: item.field,
+             title: item.title.split('(')[0],
+             chartIndex: +item.showType.split('-')[0] - 1
+           })
+         }
+       })
+       this.chartDes()
+     }
     },
     handleReset() {
       this.activeField = ''
@@ -277,16 +287,31 @@ export default {
       let legendListNum = legendList.length
       let temp = (legendListNum - 1) * 12 / 2
       for (let i = 0; i < legendListNum; i++) {
-        if (this.showSplitIndex) {
-          legends.push({
-            top: 15,
-            left: `${47 - temp + i * 12}%`,
-            itemWidth: 30,
-            show: true,
-            textStyle: { fontSize: 14 },
-            itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
-            data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
-          })
+        if (this.isShowMaximum) {
+          if (this.isMultiSeriesResult) {
+            // console.log(legendList)
+            let topStep = Math.floor(i / 3)
+            let leftStep = i - topStep * 3
+            legends.push({
+              top: topStep * 20,
+              left: `${25 + leftStep * 25}%`,
+              itemWidth: 30,
+              show: true,
+              textStyle: { fontSize: 14 },
+              itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
+              data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
+            })
+          } else {
+            legends.push({
+              top: 15,
+              left: `${47 - temp + i * 12}%`,
+              itemWidth: 30,
+              show: true,
+              textStyle: { fontSize: 14 },
+              itemStyle: legendList[i].echartsOptions_l && legendList[i].echartsOptions_l.lineStyle,
+              data: [{ name: legendList[i].title, icon: 'line' }], //rect为矩形
+            })
+          }
         } else {
           legends.push({
             bottom: 15,
@@ -566,17 +591,18 @@ export default {
   .chart-box {
     height: 375px;
     .chart-content {
-      height: calc(100% - 75px);
+      height: calc(100% - 107px);
     }
     .chart-des {
-      height: 65px;
-      margin-bottom: 10px;
+      height: 60px;
+      margin-bottom: 15px;
       display: flex;
       flex-wrap: wrap;
       .des-item {
         width: 50%;
+        height: 30px;
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         .des-item-title, .des-item-maxValue {
           margin-right: 10px;
@@ -584,11 +610,14 @@ export default {
       }
     }
   }
+  .chart-box.unShowMaximum {
+    height: 300px;
+    .chart-content {
+      height: calc(100% - 32px);
+    }
+  }
   .chart-box.true {
     height: calc(100% - 32px);
-  }
-  .table-box.true {
-    height: 0;
   }
   .table-box {
     height: calc(100% - 375px);
@@ -605,6 +634,12 @@ export default {
       justify-content: center;
       align-items: center;
     }
+  }
+  .table-box.unShowMaximum {
+    height: calc(100% - 300px);
+  }
+  .table-box.true {
+    height: 0;
   }
   .show-hide {
     position: absolute;

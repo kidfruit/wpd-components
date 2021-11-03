@@ -6,6 +6,7 @@
       :classes="['test-series-result']"
       :splitIndex="splitIndex"
       :showSplitIndex="true"
+      :isShowMaximum="true"
       :topmargin="topmargin"
       :chartOption="chartOption"
       :tableColumns="tableColumns"

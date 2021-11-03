@@ -11,14 +11,8 @@
         :tableColumns="item.tableColumns"
         :tableData="item.tableData"
         :singleData="item.singleData"
-        :chartOption="{
-          grid: {
-            right: 50,
-            left: 50,
-            top: 70,
-            bottom: 25
-          }
-        }"
+        :isShowMaximum="true"
+        :isMultiSeriesResult="true"
       />
     </div>
   </div>
@@ -56,11 +50,15 @@ export default {
 
 <style lang="less">
 .multi-series-result {
-  .chart-switch-button {
-    display: none;
-  }
   .chart-box {
-    .collapse-table {
+    height: 300px;
+    .chart-switch-button {
+      display: none;
+    }
+    .chart-content {
+      height: 300px;
+    }
+    .chart-des {
       display: none;
     }
   }
@@ -77,7 +75,7 @@ export default {
   flex-wrap: wrap;
   overflow: auto;
   .series-result-wrapper {
-    width: 50%;
+    width: 49%;
     margin-top: 20px;
     position: relative;
     .series-result-title {
