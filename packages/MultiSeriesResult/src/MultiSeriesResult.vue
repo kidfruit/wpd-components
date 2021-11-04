@@ -13,6 +13,7 @@
         :singleData="item.singleData"
         :isShowMaximum="true"
         :isMultiSeriesResult="true"
+        :chartOption="{grid: {top: 75}}"
       />
     </div>
   </div>
