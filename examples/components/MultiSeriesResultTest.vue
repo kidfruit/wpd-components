@@ -4,6 +4,7 @@
       :classes="classNames"
       :timeLag="timeLag"
       :seriesData="seriesData"
+      :chartOption="{tooltip: {trigger: 'axis'},grid: {top: 75}}"
     />
   </div>
 </template>

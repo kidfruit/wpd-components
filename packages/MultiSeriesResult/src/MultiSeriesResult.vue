@@ -13,7 +13,7 @@
         :singleData="item.singleData"
         :isShowMaximum="true"
         :isMultiSeriesResult="true"
-        :chartOption="{grid: {top: 75}}"
+        :chartOption="chartOption"
       />
     </div>
   </div>
@@ -36,7 +36,10 @@ export default {
     seriesData: {
       type: Array,
       required: true
-    }
+    },
+    chartOption: {
+      type: Object
+    },
   },
   data() {
     return {

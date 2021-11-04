@@ -7,6 +7,7 @@
       :data="SeriesCompareData"
       :splitIndex="splitIndex"
       :setting="{ fixedColumnsLeft: 1, rowHeaders: true }"
+      :chartOption="{tooltip: {trigger: 'axis'}}"
     />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>

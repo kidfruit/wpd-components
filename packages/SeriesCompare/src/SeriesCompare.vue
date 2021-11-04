@@ -98,6 +98,9 @@ export default {
     // tableColumns: {
     //   type: Array
     // },
+    chartOption: {
+      type: Object
+    },
     splitIndex: {
       type: Number
     },
@@ -145,7 +148,7 @@ export default {
     },
     clearData() {
       // this.chartList = [];
-      this.chartOption = null;
+      // this.chartOption = null;
       this.seriesList = [];
       this.targetChartIndex = 0;
       const splitIndex = this.splitIndex;
@@ -190,7 +193,7 @@ export default {
     generateChartData() {
       let firstTime = this.newTableData[this.splitIndex].time;
       let pickedColumn = this.checkAttribute.list.find(i => i.key === this.checkAttribute.checked);
-      let chartOption = {
+      let chartOption = Object.assign({
         title: {
           text: '',
           left: 'center'
@@ -201,7 +204,7 @@ export default {
           right: 50,
           bottom: 50
         }
-      };
+      }, this.chartOption);
       let minTop = 0;
       chartOption.legend = this.schemeList.map((title, i) => {
         const l = {
