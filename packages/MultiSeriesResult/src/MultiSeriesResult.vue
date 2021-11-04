@@ -84,7 +84,7 @@ export default {
       font-weight: bold;
       color: #3C9FC3;
       position: absolute;
-      left: 5%;
+      left: 0;
       top: 0;
     }
   }

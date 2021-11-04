@@ -200,6 +200,7 @@ export default {
         el.chartData = this.newTableData
         el.id = guid()
       })
+      this.$emit('cellEditDone', value)
     },
     clearData() {
       this.chartList = []
@@ -384,6 +385,12 @@ export default {
               .map((el, index) => {
                 // console.log(el,"----------------------")
 
+                if (!el.echartsOptions_r.emphasis) {
+                  el.echartsOptions_r.emphasis = {
+                    scale: false,
+                    lineStyle: el.echartsOptions_r.lineStyle
+                  }
+                }
                 let obj = {
                   field: el.field,
                   title: el.title,

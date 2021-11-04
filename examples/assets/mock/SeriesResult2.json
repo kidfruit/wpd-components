@@ -41,7 +41,7 @@
         "smooth": true,
         "symbol": "none",
         "lineStyle": {
-          "type": "dotted",
+          "type": "dashed",
           "color": "blue"
         }
       }
@@ -76,7 +76,7 @@
         "lineStyle": {
           "color": "red",
           "width": 3,
-          "type": "dotted"
+          "type": "dashed"
         }
       }
     },
@@ -106,7 +106,7 @@
         "smooth": true,
         "lineStyle": {
           "color": "green",
-          "type": "dotted"
+          "type": "dashed"
         }
       }
     }
@@ -269,7 +269,7 @@
         "smooth": true,
         "lineStyle": {
           "color": "cyan",
-          "type": "dotted"
+          "type": "dashed"
         }
       }
     },
@@ -302,7 +302,7 @@
         "smooth": true,
         "lineStyle": {
           "color": "yellowgreen",
-          "type": "dotted"
+          "type": "dashed"
         }
       }
     }

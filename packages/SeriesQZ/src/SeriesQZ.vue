@@ -280,6 +280,12 @@ export default {
       // 构造tooltip (有bug)
       this.chartOption.tooltip = {
         trigger: "axis",
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985'
+          }
+        },
         formatter: (params) => {
           let paramsNameArr = []
           params.forEach(item => paramsNameArr.push(item.seriesName))

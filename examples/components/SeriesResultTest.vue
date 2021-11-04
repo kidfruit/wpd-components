@@ -14,6 +14,7 @@
       :singleData="singleData"
       :setting="{ rowHeaders: true }"
       :editable="true"
+      @cellEditDone="cellEditDone"
     />
     <div style="display: flex; margin: 0 24px">
       <button @click="getData">获取数据</button>
@@ -65,6 +66,9 @@ export default {
     getData() {
       console.log(this.$refs.seriesResult.getTableData());
       console.log(this.$refs.seriesResult.getEditColumnField());
+    },
+    cellEditDone(value) {
+      // console.log(value)
     }
   }
 };

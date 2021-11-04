@@ -93,6 +93,12 @@ const defaultOption = {
   },
   tooltip: {
     trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      label: {
+        backgroundColor: '#6a7985'
+      }
+    },
     // formatter: function (arg) {
     //   return arg[0].seriesName + ':' + arg[0].data
     // },

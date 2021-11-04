@@ -12,6 +12,12 @@ const defaultOption = {
   },
   tooltip: {
     trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      label: {
+        backgroundColor: '#6a7985'
+      }
+    },
   },
   grid: {},
   legend: {
@@ -191,18 +197,20 @@ export default {
             })
           }
         })
-        return list
-            .map((item) => {
-              if (item.value === null || item.value === '-') return ''
-              else
-                return (
-                    item.marker +
-                    item.seriesName +
-                    `<b style="margin-left:5px;">${item.value}</b>`
-                )
-            })
-            .filter((i) => i)
-            .join('<br />')
+
+        let tooltips = list.map((item) => {
+          if (item.value === null || item.value === '-') {
+            return ''
+          } else {
+            return (
+              item.marker +
+              item.seriesName +
+              `<b style="margin-left:5px;">${item.value}</b>`
+            )
+          }
+        }).filter((i) => i).join('<br />')
+
+        return list[0].name + '<br/>' + tooltips
       }
 
       option.yAxis = this.chartAxis.yAxis.map(
@@ -263,6 +271,7 @@ export default {
           id: yax.id,
           symbolSize: yax.symbolSize,
           lineStyle: yax.lineStyle,
+          emphasis: yax.emphasis,
           markLine: yax.markLine,
           color: yax.color,
           itemStyle: yax.itemStyle,

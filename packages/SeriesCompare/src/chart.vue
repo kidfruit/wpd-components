@@ -9,6 +9,12 @@ const defaultOption = {
   },
   tooltip: {
     trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      label: {
+        backgroundColor: '#6a7985'
+      }
+    },
     formatter(params) {
       let list = [];
       params.map(i => {
@@ -16,13 +22,12 @@ const defaultOption = {
           list.push(i);
         }
       });
-      return list
-        .map(item => {
-          if (item.value === null || item.value === '-') return '';
-          else return item.marker + item.seriesName + `<b style="margin-left:5px;">${item.value}</b>`;
-        })
-        .filter(i => i)
-        .join('<br />');
+      let tooltips = list.map(item => {
+        if (item.value === null || item.value === '-') return ''
+        else return item.marker + item.seriesName + `<b style="margin-left:5px;">${item.value}</b>`
+      }).filter(i => i).join('<br />')
+
+      return list[0].name + '<br/>' + tooltips
     }
   },
   grid: {},
