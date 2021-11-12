@@ -60,11 +60,11 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SeriesCompareTest：通用过程线多方案对比组件</h2>
       <series-compare-test />
     </div>
@@ -101,6 +101,10 @@
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleRelationshipMapTest/>
     </div>
+    <div v-if="true">
+      <h2>DatasetTreeChartTest: 数据结构树控件</h2>
+      <DatasetTreeChartTest/>
+    </div>
     <div v-if="false">
       <h2>UsageSettingCompTest: 洲滩民垸使用设置控件</h2>
       <UsageSettingCompTest/>
@@ -113,7 +117,7 @@
       <h2>SelectTimePeriodTest: 时段选择控件</h2>
       <SelectTimePeriodTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>MultiSeriesResult: 多站点时序值展示控件</h2>
       <MultiSeriesResultText/>
     </div>
@@ -152,6 +156,7 @@ import UsageSettingCompTest from "./UsageSettingCompTest";
 import TimePlayControlTest from "@/components/TimePlayControlTest";
 import SelectTimePeriodTest from "./SelectTimePeriodTest";
 import MultiSeriesResultText from "./MultiSeriesResultTest";
+import DatasetTreeChartTest from "./DatasetTreeChartTest";
 
 export default {
   components: {
@@ -185,7 +190,8 @@ export default {
     DispatchRuleRelationshipMapTest,
     UsageSettingCompTest,
     TimePlayControlTest,
-    SelectTimePeriodTest
+    SelectTimePeriodTest,
+    DatasetTreeChartTest
   },
   name: 'HelloWorld',
   methods: {

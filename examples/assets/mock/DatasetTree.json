@@ -1,0 +1,419 @@
+{
+  "nodeInfo": {
+    "data": {
+      "name": "梨园",
+      "id": "60101398",
+      "area": "220000.0",
+      "normalLevel": "1618.0",
+      "relatedRiverReachId": "",
+      "riverId": "FB0101",
+      "latitude": "",
+      "regulateType": "0",
+      "maxOutflowCurveId": "60101398ZMAXQ",
+      "floodStorageCap": "0.0",
+      "energyStorageCurveId": "",
+      "deadLevel": "1605.0",
+      "designFloodLevel": "0.0",
+      "downZQCurveId": "",
+      "downSafetyOutflow": "1.73",
+      "floodHighLevel": "1618.0",
+      "floodLevel": "1605.0",
+      "capacityCurveId": "60101398ZV",
+      "key": "02d99fd09b9744d48f97a4dcf69432c4",
+      "floodCheckLevel": "0.0",
+      "longitude": "",
+      "desc": ""
+    },
+    "columns": [
+      {
+        "title": "唯一编码",
+        "key": "key"
+      },
+      {
+        "title": "编码",
+        "key": "id"
+      },
+      {
+        "title": "名称",
+        "key": "name"
+      },
+      {
+        "title": "河流",
+        "key": "riverId"
+      },
+      {
+        "title": "集水面积",
+        "key": "area"
+      },
+      {
+        "title": "调节类型",
+        "key": "regulateType"
+      },
+      {
+        "title": "校核水位",
+        "key": "floodCheckLevel"
+      },
+      {
+        "title": "设计水位",
+        "key": "designFloodLevel"
+      },
+      {
+        "title": "防洪高水位",
+        "key": "floodHighLevel"
+      },
+      {
+        "title": "正常蓄水位 ",
+        "key": "normalLevel"
+      },
+      {
+        "title": "汛限水位",
+        "key": "floodLevel"
+      },
+      {
+        "title": "死水位",
+        "key": "deadLevel"
+      },
+      {
+        "title": "防洪库容",
+        "key": "floodStorageCap"
+      },
+      {
+        "title": "安全泄量",
+        "key": "downSafetyOutflow"
+      },
+      {
+        "title": "库容曲线",
+        "key": "capacityCurveId"
+      },
+      {
+        "title": "泄流能力曲线",
+        "key": "maxOutflowCurveId"
+      },
+      {
+        "title": "下游水位流量曲线",
+        "key": "downZQCurveId"
+      },
+      {
+        "title": "蓄能曲线",
+        "key": "energyStorageCurveId"
+      },
+      {
+        "title": "关联库区河段",
+        "key": "relatedRiverReachId"
+      },
+      {
+        "title": "经度",
+        "key": "longitude"
+      },
+      {
+        "title": "纬度",
+        "key": "latitude"
+      },
+      {
+        "title": "描述",
+        "key": "desc"
+      }
+    ]
+  },
+  "nodeTopo": {
+    "data": {
+      "nodeName": "梨园",
+      "downId": "RCHCJ12",
+      "topoId": "TOPO-ALL",
+      "name": "长江委综合调度",
+      "id": "10802",
+      "nodeType": "WPStationRR",
+      "nodeId": "60101398",
+      "flowId": "FB0101",
+      "key": "7c58d06e0acf41c8ba54d2347a12b70b",
+      "isShow": "true",
+      "desc": ""
+    },
+    "columns": [
+      {
+        "title": "唯一编码",
+        "key": "key"
+      },
+      {
+        "title": "序号",
+        "key": "id"
+      },
+      {
+        "title": "名称",
+        "key": "name"
+      },
+      {
+        "title": "拓扑编码",
+        "key": "topoId"
+      },
+      {
+        "title": "节点编码",
+        "key": "nodeId"
+      },
+      {
+        "title": "节点名称",
+        "key": "nodeName"
+      },
+      {
+        "title": "节点类型",
+        "key": "nodeType"
+      },
+      {
+        "title": "指向节点",
+        "key": "flowId"
+      },
+      {
+        "title": "下级节点",
+        "key": "downId"
+      },
+      {
+        "title": "是否显示",
+        "key": "isShow"
+      },
+      {
+        "title": "描述",
+        "key": "desc"
+      }
+    ]
+  },
+  "curveInfo": {
+    "Z_MAXQ": [
+      {
+        "dataConst": null,
+        "field": [
+          "dim1",
+          "dim2"
+        ],
+        "data": [
+          {
+            "dim2": 4277.0,
+            "dim1": 1605.0
+          },
+          {
+            "dim2": 4719.0,
+            "dim1": 1606.0
+          },
+          {
+            "dim2": 5205.0,
+            "dim1": 1607.0
+          },
+          {
+            "dim2": 5742.0,
+            "dim1": 1608.0
+          },
+          {
+            "dim2": 6320.0,
+            "dim1": 1609.0
+          },
+          {
+            "dim2": 6950.0,
+            "dim1": 1610.0
+          },
+          {
+            "dim2": 7616.0,
+            "dim1": 1611.0
+          },
+          {
+            "dim2": 8334.0,
+            "dim1": 1612.0
+          },
+          {
+            "dim2": 9083.0,
+            "dim1": 1613.0
+          },
+          {
+            "dim2": 9879.0,
+            "dim1": 1614.0
+          },
+          {
+            "dim2": 10700.0,
+            "dim1": 1615.0
+          },
+          {
+            "dim2": 11566.0,
+            "dim1": 1616.0
+          },
+          {
+            "dim2": 12448.0,
+            "dim1": 1617.0
+          },
+          {
+            "dim2": 13000.0,
+            "dim1": 1618.0
+          },
+          {
+            "dim2": 13057.0,
+            "dim1": 1619.0
+          },
+          {
+            "dim2": 14020.0,
+            "dim1": 1620.0
+          },
+          {
+            "dim2": 14976.0,
+            "dim1": 1621.0
+          },
+          {
+            "dim2": 15962.0,
+            "dim1": 1622.0
+          },
+          {
+            "dim2": 16937.0,
+            "dim1": 1623.0
+          },
+          {
+            "dim2": 17145.0,
+            "dim1": 1623.21
+          },
+          {
+            "dim2": 17888.0,
+            "dim1": 1624.0
+          }
+        ],
+        "name": "梨园水库泄流能力曲线",
+        "typeName": "泄流能力曲线",
+        "typeId": "Z_MAXQ",
+        "id": "60101398ZMAXQ",
+        "title": [
+          {
+            "dim2": "泄流能力(m³/s)",
+            "dim1": "水位(m)"
+          }
+        ]
+      }
+    ],
+    "Z_V": [
+      {
+        "dataConst": null,
+        "field": [
+          "dim1",
+          "dim2"
+        ],
+        "data": [
+          {
+            "dim2": 0.0,
+            "dim1": 1495.5
+          },
+          {
+            "dim2": 0.4,
+            "dim1": 1500.0
+          },
+          {
+            "dim2": 2.3,
+            "dim1": 1505.0
+          },
+          {
+            "dim2": 5.8,
+            "dim1": 1510.0
+          },
+          {
+            "dim2": 10.8,
+            "dim1": 1515.0
+          },
+          {
+            "dim2": 17.5,
+            "dim1": 1520.0
+          },
+          {
+            "dim2": 25.8,
+            "dim1": 1525.0
+          },
+          {
+            "dim2": 36.2,
+            "dim1": 1530.0
+          },
+          {
+            "dim2": 49.5,
+            "dim1": 1535.0
+          },
+          {
+            "dim2": 65.2,
+            "dim1": 1540.0
+          },
+          {
+            "dim2": 83.0,
+            "dim1": 1545.0
+          },
+          {
+            "dim2": 103.3,
+            "dim1": 1550.0
+          },
+          {
+            "dim2": 126.8,
+            "dim1": 1555.0
+          },
+          {
+            "dim2": 153.7,
+            "dim1": 1560.0
+          },
+          {
+            "dim2": 183.6,
+            "dim1": 1565.0
+          },
+          {
+            "dim2": 216.6,
+            "dim1": 1570.0
+          },
+          {
+            "dim2": 252.9,
+            "dim1": 1575.0
+          },
+          {
+            "dim2": 293.2,
+            "dim1": 1580.0
+          },
+          {
+            "dim2": 337.5,
+            "dim1": 1585.0
+          },
+          {
+            "dim2": 385.9,
+            "dim1": 1590.0
+          },
+          {
+            "dim2": 438.2,
+            "dim1": 1595.0
+          },
+          {
+            "dim2": 494.1,
+            "dim1": 1600.0
+          },
+          {
+            "dim2": 553.7,
+            "dim1": 1605.0
+          },
+          {
+            "dim2": 617.1,
+            "dim1": 1610.0
+          },
+          {
+            "dim2": 684.6,
+            "dim1": 1615.0
+          },
+          {
+            "dim2": 756.1,
+            "dim1": 1620.0
+          },
+          {
+            "dim2": 831.7,
+            "dim1": 1625.0
+          },
+          {
+            "dim2": 911.1,
+            "dim1": 1630.0
+          }
+        ],
+        "name": "梨园水库库容曲线",
+        "typeName": "水位库容曲线",
+        "typeId": "Z_V",
+        "id": "60101398ZV",
+        "title": [
+          {
+            "dim2": "库容(百万m³)",
+            "dim1": "水位(m)"
+          }
+        ]
+      }
+    ]
+  }
+}

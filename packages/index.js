@@ -31,6 +31,7 @@ import TreeSimpleTableGroup from "./TreeSimpleTableGroup/src/TreeSimpleTableGrou
 import SelectTimePeriod from "./SelectTimePeriod/src/SelectTimePeriod";
 
 import MultiSeriesResult from "./MultiSeriesResult/src/MultiSeriesResult";
+import DatasetTreeChart from "./DatasetTreeChart/src/DatasetTreeChart";
 
 //comp组件
 import StatusInfoComp from "./StatusInfoComp/src/StatusInfoComp";
@@ -71,7 +72,8 @@ const components = [
   UsageSettingComp,
   TimePlayControl,
   MultiSeriesResult,
-  SelectTimePeriod
+  SelectTimePeriod,
+  DatasetTreeChart
 ];
 
 // 存储指令映射
@@ -131,5 +133,6 @@ export default {
   TimePlayControl,
   MultiSeriesResult,
   SelectTimePeriod,
+  DatasetTreeChart,
   ...directives,
 };
