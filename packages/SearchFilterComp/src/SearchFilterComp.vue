@@ -11,6 +11,20 @@ export default {
     data:{
       type:Array,
       required:true
+    },
+    placeHolder:{
+      type:String,
+      required:false,
+      default:'搜索'
+    },
+    displayTitle:{
+      type:String,
+      required:true
+    },
+    displayKey:{
+      type:String,
+      required:false,
+      default:null
     }
   },
   mounted() {
