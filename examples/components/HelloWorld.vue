@@ -119,7 +119,11 @@
     </div>
     <div v-if="false">
       <h2>MultiSeriesResult: 多站点时序值展示控件</h2>
-      <MultiSeriesResultText/>
+      <MultiSeriesResultTest/>
+    </div>
+    <div v-if="true">
+      <h2>SearchFilterComp: 筛选与查询组件</h2>
+      <SearchFilterCompTest/>
     </div>
   </div>
 </template>
@@ -155,12 +159,13 @@ import DispatchRuleRelationshipMapTest from "@/components/DispatchRuleRelationsh
 import UsageSettingCompTest from "./UsageSettingCompTest";
 import TimePlayControlTest from "@/components/TimePlayControlTest";
 import SelectTimePeriodTest from "./SelectTimePeriodTest";
-import MultiSeriesResultText from "./MultiSeriesResultTest";
+import MultiSeriesResultTest from "./MultiSeriesResultTest";
 import DatasetTreeChartTest from "./DatasetTreeChartTest";
+import SearchFilterCompTest from "./SearchFilterCompTest";
 
 export default {
   components: {
-    MultiSeriesResultText,
+    MultiSeriesResultTest,
     DispatchRuleCompTest,
     TableChartTest,
     SchemeTableTest,
@@ -191,7 +196,8 @@ export default {
     UsageSettingCompTest,
     TimePlayControlTest,
     SelectTimePeriodTest,
-    DatasetTreeChartTest
+    DatasetTreeChartTest,
+    SearchFilterCompTest
   },
   name: 'HelloWorld',
   methods: {

@@ -38,6 +38,7 @@ import StatusInfoComp from "./StatusInfoComp/src/StatusInfoComp";
 import SelectAndSortComp from "./SelectAndSortComp/src/SelectAndSortComp";
 import DispatchRuleComp from "./DispatchRuleComp/src/DispatchRuleComp";
 import UsageSettingComp from "./UsageSettingComp/src/UsageSettingComp";
+import SearchFilterComp from "./SearchFilterComp/src/SearchFilterComp";
 
 
 // 存储组件列表
@@ -73,7 +74,8 @@ const components = [
   TimePlayControl,
   MultiSeriesResult,
   SelectTimePeriod,
-  DatasetTreeChart
+  DatasetTreeChart,
+  SearchFilterComp
 ];
 
 // 存储指令映射
@@ -134,5 +136,6 @@ export default {
   MultiSeriesResult,
   SelectTimePeriod,
   DatasetTreeChart,
+  SearchFilterComp,
   ...directives,
 };
