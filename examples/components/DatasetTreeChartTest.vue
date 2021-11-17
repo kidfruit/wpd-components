@@ -3,6 +3,18 @@
     <DatasetTreeChart
       ref="datasetTreeChartRef"
       :treeChartData="treeChartData"
+      :leftPosition="{
+        left: '10%',
+        right: '70%',
+        top: 0,
+        bottom: 0,
+      }"
+      :rightPosition="{
+        left: '32%',
+        right: '30%',
+        top: 0,
+        bottom: 0,
+      }"
       @clickFlowId="clickFlowId"
       @clickDownId="clickDownId"
     />

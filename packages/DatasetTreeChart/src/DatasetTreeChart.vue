@@ -17,11 +17,8 @@ import * as echarts from 'echarts'
 import lodash from 'lodash'
 import WPStationRR from './images/WPStationRR.png'
 import WPStationZQ from './images/WPStationZQ.png'
-const nodeInfoCurveId = ['capacityCurveId', 'maxOutflowCurveId', 'downZQCurveId', 'energyStorageCurveId']
-const nodeTopoId = ['flowId', 'downId']
 export default {
   name: 'DatasetTreeChart',
-  components: {  },
   props: {
     className: {
       type: String,
@@ -30,6 +27,28 @@ export default {
     treeChartData: {
       type: Object,
       required: true
+    },
+    leftPosition: {
+      type: Object,
+      default: () => {
+        return {
+          left: '10%',
+          right: '70%',
+          top: 0,
+          bottom: 0,
+        }
+      }
+    },
+    rightPosition: {
+      type: Object,
+      default: () => {
+        return {
+          left: '32%',
+          right: '30%',
+          top: 0,
+          bottom: 0,
+        }
+      }
     }
   },
   data() {
@@ -37,8 +56,25 @@ export default {
       leftDatasetTree: {},
       rightDatasetTree: {},
       nodeInfoCurveModal: false,
-      dataURL: null
+      imageDataURL: null,
+      nodeInfoCurveId: []
     }
+  },
+  created() {
+    /** 组织右边 nodeInfoCurveId */
+    let nodeInfoCurveId_value = []
+    Object.values(this.treeChartData.curveInfo).forEach(item => {
+      nodeInfoCurveId_value.push(item[0].id)
+    })
+    this.nodeInfoCurveId = []
+    let tempObj = {}
+    let copyNodeInfoData = lodash.cloneDeep(this.treeChartData.nodeInfo.data)
+    Object.keys(copyNodeInfoData).forEach(item => {
+      tempObj[item] = { temp: copyNodeInfoData[item] }
+    })
+    nodeInfoCurveId_value.forEach(item => {
+      this.nodeInfoCurveId.push(lodash.findKey(tempObj, { temp: item }))
+    })
   },
   mounted() {
     this.init()
@@ -54,9 +90,9 @@ export default {
   methods: {
     async init() {
       if (this.treeChartData.nodeTopo.data.nodeType === 'WPStationRR') {
-        this.dataURL = await this.urlToBase64(WPStationRR)
+        this.imageDataURL = await this.urlToBase64(WPStationRR)
       } else {
-        this.dataURL = await this.urlToBase64(WPStationZQ)
+        this.imageDataURL = await this.urlToBase64(WPStationZQ)
       }
       this.initDatasetTreeData()
       this.initDatasetTreeChart()
@@ -68,7 +104,7 @@ export default {
       // console.log(copyTreeChartData)
       let rightDatasetTreeChildren = []
       copyTreeChartData.nodeInfo.columns.forEach(item => {
-        if (nodeInfoCurveId.includes(item.key)) {
+        if (this.nodeInfoCurveId.includes(item.key)) {
           rightDatasetTreeChildren.push({
             name: item.title,
             value: copyTreeChartData.nodeInfo.data[item.key],
@@ -92,7 +128,7 @@ export default {
       /** 组织左边数据  */
       this.leftDatasetTree = {
         name: '',
-        symbol: `image://${this.dataURL}`,
+        symbol: `image://${this.imageDataURL}`,
         children: [
           {
             name: '指向节点',
@@ -120,30 +156,25 @@ export default {
           formatter: (params) => {
             // console.log(params)
             if (!params.data.key) {
-              return ``
+              return ''
             } else {
-              if (params.data.value !== '') {
-                if (nodeInfoCurveId.includes(params.data.key)) {
-                  this.nodeInfoCurveModal = true
-                  this.$nextTick(() => {
-                    this.initNodeInfoCurve(params.data)
-                  })
-                  return ''
-                } else if (params.data.key === 'flowId') {
-                  console.log('指向节点')
-                  this.$emit('clickFlowId')
-                  return ''
-                } else if (params.data.key === 'downId') {
-                  console.log('下级节点')
-                  this.$emit('clickDownId')
-                  return ''
-                } else {
-                  return params.data.value
-                }
+              if (this.nodeInfoCurveId.includes(params.data.key)) {
+                this.nodeInfoCurveModal = true
+                this.$nextTick(() => {
+                  this.initNodeInfoCurve(params.data)
+                })
+                return ''
+              } else if (params.data.key === 'flowId') {
+                console.log('指向节点')
+                this.$emit('clickFlowId')
+                return ''
+              } else if (params.data.key === 'downId') {
+                console.log('下级节点')
+                this.$emit('clickDownId')
+                return ''
               } else {
-                return '暂无数据'
+                return ''
               }
-
             }
           }
         },
@@ -152,11 +183,9 @@ export default {
             type: 'tree',
             name: 'leftDatasetTree',
             data: [this.leftDatasetTree],
-            right: '70%',
-            top: 0,
-            bottom: 0,
-            symbolSize: 30,
+            symbolSize: 32,
             orient: 'RL',
+            edgeShape: 'polyline',
             label: {
               position: 'right',
               verticalAlign: 'middle',
@@ -176,22 +205,33 @@ export default {
             },
             expandAndCollapse: true,
             animationDuration: 550,
-            animationDurationUpdate: 750
+            animationDurationUpdate: 750,
+            ...this.leftPosition,
           },
           {
             type: 'tree',
             name: 'rightDatasetTree',
             data: [this.rightDatasetTree],
-            left: '34%',
-            top: 0,
-            bottom: 0,
             symbolSize: 20,
             orient: 'LR',
+            edgeShape: 'polyline',
+            edgeForkPosition: '30%',
             label: {
-              position: 'left',
+              position: 'right',
               verticalAlign: 'middle',
-              align: 'right',
-              fontSize: 20
+              align: 'left',
+              fontSize: 20,
+              formatter: (params) => {
+                if (params.data.value === '') {
+                  return `${params.data.name}:    暂无数据`
+                } else if (this.nodeInfoCurveId.includes(params.data.key)) {
+                  return params.data.name
+                } else if (!params.data.key) {
+                  return params.data.name
+                } else {
+                  return `${params.data.name}:    ${params.data.value}`
+                }
+              }
             },
             leaves: {
               label: {
@@ -205,7 +245,8 @@ export default {
               focus: 'descendant'
             },
             animationDuration: 550,
-            animationDurationUpdate: 750
+            animationDurationUpdate: 750,
+            ...this.rightPosition
           }
         ]
       })
