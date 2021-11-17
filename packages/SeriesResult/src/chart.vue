@@ -27,7 +27,7 @@ const defaultOption = {
   },
   xAxis: {
     type: 'category',
-    boundaryGap: true,
+    boundaryGap: false,
     data: [],
   },
   yAxis: [],

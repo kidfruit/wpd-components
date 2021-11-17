@@ -14,6 +14,7 @@
       :singleData="singleData"
       :setting="{ rowHeaders: true }"
       :editable="true"
+      :isShowSwitchButton="false"
       @cellEditDone="cellEditDone"
     />
     <div style="display: flex; margin: 0 24px">

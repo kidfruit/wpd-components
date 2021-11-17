@@ -1,7 +1,7 @@
 <template>
   <div :class="classNames" :key="seriesResultRandomKey">
     <div :class="['chart-box', `${collapseTable}`, isShowMaximum ? '' : 'unShowMaximum']">
-      <div class="chart-switch-button">
+      <div class="chart-switch-button" v-if="isShowSwitchButton">
         <a-select v-model="targetChartIndex">
           <a-select-option
             v-for="(title, i) in d_chartTitle"
@@ -12,7 +12,7 @@
           </a-select-option>
         </a-select>
       </div>
-      <div class="chart-content">
+      <div :class="['chart-content', isShowSwitchButton ? '' : 'unShowSwitchButton']">
         <chart
           :key="chartList[targetChartIndex].id"
           ref="chartRef"
@@ -128,6 +128,10 @@ export default {
       default: () => {
         return []
       }
+    },
+    isShowSwitchButton: {
+      type: Boolean,
+      default: true
     }
   },
   components: {
@@ -600,6 +604,9 @@ export default {
     .chart-content {
       height: calc(100% - 107px);
     }
+    .chart-content.unShowSwitchButton {
+      height: calc(100% - 75px);
+    }
     .chart-des {
       height: 60px;
       margin-bottom: 15px;
@@ -621,6 +628,9 @@ export default {
     height: 300px;
     .chart-content {
       height: calc(100% - 32px);
+    }
+    .chart-content.unShowSwitchButton {
+      height: 100%;
     }
   }
   .chart-box.true {
