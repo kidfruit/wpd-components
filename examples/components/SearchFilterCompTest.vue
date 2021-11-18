@@ -12,9 +12,9 @@
       />
     </div>
 
-    test
+    test-tree
     <a-tree
-      style="width: 300px;height: 800px;overflow: auto;margin: auto;background: #ccc;text-align: left;"
+      style="width: 350px;height: 800px;overflow: auto;margin: auto;background: #ccc;text-align: left;"
       defaultExpandAll
       :treeData="treeData"
     />
