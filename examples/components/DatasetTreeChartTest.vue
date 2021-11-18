@@ -10,7 +10,7 @@
         bottom: 0,
       }"
       :rightPosition="{
-        left: '32%',
+        left: '31%',
         right: '30%',
         top: 0,
         bottom: 0,
@@ -33,11 +33,11 @@ export default {
     }
   },
   methods: {
-    clickFlowId() {
-      console.log('点击指向节点')
+    clickFlowId(val) {
+      console.log('点击指向节点', val)
     },
-    clickDownId() {
-      console.log('点击下级节点')
+    clickDownId(val) {
+      console.log('点击下级节点', val)
     }
   }
 }

@@ -43,7 +43,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          left: '32%',
+          left: '31%',
           right: '30%',
           top: 0,
           bottom: 0,
@@ -104,19 +104,30 @@ export default {
       // console.log(copyTreeChartData)
       let rightDatasetTreeChildren = []
       copyTreeChartData.nodeInfo.columns.forEach(item => {
+        let value = copyTreeChartData.nodeInfo.data[item.key]
         if (this.nodeInfoCurveId.includes(item.key)) {
           rightDatasetTreeChildren.push({
             name: item.title,
-            value: copyTreeChartData.nodeInfo.data[item.key],
+            value,
             key: item.key,
             symbol: 'diamond'
           })
         } else {
-          rightDatasetTreeChildren.push({
-            name: item.title,
-            value: copyTreeChartData.nodeInfo.data[item.key],
-            key: item.key
-          })
+          if (value === '') {
+            rightDatasetTreeChildren.push({
+              name: item.title,
+              value,
+              key: item.key,
+              symbol: 'emptyCircle'
+            })
+          } else {
+            rightDatasetTreeChildren.push({
+              name: item.title,
+              value,
+              key: item.key,
+              symbol: 'circle'
+            })
+          }
         }
       })
       this.rightDatasetTree = {
@@ -165,12 +176,18 @@ export default {
                 })
                 return ''
               } else if (params.data.key === 'flowId') {
-                console.log('指向节点')
-                this.$emit('clickFlowId')
+                // console.log('指向节点', params)
+                this.$emit('clickFlowId', {
+                  flowId: this.treeChartData.nodeTopo.data.flowId,
+                  nodeType: this.treeChartData.nodeTopo.data.nodeType
+                })
                 return ''
               } else if (params.data.key === 'downId') {
-                console.log('下级节点')
-                this.$emit('clickDownId')
+                // console.log('下级节点')
+                this.$emit('clickDownId', {
+                  downId: this.treeChartData.nodeTopo.data.downId,
+                  nodeType: this.treeChartData.nodeTopo.data.nodeType
+                })
                 return ''
               } else {
                 return ''
@@ -193,7 +210,6 @@ export default {
               fontSize: 18,
             },
             leaves: {
-              symbolSize: 12,
               label: {
                 position: 'left',
                 verticalAlign: 'middle',
@@ -215,7 +231,6 @@ export default {
             symbolSize: 20,
             orient: 'LR',
             edgeShape: 'polyline',
-            edgeForkPosition: '30%',
             label: {
               position: 'right',
               verticalAlign: 'middle',
