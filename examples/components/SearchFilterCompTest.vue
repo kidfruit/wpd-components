@@ -1,12 +1,23 @@
 <template>
   <div>
-    <search-filter-comp
-        :placeHoder="placeHolder"
-        :displayTitle="displayTitle"
-        :searchBy="searchBy"
+    <div class="search-filter-comp-test">
+      <search-filter-comp
         ref="searchFilterComp"
-        :data="data"
-    ></search-filter-comp>
+        :placeHoder="placeholder"
+        :displayTitle="displayTitle"
+        :displayKey="displayKey"
+        :searchBy="searchBy"
+        :searchFilterData="searchFilterData"
+        @returnSearchResultData="returnSearchResultData"
+      />
+    </div>
+
+    test
+    <a-tree
+      style="width: 300px;height: 800px;overflow: auto;margin: auto;background: #ccc;text-align: left;"
+      defaultExpandAll
+      :treeData="treeData"
+    />
   </div>
 </template>
 <script>
@@ -19,12 +30,11 @@ export default {
   },
   data() {
     return {
-      placeHolder: '搜索',
-      searchBy: ['title', 'key'
-      ],
+      placeholder: '搜索',
+      searchBy: ['title', 'key'],
       displayTitle: 'title',
       displayKey: 'key', //可为null
-      data: [
+      searchFilterData: [
         {
           "title": "渠段",
           "key": "WPChannelReach",
@@ -4804,10 +4814,25 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      treeData: null
     };
   },
-  methods: {},
+  created() {
+    this.treeData = this.searchFilterData
+  },
+  methods: {
+    returnSearchResultData(val) {
+      console.log(val)
+      this.treeData = val
+    }
+  },
 };
 </script>
-<style scoped></style>
+
+<style lang="less" scoped>
+.search-filter-comp-test {
+  display: flex;
+  justify-content: center;
+}
+</style>

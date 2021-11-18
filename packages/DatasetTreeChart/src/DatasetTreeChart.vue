@@ -52,12 +52,12 @@ export default {
     }
   },
   data() {
+    this.leftDatasetTree = {}
+    this.rightDatasetTree = {}
+    this.imageDataURL = null
+    this.nodeInfoCurveId = []
     return {
-      leftDatasetTree: {},
-      rightDatasetTree: {},
       nodeInfoCurveModal: false,
-      imageDataURL: null,
-      nodeInfoCurveId: []
     }
   },
   created() {
