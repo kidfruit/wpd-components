@@ -77,11 +77,15 @@ export default {
       deep: true,
       handler() {
         if (this.inputValue === '') {
-          this.copySearchFilterData.forEach(item => {
-            if (item[this.displayTitle] === this.currentSelected) {
-              this.$emit('returnSearchResultData', [item])
-            }
-          })
+          if (this.currentSelected === '所有') {
+            this.$emit('returnSearchResultData', this.copySearchFilterData)
+          } else {
+            this.copySearchFilterData.forEach(item => {
+              if (item[this.displayTitle] === this.currentSelected) {
+                this.$emit('returnSearchResultData', [item])
+              }
+            })
+          }
         } else {
           this.searchFilter()
         }
