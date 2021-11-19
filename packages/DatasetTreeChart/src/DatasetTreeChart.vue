@@ -1,7 +1,6 @@
 <template>
   <div :class="['dataset-tree-chart-container', className]">
     <div id="dataset-tree-chart"/>
-    <canvas id="canvas111"></canvas>
     <a-modal
       v-model="nodeInfoCurveModal"
       :footer="null"
@@ -62,22 +61,6 @@ export default {
       nodeInfoCurveModal: false,
     }
   },
-  created() {
-    /** 组织右边 nodeInfoCurveId */
-    let nodeInfoCurveId_value = []
-    Object.values(this.treeChartData.curveInfo).forEach(item => {
-      nodeInfoCurveId_value.push(item[0].id)
-    })
-    this.nodeInfoCurveId = []
-    let tempObj = {}
-    let copyNodeInfoData = lodash.cloneDeep(this.treeChartData.nodeInfo.data)
-    Object.keys(copyNodeInfoData).forEach(item => {
-      tempObj[item] = { temp: copyNodeInfoData[item] }
-    })
-    nodeInfoCurveId_value.forEach(item => {
-      this.nodeInfoCurveId.push(lodash.findKey(tempObj, { temp: item }))
-    })
-  },
   mounted() {
     this.init()
   },
@@ -90,16 +73,37 @@ export default {
     }
   },
   methods: {
-    async init() {
-      if (this.treeChartData.nodeTopo.data.nodeType === 'WPStationRR') {
+    init() {
+      this.initData()
+      this.initDatasetTreeData()
+      this.initDatasetTreeChart()
+    },
+    initData() {
+      /** 组织 imageDataURL */
+      if (this.treeChartData.nodeType === 'WPStationRR') {
         this.imageDataURL = WPStationRR
       } else {
         this.imageDataURL = WPStationZQ
       }
-      // console.log(await this.urlToBase64(WPStationRR))
-      // console.log(await this.urlToBase64(WPStationZQ))
-      this.initDatasetTreeData()
-      this.initDatasetTreeChart()
+
+      /** 组织右边 nodeInfoCurveId */
+      this.nodeInfoCurveId = []
+      let nodeInfoCurveId_value = []
+      if (this.treeChartData.curveInfo) {
+        Object.values(this.treeChartData.curveInfo).forEach(item => {
+          nodeInfoCurveId_value.push(item[0].id)
+        })
+      }
+      if (this.treeChartData.nodeInfo) {
+        let tempObj = {}
+        let copyNodeInfoData = lodash.cloneDeep(this.treeChartData.nodeInfo.data)
+        Object.keys(copyNodeInfoData).forEach(item => {
+          tempObj[item] = { temp: copyNodeInfoData[item] }
+        })
+        nodeInfoCurveId_value.forEach(item => {
+          this.nodeInfoCurveId.push(lodash.findKey(tempObj, { temp: item }))
+        })
+      }
     },
     initDatasetTreeData() {
       let copyTreeChartData = lodash.cloneDeep(this.treeChartData)
@@ -107,44 +111,55 @@ export default {
       /** 组织右边数据 nodeInfo */
       // console.log(copyTreeChartData)
       let rightDatasetTreeChildren = []
-      copyTreeChartData.nodeInfo.columns.forEach(item => {
-        let value = copyTreeChartData.nodeInfo.data[item.key]
-        if (this.nodeInfoCurveId.includes(item.key)) {
-          rightDatasetTreeChildren.push({
-            name: item.title,
-            value,
-            key: item.key,
-            symbol: 'diamond'
-          })
-        } else {
-          if (value === '') {
+      if (this.treeChartData.nodeInfo) {
+        copyTreeChartData.nodeInfo.columns.forEach(item => {
+          let value = copyTreeChartData.nodeInfo.data[item.key]
+          if (this.nodeInfoCurveId.includes(item.key)) {
             rightDatasetTreeChildren.push({
               name: item.title,
               value,
               key: item.key,
-              symbol: 'emptyCircle'
+              symbol: 'diamond'
             })
           } else {
-            rightDatasetTreeChildren.push({
-              name: item.title,
-              value,
-              key: item.key,
-              symbol: 'circle'
-            })
+            if (value === '') {
+              rightDatasetTreeChildren.push({
+                name: item.title,
+                value,
+                key: item.key,
+                symbol: 'emptyCircle'
+              })
+            } else {
+              rightDatasetTreeChildren.push({
+                name: item.title,
+                value,
+                key: item.key,
+                symbol: 'circle'
+              })
+            }
           }
+        })
+        this.rightDatasetTree = {
+          name: copyTreeChartData.nodeInfo.data.name,
+          symbol: 'none',
+          children: rightDatasetTreeChildren
         }
-      })
-      this.rightDatasetTree = {
-        name: copyTreeChartData.nodeInfo.data.name,
-        symbol: 'none',
-        children: rightDatasetTreeChildren
+      } else {
+        this.rightDatasetTree = {
+          name: copyTreeChartData.nodeTopo.data.nodeName,
+          symbol: 'none',
+          children: rightDatasetTreeChildren
+        }
       }
 
       /** 组织左边数据  */
       this.leftDatasetTree = {
         name: '',
         symbol: `image://${this.imageDataURL}`,
-        children: [
+        children: []
+      }
+      if (this.treeChartData.nodeTopo) {
+        this.leftDatasetTree.children = [
           {
             name: '指向节点',
             key: 'flowId',
@@ -154,12 +169,12 @@ export default {
             name: '下级节点',
             key: 'downId',
             symbol: 'diamond'
-          },
+          }
         ]
+        this.leftDatasetTree.children.forEach(item => {
+          item.value = this.treeChartData.nodeTopo.data[item.key]
+        })
       }
-      this.leftDatasetTree.children.forEach(item => {
-        item.value = this.treeChartData.nodeTopo.data[item.key]
-      })
     },
     initDatasetTreeChart() {
       const datasetTreeChartDom = document.getElementById('dataset-tree-chart')

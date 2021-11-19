@@ -101,7 +101,7 @@
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleRelationshipMapTest/>
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>DatasetTreeChartTest: 数据结构树控件</h2>
       <DatasetTreeChartTest/>
     </div>
@@ -121,7 +121,7 @@
       <h2>MultiSeriesResult: 多站点时序值展示控件</h2>
       <MultiSeriesResultTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SearchFilterComp: 筛选与查询组件</h2>
       <SearchFilterCompTest/>
     </div>
