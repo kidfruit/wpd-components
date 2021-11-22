@@ -5,8 +5,9 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
 import lodash from 'lodash'
+import * as echarts from 'echarts'
+import { v4 as uuidv4 } from 'uuid'
 let echartsInstance = null
 export default {
   name: "DispatchRuleRelationshipMap",
@@ -158,7 +159,7 @@ export default {
           source: name,
           target: item,
           value: '防洪对象',
-          id: this.randomKey()
+          id: uuidv4()
         })
       })
 
@@ -170,7 +171,7 @@ export default {
               source: item,
               target: val,
               value: '启动时机',
-              id: this.randomKey()
+              id: uuidv4()
             })
           }
         })
@@ -199,7 +200,7 @@ export default {
                   source: el,
                   target: m,
                   value: this.tempName(tempRequirements),
-                  id: this.randomKey()
+                  id: uuidv4()
                 })
               }
             })
@@ -219,7 +220,7 @@ export default {
                 source: val,
                 target: m,
                 value: this.tempName(temp),
-                id: this.randomKey()
+                id: uuidv4()
               })
             })
           })
@@ -306,9 +307,6 @@ export default {
       if (this.$refs.DispatchRuleRelationshipMap) {
         echartsInstance.resize()
       }
-    },
-    randomKey() {
-      return  +new Date() + (Math.random() * 1000).toFixed(0)
     },
     tempName(temp) {
       if (temp.referVariable === '流量') {

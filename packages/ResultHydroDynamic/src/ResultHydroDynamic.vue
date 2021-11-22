@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from 'uuid'
 import StandardChart from '../../StandardChart/src/StandardChart.vue'
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
 export default {
@@ -101,7 +102,7 @@ export default {
       localSetting: {
         nestedHeaders: [],
       },
-      randomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      randomKey: uuidv4(),
       currentSelectedValue: this.sections[0],
       count: null
     }
@@ -192,7 +193,7 @@ export default {
       })
     },
     updateShow() {
-      this.randomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.randomKey = uuidv4()
     }
   }
 }

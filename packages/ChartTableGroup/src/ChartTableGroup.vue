@@ -22,9 +22,9 @@
   </div>
 </template>
 <script>
+import { v4 as uuidv4 } from 'uuid'
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
-
 export default {
   name: "ChartTableGroup",
   props: {
@@ -59,7 +59,7 @@ export default {
   mounted() {},
   data() {
     return {
-      randomKey: +new Date() + (Math.random() * 1000).toFixed(0)
+      randomKey: uuidv4()
     };
   },
   computed: {
@@ -75,7 +75,7 @@ export default {
       const { field, newValue, oldValue, rowIndex } = value
       // this.$set(this.data[rowIndex], field, +newValue)
       this.data[rowIndex][field] = +newValue
-      this.randomKey = +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+      this.randomKey = uuidv4()
     }
   }
 };

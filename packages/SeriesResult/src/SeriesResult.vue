@@ -56,6 +56,7 @@
 <script>
 import moment from 'moment'
 import lodash from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 import { MinMaxFunction } from '../../../utils/'
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
 import Chart from './chart'
@@ -144,22 +145,20 @@ export default {
     },
   },
   data() {
+    this.tableAndSingleData = []
+    this.tableFields = []
+    this.activeField = ''
+    //   记录单元格修改记录，采用拼接方法:prop#row
+    this.editCells = []
     return {
       chartList: [],
-      seriesList: [],
       newTableData: [],
       newTableColumns: [],
-      tableAndSingleData: [],
-      tableFields: [],
       currentFields: [],
       newSetting: {},
-      isShow: false,
-      activeField: '',
-      //   记录单元格修改记录，采用拼接方法:prop#row
-      editCells: [],
       targetChartIndex: 0,
       d_chartTitle: [],
-      seriesResultRandomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      seriesResultRandomKey: uuidv4(),
       collapseTable: false
     }
   },
@@ -202,42 +201,39 @@ export default {
       this.newTableData[rowIndex][field] = newValue
       this.chartList.forEach((el) => {
         el.chartData = this.newTableData
-        el.id = guid()
+        el.id = uuidv4()
       })
       this.$emit('cellEditDone', value)
     },
     clearData() {
       this.chartList = []
-      this.seriesList = []
       this.targetChartIndex = 0
-      this.isShow = false
     },
     handleData() {
+      this.clearData()
       // 备份表格数据
       this.tableData.forEach(item => {
         this.singleData && this.singleData.forEach(val => {
           item[val.field] = val.value
         })
       })
-      this.newTableData = JSON.parse(JSON.stringify(this.tableData))
-      this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns))
+      this.newTableData = lodash.cloneDeep(this.tableData)
+      this.newTableColumns = lodash.cloneDeep(this.tableColumns)
       this.newSetting = Object.assign({}, this.setting, {
         readOnly: !this.editable
       })
-      this.clearData()
+
       this.tableAndSingleData = this.tableColumns.concat(this.singleData)
-      let showTypeList = this.tableAndSingleData
-          .map((el) => {
-            return {
-              field: el.field,
-              title: el.title.split('(')[0],
-              showType: el.showType,
-              echartsOptions_l: el.echartsOptions_l,
-              echartsOptions_r: el.echartsOptions_r,
-              dataUnit: el.dataUnit
-            }
-          })
-          .filter((el) => el.showType)
+      let showTypeList = this.tableAndSingleData.map((el) => {
+        return {
+          field: el.field,
+          title: el.title.split('(')[0],
+          showType: el.showType,
+          echartsOptions_l: el.echartsOptions_l,
+          echartsOptions_r: el.echartsOptions_r,
+          dataUnit: el.dataUnit
+        }
+      }).filter((el) => el.showType)
 
       let filterList = showTypeList.map((el) => el.showType.split('-')[0])
       let carouselCount = unique(filterList)
@@ -263,11 +259,11 @@ export default {
     },
     handleReset() {
       this.activeField = ''
-      this.newTableData = JSON.parse(JSON.stringify(this.tableData))
-      this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns))
+      this.newTableData = lodash.cloneDeep(this.tableData)
+      this.newTableColumns = lodash.cloneDeep(this.tableColumns)
       this.chartList.forEach((el) => {
         el.chartData = this.newTableData
-        el.id = guid()
+        el.id = uuidv4()
       })
       this.editCells = []
     },
@@ -538,7 +534,7 @@ export default {
           chartOption,
           chartAxis,
           chartData,
-          id: guid(),
+          id: uuidv4(),
         })
 
         //console.log('454545', chartAxis.series)
@@ -550,7 +546,8 @@ export default {
       }
     },
     updateShow() {
-      this.seriesResultRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      /** 强制刷新 */
+      this.seriesResultRandomKey = uuidv4()
     },
     toggleTableStatus() {
       this.collapseTable = !this.collapseTable

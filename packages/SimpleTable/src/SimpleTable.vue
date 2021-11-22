@@ -85,6 +85,7 @@
   </div>
 </template>
 <script>
+import { v4 as uuidv4 } from 'uuid'
 import { HotTable, HotColumn } from '@handsontable/vue'
 import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
 registerLanguageDictionary(zhCN)
@@ -257,7 +258,7 @@ export default {
       scaleInput: '',
       sameIncreaseDecreaseModalVisible: false,
       sameIncreaseDecreaseInput: '',
-      hotTableRandomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      hotTableRandomKey: uuidv4(),
     }
   },
   computed: {
@@ -632,7 +633,7 @@ export default {
             }
           }
         })
-        // this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+        // this.hotTableRandomKey = uuidv4
       }
     },
     processOptionColumn(item, fromV, toV) {
@@ -931,8 +932,7 @@ export default {
               }
             }
           }
-          this.hotTableRandomKey =
-            +new Date() + (Math.random() * 1000).toFixed(0)
+          this.hotTableRandomKey = uuidv4()
         }
       }
     },
@@ -989,7 +989,7 @@ export default {
           this.hotData[selectedRange[0].from.row - i][field] = newValue
         }
       }
-      this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.hotTableRandomKey = uuidv4()
     },
     handleSameIncreaseDecreaseCallback() {
       let selectedRange = this.hotInstance.getSelectedRange()
@@ -1046,7 +1046,7 @@ export default {
           this.hotData[selectedRange[0].from.row - i][field] = newValue
         }
       }
-      this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.hotTableRandomKey = uuidv4()
     },
     afterOnCellCornerDblClick() {
       // console.log('afterOnCellCornerDblClick')
@@ -1088,7 +1088,7 @@ export default {
             this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
           }
         }
-        this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+        this.hotTableRandomKey = uuidv4()
       }
     },
     handleMergeUnmergeCellsHidden() {
@@ -1165,7 +1165,7 @@ export default {
         mergeCells.merge(selected[0][0], item, selected[0][2], item)
       })
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
-      this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.hotTableRandomKey = uuidv4()
       // console.log(this.hotSettings.mergeCells)
       // console.log(this.hotData)
     },
@@ -1217,7 +1217,7 @@ export default {
         mergeCells.unmerge(...item)
       })
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
-      this.hotTableRandomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.hotTableRandomKey = uuidv4()
       // console.log(this.hotData)
     },
     getOriginRowData(row){

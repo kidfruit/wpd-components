@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from 'uuid'
 import StandardChart from '../../StandardChart/src/StandardChart.vue'
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
 let rCols = [
@@ -196,7 +197,7 @@ export default {
   },
   data() {
     return {
-      randomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      randomKey: uuidv4(),
       newData: [],
       columns: [],
       newAxis: {},
@@ -442,7 +443,7 @@ export default {
       }
     },
     updateShow() {
-      this.randomKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.randomKey = uuidv4()
     },
     cellEditDone(val) {
       // console.log(this.selectedKeys[0])

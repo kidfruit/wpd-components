@@ -63,6 +63,7 @@
 
 <script>
 import lodash from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 import SimpleTable from '~/SimpleTable/src/SimpleTable'
 export default {
   name: 'SelectAndSortComp',
@@ -99,7 +100,7 @@ export default {
     return {
       classes: [this.className].concat(this.structure),
       sortTableData: [],
-      checkboxKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      checkboxKey: uuidv4(),
       currentGroupName: ''
     }
   },
@@ -145,7 +146,7 @@ export default {
           })
         })
       }
-      this.checkboxKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.checkboxKey = uuidv4()
       this.initSortTableData()
     },
     onCheckChange(e,groupName) {

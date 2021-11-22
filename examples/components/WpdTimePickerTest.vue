@@ -116,7 +116,7 @@ export default {
       return "";
     },
     formChange(bTime) {
-      console.log(bTime);
+      console.log(moment(bTime).format('YYYY-MM-DD HH:mm:ss'));
     },
   },
 };

@@ -48,6 +48,7 @@
 
 <script>
 import moment from "moment";
+import { v4 as uuidv4 } from 'uuid'
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 
@@ -120,7 +121,7 @@ export default {
   data() {
     return {
       newData: [],
-      randomKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      randomKey: uuidv4(),
       zArr: [],
       qArr: [],
       inQArr: [],

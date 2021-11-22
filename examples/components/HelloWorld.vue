@@ -80,7 +80,7 @@
       <h2>ChartsSingleTest:多echarts单值图对比组件</h2>
       <charts-single-test />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>WpdTimePickerTest:时间控件</h2>
       <wpd-time-picker-test />
     </div>

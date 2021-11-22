@@ -55,14 +55,21 @@ export default {
   data() {
     this.leftDatasetTree = {}
     this.rightDatasetTree = {}
-    this.imageDataURL = null
     this.nodeInfoCurveId = []
     return {
       nodeInfoCurveModal: false,
     }
   },
-  mounted() {
-    this.init()
+  computed: {
+    leftRootNodeSymbol() {
+      if (this.treeChartData.nodeType === 'WPStationRR') {
+        return `image://${WPStationRR}`
+      } else if (this.treeChartData.nodeType === 'WPStationZQ') {
+        return `image://${WPStationZQ}`
+      } else {
+        return `rect`
+      }
+    }
   },
   watch: {
     treeChartData: {
@@ -72,6 +79,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.init()
+  },
   methods: {
     init() {
       this.initData()
@@ -79,13 +89,6 @@ export default {
       this.initDatasetTreeChart()
     },
     initData() {
-      /** 组织 imageDataURL */
-      if (this.treeChartData.nodeType === 'WPStationRR') {
-        this.imageDataURL = WPStationRR
-      } else {
-        this.imageDataURL = WPStationZQ
-      }
-
       /** 组织右边 nodeInfoCurveId */
       this.nodeInfoCurveId = []
       let nodeInfoCurveId_value = []
@@ -155,7 +158,7 @@ export default {
       /** 组织左边数据  */
       this.leftDatasetTree = {
         name: '',
-        symbol: `image://${this.imageDataURL}`,
+        symbol: this.leftRootNodeSymbol,
         children: []
       }
       if (this.treeChartData.nodeTopo) {

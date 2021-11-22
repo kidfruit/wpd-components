@@ -59,6 +59,7 @@
 
 <script>
 import lodash from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 import Chart from '~/SeriesResult/src/chart'
 export default {
   name: "SchemeComparisonChart",
@@ -71,7 +72,7 @@ export default {
   },
   data() {
     return {
-      schemeComparisonKey: +new Date() + (Math.random() * 1000).toFixed(0),
+      schemeComparisonKey: uuidv4(),
       singleClassNames: ['single-chart'],
       singleChartOption: {
         // title: {
@@ -110,7 +111,7 @@ export default {
       singleChartFilterData: [],
       singleChartTargetIndex: 0,
       singleChartTitles: [],
-      singleChartId: +new Date() + (Math.random() * 1000).toFixed(0),
+      singleChartId: uuidv4(),
       processClassNames: ['process-chart'],
       processChartOption: {
         // title: {
@@ -150,7 +151,7 @@ export default {
       processChartData: [],
       processChartFilterData: [],
       processChartTitles: [],
-      processChartId: +new Date() + (Math.random() * 1000).toFixed(0),
+      processChartId: uuidv4(),
     }
   },
   watch: {
@@ -250,7 +251,7 @@ export default {
       this.singleChartFilterData = []
       this.initSingleChartData()
       this.initSingleChartOptions()
-      this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.schemeComparisonKey = uuidv4()
     },
     initProcessChartData() {
       this.schemeComparisonData.forEach((item, index) => {
@@ -350,7 +351,7 @@ export default {
       this.processChartFilterData = []
       this.initProcessChartData()
       this.initProcessChartOptions()
-      this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.schemeComparisonKey = uuidv4()
     },
     handleWatchSchemeComparisonData() {
       this.singleChartTargetIndex = 0
@@ -370,10 +371,10 @@ export default {
       this.processChartFilterData = []
       this.initProcessChartData()
       this.initProcessChartOptions()
-      this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.schemeComparisonKey = uuidv4()
     },
     update() {
-      this.schemeComparisonKey = +new Date() + (Math.random() * 1000).toFixed(0)
+      this.schemeComparisonKey = uuidv4()
     }
   }
 }

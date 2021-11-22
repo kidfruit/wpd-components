@@ -192,6 +192,7 @@ export default {
       this.$emit("formChange", this.localBTime);
     },
     tenDay(nValue) {
+      console.log(nValue)
       if (nValue === 1) {
         this.localBTime.set("date", 1);
       } else if (nValue === 2) {

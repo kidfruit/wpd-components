@@ -16,6 +16,7 @@
 </template>
  
 <script>
+import { v4 as uuidv4 } from 'uuid'
 import * as echarts from "echarts";
 import StandardChart from "../../StandardChart/src/StandardChart.vue";
 
@@ -59,7 +60,7 @@ export default {
       instance: null,
       symbolSize: 10,
       dom: null,
-      id: 'draggable-chart-' + +new Date() + (Math.random() * 1000).toFixed(0)
+      id: 'draggable-chart-' + uuidv4()
     };
   },
   computed: {
