@@ -148,6 +148,7 @@ export default {
       }
       this.checkboxKey = uuidv4()
       this.initSortTableData()
+      this.$emit('getResultData', this.sortTableData)
     },
     onCheckChange(e,groupName) {
       // console.log(e,groupName)
@@ -191,6 +192,13 @@ export default {
         })
       }
       this.initSortTableData()
+      let resultData = []
+      this.sortTableData.forEach(item => {
+        if (item.groupName === groupName) {
+          resultData.push(item)
+        }
+      })
+      this.$emit('getResultData', resultData)
     },
     moveUp(e) {
       this.currentGroupName = e

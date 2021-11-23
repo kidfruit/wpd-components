@@ -158,7 +158,7 @@ export default {
             break;
           case "TENDAY":
             {
-              const date = moment(nValue).date;
+              const date = moment(nValue).date();
               if (date < 11) {
                 this.tenDay = 1;
                 nValue.set("date", 1);

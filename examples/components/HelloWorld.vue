@@ -80,7 +80,7 @@
       <h2>ChartsSingleTest:多echarts单值图对比组件</h2>
       <charts-single-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>WpdTimePickerTest:时间控件</h2>
       <wpd-time-picker-test />
     </div>
@@ -88,7 +88,7 @@
       <h2>StatusInfoCompTest：信息展示控件</h2>
       <StatusInfoCompTest/>
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>
@@ -101,7 +101,7 @@
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleRelationshipMapTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>DatasetTreeChartTest: 数据结构树控件</h2>
       <DatasetTreeChartTest/>
     </div>
