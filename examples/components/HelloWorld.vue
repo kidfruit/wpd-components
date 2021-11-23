@@ -101,7 +101,7 @@
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleRelationshipMapTest/>
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>DatasetTreeChartTest: 数据结构树控件</h2>
       <DatasetTreeChartTest/>
     </div>

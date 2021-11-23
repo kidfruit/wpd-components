@@ -2,7 +2,7 @@
   <div
     class="select-and-sort-comp"
     :style="selectAndSortCompStyle"
-    :class="classes"
+    :class="[className, structure]"
   >
     <div class="select-comp">
       <div class="select-comp-checkAll">
@@ -71,7 +71,8 @@ export default {
   props: {
     className: {
       type: String,
-      required: false
+      required: false,
+      default: ''
     },
     structure: {
       type: String,
@@ -97,11 +98,10 @@ export default {
     }
   },
   data() {
+    this.currentGroupName = ''
     return {
-      classes: [this.className].concat(this.structure),
       sortTableData: [],
       checkboxKey: uuidv4(),
-      currentGroupName: ''
     }
   },
   created() {
