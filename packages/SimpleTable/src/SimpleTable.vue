@@ -659,13 +659,16 @@ export default {
     },
     // 黑科技更新表格、图展示
     updateShow() {
-      const { row, col } = this.getvisibleLocal()
-      this.isRefresh = false
-      this.$nextTick(() => {
-        this.isRefresh = true
-        this.randomKey = Math.random()
-        this.scrollViewportTo(row, col)
-      })
+      let timer = setTimeout(() => {
+        const { row, col } = this.getvisibleLocal()
+        this.isRefresh = false
+        this.$nextTick(() => {
+          this.isRefresh = true
+          this.randomKey = Math.random()
+          this.scrollViewportTo(row, col)
+          clearTimeout(timer)
+        })
+      }, 200)
     },
     refresh() {
       //适用于父节点宽度变化的情况

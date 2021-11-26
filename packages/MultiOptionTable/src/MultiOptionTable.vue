@@ -1,21 +1,27 @@
 <template>
-  <div class="multi-option-table"
-       v-if="isVisible && isRefresh">
-    <hot-table class="hot-table"
-               :settings="hotSettings"
-               :data="hotData"
-               :class="classes"
-               :after-change="afterChange"
-               ref="hotTableRef">
-      <hot-column v-for="(item, index) in columns"
-                  ref="hotcolumn"
-                  :readOnly="item.readOnly"
-                  :key="index"
-                  :title="item.title"
-                  :data="item.field"
-                  :source="item.source"
-                  :renderer="item.renderer"
-                  :type="item.type"></hot-column>
+  <div
+    class="multi-option-table"
+    v-if="isVisible && isRefresh"
+  >
+    <hot-table
+      class="hot-table"
+      :settings="hotSettings"
+      :data="hotData"
+      :class="classes"
+      :after-change="afterChange"
+      ref="hotTableRef"
+    >
+      <hot-column
+        v-for="(item, index) in columns"
+        ref="hotcolumn"
+        :readOnly="item.readOnly"
+        :key="index"
+        :title="item.title"
+        :data="item.field"
+        :source="item.source"
+        :renderer="item.renderer"
+        :type="item.type"
+      />
     </hot-table>
   </div>
 </template>
@@ -228,55 +234,40 @@ export default {
     },
   },
   methods: {
-    highlight(item) {
-      let list = this.$refs.hotTableRef.hotInstance.getSourceData()
-      let rows = ''
-
-      for (let i = 0; i < list.length; i++) {
-        if (item === list[i].key) {
-          rows = i
-        }
-      }
-
-      let table = this.$refs['hotTableRef']
-      table = table ? (table instanceof Array ? table : [table]) : []
-      table.forEach((items) => {
-        try {
-          const elem = items.$el ? items.$el : items
-          const dom = elem.querySelector(`.wtHolder`)
-          let top = dom.scrollTop //滚动条高度
-          let Selecttop = this.rewheight * rows
-          const height = elem.scrollHeight
-          this.$refs.hotTableRef.hotInstance.selectRows(rows)
-          if (
-            top > Selecttop - this.titletop ||
-            Selecttop > height + top - this.rewheight
-          ) {
-            this.$refs.hotTableRef.hotInstance.scrollViewportTo(rows)
-          }
-        } catch (error) {
-          console.warn('滚动到指定位置!')
-        }
-      })
-    },
     highlightRow(item) {
-      if (this.$refs.hotTableRef) {
-        this.highlight(item)
-      } else {
-        this.$nextTick(() => {
-          this.highlight(item)
+      let timer = setTimeout(() => {
+        let list = this.hotInstance.getSourceData()
+        let rows = ''
+
+        for (let i = 0; i < list.length; i++) {
+          if (item === list[i].key) {
+            rows = i
+          }
+        }
+
+        let table = this.$refs['hotTableRef']
+        table = table ? (table instanceof Array ? table : [table]) : []
+        table.forEach((items) => {
+          try {
+            const elem = items.$el ? items.$el : items
+            const dom = elem.querySelector(`.wtHolder`)
+            let top = dom.scrollTop //滚动条高度
+            let Selecttop = this.rewheight * rows
+            const height = elem.scrollHeight
+            this.$refs.hotTableRef.hotInstance.selectRows(rows)
+            if (
+              top > Selecttop - this.titletop ||
+              Selecttop > height + top - this.rewheight
+            ) {
+              this.$refs.hotTableRef.hotInstance.scrollViewportTo(rows)
+            }
+          } catch (error) {
+            console.warn('滚动到指定位置!')
+          }
         })
-      }
-      //   let list = this.$refs.hotTableRef.hotInstance.getSourceData()
-      //   let rows = ''
-      //   for (let i = 0; i < list.length; i++) {
-      //     if (item === list[i].key) {
-      //       rows = i
-      //     }
-      //   }
-      //   console.log(this.$refs.hotTableRef.hotInstance.getCellMeta(rows,0))
-      //   this.$refs.hotTableRef.hotInstance.selectRows(rows)
-      //   this.$refs.hotTableRef.hotInstance.scrollViewportTo(rows)
+
+        clearTimeout(timer)
+      }, 200)
     },
     refreshColumn() {
       if (this.$refs.hotTableRef) {
