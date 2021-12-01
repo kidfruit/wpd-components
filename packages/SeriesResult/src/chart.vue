@@ -11,13 +11,7 @@ const defaultOption = {
     text: '',
   },
   tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'cross',
-      label: {
-        backgroundColor: '#6a7985'
-      }
-    },
+    trigger: 'axis'
   },
   grid: {},
   legend: {

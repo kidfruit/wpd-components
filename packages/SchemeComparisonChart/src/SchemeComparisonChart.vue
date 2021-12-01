@@ -9,22 +9,22 @@
       <div class="single-chart-switch">
         <a-select v-model="singleChartTargetIndex">
           <a-select-option
-              v-for="(title, i) in singleChartTitles"
-              :value="i"
-              :key="i"
+            v-for="(title, i) in singleChartTitles"
+            :value="i"
+            :key="i"
           >
             {{ title }}
           </a-select-option>
         </a-select>
       </div>
       <div class="single-chart-content">
-        <Chart
-            ref="singleChar"
-            :classes="singleClassNames"
-            :chartOption="singleChartOption"
-            :chartAxis="singleChartAxis"
-            :chartData="singleChartData"
-            :id="singleChartId"
+        <StandardChart
+          ref="singleChar"
+          :classes="singleClassNames"
+          :chartOption="singleChartOption"
+          :chartAxis="singleChartAxis"
+          :chartData="singleChartData"
+          :id="singleChartId"
         />
       </div>
     </div>
@@ -35,22 +35,22 @@
       <div class="process-chart-switch">
         <a-select v-model="processChartTargetIndex">
           <a-select-option
-              v-for="(title, i) in processChartTitles"
-              :value="i"
-              :key="i"
+            v-for="(title, i) in processChartTitles"
+            :value="i"
+            :key="i"
           >
             {{ title }}
           </a-select-option>
         </a-select>
       </div>
       <div class="process-chart-content">
-        <Chart
-            ref="processChar"
-            :classes="processClassNames"
-            :chartOption="processChartOption"
-            :chartAxis="processChartAxis"
-            :chartData="processChartData"
-            :id="processChartId"
+        <StandardChart
+          ref="processChar"
+          :classes="processClassNames"
+          :chartOption="processChartOption"
+          :chartAxis="processChartAxis"
+          :chartData="processChartData"
+          :id="processChartId"
         />
       </div>
     </div>
@@ -60,10 +60,10 @@
 <script>
 import lodash from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
-import Chart from '~/SeriesResult/src/chart'
+import StandardChart from "../../StandardChart/src/StandardChart"
 export default {
   name: "SchemeComparisonChart",
-  components: { Chart },
+  components: { StandardChart },
   props: {
     schemeComparisonData: {
       type: Array,
@@ -197,12 +197,14 @@ export default {
           this.singleChartFilterData.push(singleChartData)
         }
       })
+      // console.log(this.singleChartFilterData)
 
       let tempData = []
       for (let i = 0; i < this.singleChartFilterData.length; i++) {
+        // console.log(i)
         if (i === 0) {
           this.singleChartFilterData[i].forEach(j => {
-            tempData.push(lodash.merge({}, j))
+            this.singleChartAllData.push(lodash.merge({}, j))
           })
         } else if (i === this.singleChartFilterData.length - 1) {
           this.singleChartFilterData[i].forEach(m => {
@@ -216,7 +218,7 @@ export default {
           this.singleChartFilterData[i].forEach(m => {
             tempData.forEach(n => {
               if (m.key === n.key) {
-                tempData.push(lodash.merge(m, n))
+                this.singleChartAllData.push(lodash.merge(m, n))
               }
             })
           })
@@ -274,7 +276,7 @@ export default {
       for (let i = 0; i < this.processChartFilterData.length; i++) {
         if (i === 0) {
           this.processChartFilterData[i].forEach(j => {
-            tempData.push(lodash.merge({}, j))
+            this.processChartAllData.push(lodash.merge({}, j))
           })
         } else if (i === this.processChartFilterData.length - 1) {
           this.processChartFilterData[i].forEach(m => {
@@ -288,7 +290,7 @@ export default {
           this.processChartFilterData[i].forEach(m => {
             tempData.forEach(n => {
               if (m.id === n.id) {
-                tempData.push(lodash.merge(m, n))
+                this.processChartAllData.push(lodash.merge(m, n))
               }
             })
           })

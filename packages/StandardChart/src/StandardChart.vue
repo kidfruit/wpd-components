@@ -15,13 +15,7 @@ const defaultOption = {
     text: '',
   },
   tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'cross',
-      label: {
-        backgroundColor: '#6a7985'
-      }
-    },
+    trigger: 'axis'
   },
   grid: {},
   legend: {
@@ -234,7 +228,7 @@ export default {
       this.chartAxis.series.forEach((yax) => {
         let seriesObj = {
           name: yax.title,
-          type: 'line',
+          type: yax.type ? yax.type : 'line',
           data: [],
           yAxisIndex: yax.yAxisIndex,
           xAxisIndex: yax.xAxisIndex,

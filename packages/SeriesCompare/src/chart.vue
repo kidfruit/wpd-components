@@ -9,12 +9,6 @@ const defaultOption = {
   },
   tooltip: {
     trigger: 'axis',
-    axisPointer: {
-      type: 'cross',
-      label: {
-        backgroundColor: '#6a7985'
-      }
-    },
     formatter(params) {
       let list = [];
       params.map(i => {
