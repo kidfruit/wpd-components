@@ -85,6 +85,7 @@
   </div>
 </template>
 <script>
+import lodash from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import { HotTable, HotColumn } from '@handsontable/vue'
 import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
@@ -142,7 +143,7 @@ export default {
   beforeMount() {
     // 单元格自定义渲染
 
-    const data = JSON.parse(JSON.stringify(this.tableData))
+    const data = lodash.cloneDeep(this.tableData)
     this.prepareData(data)
   },
   mounted() {
@@ -705,7 +706,7 @@ export default {
       this.editRows = []
       this.editCols = []
       setTimeout(() => {
-        const data = JSON.parse(JSON.stringify(this.tableData))
+        const data = lodash.cloneDeep(this.tableData)
         this.prepareData(data)
         this.isRefresh = true
         this.randomKey = Math.random()
@@ -1236,7 +1237,7 @@ export default {
       deep: true,
       handler(val) {
         this.isRefresh = false
-        const data = JSON.parse(JSON.stringify(val))
+        const data = lodash.cloneDeep(val)
         this.prepareData(data)
         this.$nextTick(() => {
           this.isRefresh = true

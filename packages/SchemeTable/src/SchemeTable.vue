@@ -14,6 +14,7 @@
   </div>
 </template>
 <script>
+import lodash from 'lodash'
 import { HotTable, HotColumn } from '@handsontable/vue'
 import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
 registerLanguageDictionary(zhCN)
@@ -58,7 +59,7 @@ export default {
   computed: {
     tableData_local: {
       get() {
-        let tmp = JSON.parse(JSON.stringify(this.tableData))
+        let tmp = lodash.cloneDeep(this.tableData)
         tmp.forEach((element) => {
           element.action = `<button style="color: revert;" onClick="showScheme('${element.schemeId}')">查看</botton>
           <button style="color: revert;" onClick="openScheme('${element.schemeId}')">打开</botton>
@@ -69,7 +70,7 @@ export default {
     },
     tableColumns_local: {
       get() {
-        let tmp = JSON.parse(JSON.stringify(this.tableColumns))
+        let tmp = lodash.cloneDeep(this.tableColumns)
         tmp.push({
           field: 'action',
           renderer: 'html',

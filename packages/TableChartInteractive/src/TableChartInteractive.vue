@@ -21,6 +21,7 @@
   </div>
 </template>
 <script>
+import lodash from 'lodash'
 import { HotTable, HotColumn } from "@handsontable/vue";
 import Handsontable from "handsontable";
 import { registerLanguageDictionary, zhCN } from "handsontable/i18n";
@@ -125,8 +126,8 @@ export default {
     },
     // 重置数据
     reset() {
-      this.tableData_local = JSON.parse(JSON.stringify(this.tableData));
-      this.tableColumns_local = JSON.parse(JSON.stringify(this.tableColumns));
+      this.tableData_local = lodash.cloneDeep(this.tableData);
+      this.tableColumns_local = lodash.cloneDeep(this.tableColumns);
       this.editCells = [];
       this.tmpReadOnlyField = [];
       this.updataChart();

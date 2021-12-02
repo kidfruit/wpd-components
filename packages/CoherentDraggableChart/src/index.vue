@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import lodash from 'lodash'
 import CoherentDraggableChart from "./CoherentDraggableChart.vue";
 import SimpleTable from "../../SimpleTable/src/SimpleTable.vue";
 export default {
@@ -73,7 +74,7 @@ export default {
     };
   },
   created() {
-    this.newData = JSON.parse(JSON.stringify(this.data));
+    this.newData = lodash.cloneDeep(this.data)
   },
   methods: {
     handleUpdateData(field, data) {

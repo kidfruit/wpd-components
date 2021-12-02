@@ -22,6 +22,7 @@
   </div>
 </template>
 <script>
+import lodash from 'lodash'
 import MultiOptionTable from '../../MultiOptionTable/src/MultiOptionTable.vue'
 
 const treeToList = (tree, list) => {
@@ -115,7 +116,7 @@ export default {
       /**
        * 讲数据备份一次并加入selected参数
        */
-      this.defaultTableData = JSON.parse(JSON.stringify(this.tableData)).map(
+      this.defaultTableData = lodash.cloneDeep(this.tableData).map(
           (i) => ({
             ...i,
             selected: true,

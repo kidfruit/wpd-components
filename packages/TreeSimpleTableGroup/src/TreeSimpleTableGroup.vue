@@ -10,6 +10,7 @@
   </div>
 </template>
 <script>
+import lodash from 'lodash'
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue';
 const treeToList = (tree, list) => {
   if (tree instanceof Array) {
@@ -77,7 +78,7 @@ export default {
     /**
      * 讲数据备份一次并加入selected参数
      */
-    this.defaultTableData = JSON.parse(JSON.stringify(this.tableData)).map(i => ({
+    this.defaultTableData = lodash.cloneDeep(this.tableData).map(i => ({
       ...i,
       selected: true
     }));

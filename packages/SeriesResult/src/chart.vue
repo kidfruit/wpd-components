@@ -278,7 +278,7 @@ export default {
       if (this.splitIndex && this.splitIndex !== -1) {
         for (let i = 0; i < option.series.length; i++) {
           // 实线的数据
-          if (option.series[i].type != 'bar') {
+          if (option.series[i].type !== 'bar') {
             option.series[i].data = option.series[i].data.map((el, index) => {
               return index <= this.splitIndex ? el : '-'
             })

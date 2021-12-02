@@ -60,7 +60,7 @@
       <h2>SeriesPPTNTest：通用柱状图表</h2>
       <seriesPPTNTest />
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>SeriesResultTest：通用过程线组合组件</h2>
       <series-result-test />
     </div>
@@ -88,7 +88,7 @@
       <h2>StatusInfoCompTest：信息展示控件</h2>
       <StatusInfoCompTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>
@@ -101,7 +101,7 @@
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleRelationshipMapTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>DatasetTreeChartTest: 数据结构树控件</h2>
       <DatasetTreeChartTest/>
     </div>

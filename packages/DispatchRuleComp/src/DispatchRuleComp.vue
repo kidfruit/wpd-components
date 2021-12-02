@@ -607,12 +607,12 @@ export default {
       this.currentRuleData = this.ruleData.find(rd => rd.stcd === id)
       if (this.currentRuleData) {
         this.schemeData = this.currentRuleData.schemes
-        this.schemeDataCopy = JSON.parse(JSON.stringify(this.schemeData))
+        this.schemeDataCopy = lodash.cloneDeep(this.schemeData)
       }
     },
     resetData() {
       //console.log(this.schemeDataCopy)
-      this.schemeData = JSON.parse(JSON.stringify(this.schemeDataCopy))
+      this.schemeData = lodash.cloneDeep(this.schemeDataCopy)
       this.currentRuleData.schemes = this.schemeData
       // console.log(this.currentRuleData)
     },

@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import lodash from 'lodash'
 import { MinMaxFunction } from '../../../utils/';
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue';
 import Chart from './chart';
@@ -167,8 +168,8 @@ export default {
 
     handleData() {
       // 备份表格数据
-      this.newTableData = JSON.parse(JSON.stringify(this.tableData));
-      this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns));
+      this.newTableData = lodash.cloneDeep(this.tableData);
+      this.newTableColumns = lodash.cloneDeep(this.tableColumns);
       this.clearData();
       let showTypeList = this.tableColumns
         .map(el => {
@@ -182,8 +183,8 @@ export default {
     },
     handleReset() {
       this.activeField = '';
-      this.newTableData = JSON.parse(JSON.stringify(this.tableData));
-      this.newTableColumns = JSON.parse(JSON.stringify(this.tableColumns));
+      this.newTableData = lodash.cloneDeep(this.tableData);
+      this.newTableColumns = lodash.cloneDeep(this.tableColumns);
       this.chartList.forEach(el => {
         el.chartData = this.newTableData;
         el.id = guid();

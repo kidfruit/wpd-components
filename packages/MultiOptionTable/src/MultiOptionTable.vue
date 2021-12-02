@@ -26,6 +26,7 @@
   </div>
 </template>
 <script>
+import lodash from 'lodash'
 import { HotTable, HotColumn } from '@handsontable/vue'
 import Handsontable from 'handsontable'
 import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
@@ -434,7 +435,7 @@ export default {
       this.editCells = []
       this.editRows = []
       setTimeout(() => {
-        const data = JSON.parse(JSON.stringify(this.tableData))
+        const data = lodash.cloneDeep(this.tableData)
         this.prepareData(data)
         this.isRefresh = true
       }, 0)
@@ -461,7 +462,7 @@ export default {
       deep: true,
       handler(val) {
         this.isRefresh = false
-        const data = JSON.parse(JSON.stringify(val))
+        const data = lodash.cloneDeep(val)
         this.prepareData(data)
         this.$nextTick(() => {
           this.isRefresh = true
