@@ -181,7 +181,7 @@ export default {
     initSingleChartData() {
       // 可能多方案对比
       this.schemeComparisonData.forEach((item, index) => {
-        const singleData = item.value.single
+        const singleData = item.value.single && item.value.single[0] && item.value.single[0].data
         const singleChartData = []
         if (singleData !== undefined) {
           singleData.forEach(i => {
@@ -204,7 +204,7 @@ export default {
         // console.log(i)
         if (i === 0) {
           this.singleChartFilterData[i].forEach(j => {
-            this.singleChartAllData.push(lodash.merge({}, j))
+            tempData.push(lodash.merge({}, j))
           })
         } else if (i === this.singleChartFilterData.length - 1) {
           this.singleChartFilterData[i].forEach(m => {
@@ -218,7 +218,7 @@ export default {
           this.singleChartFilterData[i].forEach(m => {
             tempData.forEach(n => {
               if (m.key === n.key) {
-                this.singleChartAllData.push(lodash.merge(m, n))
+                tempData.push(lodash.merge(m, n))
               }
             })
           })
@@ -276,7 +276,7 @@ export default {
       for (let i = 0; i < this.processChartFilterData.length; i++) {
         if (i === 0) {
           this.processChartFilterData[i].forEach(j => {
-            this.processChartAllData.push(lodash.merge({}, j))
+            tempData.push(lodash.merge({}, j))
           })
         } else if (i === this.processChartFilterData.length - 1) {
           this.processChartFilterData[i].forEach(m => {
@@ -290,7 +290,7 @@ export default {
           this.processChartFilterData[i].forEach(m => {
             tempData.forEach(n => {
               if (m.id === n.id) {
-                this.processChartAllData.push(lodash.merge(m, n))
+                tempData.push(lodash.merge(m, n))
               }
             })
           })

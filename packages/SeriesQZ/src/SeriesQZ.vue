@@ -467,8 +467,7 @@ export default {
   .table-container {
     .simple-table {
       height: 100%;
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: auto;
     }
   }
 }
@@ -524,8 +523,7 @@ export default {
     height: 25%;
     .simple-table {
       height: 100%;
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: auto;
     }
   }
 }
