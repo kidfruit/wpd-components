@@ -68,7 +68,7 @@
       <h2>SeriesCompareTest：通用过程线多方案对比组件</h2>
       <series-compare-test />
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>SchemeComparison:方案对比-单值-过程</h2>
       <SchemeComparisonChartTest/>
     </div>
@@ -92,7 +92,7 @@
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>DispatchRuleCompTest: 调度规则控件</h2>
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleCompTest/>
@@ -124,6 +124,10 @@
     <div v-if="false">
       <h2>SearchFilterComp: 筛选与查询组件</h2>
       <SearchFilterCompTest/>
+    </div>
+    <div v-if="true">
+      <h2>FloodStatusComp:防洪形势组件</h2>
+      <FloodStatusCompTest/>
     </div>
   </div>
 </template>
@@ -162,6 +166,7 @@ import SelectTimePeriodTest from "./SelectTimePeriodTest";
 import MultiSeriesResultTest from "./MultiSeriesResultTest";
 import DatasetTreeChartTest from "./DatasetTreeChartTest";
 import SearchFilterCompTest from "./SearchFilterCompTest";
+import FloodStatusCompTest from "./FloodStatusCompTest";
 
 export default {
   components: {
@@ -197,7 +202,8 @@ export default {
     TimePlayControlTest,
     SelectTimePeriodTest,
     DatasetTreeChartTest,
-    SearchFilterCompTest
+    SearchFilterCompTest,
+    FloodStatusCompTest
   },
   name: 'HelloWorld',
   methods: {

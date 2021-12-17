@@ -1,0 +1,31 @@
+<template>
+  <div>
+    <FloodStatusComp
+      :className="className"
+      :waterInfo="waterInfo"
+      :engineeringInfo="engineeringInfo"
+      :disasterInfo="disasterInfo"
+    />
+  </div>
+</template>
+<script>
+import FloodStatusComp from "../../packages/FloodStatusComp/src/FLoodStatusComp";
+import floodStatusData from '../assets/mock/FloodStatus.json'
+export default {
+  components: { FloodStatusComp },
+  name: 'FloodStatusCompTest',
+  data() {
+    return {
+      className: 'flood-status-comp-test',
+      waterInfo: floodStatusData.waterInfo, // 水情
+      engineeringInfo:{}, //工情
+      rainfallInfo:{}, //雨情
+      disasterInfo:{} //灾情
+    }
+  },
+  methods: {
+
+  }
+}
+</script>
+<style scoped></style>
