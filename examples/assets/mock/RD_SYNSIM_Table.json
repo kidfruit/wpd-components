@@ -6,7 +6,7 @@
 		"nodeTypeName": "水文站",
 		"key": "103049",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -16,29 +16,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -48,7 +74,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH300",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -68,20 +94,66 @@
 						"RCH300MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -93,11 +165,19 @@
 		"nodeTypeName": "水库",
 		"key": "11",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
-			"selectedId": "RD_VFLDMINGROUP",
+			"selectedId": "RD_EMAXWITHFLDVGROUP",
 			"options": [
+				{
+					"id": "RD_EMAXWITHFLDVGROUP",
+					"name": "定拦洪量下梯级发电量最大",
+					"modelParamIds": [
+						"11RSDSP"
+					],
+					"group": true
+				},
 				{
 					"id": "RD_VFLDMINGROUP",
 					"name": "防洪总库容耗用最小",
@@ -123,17 +203,31 @@
 					"group": false
 				},
 				{
-					"id": "RD_MAXZMIN",
-					"name": "调洪最高水位最低",
+					"id": "RD_EMAX",
+					"name": "单库发电量最大",
 					"modelParamIds": [
 						"11RSDSP"
 					],
+					"group": false
+				},
+				{
+					"id": "RD_ETOTMAX",
+					"name": "梯级发电量最大",
+					"modelParamIds": [
+						"11RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "RD_HPDSPBYRR",
@@ -143,22 +237,48 @@
 					"name": "电站分配",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -168,7 +288,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH301",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -188,20 +308,66 @@
 						"RCH301MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -213,11 +379,19 @@
 		"nodeTypeName": "水库",
 		"key": "12",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
-			"selectedId": "RD_VFLDMINGROUP",
+			"selectedId": "RD_EMAXWITHFLDVGROUP",
 			"options": [
+				{
+					"id": "RD_EMAXWITHFLDVGROUP",
+					"name": "定拦洪量下梯级发电量最大",
+					"modelParamIds": [
+						"12RSDSP"
+					],
+					"group": true
+				},
 				{
 					"id": "RD_VFLDMINGROUP",
 					"name": "防洪总库容耗用最小",
@@ -243,17 +417,31 @@
 					"group": false
 				},
 				{
-					"id": "RD_MAXZMIN",
-					"name": "调洪最高水位最低",
+					"id": "RD_EMAX",
+					"name": "单库发电量最大",
 					"modelParamIds": [
 						"12RSDSP"
 					],
+					"group": false
+				},
+				{
+					"id": "RD_ETOTMAX",
+					"name": "梯级发电量最大",
+					"modelParamIds": [
+						"12RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "RD_HPDSPBYRR",
@@ -263,22 +451,48 @@
 					"name": "电站分配",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -288,7 +502,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH302",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -308,20 +522,66 @@
 						"RCH302MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -333,11 +593,19 @@
 		"nodeTypeName": "水库",
 		"key": "13",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
-			"selectedId": "RD_VFLDMINGROUP",
+			"selectedId": "RD_EMAXWITHFLDVGROUP",
 			"options": [
+				{
+					"id": "RD_EMAXWITHFLDVGROUP",
+					"name": "定拦洪量下梯级发电量最大",
+					"modelParamIds": [
+						"13RSDSP"
+					],
+					"group": true
+				},
 				{
 					"id": "RD_VFLDMINGROUP",
 					"name": "防洪总库容耗用最小",
@@ -363,17 +631,31 @@
 					"group": false
 				},
 				{
-					"id": "RD_MAXZMIN",
-					"name": "调洪最高水位最低",
+					"id": "RD_EMAX",
+					"name": "单库发电量最大",
 					"modelParamIds": [
 						"13RSDSP"
 					],
+					"group": false
+				},
+				{
+					"id": "RD_ETOTMAX",
+					"name": "梯级发电量最大",
+					"modelParamIds": [
+						"13RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "RD_HPDSPBYRR",
@@ -383,22 +665,48 @@
 					"name": "电站分配",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -408,7 +716,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH303",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -428,20 +736,66 @@
 						"RCH303MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -453,11 +807,19 @@
 		"nodeTypeName": "水库",
 		"key": "14",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
-			"selectedId": "RD_VFLDMINGROUP",
+			"selectedId": "RD_EMAXWITHFLDVGROUP",
 			"options": [
+				{
+					"id": "RD_EMAXWITHFLDVGROUP",
+					"name": "定拦洪量下梯级发电量最大",
+					"modelParamIds": [
+						"14RSDSP"
+					],
+					"group": true
+				},
 				{
 					"id": "RD_VFLDMINGROUP",
 					"name": "防洪总库容耗用最小",
@@ -483,17 +845,31 @@
 					"group": false
 				},
 				{
-					"id": "RD_MAXZMIN",
-					"name": "调洪最高水位最低",
+					"id": "RD_EMAX",
+					"name": "单库发电量最大",
 					"modelParamIds": [
 						"14RSDSP"
 					],
+					"group": false
+				},
+				{
+					"id": "RD_ETOTMAX",
+					"name": "梯级发电量最大",
+					"modelParamIds": [
+						"14RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "RD_HPDSPBYRR",
@@ -503,22 +879,48 @@
 					"name": "电站分配",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -528,7 +930,7 @@
 		"nodeTypeName": "区间汇流",
 		"key": "ITV100",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -548,20 +950,66 @@
 						"ITV100MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -573,7 +1021,7 @@
 		"nodeTypeName": "水文站",
 		"key": "103067",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -583,29 +1031,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -615,7 +1089,7 @@
 		"nodeTypeName": "区间汇流",
 		"key": "ITV106",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -631,724 +1105,57 @@
 				{
 					"id": "FR_RHMSK",
 					"name": "马斯京根模型",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		}
-	},
-	{
-		"nodeId": "103068",
-		"nodeName": "富顺",
-		"nodeType": "WPStationZQ",
-		"nodeTypeName": "水文站",
-		"key": "103068",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_LINK",
-			"options": [
-				{
-					"id": "FR_LINK",
-					"name": "流量衔接",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		}
-	},
-	{
-		"nodeId": "ITV107",
-		"nodeName": "富顺-朱沱",
-		"nodeType": "WPNodeInterval",
-		"nodeTypeName": "区间汇流",
-		"key": "ITV107",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_RHLAGTM",
-			"options": [
-				{
-					"id": "FR_RHLAGTM",
-					"name": "滞时演算",
 					"modelParamIds": [
-						"ITV107LAG"
+						"ITV106MUSK"
 					],
 					"group": false
 				},
 				{
-					"id": "FR_RHMSK",
-					"name": "马斯京根模型",
-					"modelParamIds": [],
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		}
-	},
-	{
-		"nodeId": "103004",
-		"nodeName": "北碚",
-		"nodeType": "WPStationZQ",
-		"nodeTypeName": "水文站",
-		"key": "103004",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_LINK",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FR_LINK",
-					"name": "流量衔接",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		}
-	},
-	{
-		"nodeId": "ITV103",
-		"nodeName": "北碚-寸滩",
-		"nodeType": "WPNodeInterval",
-		"nodeTypeName": "区间汇流",
-		"key": "ITV103",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_RHLAGTM",
-			"options": [
-				{
-					"id": "FR_RHLAGTM",
-					"name": "滞时演算",
-					"modelParamIds": [
-						"ITV103LAG"
-					],
-					"group": false
-				},
-				{
-					"id": "FR_RHMSK",
-					"name": "马斯京根模型",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		}
-	},
-	{
-		"nodeId": "103003",
-		"nodeName": "武隆",
-		"nodeType": "WPStationZQ",
-		"nodeTypeName": "水文站",
-		"key": "103003",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_LINK",
-			"options": [
-				{
-					"id": "FR_LINK",
-					"name": "流量衔接",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		}
-	},
-	{
-		"nodeId": "ITV104",
-		"nodeName": "武隆-三峡",
-		"nodeType": "WPNodeInterval",
-		"nodeTypeName": "区间汇流",
-		"key": "ITV104",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_RHLAGTM",
-			"options": [
-				{
-					"id": "FR_RHLAGTM",
-					"name": "滞时演算",
-					"modelParamIds": [
-						"ITV104LAG"
-					],
-					"group": false
-				},
-				{
-					"id": "FR_RHMSK",
-					"name": "马斯京根模型",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		}
-	},
-	{
-		"nodeId": "16",
-		"nodeName": "水布垭",
-		"nodeType": "WPStationRR",
-		"nodeTypeName": "水库",
-		"key": "16",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "RD_VFLDMINGROUP",
-			"options": [
-				{
-					"id": "RD_VFLDMINGROUP",
-					"name": "防洪总库容耗用最小",
-					"modelParamIds": [
-						"16RSDSP"
-					],
 					"group": true
 				},
 				{
-					"id": "RD_OVERSAFEMINGROUP",
-					"name": "超过防洪安全流量最小",
-					"modelParamIds": [
-						"16RSDSP"
-					],
-					"group": true
-				},
-				{
-					"id": "RD_MAXQMIN",
-					"name": "调洪最大出库最小",
-					"modelParamIds": [
-						"16RSDSP"
-					],
-					"group": false
-				},
-				{
-					"id": "RD_MAXZMIN",
-					"name": "调洪最高水位最低",
-					"modelParamIds": [
-						"16RSDSP"
-					],
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
 		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "RD_HPDSPBYRR",
-			"options": [
-				{
-					"id": "RD_HPDSPBYRR",
-					"name": "电站分配",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		}
-	},
-	{
-		"nodeId": "RCH201",
-		"nodeName": "水布垭-隔河岩",
-		"nodeType": "WPRiverReach",
-		"nodeTypeName": "河段",
-		"key": "RCH201",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_RHLAGTM",
-			"options": [
-				{
-					"id": "FR_RHLAGTM",
-					"name": "滞时演算",
-					"modelParamIds": [
-						"RCH201LAG"
-					],
-					"group": false
-				},
-				{
-					"id": "FR_RHMSK",
-					"name": "马斯京根模型",
-					"modelParamIds": [
-						"RCH201MUSK"
-					],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		}
-	},
-	{
-		"nodeId": "17",
-		"nodeName": "隔河岩",
-		"nodeType": "WPStationRR",
-		"nodeTypeName": "水库",
-		"key": "17",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "RD_VFLDMINGROUP",
-			"options": [
-				{
-					"id": "RD_VFLDMINGROUP",
-					"name": "防洪总库容耗用最小",
-					"modelParamIds": [
-						"17RSDSP"
-					],
-					"group": true
-				},
-				{
-					"id": "RD_OVERSAFEMINGROUP",
-					"name": "超过防洪安全流量最小",
-					"modelParamIds": [
-						"17RSDSP"
-					],
-					"group": true
-				},
-				{
-					"id": "RD_MAXQMIN",
-					"name": "调洪最大出库最小",
-					"modelParamIds": [
-						"17RSDSP"
-					],
-					"group": false
-				},
-				{
-					"id": "RD_MAXZMIN",
-					"name": "调洪最高水位最低",
-					"modelParamIds": [
-						"17RSDSP"
-					],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "RD_HPDSPBYRR",
-			"options": [
-				{
-					"id": "RD_HPDSPBYRR",
-					"name": "电站分配",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		}
-	},
-	{
-		"nodeId": "RCH202",
-		"nodeName": "隔河岩-高坝洲",
-		"nodeType": "WPRiverReach",
-		"nodeTypeName": "河段",
-		"key": "RCH202",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_RHLAGTM",
-			"options": [
-				{
-					"id": "FR_RHLAGTM",
-					"name": "滞时演算",
-					"modelParamIds": [
-						"RCH202LAG"
-					],
-					"group": false
-				},
-				{
-					"id": "FR_RHMSK",
-					"name": "马斯京根模型",
-					"modelParamIds": [
-						"RCH202MUSK"
-					],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		}
-	},
-	{
-		"nodeId": "15",
-		"nodeName": "高坝洲",
-		"nodeType": "WPStationRR",
-		"nodeTypeName": "水库",
-		"key": "15",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "RD_VFLDMINGROUP",
-			"options": [
-				{
-					"id": "RD_VFLDMINGROUP",
-					"name": "防洪总库容耗用最小",
-					"modelParamIds": [
-						"15RSDSP"
-					],
-					"group": true
-				},
-				{
-					"id": "RD_OVERSAFEMINGROUP",
-					"name": "超过防洪安全流量最小",
-					"modelParamIds": [
-						"15RSDSP"
-					],
-					"group": true
-				},
-				{
-					"id": "RD_MAXQMIN",
-					"name": "调洪最大出库最小",
-					"modelParamIds": [
-						"15RSDSP"
-					],
-					"group": false
-				},
-				{
-					"id": "RD_MAXZMIN",
-					"name": "调洪最高水位最低",
-					"modelParamIds": [
-						"15RSDSP"
-					],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "RD_HPDSPBYRR",
-			"options": [
-				{
-					"id": "RD_HPDSPBYRR",
-					"name": "电站分配",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		}
-	},
-	{
-		"nodeId": "ITV101",
-		"nodeName": "高坝洲-枝城",
-		"nodeType": "WPNodeInterval",
-		"nodeTypeName": "区间汇流",
-		"key": "ITV101",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_RHLAGTM",
-			"options": [
-				{
-					"id": "FR_RHLAGTM",
-					"name": "滞时演算",
-					"modelParamIds": [
-						"ITV101LAG"
-					],
-					"group": false
-				},
-				{
-					"id": "FR_RHMSK",
-					"name": "马斯京根模型",
-					"modelParamIds": [
-						"ITV101MUSK"
-					],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		}
-	},
-	{
-		"nodeId": "103040",
-		"nodeName": "仙桃",
-		"nodeType": "WPStationZQ",
-		"nodeTypeName": "水文站",
-		"key": "103040",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_LINK",
-			"options": [
-				{
-					"id": "FR_LINK",
-					"name": "流量衔接",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
-			"selectedId": "FD_DSPASS",
-			"options": [
-				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
-					"modelParamIds": [],
-					"group": false
-				}
-			]
-		}
-	},
-	{
-		"nodeId": "ITV102",
-		"nodeName": "仙桃-汉口",
-		"nodeType": "WPNodeInterval",
-		"nodeTypeName": "区间汇流",
-		"key": "ITV102",
-		"flow1": {
-			"key": "FLOW-3-1",
-			"title": "调度演进",
-			"order": 1,
-			"selectedId": "FR_RHLAGTM",
-			"options": [
-				{
-					"id": "FR_RHLAGTM",
-					"name": "滞时演算",
-					"modelParamIds": [
-						"ITV102LAG"
-					],
-					"group": false
-				},
-				{
-					"id": "FR_RHMSK",
-					"name": "马斯京根模型",
-					"modelParamIds": [
-						"ITV102MUSK"
-					],
-					"group": false
-				}
-			]
-		},
-		"flow2": {
-			"key": "FLOW-3-2",
-			"title": "发电及模拟",
-			"order": 2,
-			"selectedId": "__vue_devtool_undefined__",
-			"options": []
-		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -1360,7 +1167,7 @@
 		"nodeTypeName": "水文站",
 		"key": "103038",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -1370,29 +1177,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1402,7 +1235,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH101",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -1422,32 +1255,78 @@
 						"RCH101MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
 	},
 	{
-		"nodeId": "103001",
-		"nodeName": "朱沱",
+		"nodeId": "103068",
+		"nodeName": "富顺",
 		"nodeType": "WPStationZQ",
 		"nodeTypeName": "水文站",
-		"key": "103001",
+		"key": "103068",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -1457,29 +1336,201 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "ITV107",
+		"nodeName": "富顺-朱沱",
+		"nodeType": "WPNodeInterval",
+		"nodeTypeName": "区间汇流",
+		"key": "ITV107",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV107LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"ITV107MUSK"
+					],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "103039",
+		"nodeName": "朱沱",
+		"nodeType": "WPStationZQ",
+		"nodeTypeName": "水文站",
+		"key": "103039",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_LINK",
+			"options": [
+				{
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1489,7 +1540,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH102",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -1509,20 +1560,212 @@
 						"RCH102MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "103040",
+		"nodeName": "北碚",
+		"nodeType": "WPStationZQ",
+		"nodeTypeName": "水文站",
+		"key": "103040",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_LINK",
+			"options": [
+				{
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "ITV103",
+		"nodeName": "北碚-寸滩",
+		"nodeType": "WPNodeInterval",
+		"nodeTypeName": "区间汇流",
+		"key": "ITV103",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV103LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"ITV103MUSK"
+					],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -1534,7 +1777,7 @@
 		"nodeTypeName": "水文站",
 		"key": "103002",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -1544,29 +1787,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1576,7 +1845,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH103",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -1596,20 +1865,218 @@
 						"RCH103MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FR_FORECASTZCSSX",
+					"name": "长寿水位预测",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "103003",
+		"nodeName": "武隆",
+		"nodeType": "WPStationZQ",
+		"nodeTypeName": "水文站",
+		"key": "103003",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_LINK",
+			"options": [
+				{
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "ITV104",
+		"nodeName": "武隆-三峡",
+		"nodeType": "WPNodeInterval",
+		"nodeTypeName": "区间汇流",
+		"key": "ITV104",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV104LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"ITV104MUSK"
+					],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -1621,11 +2088,19 @@
 		"nodeTypeName": "水库",
 		"key": "18",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
-			"selectedId": "RD_VFLDMINGROUP",
+			"selectedId": "RD_EMAXWITHFLDVGROUP",
 			"options": [
+				{
+					"id": "RD_EMAXWITHFLDVGROUP",
+					"name": "定拦洪量下梯级发电量最大",
+					"modelParamIds": [
+						"18RSDSP"
+					],
+					"group": true
+				},
 				{
 					"id": "RD_VFLDMINGROUP",
 					"name": "防洪总库容耗用最小",
@@ -1651,17 +2126,31 @@
 					"group": false
 				},
 				{
-					"id": "RD_MAXZMIN",
-					"name": "调洪最高水位最低",
+					"id": "RD_EMAX",
+					"name": "单库发电量最大",
 					"modelParamIds": [
 						"18RSDSP"
 					],
+					"group": false
+				},
+				{
+					"id": "RD_ETOTMAX",
+					"name": "梯级发电量最大",
+					"modelParamIds": [
+						"18RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "RD_HPDSPBYRR",
@@ -1671,19 +2160,71 @@
 					"name": "电站分配",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "BW_SX",
+			"options": [
+				{
+					"id": "BW_SX",
+					"name": "三峡回水模型",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "RD_FLDLOSS_SX",
+			"options": [
+				{
+					"id": "RD_FLDLOSS_SX",
+					"name": "三峡淹没损失统计",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
@@ -1696,7 +2237,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH104",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -1716,11 +2257,17 @@
 						"RCH104MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "FR_1DREACH",
@@ -1730,13 +2277,46 @@
 					"name": "一维水动力模拟",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -1748,11 +2328,19 @@
 		"nodeTypeName": "水库",
 		"key": "19",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
-			"selectedId": "RD_VFLDMINGROUP",
+			"selectedId": "RD_EMAXWITHFLDVGROUP",
 			"options": [
+				{
+					"id": "RD_EMAXWITHFLDVGROUP",
+					"name": "定拦洪量下梯级发电量最大",
+					"modelParamIds": [
+						"19RSDSP"
+					],
+					"group": true
+				},
 				{
 					"id": "RD_VFLDMINGROUP",
 					"name": "防洪总库容耗用最小",
@@ -1778,17 +2366,31 @@
 					"group": false
 				},
 				{
-					"id": "RD_MAXZMIN",
-					"name": "调洪最高水位最低",
+					"id": "RD_EMAX",
+					"name": "单库发电量最大",
 					"modelParamIds": [
 						"19RSDSP"
 					],
+					"group": false
+				},
+				{
+					"id": "RD_ETOTMAX",
+					"name": "梯级发电量最大",
+					"modelParamIds": [
+						"19RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "RD_HPDSPBYRR",
@@ -1798,22 +2400,48 @@
 					"name": "电站分配",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1823,7 +2451,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH105",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -1843,20 +2471,66 @@
 						"RCH105MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -1868,7 +2542,7 @@
 		"nodeTypeName": "水文站",
 		"key": "103032",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -1878,29 +2552,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1910,7 +2610,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH106",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -1930,20 +2630,695 @@
 						"RCH106MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "16",
+		"nodeName": "水布垭",
+		"nodeType": "WPStationRR",
+		"nodeTypeName": "水库",
+		"key": "16",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "RD_EMAXWITHFLDVGROUP",
+			"options": [
+				{
+					"id": "RD_EMAXWITHFLDVGROUP",
+					"name": "定拦洪量下梯级发电量最大",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_EMAX",
+					"name": "单库发电量最大",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_ETOTMAX",
+					"name": "梯级发电量最大",
+					"modelParamIds": [
+						"16RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "RCH201",
+		"nodeName": "水布垭-隔河岩",
+		"nodeType": "WPRiverReach",
+		"nodeTypeName": "河段",
+		"key": "RCH201",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH201LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH201MUSK"
+					],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "17",
+		"nodeName": "隔河岩",
+		"nodeType": "WPStationRR",
+		"nodeTypeName": "水库",
+		"key": "17",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "RD_EMAXWITHFLDVGROUP",
+			"options": [
+				{
+					"id": "RD_EMAXWITHFLDVGROUP",
+					"name": "定拦洪量下梯级发电量最大",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_EMAX",
+					"name": "单库发电量最大",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_ETOTMAX",
+					"name": "梯级发电量最大",
+					"modelParamIds": [
+						"17RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "RCH202",
+		"nodeName": "隔河岩-高坝洲",
+		"nodeType": "WPRiverReach",
+		"nodeTypeName": "河段",
+		"key": "RCH202",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"RCH202LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"RCH202MUSK"
+					],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "15",
+		"nodeName": "高坝洲",
+		"nodeType": "WPStationRR",
+		"nodeTypeName": "水库",
+		"key": "15",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "RD_EMAXWITHFLDVGROUP",
+			"options": [
+				{
+					"id": "RD_EMAXWITHFLDVGROUP",
+					"name": "定拦洪量下梯级发电量最大",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_VFLDMINGROUP",
+					"name": "防洪总库容耗用最小",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_OVERSAFEMINGROUP",
+					"name": "超过防洪安全流量最小",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "RD_MAXQMIN",
+					"name": "调洪最大出库最小",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_EMAX",
+					"name": "单库发电量最大",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": false
+				},
+				{
+					"id": "RD_ETOTMAX",
+					"name": "梯级发电量最大",
+					"modelParamIds": [
+						"15RSDSP"
+					],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "RD_HPDSPBYRR",
+			"options": [
+				{
+					"id": "RD_HPDSPBYRR",
+					"name": "电站分配",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "ITV101",
+		"nodeName": "高坝洲-枝城",
+		"nodeType": "WPNodeInterval",
+		"nodeTypeName": "区间汇流",
+		"key": "ITV101",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV101LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"ITV101MUSK"
+					],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -1955,7 +3330,7 @@
 		"nodeTypeName": "水文站",
 		"key": "103033",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -1965,29 +3340,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -1997,7 +3398,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH107",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -2017,20 +3418,66 @@
 						"RCH107MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -2042,7 +3489,7 @@
 		"nodeTypeName": "水文站",
 		"key": "103034",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -2052,29 +3499,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -2084,7 +3557,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH108",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -2104,32 +3577,78 @@
 						"RCH108MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
 	},
 	{
-		"nodeId": "103036",
+		"nodeId": "103056",
 		"nodeName": "监利",
 		"nodeType": "WPStationZQ",
 		"nodeTypeName": "水文站",
-		"key": "103036",
+		"key": "103056",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -2139,29 +3658,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -2171,7 +3716,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH109",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -2191,20 +3736,66 @@
 						"RCH109MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
-		"flow3": {
-			"key": "FLOW-3-3",
-			"title": "分析评估",
-			"order": 3,
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -2216,7 +3807,7 @@
 		"nodeTypeName": "水文站",
 		"key": "103212",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -2226,29 +3817,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	},
 	{
@@ -2258,7 +3875,7 @@
 		"nodeTypeName": "河段",
 		"key": "RCH110",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_RHLAGTM",
@@ -2278,20 +3895,212 @@
 						"RCH110MUSK"
 					],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "FR_1DREACH",
+			"options": [
+				{
+					"id": "FR_1DREACH",
+					"name": "一维水动力模拟",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "103108",
+		"nodeName": "仙桃",
+		"nodeType": "WPStationZQ",
+		"nodeTypeName": "水文站",
+		"key": "103108",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_LINK",
+			"options": [
+				{
+					"id": "FR_LINK",
+					"name": "流量衔接",
+					"modelParamIds": [],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		}
+	},
+	{
+		"nodeId": "ITV102",
+		"nodeName": "仙桃-汉口",
+		"nodeType": "WPNodeInterval",
+		"nodeTypeName": "区间汇流",
+		"key": "ITV102",
+		"flow1": {
+			"key": "FLOW-5-1",
+			"title": "调度演进",
+			"order": 1,
+			"selectedId": "FR_RHLAGTM",
+			"options": [
+				{
+					"id": "FR_RHLAGTM",
+					"name": "滞时演算",
+					"modelParamIds": [
+						"ITV102LAG"
+					],
+					"group": false
+				},
+				{
+					"id": "FR_RHMSK",
+					"name": "马斯京根模型",
+					"modelParamIds": [
+						"ITV102MUSK"
+					],
+					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow2": {
+			"key": "FLOW-5-2",
+			"title": "发电及模拟",
+			"order": 2,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow3": {
+			"key": "FLOW-5-3",
+			"title": "分析评估",
+			"order": 3,
+			"selectedId": "RD_COMPEVA",
+			"options": [
+				{
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
+					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
+				}
+			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		}
@@ -2303,7 +4112,7 @@
 		"nodeTypeName": "水文站",
 		"key": "103058",
 		"flow1": {
-			"key": "FLOW-3-1",
+			"key": "FLOW-5-1",
 			"title": "调度演进",
 			"order": 1,
 			"selectedId": "FR_LINK",
@@ -2313,29 +4122,55 @@
 					"name": "流量衔接",
 					"modelParamIds": [],
 					"group": false
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
+					"group": false
 				}
 			]
 		},
 		"flow2": {
-			"key": "FLOW-3-2",
+			"key": "FLOW-5-2",
 			"title": "发电及模拟",
 			"order": 2,
 			"selectedId": "__vue_devtool_undefined__",
 			"options": []
 		},
 		"flow3": {
-			"key": "FLOW-3-3",
+			"key": "FLOW-5-3",
 			"title": "分析评估",
 			"order": 3,
-			"selectedId": "FD_DSPASS",
+			"selectedId": "RD_COMPEVA",
 			"options": [
 				{
-					"id": "FD_DSPASS",
-					"name": "调度评估",
+					"id": "RD_COMPEVA",
+					"name": "综合评估",
 					"modelParamIds": [],
+					"group": true
+				},
+				{
+					"id": "FD_NULL",
+					"name": "——",
+					"modelParamIds": null,
 					"group": false
 				}
 			]
+		},
+		"flow4": {
+			"key": "FLOW-5-4",
+			"title": "后处理",
+			"order": 4,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
+		},
+		"flow5": {
+			"key": "FLOW-5-5",
+			"title": "淹没损失",
+			"order": 5,
+			"selectedId": "__vue_devtool_undefined__",
+			"options": []
 		}
 	}
 ]
