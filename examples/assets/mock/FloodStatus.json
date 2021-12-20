@@ -112,6 +112,20 @@
             "控制站点": "汉口"
           }
         ],
+        "recommendReservoir": [
+          {
+            "工程已用防洪库容": 6012.835000000006,
+            "工程编码": "60106980",
+            "工程名称": "三峡",
+            "工程剩余防洪库容": -1012.8350000000064
+          },
+          {
+            "工程已用防洪库容": 215.37000000000262,
+            "工程编码": "60103165",
+            "工程名称": "溪洛渡",
+            "工程剩余防洪库容": -215.37000000000262
+          }
+        ],
         "tableColumns": [
           {
             "field": "time",
@@ -162,6 +176,161 @@
       }
     ]
   },
-  "engineeringInfo": {},
-  "disasterInfo": {}
+  "engineeringInfo": {
+    "reservoirCapacity": [
+      {
+        "name": "金沙江中游",
+        "unitSymbol": "亿m³",
+        "used": 9.36,
+        "total": 17.78
+      },
+      {
+        "name": "金沙江下游",
+        "unitSymbol": "亿m³",
+        "used": 15.32,
+        "total": 55.53
+      },
+      {
+        "name": "雅砻江",
+        "unitSymbol": "亿m³",
+        "used": 0,
+        "total": 25
+      },
+      {
+        "name": "岷江大渡河",
+        "unitSymbol": "亿m³",
+        "used": 0,
+        "total": 12.67
+      },
+      {
+        "name": "嘉陵江",
+        "unitSymbol": "亿m³",
+        "used": 2.14,
+        "total": 20.75
+      },
+      {
+        "name": "乌江",
+        "unitSymbol": "亿m³",
+        "used": 2.27,
+        "total": 10.25
+      },
+      {
+        "name": "三峡",
+        "unitSymbol": "亿m³",
+        "used": 104.1,
+        "total": 221.5
+      }
+    ],
+    "reservoirData": {
+      "tableColumns": [
+        {
+          "field": "zone",
+          "title": "区域"
+        },
+        {
+          "field": "name",
+          "title": "站名"
+        },
+        {
+          "field": "id",
+          "title": "站点ID",
+          "hidden": true
+        },
+        {
+          "field": "z",
+          "title": "水位(m)"
+        },
+        {
+          "field": "floodLevel",
+          "title": "汛限水位(m)"
+        },
+        {
+          "field": "floodHighLevel",
+          "title": "防洪高水位(m)"
+        },
+        {
+          "field": "usedCapacity",
+          "title": "已用防洪库容(亿m³)"
+        }
+      ],
+      "tableData": [
+        {
+          "zone": "三峡",
+          "name": "三峡",
+          "id": "60106980",
+          "z": "161.86",
+          "floodLevel": "145.00",
+          "floodHighLevel": "175.00",
+          "usedCapacity": "104.1"
+        },
+        {
+          "zone": "金沙江中游",
+          "name": "观音岩",
+          "id": "60101998",
+          "z": "1125.58",
+          "floodLevel": "1122.30",
+          "floodHighLevel": "1134.00",
+          "usedCapacity": "1.41"
+        },
+        {
+          "zone": "金沙江中游",
+          "name": "鲁地拉",
+          "id": "60101850",
+          "z": "1217.07",
+          "floodLevel": "1289.00",
+          "floodHighLevel": "1223.00",
+          "usedCapacity": "2.43"
+        }
+      ]
+    },
+    "floodCapacity": [
+      {
+        "name": "荆江地区",
+        "unitSymbol": "亿m³",
+        "used": 9.36,
+        "total": 17.78
+      },
+      {
+        "name": "城陵矶附近区",
+        "unitSymbol": "亿m³",
+        "used": 15.32,
+        "total": 55.53
+      },
+      {
+        "name": "武汉附近区",
+        "unitSymbol": "亿m³",
+        "used": 0,
+        "total": 25
+      },
+      {
+        "name": "湖口附近区",
+        "unitSymbol": "亿m³",
+        "used": 0,
+        "total": 12.67
+      }
+    ]
+  },
+  "disasterInfo": {
+    "dangerList": [
+      {
+        "area": "湖北",
+        "name": "汉口",
+        "id": "60112200",
+        "maxWaterLevel": "29.07",
+        "maxWaterTime": "2020-07-17 14:00:00",
+        "alertLevel": "27.3",
+        "guaranteeLevel": "29.73"
+      },
+      {
+        "area": "江西",
+        "name": "湖口",
+        "id": "62601600",
+        "maxWaterLevel": "21.54",
+        "maxWaterTime": "2020-07-18 08:00:00",
+        "alertLevel": "19.0",
+        "guaranteeLevel": "22.5"
+      }
+    ],
+    "dangerArea": ["湖北","江西"]
+  }
 }
