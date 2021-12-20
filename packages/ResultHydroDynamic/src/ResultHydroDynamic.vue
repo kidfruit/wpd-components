@@ -13,14 +13,14 @@
       />
     </div>
     <a-select
-        style="width: 100%;margin-bottom: 20px;"
-        show-search
-        :defaultValue="sections[0]"
-        @change="handleChangeSelected"
+      style="width: 100%;margin-bottom: 20px;"
+      show-search
+      :defaultValue="sections[0]"
+      @change="handleChangeSelected"
     >
       <a-select-option
-          v-for="section in sections"
-          :key="section"
+        v-for="section in sections"
+        :key="section"
       >
         {{section}}
       </a-select-option>

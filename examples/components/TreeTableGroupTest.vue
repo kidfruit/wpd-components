@@ -31,92 +31,54 @@ export default {
   components: {TreeTableGroup},
   data() {
     return {
-        setting: {
-            rowHeaders:true
-        },
+      setting: {
+          rowHeaders:true
+      },
       mock_Tree,
       classNames: ['testChart'],
-      isRefresh: true,
-      chartOption: {
-        title: {
-          text: '水位流量图',
-          left: 'center',
-        },
-      },
-      chartAxis: {
-        xAxis: 'time',
-        timeSeries: true,
-        yAxis: [
-          {
-            title: '水位(m)',
-            yAxisIndex: 0,
-          },
-          {
-            title: '流量(m³/s)',
-            yAxisIndex: 1,
-          },
-        ],
-        series: [
-          {
-            field: 'dim1',
-            title: '水位(m)',
-            selected: true,
-            yAxisIndex: 0,
-          },
-          {
-            field: 'dim2',
-            title: '入库流量(m³/s)',
-            selected: true,
-            yAxisIndex: 1,
-          },
-          {
-            field: 'dim2',
-            title: '出库流量(m³/s)',
-            selected: false,
-            yAxisIndex: 1,
-          },
-        ],
-      },
       tableColumns: [
         {
-          field: 'nodeName',
-          title: '名称',
-          width: 100,
-          isResize: true,
-          titleAlign: 'center',
-          columnAlign: 'center',
-          readOnly: true,
+          "title": "名称",
+          "field": "nodeName",
+          "readOnly": true
         },
         {
-          field: 'flow1',
-          title: '流程1',
-          width: 100,
-          isResize: true,
-          titleAlign: 'center',
-          columnAlign: 'center',
-          type: 'customDropdown',
+          "title": "流程1",
+          "field": "flow1",
+          "titleAlign": "center",
+          "columnAlign": "center",
+          "type": "customDropdown"
         },
         {
-          field: 'flow2',
-          title: '流程2',
-          width: 100,
-          isResize: true,
-          titleAlign: 'center',
-          columnAlign: 'center',
-          type: 'customDropdown',
+          "title": "流程2",
+          "field": "flow2",
+          "titleAlign": "center",
+          "columnAlign": "center",
+          "type": "customDropdown"
         },
         {
-          field: 'flow3',
-          title: '流程3',
-          width: 100,
-          isResize: true,
-          titleAlign: 'center',
-          columnAlign: 'center',
-          type: 'customDropdown',
+          "title": "流程3",
+          "field": "flow3",
+          "titleAlign": "center",
+          "columnAlign": "center",
+          "type": "customDropdown"
         },
+        {
+          "title": "流程4",
+          "field": "flow4",
+          "titleAlign": "center",
+          "columnAlign": "center",
+          "type": "customDropdown"
+        },
+        {
+          "title": "流程5",
+          "field": "flow5",
+          "titleAlign": "center",
+          "columnAlign": "center",
+          "type": "customDropdown"
+        }
       ],
       data: mock_Table,
-      pickedModels: [],
       checkedTreeData: [
         "RCH301",
         "12",

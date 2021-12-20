@@ -56,12 +56,6 @@ export default {
       type: Array,
       required: true,
     },
-    isRefresh: {
-      type: Boolean,
-      default() {
-        return true
-      },
-    },
     tableColumns: {
       type: Array,
     },
@@ -93,9 +87,6 @@ export default {
       defaultTableData: []
     }
   },
-  // created() {
-  //   this.initDefaultData()
-  // },
   computed: {
     classNames() {
       return ['tree-table-group'].concat(this.classes)
@@ -124,8 +115,10 @@ export default {
       )
     },
     _cellEditDone(value) {
+      // console.log(value)
+      // console.log(this.defaultTableData, this.m_tableData)
       const { field, newValue, oldValue, rowIndex } = value
-      const m_tableData = this.defaultTableData
+      const m_tableData = this.m_tableData
       let group
       let selectedId = ''
       let options = m_tableData[value.rowIndex][value.field].options
@@ -188,18 +181,6 @@ export default {
                 }
               }
             }
-
-
-            // if (groupfalse.length > 0) {
-            //   m_tableData[k][value.field].selectedId = groupfalse[0].id
-            //   // for (let i = 0; i < groupfalse.length; i++) {
-            //   //   if (selectedId ===  groupfalse[i].id) {
-            //   //     m_tableData[k][value.field].selectedId = groupfalse[i].id
-            //   //   }
-            //   // }
-            // } else {
-            //   m_tableData[k][value.field].selectedId = grouptrue[0].id
-            // }
           }
         }
       }
