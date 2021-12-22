@@ -18,9 +18,9 @@ export default {
     return {
       className: 'flood-status-comp-test',
       waterInfo: floodStatusData.waterInfo, // 水情
-      engineeringInfo:{}, //工情
-      rainfallInfo:{}, //雨情
-      disasterInfo:{} //灾情
+      engineeringInfo: floodStatusData.engineeringInfo, //工情
+      rainfallInfo: {}, //雨情
+      disasterInfo: floodStatusData.disasterInfo //灾情
     }
   },
   methods: {

@@ -240,6 +240,7 @@ export default {
           color: yax.color,
           itemStyle: yax.itemStyle,
           areaStyle: yax.areaStyle,
+          markPoint: yax.markPoint
         }
         seriesObj.data = this.chartData.map((cd) => cd[yax.field])
         option.series.push(seriesObj)
