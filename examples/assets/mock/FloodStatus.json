@@ -313,7 +313,7 @@
   "disasterInfo": {
     "dangerList": [
       {
-        "area": "湖北",
+        "area": "湖北省",
         "name": "汉口",
         "id": "60112200",
         "maxWaterLevel": "29.07",
@@ -322,7 +322,7 @@
         "guaranteeLevel": "29.73"
       },
       {
-        "area": "江西",
+        "area": "江西省",
         "name": "湖口",
         "id": "62601600",
         "maxWaterLevel": "21.54",
@@ -331,6 +331,6 @@
         "guaranteeLevel": "22.5"
       }
     ],
-    "dangerArea": ["湖北","江西"]
+    "dangerArea": ["湖北省","江西省"]
   }
 }
