@@ -55,6 +55,13 @@ export default {
 }
 </script>
 
+<style lang="less">
+.flood-status-comp {
+  .ant-tabs-nav {
+    float: left;
+  }
+}
+</style>
 <style lang="less" scoped>
 .flood-status-comp {
   width: 100%;

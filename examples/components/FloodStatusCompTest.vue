@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="test">
     <FloodStatusComp
       :className="className"
       :waterInfo="waterInfo"
@@ -28,4 +28,8 @@ export default {
   }
 }
 </script>
-<style scoped></style>
+<style lang="less" scoped>
+.test {
+  width: 100%;
+}
+</style>

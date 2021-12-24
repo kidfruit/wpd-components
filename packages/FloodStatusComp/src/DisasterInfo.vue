@@ -6,6 +6,7 @@
         :treeData="treeData"
         :checkable="true"
         :defaultExpandAll="true"
+        :defaultCheckedKeys="treeDefaultCheckedKeys"
         @check="handleCheckTreeNode"
       />
     </div>
@@ -32,8 +33,17 @@ export default {
     this.copyDisasterInfo = lodash.cloneDeep(this.disasterInfo)
     this.checkedProvince = []
     this.regions = []
+    this.copyDisasterInfo.dangerArea.forEach(item => {
+      this.regions.push({
+        name: item,
+        itemStyle: {
+          areaColor: 'orange'
+        }
+      })
+    })
     return {
       treeData: [],
+      treeDefaultCheckedKeys: [],
       treeRandomKey: uuidv4(),
       mapRandomKey: uuidv4()
     }
@@ -47,6 +57,7 @@ export default {
       this.initMap()
     },
     initTree() {
+      this.treeDefaultCheckedKeys = this.copyDisasterInfo.dangerArea
       this.treeRandomKey = uuidv4()
       this.treeData = []
       this.copyDisasterInfo.dangerArea.forEach(item => {
@@ -68,6 +79,7 @@ export default {
       })
     },
     initMap() {
+      // console.log(this.regions)
       echarts.registerMap('china', china)
       let mapChartDom = document.getElementById('map')
       let mapChart = echarts.init(mapChartDom)
@@ -97,7 +109,7 @@ export default {
           }
         }
       })
-      console.log(this.checkedProvince)
+      // console.log(this.checkedProvince)
       this.regions = []
       this.checkedProvince.forEach(item => {
         this.regions.push({

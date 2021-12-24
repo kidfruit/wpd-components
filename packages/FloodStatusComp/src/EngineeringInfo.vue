@@ -249,12 +249,13 @@ export default {
       .gauge-chart-title {
         height: 40px;
         text-align: left;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         margin-bottom: 10px;
         span {
           height: 40px;
           line-height: 40px;
+          margin-right: 20px;
           float: right;
           font-size: 16px;
           font-weight: normal;
@@ -282,7 +283,7 @@ export default {
       .bar-chart-title {
         height: 40px;
         text-align: left;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         margin-bottom: 10px;
       }

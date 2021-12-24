@@ -55,10 +55,10 @@
             {{ index + 1 }}、 {{ item['工程名称'] }}
           </div>
           <div class="des">
-            工程已用防洪库容：{{ item['工程已用防洪库容'] }}
+            工程已用防洪库容：{{ item['工程已用防洪库容'].toFixed(2) }}（亿m³）
           </div>
           <div class="des">
-            工程剩余防洪库容：{{ item['工程剩余防洪库容'] }}
+            工程剩余防洪库容：{{ item['工程剩余防洪库容'].toFixed(2) }} （亿m³）
           </div>
         </div>
       </div>
@@ -87,7 +87,8 @@ export default {
   },
   data() {
     this.copyWaterInfo = lodash.cloneDeep(this.waterInfo)
-    this.currentSelectedTableRow = null
+    this.currentSelectedTableRowId = null
+    this.currentSelectedTableRowName = null
     this.currentSelectedTreeNode = null
     return {
       tableColumns: [],
@@ -100,14 +101,19 @@ export default {
       treeRandomKey: uuidv4(),
       defaultSelectedKeys: [],
       lineChartOption: {
+        title: {
+          text: '',
+          left: 50,
+          top: 0
+        },
         grid: {
-          top: 50,
+          top: 75,
           bottom: 50,
           left: 75,
           right: 75
         },
         legend: {
-          top: 0
+          top: 25
         }
       },
       lineChartAxis: {
@@ -124,38 +130,40 @@ export default {
     this.organizeTableData()
   },
   mounted() {
-    this.initPieChart(this.currentSelectedTableRow, this.currentSelectedTreeNode)
+    this.initPieChart(this.currentSelectedTableRowId, this.currentSelectedTreeNode)
   },
   methods: {
     organizeTableData() {
       this.tableColumns = this.copyWaterInfo.stTable.tableColumns
       this.tableData = this.copyWaterInfo.stTable.tableData
-      this.currentSelectedTableRow = this.copyWaterInfo.stTable.tableData[0].id
+      this.currentSelectedTableRowId = this.copyWaterInfo.stTable.tableData[0].id
+      this.currentSelectedTableRowName = this.copyWaterInfo.stTable.tableData[0].name
       this.tableSetting.afterSelection = (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
-        this.currentSelectedTableRow = this.tableData[row].id
-        // console.log(this.currentSelectedTableRow)
+        this.currentSelectedTableRowId = this.tableData[row].id
+        this.currentSelectedTableRowName = this.tableData[row].name
+        // console.log(this.currentSelectedTableRowId)
         this.$nextTick(() => {
-          this.organizeTreePieChartData(this.currentSelectedTableRow)
-          this.organizeLineChartData(this.currentSelectedTableRow)
-          this.organizeRecommendReservoirData(this.currentSelectedTableRow)
-          this.initPieChart(this.currentSelectedTableRow, this.currentSelectedTreeNode)
+          this.organizeTreePieChartData(this.currentSelectedTableRowId)
+          this.organizeLineChartData(this.currentSelectedTableRowId, this.currentSelectedTableRowName)
+          this.organizeRecommendReservoirData(this.currentSelectedTableRowId)
+          this.initPieChart(this.currentSelectedTableRowId, this.currentSelectedTreeNode)
         })
       }
-      this.organizeTreePieChartData(this.currentSelectedTableRow)
-      this.organizeLineChartData(this.currentSelectedTableRow)
-      this.organizeRecommendReservoirData(this.currentSelectedTableRow)
+      this.organizeTreePieChartData(this.currentSelectedTableRowId)
+      this.organizeLineChartData(this.currentSelectedTableRowId, this.currentSelectedTableRowName)
+      this.organizeRecommendReservoirData(this.currentSelectedTableRowId)
     },
-    organizeTreePieChartData(currentSelectedTableRow) {
+    organizeTreePieChartData(currentSelectedTableRowId) {
       // id 默认湖口
       // 构造树节点
-      this.initTree(currentSelectedTableRow)
+      this.initTree(currentSelectedTableRowId)
       // this.initPieChart()
     },
-    initTree(currentSelectedTableRow) {
+    initTree(currentSelectedTableRowId) {
       this.treeRandomKey = uuidv4()
       this.treeData = []
       this.copyWaterInfo.stData.forEach(item => {
-        if (item.id === currentSelectedTableRow) {
+        if (item.id === currentSelectedTableRowId) {
           this.treeData.push({
             title: item.name,
             key: item.id,
@@ -164,7 +172,7 @@ export default {
           this.defaultSelectedKeys = [item.id]
           this.currentSelectedTreeNode = this.defaultSelectedKeys[0]
           item.floodSource.forEach(val => {
-            if (val['控制站码'] === currentSelectedTableRow) {
+            if (val['控制站码'] === currentSelectedTableRowId) {
               val['洪水组成'].forEach(el => {
                 // 构造treeData
                 this.treeData[0].children.push({
@@ -177,10 +185,10 @@ export default {
         }
       })
     },
-    initPieChart(currentSelectedTableRow, currentSelectedTreeNode) {
+    initPieChart(currentSelectedTableRowId, currentSelectedTreeNode) {
       let data = []
       this.copyWaterInfo.stData.forEach(item => {
-        if (item.id === currentSelectedTableRow) {
+        if (item.id === currentSelectedTableRowId) {
           item.floodSource.forEach(val => {
             if (val['控制站码'] === currentSelectedTreeNode) {
               val['洪水组成'].forEach(el => {
@@ -216,7 +224,7 @@ export default {
             },
             label: {
               formatter: (param) => {
-                return `${param.name}: ${param.value}`
+                return `${param.name}: ${(param.value * 100).toFixed(2)}%`
               }
             },
             data
@@ -230,14 +238,15 @@ export default {
     handleSelectTreeNode(selectedkeys, e) {
       // console.log(selectedkeys, e)
       this.currentSelectedTreeNode = selectedkeys[0]
-      this.initPieChart(this.currentSelectedTableRow, this.currentSelectedTreeNode)
+      this.initPieChart(this.currentSelectedTableRowId, this.currentSelectedTreeNode)
     },
-    organizeLineChartData(currentSelectedTableRow) {
+    organizeLineChartData(currentSelectedTableRowId, currentSelectedTableRowName) {
       // id 默认湖口
       this.lineChartAxis.yAxis = []
       this.lineChartAxis.series = []
+      this.lineChartOption.title.text = currentSelectedTableRowName
       this.copyWaterInfo.stData.forEach(item => {
-        if (item.id === currentSelectedTableRow) {
+        if (item.id === currentSelectedTableRowId) {
           item.tableColumns.forEach((val, key) => {
             if (key !== 0) {
               // 构造 yAxis series
@@ -276,11 +285,11 @@ export default {
         }
       })
     },
-    organizeRecommendReservoirData(currentSelectedTableRow) {
+    organizeRecommendReservoirData(currentSelectedTableRowId) {
       // id 默认湖口
       this.recommendReservoir = []
       this.copyWaterInfo.stData.forEach(item => {
-        if (item.id === currentSelectedTableRow) {
+        if (item.id === currentSelectedTableRowId) {
           this.recommendReservoir = item.recommendReservoir
         }
       })
@@ -327,18 +336,27 @@ export default {
       height: 100%;
     }
     .water-info-recommend-reservoir {
-      font-size: 24px;
-      font-weight: bold;
+      width: 400px;
+      height: 100%;
+      margin: auto;
       text-align: left;
+      .recommend-reservoir-title {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 15px;
+      }
       .recommend-reservoir {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         .title {
-          font-size: 20px;
-          margin-bottom: 5px;
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 10px;
         }
         .des {
-          font-size: 18px;
-          margin-bottom: 5px;
+          font-size: 16px;
+          text-indent: 20px;
+          margin-bottom: 10px;
         }
       }
     }
