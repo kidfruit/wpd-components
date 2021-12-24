@@ -36,6 +36,9 @@ export default {
     this.copyDisasterInfo.dangerArea.forEach(item => {
       this.regions.push({
         name: item,
+        label: {
+          show: true
+        },
         itemStyle: {
           areaColor: 'orange'
         }
@@ -90,9 +93,10 @@ export default {
           aspectScale: 1,
           zoom: 1.25,
           itemStyle: {
+            areaColor: 'lightblue',
             emphasis: {
               show: false,
-              areaColor: '#87cefa'
+              areaColor: 'lightgreen'
             }
           },
         },
@@ -114,6 +118,9 @@ export default {
       this.checkedProvince.forEach(item => {
         this.regions.push({
           name: item,
+          label: {
+            show: true
+          },
           itemStyle: {
             areaColor: 'orange'
           }

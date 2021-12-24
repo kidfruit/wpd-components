@@ -3,8 +3,9 @@
     <div class="engineering-info-chart">
       <div class="gauge-chart-wrapper">
         <div class="gauge-chart-title">
-          流域实时可用防洪库容
-          <span>单位：{{ gaugeChartUnitSymbol }}</span>
+          <div class="tips"/>
+          <div class="title">流域实时可用防洪库容</div>
+          <div class="unit">单位：{{ gaugeChartUnitSymbol }}</div>
         </div>
         <div class="all-gauge-chart-container">
           <div
@@ -21,7 +22,8 @@
       </div>
       <div class="bar-chart-wrapper">
         <div class="bar-chart-title">
-          蓄滞洪区容量分布
+          <div class="tips"/>
+          <div class="title">蓄滞洪区容量分布</div>
         </div>
         <div class="bar-chart-container">
           <div
@@ -66,7 +68,6 @@ export default {
       tableColumns: [],
       tableData: [],
       tableSetting: {
-        rowHeaders: true,
         mergeCells: []
       },
       tableTextAlignment: ['htCenter', 'htMiddle'],
@@ -251,12 +252,20 @@ export default {
         text-align: left;
         font-size: 20px;
         font-weight: bold;
-        margin-bottom: 10px;
-        span {
-          height: 40px;
-          line-height: 40px;
-          margin-right: 20px;
-          float: right;
+        margin: 0 20px 10px 0;
+        display: flex;
+        justify-content: space-between;
+        .tips {
+          width: 5px;
+          height: 30px;
+          margin-right: 10px;
+          background: #40a9ff;
+        }
+        .title {
+          width: calc(100% - 100px);
+          text-align: left;
+        }
+        .unit {
           font-size: 16px;
           font-weight: normal;
         }
@@ -286,6 +295,18 @@ export default {
         font-size: 20px;
         font-weight: bold;
         margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        .tips {
+          width: 5px;
+          height: 30px;
+          margin-right: 10px;
+          background: #40a9ff;
+        }
+        .title {
+          width: calc(100% - 15px);
+          text-align: left;
+        }
       }
       .bar-chart-container {
         width: 100%;
