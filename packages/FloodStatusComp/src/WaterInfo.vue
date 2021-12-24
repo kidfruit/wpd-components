@@ -193,7 +193,7 @@ export default {
             if (val['控制站码'] === currentSelectedTreeNode) {
               val['洪水组成'].forEach(el => {
                 data.push({
-                  value: el['判断量值'],
+                  value: +(el['判断量值'] * 100).toFixed(2),
                   name: el['控制站点']
                 })
               })
@@ -206,7 +206,10 @@ export default {
       let pieChart = echarts.init(pieChartDom)
       let option = {
         tooltip: {
-          trigger: 'item'
+          trigger: 'item',
+          formatter: (param) => {
+            return `${param.name}: ${param.value}%`
+          }
         },
         legend: {
           bottom: 0,
@@ -224,7 +227,7 @@ export default {
             },
             label: {
               formatter: (param) => {
-                return `${param.name}: ${(param.value * 100).toFixed(2)}%`
+                return `${param.name}: ${param.value}%`
               }
             },
             data
