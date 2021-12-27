@@ -250,8 +250,10 @@ export default {
       this.lineChartOption.title.text = currentSelectedTableRowName
       this.copyWaterInfo.stData.forEach(item => {
         if (item.id === currentSelectedTableRowId) {
+          let fieldArr = []
           item.tableColumns.forEach((val, key) => {
             if (key !== 0) {
+              fieldArr.push(val.field)
               // 构造 yAxis series
               if (val.showType.split('-')[1] === 'L') {
                 this.lineChartAxis.yAxis.push({
@@ -279,12 +281,20 @@ export default {
           // 构造 data
           this.lineChartData = []
           item.tableData.forEach(val => {
-            this.lineChartData.push({
-              time: moment(val.time).format('YYYY-MM-DD HH'),
-              q: val.q,
-              z: val.z
+            fieldArr.forEach(el => {
+              this.lineChartData.push({
+                time: moment(val.time).format('YYYY-MM-DD HH'),
+                [el]: val[el]
+              })
             })
           })
+          this.lineChartData = Object.values(this.lineChartData.reduce((prev, cur) => {
+            prev[cur['time']] = {
+              ...(prev[cur['time']] || {}),
+              ...cur
+            }
+            return prev
+          }, {}))
         }
       })
     },
