@@ -1,6 +1,6 @@
 <template>
   <div class="water-info">
-    <div class="water-info-item">
+    <div class="water-info-item water-info-table-wrapper">
       <div class="water-info-table">
         <SimpleTable
           :tableColumns="tableColumns"
@@ -10,7 +10,7 @@
         />
       </div>
     </div>
-    <div class="water-info-item">
+    <div class="water-info-item water-info-tree-pie-chart-wrapper">
       <div class="water-info-tree-pie-chart">
         <div class="tree-container">
           <a-tree
@@ -26,19 +26,20 @@
         </div>
       </div>
     </div>
-    <div class="water-info-item">
+    <div class="water-info-item water-info-line-chart-wrapper">
       <div
         class="water-info-line-chart"
         v-if="lineChartAxis.yAxis.length > 0"
       >
         <StandardChart
+          ref="waterInfoLineChart"
           :chartOption="lineChartOption"
           :chartAxis="lineChartAxis"
           :chartData="lineChartData"
         />
       </div>
     </div>
-    <div class="water-info-item">
+    <div class="water-info-item water-info-recommend-reservoir-wrapper">
       <div class="water-info-recommend-reservoir">
         <div
           class="recommend-reservoir-title"
@@ -134,7 +135,7 @@ export default {
   },
   methods: {
     organizeTableData() {
-      this.tableColumns = this.copyWaterInfo.stTable.tableColumns
+      this.tableColumns = this.copyWaterInfo.stTable.tableColumns.filter(i => !i.hidden)
       this.tableData = this.copyWaterInfo.stTable.tableData
       this.currentSelectedTableRowId = this.copyWaterInfo.stTable.tableData[0].id
       this.currentSelectedTableRowName = this.copyWaterInfo.stTable.tableData[0].name
@@ -144,9 +145,12 @@ export default {
         // console.log(this.currentSelectedTableRowId)
         this.$nextTick(() => {
           this.organizeTreePieChartData(this.currentSelectedTableRowId)
-          this.organizeLineChartData(this.currentSelectedTableRowId, this.currentSelectedTableRowName)
-          this.organizeRecommendReservoirData(this.currentSelectedTableRowId)
           this.initPieChart(this.currentSelectedTableRowId, this.currentSelectedTreeNode)
+          this.organizeLineChartData(this.currentSelectedTableRowId, this.currentSelectedTableRowName)
+          if (this.lineChartAxis.yAxis.length > 0) {
+            this.$refs.waterInfoLineChart && this.$refs.waterInfoLineChart.setDynamicOption()
+          }
+          this.organizeRecommendReservoirData(this.currentSelectedTableRowId)
         })
       }
       this.organizeTreePieChartData(this.currentSelectedTableRowId)
@@ -317,8 +321,15 @@ export default {
   height: 800px;
   display: flex;
   flex-wrap: wrap;
+  .water-info-table-wrapper,
+  .water-info-line-chart-wrapper {
+    width: 60%;
+  }
+  .water-info-tree-pie-chart-wrapper,
+  .water-info-recommend-reservoir-wrapper {
+    width: 40%;
+  }
   .water-info-item {
-    width: 50%;
     height: 50%;
     padding: 25px;
     .water-info-table {
