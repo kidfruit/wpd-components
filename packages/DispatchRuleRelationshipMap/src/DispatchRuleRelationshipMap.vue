@@ -189,7 +189,7 @@ export default {
               // index 第几个目标对象 idx 第几个启动时机
               const tempConditions = this.ruleData.schemes[index].operations[key].conditions
               const tempTrigger = lodash.flattenDeep(this.ruleData.schemes[index].trigger)[idx]
-              console.log(tempTrigger, '=================================')
+              // console.log(tempTrigger, '=================================')
               let temp = true
               tempConditions.forEach(j => {
                 if (j.referName === el && j.requirements[0].referVariable === tempTrigger.requirements[0].referVariable) {
@@ -219,7 +219,7 @@ export default {
             // index 第几个目标对象 idx 第几个调度方式 key 调度方式项
             methods[index][idx].forEach(m => {
               const temp = this.ruleData.schemes[index].operations[idx].conditions[key]
-              console.log(temp, '=========================')
+              // console.log(temp, '=========================')
               // console.log(methods[index][idx], key)
               seriesLinks.push({
                 source: val,
