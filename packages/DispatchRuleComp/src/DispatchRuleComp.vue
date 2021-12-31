@@ -27,14 +27,26 @@
               </div>
             </a-popover>
             <a-tag color="blue" v-else>{{ schemeInfo.controlObject }}</a-tag>
-            防洪
+
+            <a-popover trigger="click" :getPopupContainer="()=>$el" v-if="editable">
+              <a-tag color="blue" @click="showInputPopoverCallback(schemeInfo.controlFor)">
+                {{ schemeInfo.controlFor }}
+              </a-tag>
+              <div class="slot-content" slot="content">
+                <a-input v-model="updateValue"/>
+                <a-button @click="updateData('controlFor', '', '', i)">
+                  确认
+                </a-button>
+              </div>
+            </a-popover>
+            <a-tag color="blue" v-else>{{ schemeInfo.controlFor }}</a-tag>
           </div>
-          <div class="scheme-requirement">
+          <div class="scheme-trigger">
             <div>启动时机</div>
             <div
               class="and-div"
-              v-for="(rqmt,j) in schemeInfo.requirements"
-              :key="schemeInfo.controlObject + '-require-' + j"
+              v-for="(trig,j) in schemeInfo.trigger"
+              :key="schemeInfo.controlObject + '-trig-' + j"
             >
               <div class="or-tag-div" v-if="!editable">
                 <a-tag v-if="(j > 0 )" class="or-tag" color="cyan">
@@ -42,8 +54,8 @@
                 </a-tag>
               </div>
               <div
-                v-for="(r,idx) in rqmt"
-                :key="schemeInfo.controlObject + '-require-r' + idx"
+                v-for="(tg,idx) in trig"
+                :key="schemeInfo.controlObject + '-trig-tg' + idx"
               >
                 <div class="item-div">
                   <a-tag v-if="(idx > 0 )" color="pink" class="and-tag">
@@ -52,34 +64,34 @@
                   <a-space class="control-row">
                     当
                     <a-popover trigger="click" :getPopupContainer="()=>$el" v-if="editable">
-                      <a-tag color="blue" @click="showInputPopoverCallback(r.referName)">
-                        {{ r.referName }}
+                      <a-tag color="blue" @click="showInputPopoverCallback(tg.referName)">
+                        {{ tg.referName }}
                       </a-tag>
                       <div class="slot-content" slot="content">
                         <a-input v-model="updateValue"/>
-                        <a-button @click="updateData('requirements', '', 'referName',i,j,idx)">
+                        <a-button @click="updateData('trigger', '', 'referName',i,j,idx)">
                           确认
                         </a-button>
                       </div>
                     </a-popover>
-                    <a-tag color="blue" v-else>{{ r.referName }}</a-tag>
+                    <a-tag color="blue" v-else>{{ tg.referName }}</a-tag>
                     预报
                     <a-popover trigger="click" :getPopupContainer="()=>$el" v-if="editable">
-                      <a-tag color="blue" @click="showInputPopoverCallback(r.predictTime)">
-                        {{ r.predictTime }}
+                      <a-tag color="blue" @click="showInputPopoverCallback(tg.requirements[0].predictTime)">
+                        {{ tg.requirements[0].predictTime }}
                       </a-tag>
                       <div class="slot-content" slot="content">
                         <a-input v-model="updateValue"/>
-                        <a-button @click="updateData('requirements', '', 'predictTime',i,j,idx)">
+                        <a-button @click="updateData('trigger', '', 'predictTime',i,j,idx)">
                           确认
                         </a-button>
                       </div>
                     </a-popover>
-                    <a-tag color="blue" v-else>{{ r.predictTime }}</a-tag>
+                    <a-tag color="blue" v-else>{{ tg.requirements[0].predictTime }}</a-tag>
                     小时后
                     <a-popover trigger="click" :getPopupContainer="()=>$el" v-if="editable">
-                      <a-tag color="blue" @click="showSelectPopoverCallback(r.referVariable)">
-                        {{ r.referVariable }}
+                      <a-tag color="blue" @click="showSelectPopoverCallback(tg.requirements[0].referVariable)">
+                        {{ tg.requirements[0].referVariable }}
                       </a-tag>
                       <div class="slot-content" slot="content">
                         <a-select
@@ -87,26 +99,26 @@
                           v-model="selectedValue"
                           :options="selectOptions"
                         />
-                        <a-button @click="updateData('requirements', '', 'referVariable',i,j,idx)">
+                        <a-button @click="updateData('trigger', '', 'referVariable',i,j,idx)">
                           确认
                         </a-button>
                       </div>
                     </a-popover>
-                    <a-tag color="blue" v-else>{{ r.referVariable }}</a-tag>
+                    <a-tag color="blue" v-else>{{ tg.requirements[0].referVariable }}</a-tag>
                     <a-popover trigger="click" :getPopupContainer="()=>$el" v-if="editable">
                       <a-tag
                         color="blue"
-                        v-if="r.threshold[1] !== 999999"
-                        @click="showFirstSliderPopoverCallback(r.threshold)"
+                        v-if="tg.requirements[0].threshold[1] !== 999999"
+                        @click="showFirstSliderPopoverCallback(tg.requirements[0].threshold)"
                       >
-                        大于 {{r.threshold[0]}} 且小于 {{r.threshold[1]}}
+                        大于 {{tg.requirements[0].threshold[0]}} 且小于 {{tg.requirements[0].threshold[1]}}
                       </a-tag>
                       <a-tag
                         color="blue"
                         v-else
-                        @click="showFirstSliderPopoverCallback(r.threshold)"
+                        @click="showFirstSliderPopoverCallback(tg.requirements[0].threshold)"
                       >
-                        大于 {{r.threshold[0]}}
+                        大于 {{tg.requirements[0].threshold[0]}}
                       </a-tag>
                       <div slot="content" class="slot-content">
                         <div class="content-container">
@@ -136,33 +148,33 @@
                             />
                           </div>
                         </div>
-                        <a-button @click="updateData('requirements', '', 'threshold',i,j,idx)">
+                        <a-button @click="updateData('trigger', '', 'threshold',i,j,idx)">
                           确认
                         </a-button>
                       </div>
                     </a-popover>
                     <span v-else>
-                      <a-tag color="blue" v-if="r.threshold[1] !== 999999">
-                        大于{{r.threshold[0]}}且小于{{r.threshold[1]}}
+                      <a-tag color="blue" v-if="tg.requirements[0].threshold[1] !== 999999">
+                        大于{{tg.requirements[0].threshold[0]}}且小于{{tg.requirements[0].threshold[1]}}
                       </a-tag>
                       <a-tag color="blue" v-else>
-                        大于 {{r.threshold[0]}}
+                        大于 {{tg.requirements[0].threshold[0]}}
                       </a-tag>
                     </span>
-                    {{ unitLib[r.referVariable] }}
+                    {{ unitLib[tg.requirements[0].referVariable] }}
                     <a-button
                       v-if="editable"
                       type="link"
                       icon="minus-circle"
                       class="del-btn"
-                      @click="deleteRow('and', 'requirements','',i,j,idx)"
+                      @click="deleteRow('and', 'trigger','',i,j,idx)"
                     />
                     <a-button
                       v-if="editable"
                       type="link"
                       icon="plus-circle"
                       class="add-btn"
-                      @click="addRow('and', 'requirements', '', i,j,idx)"
+                      @click="addRow('and', 'trigger', '', i,j,idx)"
                     />
                   </a-space>
                 </div>
@@ -175,13 +187,13 @@
                   type="link"
                   icon="minus-circle"
                   class="del-btn"
-                  @click="deleteRow('or', 'requirements', '',i,j)"
+                  @click="deleteRow('or', 'trigger', '',i,j)"
                 />
                 <a-button
                   type="link"
                   icon="plus-circle"
                   class="add-btn"
-                  @click="addRow('or', 'requirements', '', i,j)"
+                  @click="addRow('or', 'trigger', '', i,j)"
                 />
               </div>
             </div>
@@ -221,8 +233,8 @@
                   <a-tag color="blue" v-else>{{ cd.referName }}</a-tag>
                   预报
                   <a-popover trigger="click" :getPopupContainer="()=>$el" v-if="editable">
-                    <a-tag color="blue" @click="showInputPopoverCallback(cd.predictTime)">
-                      {{ cd.predictTime }}
+                    <a-tag color="blue" @click="showInputPopoverCallback(cd.requirements[0].predictTime)">
+                      {{ cd.requirements[0].predictTime }}
                     </a-tag>
                     <div class="slot-content" slot="content">
                       <a-input v-model="updateValue"/>
@@ -231,11 +243,11 @@
                       </a-button>
                     </div>
                   </a-popover>
-                  <a-tag color="blue" v-else>{{ cd.predictTime }}</a-tag>
+                  <a-tag color="blue" v-else>{{ cd.requirements[0].predictTime }}</a-tag>
                   小时后
                   <a-popover trigger="click" :getPopupContainer="()=>$el" v-if="editable">
-                    <a-tag color="blue" @click="showSelectPopoverCallback(cd.referVariable)">
-                      {{ cd.referVariable }}
+                    <a-tag color="blue" @click="showSelectPopoverCallback(cd.requirements[0].referVariable)">
+                      {{ cd.requirements[0].referVariable }}
                     </a-tag>
                     <div class="slot-content" slot="content">
                       <a-select
@@ -248,21 +260,21 @@
                       </a-button>
                     </div>
                   </a-popover>
-                  <a-tag color="blue" v-else>{{ cd.referVariable }}</a-tag>
+                  <a-tag color="blue" v-else>{{ cd.requirements[0].referVariable }}</a-tag>
                   <a-popover trigger="click" :getPopupContainer="()=>$el" v-if="editable">
                     <a-tag
                       color="blue"
-                      v-if="cd.threshold[1] !== 999999"
-                      @click="showFirstSliderPopoverCallback(cd.threshold)"
+                      v-if="cd.requirements[0].threshold[1] !== 999999"
+                      @click="showFirstSliderPopoverCallback(cd.requirements[0].threshold)"
                     >
-                      大于 {{cd.threshold[0]}} 且小于 {{cd.threshold[1]}}
+                      大于 {{cd.requirements[0].threshold[0]}} 且小于 {{cd.requirements[0].threshold[1]}}
                     </a-tag>
                     <a-tag
                       color="blue"
                       v-else
-                      @click="showFirstSliderPopoverCallback(cd.threshold)"
+                      @click="showFirstSliderPopoverCallback(cd.requirements[0].threshold)"
                     >
-                      大于 {{cd.threshold[0]}}
+                      大于 {{cd.requirements[0].threshold[0]}}
                     </a-tag>
                     <div slot="content" class="slot-content">
                       <div class="content-container">
@@ -298,12 +310,12 @@
                     </div>
                   </a-popover>
                   <span v-else>
-                    <a-tag color="blue" v-if="cd.threshold[1] !== 999999">
-                      大于{{cd.threshold[0]}}且小于{{cd.threshold[1]}}
+                    <a-tag color="blue" v-if="cd.requirements[0].threshold[1] !== 999999">
+                      大于{{cd.requirements[0].threshold[0]}}且小于{{cd.requirements[0].threshold[1]}}
                     </a-tag>
-                    <a-tag color="blue" v-else>大于 {{cd.threshold[0]}}</a-tag>
+                    <a-tag color="blue" v-else>大于 {{cd.requirements[0].threshold[0]}}</a-tag>
                   </span>
-                  {{ unitLib[cd.referVariable] }}
+                  {{ unitLib[cd.requirements[0].referVariable] }}
                   <a-button
                     v-if="editable"
                     type="link"
@@ -448,18 +460,23 @@
 </template>
 
 <script>
-import DispatchRuleRelationshipMap from "~/DispatchRuleRelationshipMap/src/DispatchRuleRelationshipMap";
 import lodash from 'lodash'
+import DispatchRuleRelationshipMap from "~/DispatchRuleRelationshipMap/src/DispatchRuleRelationshipMap";
 const defaultScheme = {
   controlObject: '城陵矶',
-  requirements: [
+  controlFor: '防洪',
+  trigger: [
     [
       {
         referName: '三峡',
         referId: '60106980',
-        predictTime: 0,
-        referVariable: '水位',
-        threshold: [145, 158]
+        requirements: [
+          {
+            predictTime: 0,
+            referVariable: '水位',
+            threshold: [145, 158]
+          }
+        ]
       }
     ]
   ],
@@ -469,9 +486,13 @@ const defaultScheme = {
         {
           referName: '三峡',
           referId: '60106980',
-          predictTime: 0,
-          referVariable: '水位',
-          threshold: [145, 158]
+          requirements: [
+            {
+              predictTime: 0,
+              referVariable: '水位',
+              threshold: [145, 158]
+            }
+          ]
         }
       ],
       methods: [
@@ -486,19 +507,27 @@ const defaultScheme = {
     }
   ]
 }
-const defaultRequirement = {
+const defaultTrigger = {
   referName: '三峡',
   referId: '60106980',
-  predictTime: 0,
-  referVariable: '水位',
-  threshold: [145, 158]
+  requirements: [
+    {
+      predictTime: 0,
+      referVariable: '水位',
+      threshold: [145, 158]
+    }
+  ]
 }
 const defaultOperationCondition = {
   referName: '三峡',
   referId: '60106980',
-  predictTime: 0,
-  referVariable: '水位',
-  threshold: [145, 158]
+  requirements: [
+    {
+      predictTime: 0,
+      referVariable: '水位',
+      threshold: [145, 158]
+    }
+  ]
 }
 const defaultOperationMethod = {
   name: '补偿',
@@ -629,7 +658,7 @@ export default {
       // console.log("方案idx", i, "第一层", j, "第二层", idx)
       if (method === 'and') {
         switch (type) {
-          case 'requirements':
+          case 'trigger':
             this.schemeData[i][type][j].splice(idx, 1)
             break
           case 'operations':
@@ -640,7 +669,7 @@ export default {
         }
       } else if (method === 'or') {
         switch (type) {
-          case 'requirements':
+          case 'trigger':
             this.schemeData[i][type].splice(j + 1, 1)
             break
           case 'operations':
@@ -655,8 +684,8 @@ export default {
       // console.log("方案idx", i, "第一层", j, "第二层", idx)
       if (method === 'and') {
         switch (type) {
-          case 'requirements':
-            this.schemeData[i][type][j].splice(idx + 1, 0, lodash.cloneDeep(defaultRequirement))
+          case 'trigger':
+            this.schemeData[i][type][j].splice(idx + 1, 0, lodash.cloneDeep(defaultTrigger))
             break
           case 'operations':
             if (dispatch === 'conditions') {
@@ -670,8 +699,8 @@ export default {
         }
       } else if (method === 'or') {
         switch (type) {
-          case 'requirements':
-            this.schemeData[i][type].splice(j + 1, 0, [lodash.cloneDeep(defaultRequirement)])
+          case 'trigger':
+            this.schemeData[i][type].splice(j + 1, 0, [lodash.cloneDeep(defaultTrigger)])
             break
           case 'operations':
             this.schemeData[i][type].splice(j + 1, 0, {
@@ -685,26 +714,43 @@ export default {
       }
     },
     updateData(type, dispatch, field, i, j, idx) {
+      // console.log('=========================================')
+      // console.log('type:', type)
+      // console.log('dispatch:', dispatch)
+      // console.log('field:', field)
+      // console.log('i:', i)
+      // console.log('j:', j)
+      // console.log('idx:', idx)
+      // console.log('=========================================')
       switch (type) {
         case 'controlObject':
           this.schemeData[i][type] = this.updateValue
           break
-        case 'requirements':
-          if (field === 'threshold') {
-            this.schemeData[i][type][j][idx][field] = this.firstSliderCenter
+        case 'controlFor':
+          this.schemeData[i][type] = this.updateValue
+          break
+        case 'trigger':
+          if (field === 'predictTime') {
+            this.schemeData[i][type][j][idx].requirements[0][field] = this.updateValue
           } else if (field === 'referVariable') {
-            this.schemeData[i][type][j][idx][field] = this.selectedValue
+            this.schemeData[i][type][j][idx].requirements[0][field] = this.selectedValue
+          } else if (field === 'threshold') {
+            this.schemeData[i][type][j][idx].requirements[0][field] = this.firstSliderCenter
           } else {
             this.schemeData[i][type][j][idx][field] = this.updateValue
           }
           break
         case 'operations':
-          if (field === 'threshold') {
-            this.schemeData[i][type][j][dispatch][idx][field] = this.firstSliderCenter
+          if (field === 'predictTime') {
+            this.schemeData[i][type][j][dispatch][idx].requirements[0][field] = this.updateValue
+          } else if (field === 'referVariable') {
+            this.schemeData[i][type][j][dispatch][idx].requirements[0][field] = this.selectedValue
+          } else if (field === 'threshold') {
+            this.schemeData[i][type][j][dispatch][idx].requirements[0][field] = this.firstSliderCenter
+          } else if (field === 'controlVariable') {
+            this.schemeData[i][type][j][dispatch][idx][field] = this.selectedValue
           } else if (field === 'controlValue') {
             this.schemeData[i][type][j][dispatch][idx][field] = this.secondSlider
-          } else if (field === 'referVariable' || field === 'controlVariable') {
-            this.schemeData[i][type][j][dispatch][idx][field] = this.selectedValue
           } else {
             this.schemeData[i][type][j][dispatch][idx][field] = this.updateValue
           }
@@ -745,7 +791,7 @@ export default {
           text-align: left
         }
 
-        .scheme-requirement {
+        .scheme-trigger {
           border: 1px solid #40a9ff;
           padding: 5px;
         }
