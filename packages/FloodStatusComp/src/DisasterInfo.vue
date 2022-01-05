@@ -16,7 +16,7 @@
           <template slot="title">
             <div
               class="province-name"
-              :style="provinceName(item)"
+              style="font-size: 18px; font-weight: bold;"
             >
               {{ item.title }}
             </div>
@@ -32,15 +32,15 @@
               >
                 <div
                   class="title"
-                  :style="hydrologicalStationTitle(val)"
                 >
                   {{ val.name }}
                 </div>
                 <div
-                  class="alarm"
-                  style="padding: 0 10px"
+                  class="alert"
+                  style="padding: 0 10px;"
+                  :style="hydrologicalStationAlert(val)"
                 >
-                  超警{{ val.maxWaterLevel }}（m）
+                  {{ val.maxWaterLevel }}(m)
                 </div>
                 <div class="time">
                   [{{ val.maxWaterTime }}]
@@ -111,32 +111,42 @@ export default {
       })
     },
     initMap() {
+      console.log(this.treeData)
       this.regions = []
       this.treeData.forEach(item => {
+        let temColor = ''
         item.children.forEach(val => {
           if (val.maxWaterLevel >= val.guaranteeLevel) {
-            this.regions.push({
-              name: item.title,
-              label: {
-                show: true
-              },
-              itemStyle: {
-                areaColor: 'red'
-              }
-            })
+            temColor = temColor + 'red'
           }
           if (val.maxWaterLevel < val.guaranteeLevel && val.maxWaterLevel >= val.alertLevel) {
+            temColor = temColor + 'orange'
+          }
+        })
+        if (temColor.includes('red')) {
+          this.regions.push({
+            name: item.title,
+            label: {
+              show: true
+            },
+            itemStyle: {
+              areaColor: 'red',
+            }
+          })
+        } else {
+          if (temColor.includes('orange')) {
             this.regions.push({
               name: item.title,
               label: {
                 show: true
               },
               itemStyle: {
-                areaColor: 'orange'
+                areaColor: 'orange',
               }
             })
           }
-        })
+        }
+
       })
       // console.log(this.regions)
       echarts.registerMap('china', china)
@@ -159,34 +169,12 @@ export default {
       }
       mapChart.setOption(option)
     },
-    provinceName(item) {
-      let style = 'font-size: 18px; font-weight: bold; '
-      let tempStyle = ''
-      item.children.forEach(val => {
-        if (val.maxWaterLevel >= val.guaranteeLevel) {
-          tempStyle = 'color: red;'
-        } else if (val.maxWaterLevel < val.guaranteeLevel && val.maxWaterLevel >= val.alertLevel) {
-          tempStyle = 'color: orange;'
-        } else {
-          tempStyle = ''
-        }
-      })
-      if (tempStyle.includes('red')) {
-        return style + 'color: red;'
-      } else {
-        if (tempStyle.includes('orange')) {
-          return style + 'color: orange;'
-        } else {
-          return style
-        }
-      }
-    },
-    hydrologicalStationTitle(val) {
-      let style = 'font-size: 16px; font-weight: bold; '
+    hydrologicalStationAlert(val) {
+      let style = ''
       if (val.maxWaterLevel >= val.guaranteeLevel) {
-        style =  style + 'color: red;'
+        style =  style + 'color: red;font-weight: bold'
       } else if (val.maxWaterLevel < val.guaranteeLevel && val.maxWaterLevel >= val.alertLevel) {
-        style = style + 'color: orange;'
+        style = style + 'color: orange;font-weight: bold'
       } else {
         style = style + ''
       }

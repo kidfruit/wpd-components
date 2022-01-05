@@ -258,6 +258,11 @@ export default {
       // 警戒
       this.tableSetting.cell = []
       this.tableData.forEach((item, index) => {
+        this.tableSetting.cell.push({
+          row: index,
+          col: 0,
+          className: 'white-cell',
+        })
         if (item.value >= item.floodHighLevel) {
           this.tableSetting.cell.push({
             row: index,
@@ -285,6 +290,9 @@ export default {
   .orange-cell {
     color: orange;
   }
+  .white-cell {
+    background: white;
+  }
 }
 </style>
 <style lang="less" scoped>
@@ -293,7 +301,7 @@ export default {
   height: 800px;
   display: flex;
   .engineering-info-chart {
-    width: 50%;
+    width: 40%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -393,7 +401,7 @@ export default {
     }
   }
   .engineering-info-table {
-    width: 50%;
+    width: 60%;
     height: 100%;
     padding: 25px;
     .table-container {
