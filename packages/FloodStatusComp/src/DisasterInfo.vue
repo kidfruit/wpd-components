@@ -1,14 +1,55 @@
 <template>
   <div class="disaster-info">
-    <div class="disaster-info-tree">
+    <div class="disaster-info-tree-container">
+      <div class="disaster-info-title">
+        预警区域
+      </div>
       <a-tree
+        class="disaster-info-tree"
         :key="treeRandomKey"
-        :treeData="treeData"
-        :checkable="true"
         :defaultExpandAll="true"
-        :defaultCheckedKeys="treeDefaultCheckedKeys"
-        @check="handleCheckTreeNode"
-      />
+      >
+        <a-tree-node
+          v-for="item in treeData"
+          :key="item.key"
+        >
+          <template slot="title">
+            <div
+              class="province-name"
+              :style="provinceName(item)"
+            >
+              {{ item.title }}
+            </div>
+          </template>
+          <a-tree-node
+            v-for="val in item.children"
+            :key="val.key"
+          >
+            <template slot="title">
+              <div
+                class="hydrological-station-name"
+                style="display: flex"
+              >
+                <div
+                  class="title"
+                  :style="hydrologicalStationTitle(val)"
+                >
+                  {{ val.name }}
+                </div>
+                <div
+                  class="alarm"
+                  style="padding: 0 10px"
+                >
+                  超警{{ val.maxWaterLevel }}（m）
+                </div>
+                <div class="time">
+                  [{{ val.maxWaterTime }}]
+                </div>
+              </div>
+            </template>
+          </a-tree-node>
+        </a-tree-node>
+      </a-tree>
     </div>
     <div class="disaster-info-map">
       <div class="map" id="map" :key="mapRandomKey"/>
@@ -33,17 +74,6 @@ export default {
     this.copyDisasterInfo = lodash.cloneDeep(this.disasterInfo)
     this.checkedProvince = []
     this.regions = []
-    this.copyDisasterInfo.dangerArea.forEach(item => {
-      this.regions.push({
-        name: item,
-        label: {
-          show: true
-        },
-        itemStyle: {
-          areaColor: 'orange'
-        }
-      })
-    })
     return {
       treeData: [],
       treeDefaultCheckedKeys: [],
@@ -68,7 +98,6 @@ export default {
         this.copyDisasterInfo.dangerList.forEach(val => {
           if (item === val.area) {
             children.push({
-              title: `${val.name} ${val.maxWaterLevel} [${val.maxWaterTime}]`,
               key: val.id,
               ...val
             })
@@ -82,6 +111,33 @@ export default {
       })
     },
     initMap() {
+      this.regions = []
+      this.treeData.forEach(item => {
+        item.children.forEach(val => {
+          if (val.maxWaterLevel >= val.guaranteeLevel) {
+            this.regions.push({
+              name: item.title,
+              label: {
+                show: true
+              },
+              itemStyle: {
+                areaColor: 'red'
+              }
+            })
+          }
+          if (val.maxWaterLevel < val.guaranteeLevel && val.maxWaterLevel >= val.alertLevel) {
+            this.regions.push({
+              name: item.title,
+              label: {
+                show: true
+              },
+              itemStyle: {
+                areaColor: 'orange'
+              }
+            })
+          }
+        })
+      })
       // console.log(this.regions)
       echarts.registerMap('china', china)
       let mapChartDom = document.getElementById('map')
@@ -103,33 +159,38 @@ export default {
       }
       mapChart.setOption(option)
     },
-    handleCheckTreeNode(checkedKeys, e) {
-      // console.log(checkedKeys, e)
-      this.checkedProvince = []
-      this.copyDisasterInfo.dangerArea.forEach(item => {
-        for (let i = 0; i < checkedKeys.length; i++) {
-          if (item === checkedKeys[i]) {
-            this.checkedProvince.push(item)
-          }
+    provinceName(item) {
+      let style = 'font-size: 18px; font-weight: bold; '
+      let tempStyle = ''
+      item.children.forEach(val => {
+        if (val.maxWaterLevel >= val.guaranteeLevel) {
+          tempStyle = 'color: red;'
+        } else if (val.maxWaterLevel < val.guaranteeLevel && val.maxWaterLevel >= val.alertLevel) {
+          tempStyle = 'color: orange;'
+        } else {
+          tempStyle = ''
         }
       })
-      // console.log(this.checkedProvince)
-      this.regions = []
-      this.checkedProvince.forEach(item => {
-        this.regions.push({
-          name: item,
-          label: {
-            show: true
-          },
-          itemStyle: {
-            areaColor: 'orange'
-          }
-        })
-      })
-      this.mapRandomKey = uuidv4()
-      this.$nextTick(() => {
-        this.initMap()
-      })
+      if (tempStyle.includes('red')) {
+        return style + 'color: red;'
+      } else {
+        if (tempStyle.includes('orange')) {
+          return style + 'color: orange;'
+        } else {
+          return style
+        }
+      }
+    },
+    hydrologicalStationTitle(val) {
+      let style = 'font-size: 16px; font-weight: bold; '
+      if (val.maxWaterLevel >= val.guaranteeLevel) {
+        style =  style + 'color: red;'
+      } else if (val.maxWaterLevel < val.guaranteeLevel && val.maxWaterLevel >= val.alertLevel) {
+        style = style + 'color: orange;'
+      } else {
+        style = style + ''
+      }
+      return style
     }
   }
 }
@@ -140,12 +201,23 @@ export default {
   width: 100%;
   height: 800px;
   display: flex;
-  .disaster-info-tree {
+  .disaster-info-tree-container {
     width: 400px;
     height: 100%;
     text-align: left;
     padding: 25px;
     background: #f1f1f1;
+    .disaster-info-title {
+      padding: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .disaster-info-tree {
+      width: 100%;
+      height: calc(100% - 50px);
+      overflow: auto;
+    }
   }
   .disaster-info-map {
     width: calc(100% - 400px);

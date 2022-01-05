@@ -141,8 +141,7 @@ export default {
     HotColumn,
   },
   beforeMount() {
-    // 单元格自定义渲染
-
+    // 准备数据
     const data = lodash.cloneDeep(this.tableData)
     this.prepareData(data)
   },
@@ -238,12 +237,22 @@ export default {
         },
         language: zhCN.languageCode,
         cells: (row, col, prop) => {
-          let cellProperties = {}
+          let cellProperties = {
+            className: ''
+          }
           if (this.splitIndex >= 0 && row < this.splitIndex) {
-            cellProperties = { className: 'preheat-rows'}
+            cellProperties.className = 'preheat-rows'
           }
           this.textAlignment.forEach(item => {
             cellProperties.className = cellProperties.className + ' ' + item
+          })
+
+          // console.log(this.setting)
+          // setting-cell
+          this.setting.cell && this.setting.cell.forEach(item => {
+            if (item.row === row && item.col === col) {
+              cellProperties.className = cellProperties.className + ' ' + item.className
+            }
           })
           return cellProperties
         },
@@ -455,6 +464,7 @@ export default {
         return item
       })
     },
+    // 递归遍历删选mergeCell
     recursion(value) {
       let { sourceRightArr, item, i, startField, field, row, rowspan, col, mergeCells } = value
       let tempI = i + 1
@@ -634,6 +644,12 @@ export default {
             }
           }
         })
+
+        this.$nextTick(() => {
+          this.initSingleDropdownHtml()
+          this.changeSingleDropdown()
+        })
+        // console.log('==========================================')
         // this.hotTableRandomKey = uuidv4
       }
     },
@@ -684,6 +700,12 @@ export default {
       //刷新table
       if (this.hotInstance) {
         this.hotInstance.render()
+
+        // 单值。。。
+        this.$nextTick(() => {
+          this.initSingleDropdownHtml()
+          this.changeSingleDropdown()
+        })
       }
     },
     getvisibleLocal() {

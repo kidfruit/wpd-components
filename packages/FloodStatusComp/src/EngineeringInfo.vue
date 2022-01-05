@@ -13,10 +13,14 @@
             v-for="item in reservoirCapacity"
             :key="item.name"
           >
-            <div
-              class="gauge-chart"
-              :id="`gauge-chart-${item.name}`"
-            />
+            <div class="gauge-chart">
+              <div
+                class="chart"
+                :id="`gauge-chart-${item.name}`"
+              />
+            </div>
+            <div class="gauge-chart-name">{{ item.name }}</div>
+            <div class="gauge-chart-des">{{ item.used }} / {{ item.total }}</div>
           </div>
         </div>
       </div>
@@ -114,16 +118,16 @@ export default {
                 detail: {
                   valueAnimation: true,
                   formatter: '{value}%',
-                  offsetCenter: [0, '-10%'],
-                  fontSize: 20
+                  offsetCenter: [0, 0],
+                  fontSize: 18
                 },
                 title: {
-                  offsetCenter: [0, '40%']
+                  offsetCenter: [0, '50%']
                 },
                 data: [
                   {
                     value: `${((item.used / item.total) * 100).toFixed(1)}`,
-                    name: item.name
+                    // name: `${item.name} \n ${item.used} / ${item.total}`
                   }
                 ],
                 radius: '100%',
@@ -203,27 +207,68 @@ export default {
       })
     },
     initSimpleTable() {
-      this.tableColumns = this.copyEngineeringInfo.reservoirData.tableColumns
+      this.tableColumns = this.copyEngineeringInfo.reservoirData.tableColumns.filter(i => !i.hidden)
       this.tableData = this.copyEngineeringInfo.reservoirData.tableData
-      this.tableSetting.mergeCells = []
-      let zoneArr = []
-      this.tableData.forEach(item => {
-        zoneArr.push({
-          name: item.zone
-        })
+
+      // 三峡的数据放置在最前面
+      let sanXiaArr = []
+      this.tableData.forEach((item, index) => {
+        if (item.zone === '三峡') {
+          this.tableData.splice(index, 1)
+          sanXiaArr.push(item)
+        }
       })
-      let newZoneArr = Object.values(zoneArr.reduce((res, item) => {
-        res[item.name] ? res[item.name].push(item) : res[item.name] = [item];
-        return res;
-      }, {}));
-      // console.log(newZoneArr)
-      newZoneArr.forEach((item, index) => {
-        if (item.length > 1) {
-          this.tableSetting.mergeCells.push({
+      this.tableData = sanXiaArr.concat(this.tableData)
+
+      // mergeCells
+      this.tableSetting.mergeCells = []
+      let startZone = ''
+      let startIndex = null
+      let tempZone = ''
+      for (let i = 0; i < this.tableData.length; i++) {
+        // console.log(i)
+        if (startZone === '') {
+          startZone = this.tableData[i].zone
+          startIndex = i
+        } else if (i === this.tableData.length - 1) {
+          if (startZone === tempZone) {
+            this.tableSetting.mergeCells.push({
+              row: startIndex,
+              col: 0,
+              rowspan: i - startIndex,
+              colspan: 1
+            })
+          }
+        } else {
+          tempZone = this.tableData[i].zone
+          if (startZone !== tempZone) {
+            this.tableSetting.mergeCells.push({
+              row: startIndex,
+              col: 0,
+              rowspan: i - startIndex,
+              colspan: 1
+            })
+            startZone = this.tableData[i].zone
+            startIndex = i
+            tempZone = ''
+          }
+        }
+      }
+
+      // 警戒
+      this.tableSetting.cell = []
+      this.tableData.forEach((item, index) => {
+        if (item.value >= item.floodHighLevel) {
+          this.tableSetting.cell.push({
             row: index,
-            col: 0,
-            rowspan: item.length,
-            colspan: 1
+            col: 2,
+            className: 'red-cell',
+          })
+        } else if (item.value < item.floodHighLevel && item.value >= item.floodLevel) {
+          this.tableSetting.cell.push({
+            row: index,
+            col: 2,
+            className: 'orange-cell',
           })
         }
       })
@@ -232,6 +277,16 @@ export default {
 }
 </script>
 
+<style lang="less">
+.engineering-info {
+  .red-cell {
+    color: red;
+  }
+  .orange-cell {
+    color: orange;
+  }
+}
+</style>
 <style lang="less" scoped>
 .engineering-info {
   width: 100%;
@@ -246,7 +301,7 @@ export default {
       width: 100%;
       height: 50%;
       padding: 25px;
-      overflow: auto;
+      //overflow: auto;
       .gauge-chart-title {
         height: 40px;
         text-align: left;
@@ -271,15 +326,34 @@ export default {
         }
       }
       .all-gauge-chart-container {
+        width: 100%;
+        height: calc(100% - 50px);
         display: flex;
         flex-wrap: wrap;
+        overflow: auto;
         .gauge-chart-container {
           width: 25%;
           height: 150px;
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
           .gauge-chart {
             width: 100%;
-            height: 100%;
-            padding: 10px;
+            height: 125px;
+            .chart {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .gauge-chart-name {
+            font-size: 18px;
+            font-weight: bold;
+          }
+          .gauge-chart-des {
+            font-size: 14px;
+            font-weight: bold;
           }
         }
       }
