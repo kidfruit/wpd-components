@@ -92,7 +92,7 @@
       <h2>SelectAndSortCompTest: 选择与排序控件</h2>
       <SelectAndSortCompTest/>
     </div>
-    <div v-if="true">
+    <div v-if="false">
       <h2>DispatchRuleCompTest: 调度规则控件</h2>
       <h2>DispatchRuleRelationshipMapTest: 调度规则关系图谱</h2>
       <DispatchRuleCompTest/>
@@ -125,7 +125,7 @@
       <h2>SearchFilterComp: 筛选与查询组件</h2>
       <SearchFilterCompTest/>
     </div>
-    <div v-if="false">
+    <div v-if="true">
       <h2>FloodStatusComp:防洪形势组件</h2>
       <FloodStatusCompTest/>
     </div>
