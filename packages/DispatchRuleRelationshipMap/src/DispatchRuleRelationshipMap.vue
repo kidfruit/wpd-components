@@ -1,6 +1,9 @@
 <template>
   <div class="dispatch-rule-relationship-map-container">
-    <div id="dispatch-rule-relationship-map" ref="DispatchRuleRelationshipMap"></div>
+    <div
+      id="dispatch-rule-relationship-map"
+      ref="DispatchRuleRelationshipMap"
+    />
   </div>
 </template>
 
@@ -62,7 +65,7 @@ export default {
       allNames = allNames.concat(name)
 
       const controlObjects = []
-      const requirements = []
+      const trigger = []
       const conditions = []
       const methods = []
       this.ruleData.schemes.forEach((item, index) => {
@@ -81,11 +84,11 @@ export default {
           allNames = allNames.concat(controlObjects)
         }
 
-        requirements.push([])
-        item.requirements.forEach(element => {
+        trigger.push([])
+        item.trigger.forEach(element => {
           element.forEach(val => {
-            requirements[index].push(val.referName)
-            // push 启动时机(requirements)
+            trigger[index].push(val.referName)
+            // push 启动时机(trigger)
             if (!allNames.includes(val.referName)) {
               seriesData.push({
                 name: val.referName,
@@ -96,7 +99,7 @@ export default {
                   }
                 }
               })
-              allNames = lodash.union(allNames.concat(...requirements))
+              allNames = lodash.union(allNames.concat(...trigger))
             }
           })
         })
@@ -163,9 +166,9 @@ export default {
         })
       })
 
-      // push controlObjects -> requirements
+      // push controlObjects -> trigger
       controlObjects.forEach((item, index) => {
-        requirements[index].forEach(val => {
+        trigger[index].forEach(val => {
           if (val !== name) {
             seriesLinks.push({
               source: item,
@@ -177,20 +180,21 @@ export default {
         })
       })
 
-      // push requirements -> methods (需判断与conditions的关系)
-      requirements.forEach((item, index) => {
+      // push trigger -> methods (需判断与conditions的关系)
+      trigger.forEach((item, index) => {
         item.forEach((el, idx) => {
           methods[index].forEach((val, key) => {
             val.forEach(m => {
               // console.log(el, idx, val, key, m)
               // index 第几个目标对象 idx 第几个启动时机
               const tempConditions = this.ruleData.schemes[index].operations[key].conditions
-              const tempRequirements = lodash.flattenDeep(this.ruleData.schemes[index].requirements)[idx]
+              const tempTrigger = lodash.flattenDeep(this.ruleData.schemes[index].trigger)[idx]
+              // console.log(tempTrigger, '=================================')
               let temp = true
               tempConditions.forEach(j => {
-                if (j.referName === el && j.referVariable === tempRequirements.referVariable) {
-                  // console.log(123, j, tempRequirements, tempConditions)
-                  if (j.threshold[0] !== tempRequirements.threshold[0] || j.threshold[1] !== tempRequirements.threshold[1]) {
+                if (j.referName === el && j.requirements[0].referVariable === tempTrigger.requirements[0].referVariable) {
+                  // console.log(123, j, tempTrigger, tempConditions)
+                  if (j.requirements[0].threshold[0] !== tempTrigger.requirements[0].threshold[0] || j.requirements[0].threshold[1] !== tempTrigger.requirements[0].threshold[1]) {
                     temp = false
                   }
                 }
@@ -199,7 +203,7 @@ export default {
                 seriesLinks.push({
                   source: el,
                   target: m,
-                  value: this.tempName(tempRequirements),
+                  value: this.tempName(tempTrigger),
                   id: uuidv4()
                 })
               }
@@ -215,6 +219,7 @@ export default {
             // index 第几个目标对象 idx 第几个调度方式 key 调度方式项
             methods[index][idx].forEach(m => {
               const temp = this.ruleData.schemes[index].operations[idx].conditions[key]
+              // console.log(temp, '=========================')
               // console.log(methods[index][idx], key)
               seriesLinks.push({
                 source: val,
@@ -309,17 +314,17 @@ export default {
       }
     },
     tempName(temp) {
-      if (temp.referVariable === '流量') {
-        if (temp.threshold[1] === 999999) {
-          return `预报${temp.predictTime}小时后流量大于${temp.threshold[0]}m³/s`
+      if (temp.requirements[0].referVariable === '流量') {
+        if (temp.requirements[0].threshold[1] === 999999) {
+          return `预报${temp.requirements[0].predictTime}小时后流量大于${temp.requirements[0].threshold[0]}m³/s`
         } else {
-          return `预报${temp.predictTime}小时后流量大于${temp.threshold[0]}且小于${temp.threshold[1]}m³/s`
+          return `预报${temp.requirements[0].predictTime}小时后流量大于${temp.requirements[0].threshold[0]}且小于${temp.requirements[0].threshold[1]}m³/s`
         }
       } else {
-        if (temp.threshold[1] === 999999) {
-          return `预报${temp.predictTime}小时后水位大于${temp.threshold[0]}m`
+        if (temp.requirements[0].threshold[1] === 999999) {
+          return `预报${temp.requirements[0].predictTime}小时后水位大于${temp.requirements[0].threshold[0]}m`
         } else {
-          return `预报${temp.predictTime}小时后水位大于${temp.threshold[0]}且小于${temp.threshold[1]}m`
+          return `预报${temp.requirements[0].predictTime}小时后水位大于${temp.requirements[0].threshold[0]}且小于${temp.requirements[0].threshold[1]}m`
         }
       }
     },
