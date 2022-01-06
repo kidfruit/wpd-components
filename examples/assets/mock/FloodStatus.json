@@ -3337,25 +3337,127 @@
     "dangerList": [
       {
         "area": "湖北省",
+        "name": "枝城",
+        "id": "60107400",
+        "maxWaterLevel": 47.64,
+        "maxWaterTime": "2020-07-19 20:00:00",
+        "alertLevel": 49,
+        "guaranteeLevel": 50.75
+      },
+      {
+        "area": "湖北省",
+        "name": "螺山",
+        "id": "60111300",
+        "maxWaterLevel": 32.62,
+        "maxWaterTime": "2020-07-23 02:00:00",
+        "alertLevel": 31.5,
+        "guaranteeLevel": 33.17
+      },
+      {
+        "area": "湖北省",
+        "name": "宜昌",
+        "id": "60107300",
+        "maxWaterLevel": 52.1,
+        "maxWaterTime": "2020-07-23 02:00:00",
+        "alertLevel": 52,
+        "guaranteeLevel": 55.73
+      },
+      {
+        "area": "湖北省",
+        "name": "沙市",
+        "id": "60108300",
+        "maxWaterLevel": 46.24,
+        "maxWaterTime": "2020-07-20 08:00:00",
+        "alertLevel": 43,
+        "guaranteeLevel": 45
+      },
+      {
+        "area": "湖北省",
+        "name": "石首",
+        "id": "60109400",
+        "maxWaterLevel": 40.04,
+        "maxWaterTime": "2020-07-20 14:00:00",
+        "alertLevel": 38.5,
+        "guaranteeLevel": 40.38
+      },
+      {
+        "area": "湖北省",
+        "name": "监利(二)",
+        "id": "60110500",
+        "maxWaterLevel": 36.94,
+        "maxWaterTime": "2020-07-21 08:00:00",
+        "alertLevel": 35,
+        "guaranteeLevel": 36.57
+      },
+      {
+        "area": "湖南省",
+        "name": "城陵矶（莲花塘）",
+        "id": "60111200",
+        "maxWaterLevel": 35.84,
+        "maxWaterTime": "2020-07-22 20:00:00",
+        "alertLevel": 32.5,
+        "guaranteeLevel": 34.4
+      },
+      {
+        "area": "湖北省",
         "name": "汉口",
         "id": "60112200",
-        "maxWaterLevel": "29.07",
-        "maxWaterTime": "2020-07-17 14:00:00",
-        "alertLevel": "27.3",
-        "guaranteeLevel": "29.73"
+        "maxWaterLevel": 29.33,
+        "maxWaterTime": "2020-07-23 02:00:00",
+        "alertLevel": 27.3,
+        "guaranteeLevel": 29.73
+      },
+      {
+        "area": "湖北省",
+        "name": "九江",
+        "id": "60112900",
+        "maxWaterLevel": 20.51,
+        "maxWaterTime": "2020-07-16 08:00:00",
+        "alertLevel": 20,
+        "guaranteeLevel": 23.25
+      },
+      {
+        "area": "安徽省",
+        "name": "大通(二)",
+        "id": "60115000",
+        "maxWaterLevel": 16.09,
+        "maxWaterTime": "2020-07-16 14:00:00",
+        "alertLevel": 14.5,
+        "guaranteeLevel": 16.64
+      },
+      {
+        "area": "重庆市",
+        "name": "武隆",
+        "id": "60803000",
+        "maxWaterLevel": 191.98,
+        "maxWaterTime": "2020-07-18 14:00:00",
+        "alertLevel": 190,
+        "guaranteeLevel": 193
+      },
+      {
+        "area": "湖南省",
+        "name": "城陵矶(七)",
+        "id": "61512000",
+        "maxWaterLevel": 34.52,
+        "maxWaterTime": "2020-07-22 20:00:00",
+        "alertLevel": 32.5,
+        "guaranteeLevel": 34.55
       },
       {
         "area": "江西省",
         "name": "湖口",
         "id": "62601600",
-        "maxWaterLevel": "21.54",
-        "maxWaterTime": "2020-07-18 08:00:00",
-        "alertLevel": "19.0",
-        "guaranteeLevel": "22.5"
+        "maxWaterLevel": 21.93,
+        "maxWaterTime": "2020-07-16 08:00:00",
+        "alertLevel": 19,
+        "guaranteeLevel": 22.5
       }
     ],
     "dangerArea": [
       "湖北省",
+      "湖南省",
+      "安徽省",
+      "重庆市",
       "江西省"
     ]
   }
