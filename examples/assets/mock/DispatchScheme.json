@@ -873,5 +873,210 @@
         ]
       }
     ]
+  },
+  {
+    "schemes": [
+      {
+        "controlObject": "枢纽下游",
+        "trigger": [
+          [
+            {
+              "referName": "峡江",
+              "requirements": [
+                {
+                  "referVariable": "流量",
+                  "threshold": [
+                    20000,
+                    999999
+                  ],
+                  "predictTime": 0
+                }
+              ],
+              "referId": "62301780"
+            }
+          ]
+        ],
+        "controlFor": "防洪",
+        "operations": [
+          {
+            "methods": [
+              {
+                "targetName": "峡江",
+                "targetId": "62301780",
+                "controlVariable": "流量",
+                "name": "控泄",
+                "controlValue": "20000"
+              }
+            ],
+            "conditions": [
+              {
+                "referName": "峡江",
+                "requirements": [
+                  {
+                    "referVariable": "水位",
+                    "threshold": [
+                      45,
+                      48.4
+                    ],
+                    "predictTime": 0
+                  },
+                  {
+                    "referVariable": "流量",
+                    "threshold": [
+                      21500,
+                      23500
+                    ],
+                    "predictTime": 0
+                  }
+                ],
+                "referId": "62301780"
+              }
+            ]
+          },
+          {
+            "methods": [
+              {
+                "targetName": "峡江",
+                "targetId": "62301780",
+                "controlVariable": "流量",
+                "name": "控泄",
+                "controlValue": "22000"
+              }
+            ],
+            "conditions": [
+              {
+                "referName": "峡江",
+                "requirements": [
+                  {
+                    "referVariable": "水位",
+                    "threshold": [
+                      45,
+                      48.4
+                    ],
+                    "predictTime": 0
+                  },
+                  {
+                    "referVariable": "流量",
+                    "threshold": [
+                      23500,
+                      999999
+                    ],
+                    "predictTime": 0
+                  }
+                ],
+                "referId": "62301780"
+              }
+            ]
+          },
+          {
+            "methods": [
+              {
+                "targetName": "峡江",
+                "targetId": "62301780",
+                "controlVariable": "流量",
+                "name": "控泄",
+                "controlValue": "22000"
+              }
+            ],
+            "conditions": [
+              {
+                "referName": "峡江",
+                "requirements": [
+                  {
+                    "referVariable": "水位",
+                    "threshold": [
+                      48.4,
+                      49
+                    ],
+                    "predictTime": 0
+                  },
+                  {
+                    "referVariable": "流量",
+                    "threshold": [
+                      22000,
+                      24000
+                    ],
+                    "predictTime": 0
+                  }
+                ],
+                "referId": "62301780"
+              }
+            ]
+          },
+          {
+            "methods": [
+              {
+                "targetName": "峡江",
+                "targetId": "62301780",
+                "controlVariable": "流量",
+                "name": "控泄",
+                "controlValue": "24000"
+              }
+            ],
+            "conditions": [
+              {
+                "referName": "峡江",
+                "requirements": [
+                  {
+                    "referVariable": "水位",
+                    "threshold": [
+                      48.4,
+                      49
+                    ],
+                    "predictTime": 0
+                  },
+                  {
+                    "referVariable": "流量",
+                    "threshold": [
+                      24000,
+                      999999
+                    ],
+                    "predictTime": 0
+                  }
+                ],
+                "referId": "62301780"
+              }
+            ]
+          },
+          {
+            "methods": [
+              {
+                "targetName": "峡江",
+                "targetId": "62301780",
+                "controlVariable": "流量",
+                "name": "控泄",
+                "controlValue": "999999"
+              }
+            ],
+            "conditions": [
+              {
+                "referName": "峡江",
+                "requirements": [
+                  {
+                    "referVariable": "水位",
+                    "threshold": [
+                      49,
+                      9999
+                    ],
+                    "predictTime": 0
+                  },
+                  {
+                    "referVariable": "流量",
+                    "threshold": [
+                      26600,
+                      999999
+                    ],
+                    "predictTime": 0
+                  }
+                ],
+                "referId": "62301780"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "name": "峡江",
+    "stcd": "62301780"
   }
 ]
