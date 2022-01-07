@@ -38,12 +38,12 @@
                 <div
                   class="alert"
                   style="padding: 0 10px;"
-                  :style="hydrologicalStationAlert(val)"
+                  :style="`color: ${val.showLevel}`"
                 >
-                  {{ val.maxWaterLevel }}(m)
+                  {{ val.showAlert }}
                 </div>
                 <div class="time">
-                  [{{ val.maxWaterTime }}]
+                  [{{ val.showTime }}]
                 </div>
               </div>
             </template>
@@ -97,7 +97,37 @@ export default {
         let children = []
         this.copyDisasterInfo.dangerList.forEach(val => {
           if (item === val.area) {
+            let showTime = ''
+            let showAlert = ''
+            let showLevel = ''
+            // console.log(val)
+            if (val.maxWaterLevel >= val.guaranteeLevel) {
+              showTime = val.maxWaterTime
+              showAlert = `${val.maxWaterLevel}(m)`
+              showLevel = 'red'
+            } else if (val.maxWaterLevel < val.guaranteeLevel && val.maxWaterLevel >= val.alertLevel) {
+              showTime = val.maxWaterTime
+              showAlert = `${val.maxWaterLevel}(m)`
+              showLevel = 'orange'
+            } else {
+              if (val.maxQLevel >= val.guaranteeQLevel) {
+                showTime = val.maxQTime
+                showAlert = `${val.maxQLevel}(m³/s)`
+                showLevel = 'red'
+              } else if (val.maxQLevel < val.guaranteeQLevel && val.maxQLevel >= val.alertQLevel) {
+                showTime = val.maxQTime
+                showAlert = `${val.maxQLevel}(m³/s)`
+                showLevel = 'orange'
+              } else {
+                showTime = val.maxWaterTime
+                showAlert = `${val.maxWaterLevel}(m)`
+                showLevel = ''
+              }
+            }
             children.push({
+              showTime,
+              showAlert,
+              showLevel,
               key: val.id,
               ...val
             })
@@ -111,17 +141,13 @@ export default {
       })
     },
     initMap() {
-      console.log(this.treeData)
+      // console.log(this.treeData)
       this.regions = []
       this.treeData.forEach(item => {
         let temColor = ''
         item.children.forEach(val => {
-          if (val.maxWaterLevel >= val.guaranteeLevel) {
-            temColor = temColor + 'red'
-          }
-          if (val.maxWaterLevel < val.guaranteeLevel && val.maxWaterLevel >= val.alertLevel) {
-            temColor = temColor + 'orange'
-          }
+          // console.log(val)
+         temColor = temColor + val.showLevel
         })
         if (temColor.includes('red')) {
           this.regions.push({
@@ -169,17 +195,6 @@ export default {
       }
       mapChart.setOption(option)
     },
-    hydrologicalStationAlert(val) {
-      let style = ''
-      if (val.maxWaterLevel >= val.guaranteeLevel) {
-        style =  style + 'color: red;font-weight: bold'
-      } else if (val.maxWaterLevel < val.guaranteeLevel && val.maxWaterLevel >= val.alertLevel) {
-        style = style + 'color: orange;font-weight: bold'
-      } else {
-        style = style + ''
-      }
-      return style
-    }
   }
 }
 </script>

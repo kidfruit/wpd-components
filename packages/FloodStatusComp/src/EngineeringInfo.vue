@@ -190,7 +190,11 @@ export default {
               data: usedData,
               itemStyle: {
                 color: '#FF9400'
-              }
+              },
+              label: {
+                show: true,
+                position: 'inside'
+              },
             },
             {
               name: `可用容量（${unitSymbol}）`,
@@ -199,7 +203,11 @@ export default {
               data: remainingData,
               itemStyle: {
                 color: '#2783FF'
-              }
+              },
+              label: {
+                show: true,
+                position: 'inside'
+              },
             }
           ]
         }

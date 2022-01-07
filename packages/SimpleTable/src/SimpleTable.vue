@@ -249,7 +249,7 @@ export default {
 
           // console.log(this.setting)
           // setting-cell
-          this.setting.cell && this.setting.cell.forEach(item => {
+          this.setting && this.setting.cell && this.setting.cell.forEach(item => {
             if (item.row === row && item.col === col) {
               cellProperties.className = cellProperties.className + ' ' + item.className
             }
