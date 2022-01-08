@@ -126,24 +126,22 @@ export default {
             }
           })
 
-          element.methods.forEach(val => {
-            const methodName =
-                `${val.name}控制${val.targetName}${val.controlVariable}不超过${val.controlValue}${this.unitLib[val.controlVariable]}`
-            methods[index][key].push(methodName)
-            // push 调度方式(methods)
-            if (!allNames.includes(methodName)) {
-              seriesData.push({
-                name: methodName,
-                symbolSize: 30,
-                itemStyle: {
-                  normal: {
-                    color: '#70AD47'
-                  }
+          const methodName =
+            `${element.methods.name}控制${element.methods.targetName}\n${element.methods.controlVariable}等于${element.methods.controlValue}${this.unitLib[element.methods.controlVariable]}`
+          methods[index][key].push(methodName)
+          // push 调度方式(methods)
+          if (!allNames.includes(methodName)) {
+            seriesData.push({
+              name: methodName,
+              symbolSize: 30,
+              itemStyle: {
+                normal: {
+                  color: '#70AD47'
                 }
-              })
-              allNames = lodash.union(allNames.concat(...lodash.flatten(methods)))
-            }
-          })
+              }
+            })
+            allNames = lodash.union(allNames.concat(...lodash.flatten(methods)))
+          }
         })
       })
 
@@ -192,11 +190,8 @@ export default {
               // console.log(tempTrigger, '=================================')
               let temp = true
               tempConditions.forEach(j => {
-                if (j.referName === el && j.requirements[0].referVariable === tempTrigger.requirements[0].referVariable) {
-                  // console.log(123, j, tempTrigger, tempConditions)
-                  if (j.requirements[0].threshold[0] !== tempTrigger.requirements[0].threshold[0] || j.requirements[0].threshold[1] !== tempTrigger.requirements[0].threshold[1]) {
-                    temp = false
-                  }
+                if (j.referName === el) {
+                  temp = false
                 }
               })
               if (temp) {
@@ -300,7 +295,7 @@ export default {
           links: seriesLinks
         }]
       }
-      // console.log(option)
+      console.log('option', option)
       return option
     },
     getRelationshipMapInstance() {
@@ -314,19 +309,26 @@ export default {
       }
     },
     tempName(temp) {
-      if (temp.requirements[0].referVariable === '流量') {
-        if (temp.requirements[0].threshold[1] === 999999) {
-          return `预报${temp.requirements[0].predictTime}小时后流量大于${temp.requirements[0].threshold[0]}m³/s`
+      // console.log(temp)
+      let requirement = ''
+      temp.requirements.forEach((item, index) => {
+        if (item.referVariable === '流量') {
+          if (item.threshold[1] === 999999) {
+            requirement += `\n${index === 0 ? '' : '且'}预报${item.predictTime}小时后流量大于${item.threshold[0]}m³/s`
+          } else {
+            requirement += `\n${index === 0 ? '' : '且'}预报${item.predictTime}小时后流量大于${item.threshold[0]}且小于${item.threshold[1]}m³/s`
+          }
         } else {
-          return `预报${temp.requirements[0].predictTime}小时后流量大于${temp.requirements[0].threshold[0]}且小于${temp.requirements[0].threshold[1]}m³/s`
+          if (item.threshold[1] === 999999) {
+            requirement += `\n${index === 0 ? '' : '且'}预报${item.predictTime}小时后水位大于${item.threshold[0]}m`
+          } else {
+            requirement += `\n${index === 0 ? '' : '且'}预报${item.predictTime}小时后水位大于${item.threshold[0]}且小于${item.threshold[1]}m`
+          }
         }
-      } else {
-        if (temp.requirements[0].threshold[1] === 999999) {
-          return `预报${temp.requirements[0].predictTime}小时后水位大于${temp.requirements[0].threshold[0]}m`
-        } else {
-          return `预报${temp.requirements[0].predictTime}小时后水位大于${temp.requirements[0].threshold[0]}且小于${temp.requirements[0].threshold[1]}m`
-        }
-      }
+
+      })
+
+      return requirement
     },
     sortClass(sortData, type){
       const groupBy = (array, f) => {

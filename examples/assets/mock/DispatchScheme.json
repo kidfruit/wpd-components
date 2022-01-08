@@ -890,6 +890,14 @@
                     999999
                   ],
                   "predictTime": 0
+                },
+                {
+                  "referVariable": "流量",
+                  "threshold": [
+                    20000,
+                    999999
+                  ],
+                  "predictTime": 0
                 }
               ],
               "referId": "62301780"
@@ -899,15 +907,14 @@
         "controlFor": "防洪",
         "operations": [
           {
-            "methods": [
-              {
-                "targetName": "峡江",
-                "targetId": "62301780",
-                "controlVariable": "流量",
-                "name": "控泄",
-                "controlValue": "20000"
-              }
-            ],
+            "methods": {
+              "AmplyFactor": 0,
+              "targetName": "溪洛渡",
+              "targetId": "60103165",
+              "controlVariable": "流量",
+              "name": "控蓄",
+              "controlValue": 0.0
+            },
             "conditions": [
               {
                 "referName": "峡江",
@@ -934,15 +941,13 @@
             ]
           },
           {
-            "methods": [
-              {
-                "targetName": "峡江",
-                "targetId": "62301780",
-                "controlVariable": "流量",
-                "name": "控泄",
-                "controlValue": "22000"
-              }
-            ],
+            "methods": {
+              "targetName": "峡江",
+              "targetId": "62301780",
+              "controlVariable": "流量",
+              "name": "控泄",
+              "controlValue": "22000"
+            },
             "conditions": [
               {
                 "referName": "峡江",
@@ -969,15 +974,14 @@
             ]
           },
           {
-            "methods": [
-              {
-                "targetName": "峡江",
-                "targetId": "62301780",
-                "controlVariable": "流量",
-                "name": "控泄",
-                "controlValue": "22000"
-              }
-            ],
+            "methods": {
+              "AmplyFactor": 0,
+              "targetName": "溪洛渡",
+              "targetId": "60103165",
+              "controlVariable": "流量",
+              "name": "控蓄",
+              "controlValue": 0.0
+            },
             "conditions": [
               {
                 "referName": "峡江",
@@ -1004,15 +1008,13 @@
             ]
           },
           {
-            "methods": [
-              {
-                "targetName": "峡江",
-                "targetId": "62301780",
-                "controlVariable": "流量",
-                "name": "控泄",
-                "controlValue": "24000"
-              }
-            ],
+            "methods": {
+              "targetName": "峡江",
+              "targetId": "62301780",
+              "controlVariable": "流量",
+              "name": "控泄",
+              "controlValue": "24000"
+            },
             "conditions": [
               {
                 "referName": "峡江",
@@ -1039,15 +1041,14 @@
             ]
           },
           {
-            "methods": [
-              {
-                "targetName": "峡江",
-                "targetId": "62301780",
-                "controlVariable": "流量",
-                "name": "控泄",
-                "controlValue": "999999"
-              }
-            ],
+            "methods": {
+              "targetName": "李庄",
+              "targetId": "60104100",
+              "controlVariable": "流量",
+              "name": "补偿",
+              "controlValue": 25000.0,
+              "controlTime": 0
+            },
             "conditions": [
               {
                 "referName": "峡江",
