@@ -127,7 +127,7 @@ export default {
           })
 
           const methodName =
-            `${element.methods.name}控制${element.methods.targetName}\n${element.methods.controlVariable}等于${element.methods.controlValue}${this.unitLib[element.methods.controlVariable]}`
+            `${element.methods.name}控制${element.methods.targetName}\n${element.methods.controlVariable}${element.methods.AmplyFactor !== undefined ? '等于' : '不超过'}${element.methods.controlValue}${this.unitLib[element.methods.controlVariable]}`
           methods[index][key].push(methodName)
           // push 调度方式(methods)
           if (!allNames.includes(methodName)) {
@@ -188,20 +188,12 @@ export default {
               const tempConditions = this.ruleData.schemes[index].operations[key].conditions
               const tempTrigger = lodash.flattenDeep(this.ruleData.schemes[index].trigger)[idx]
               // console.log(tempTrigger, '=================================')
-              let temp = true
-              tempConditions.forEach(j => {
-                if (j.referName === el) {
-                  temp = false
-                }
+              seriesLinks.push({
+                source: el,
+                target: m,
+                value: this.tempName(tempTrigger),
+                id: uuidv4()
               })
-              if (temp) {
-                seriesLinks.push({
-                  source: el,
-                  target: m,
-                  value: this.tempName(tempTrigger),
-                  id: uuidv4()
-                })
-              }
             })
           })
         })
@@ -295,7 +287,7 @@ export default {
           links: seriesLinks
         }]
       }
-      console.log('option', option)
+      // console.log('option', option)
       return option
     },
     getRelationshipMapInstance() {

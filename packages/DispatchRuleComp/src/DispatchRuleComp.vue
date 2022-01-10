@@ -198,6 +198,8 @@
                           type="link"
                           icon="minus-circle"
                           class="del-btn"
+                          :style="`color: ${tg.requirements.length === 1 ? '' : '#EB2F96'}`"
+                          :disabled="tg.requirements.length === 1"
                           @click="deleteRow('and', 'trigger','', 'requirement',i,j,idx,key)"
                         />
                         <a-button
@@ -205,26 +207,29 @@
                           type="link"
                           icon="plus-circle"
                           class="add-btn"
+                          style="color: #EB2F96"
                           @click="addRow('and', 'trigger', '', 'requirement', i,j,idx,key)"
                         />
                       </div>
                     </div>
-                    <div class="add-delete-control-btn">
-                      <a-button
-                        v-if="editable"
-                        type="link"
-                        icon="minus-circle"
-                        class="del-btn"
-                        @click="deleteRow('and', 'trigger','', '',i,j,idx)"
-                      />
-                      <a-button
-                        v-if="editable"
-                        type="link"
-                        icon="plus-circle"
-                        class="add-btn"
-                        @click="addRow('and', 'trigger', '', '', i,j,idx)"
-                      />
-                    </div>
+                    <!--
+                      <div class="add-delete-control-btn">
+                        <a-button
+                          v-if="editable"
+                          type="link"
+                          icon="minus-circle"
+                          class="del-btn"
+                          @click="deleteRow('and', 'trigger','', '',i,j,idx)"
+                        />
+                        <a-button
+                          v-if="editable"
+                          type="link"
+                          icon="plus-circle"
+                          class="add-btn"
+                          @click="addRow('and', 'trigger', '', '', i,j,idx)"
+                        />
+                      </div>
+                    -->
                   </div>
                 </div>
               </div>
@@ -237,12 +242,14 @@
                   type="link"
                   icon="minus-circle"
                   class="del-btn"
+                  style="color: #13C2C2"
                   @click="deleteRow('or', 'trigger', '', '',i,j)"
                 />
                 <a-button
                   type="link"
                   icon="plus-circle"
                   class="add-btn"
+                  style="color: #13C2C2"
                   @click="addRow('or', 'trigger', '', '', i,j)"
                 />
               </div>
@@ -401,6 +408,8 @@
                           type="link"
                           icon="minus-circle"
                           class="del-btn"
+                          :style="`color: ${cd.requirements.length === 1 ? '' : '#EB2F96'}`"
+                          :disabled="cd.requirements.length === 1"
                           @click="deleteRow('and', 'operations', 'conditions', 'requirement',i,j,idx,key)"
                         />
                         <a-button
@@ -408,26 +417,29 @@
                           type="link"
                           icon="plus-circle"
                           class="add-btn"
+                          style="color: #EB2F96"
                           @click="addRow('and', 'operations', 'conditions', 'requirement', i,j,idx,key)"
                         />
                       </div>
                     </div>
-                    <div class="add-delete-control-btn">
-                      <a-button
-                        v-if="editable"
-                        type="link"
-                        icon="minus-circle"
-                        class="del-btn"
-                        @click="deleteRow('and', 'operations', 'conditions', '',i,j,idx)"
-                      />
-                      <a-button
-                        v-if="editable"
-                        type="link"
-                        icon="plus-circle"
-                        class="add-btn"
-                        @click="addRow('and', 'operations', 'conditions', '', i,j,idx)"
-                      />
-                    </div>
+                    <!--
+                      <div class="add-delete-control-btn">
+                        <a-button
+                          v-if="editable"
+                          type="link"
+                          icon="minus-circle"
+                          class="del-btn"
+                          @click="deleteRow('and', 'operations', 'conditions', '',i,j,idx)"
+                        />
+                        <a-button
+                          v-if="editable"
+                          type="link"
+                          icon="plus-circle"
+                          class="add-btn"
+                          @click="addRow('and', 'operations', 'conditions', '', i,j,idx)"
+                        />
+                      </div>
+                    -->
                   </div>
                 </div>
               </div>
@@ -543,12 +555,14 @@
                   type="link"
                   icon="minus-circle"
                   class="del-btn"
+                  style="color: #13C2C2"
                   @click="deleteRow('or', 'operations', '', '',i,j)"
                 />
                 <a-button
                   type="link"
                   icon="plus-circle"
                   class="add-btn"
+                  style="color: #13C2C2"
                   @click="addRow('or', 'operations', '', '', i,j)"
                 />
               </div>
@@ -575,7 +589,7 @@ const defaultScheme = {
   trigger: [
     [
       {
-        referName: '三峡',
+        referName: 'XX',
         referId: '60106980',
         requirements: [
           {
@@ -591,7 +605,7 @@ const defaultScheme = {
     {
       conditions: [
         {
-          referName: '三峡',
+          referName: 'XX',
           referId: '60106980',
           requirements: [
             {
@@ -604,7 +618,7 @@ const defaultScheme = {
       ],
       methods: {
         name: '补偿',
-        targetName: '三峡',
+        targetName: 'XX',
         targetId: '60106980',
         controlVariable: '流量',
         controlValue: 60000
@@ -613,7 +627,7 @@ const defaultScheme = {
   ]
 }
 const defaultTrigger = {
-  referName: '三峡',
+  referName: 'XX',
   referId: '60106980',
   requirements: [
     {
@@ -624,7 +638,7 @@ const defaultTrigger = {
   ]
 }
 const defaultOperationCondition = {
-  referName: '三峡',
+  referName: 'XX',
   referId: '60106980',
   requirements: [
     {
@@ -636,7 +650,7 @@ const defaultOperationCondition = {
 }
 const defaultOperationMethod = {
   name: '补偿',
-  targetName: '三峡',
+  targetName: 'XX',
   targetId: '60106980',
   controlVariable: '流量',
   controlValue: 60000
@@ -779,14 +793,18 @@ export default {
         switch (type) {
           case 'trigger':
             if (requirement === 'requirement') {
-              this.schemeData[i][type][j][idx].requirements.splice(key, 1)
+              if (this.schemeData[i][type][j][idx].requirements !== 1) {
+                this.schemeData[i][type][j][idx].requirements.splice(key, 1)
+              }
             } else {
               this.schemeData[i][type][j].splice(idx, 1)
             }
             break
           case 'operations':
             if (requirement === 'requirement') {
-              this.schemeData[i][type][j][dispatch][idx].requirements.splice(key, 1)
+              if (this.schemeData[i][type][j][dispatch][idx].requirements !== 1) {
+                this.schemeData[i][type][j][dispatch][idx].requirements.splice(key, 1)
+              }
             } else {
               this.schemeData[i][type][j][dispatch].splice(idx, 1)
             }
@@ -856,15 +874,15 @@ export default {
       }
     },
     updateData(type, dispatch, field, i, j, idx, key) {
-      console.log('=========================================')
-      console.log('type:', type)
-      console.log('dispatch:', dispatch)
-      console.log('field:', field)
-      console.log('i:', i)
-      console.log('j:', j)
-      console.log('idx:', idx)
-      console.log('key:', key)
-      console.log('=========================================')
+      // console.log('=========================================')
+      // console.log('type:', type)
+      // console.log('dispatch:', dispatch)
+      // console.log('field:', field)
+      // console.log('i:', i)
+      // console.log('j:', j)
+      // console.log('idx:', idx)
+      // console.log('key:', key)
+      // console.log('=========================================')
       switch (type) {
         case 'controlObject':
           this.schemeData[i][type] = this.updateValue
@@ -985,6 +1003,7 @@ export default {
 
         .or-tag-div {
           background-color: #fff;
+          text-align: center;
 
           .or-tag {
             margin-bottom: 5px;
