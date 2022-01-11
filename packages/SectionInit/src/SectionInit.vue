@@ -448,13 +448,20 @@ export default {
     cellEditDone(val) {
       // console.log(this.selectedKeys[0])
       // console.log(val)
+      // console.log(this.newData)
+      this.newData[val.rowIndex][val.field] = +val.newValue
+      this.$refs.chartRef.setDynamicOption()
       if (this.selectedKeys[0]) {
         let nodeId = null
-        this.treeData[0].children.forEach((item, index) => {
-          if (this.selectedKeys[0] === item.key) {
-            nodeId = `${this.rawData.riverReachId}_${index + 1}`
-          }
-        })
+        if (this.selectedKeys[0] !== this.rawData.riverReachId) {
+          this.treeData[0].children.forEach((item, index) => {
+            if (this.selectedKeys[0] === item.key) {
+              nodeId = `${this.rawData.riverReachId}_${index + 1}`
+            }
+          })
+        } else {
+          nodeId = this.rawData.riverReachId
+        }
         this.$emit('cellEditDone', {
           nodeId,
           ...val

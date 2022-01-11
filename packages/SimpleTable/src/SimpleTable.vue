@@ -575,6 +575,7 @@ export default {
       })
     },
     afterChange(changes, source) {
+      // console.log(changes, source)
       if (changes == null) {
         return
       }
@@ -585,6 +586,22 @@ export default {
         return
       }
       if (source !== 'loadData') {
+        if (source === 'edit') {
+          let col = null
+          this.columns.forEach((item, index) => {
+            if (changes[0][1] === item.field) {
+              col = index
+            }
+          })
+          if (this.setting.cell == null) {
+            this.setting.cell = []
+          }
+          this.setting.cell.push({
+            row: changes[0][0],
+            col: col,
+            className: 'edited-column',
+          })
+        }
         // 添加修改触发
         if (changes && source) {
           for (let i = 0; i < changes.length; i++) {

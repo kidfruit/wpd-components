@@ -179,23 +179,28 @@ export default {
       })
 
       // push trigger -> methods (需判断与conditions的关系)
+      let tempTrigMethodArr = []
       trigger.forEach((item, index) => {
         item.forEach((el, idx) => {
           methods[index].forEach((val, key) => {
             val.forEach(m => {
               // console.log(el, idx, val, key, m)
               // index 第几个目标对象 idx 第几个启动时机
-              const tempConditions = this.ruleData.schemes[index].operations[key].conditions
               const tempTrigger = lodash.flattenDeep(this.ruleData.schemes[index].trigger)[idx]
-              // console.log(tempTrigger, '=================================')
-              seriesLinks.push({
+              tempTrigMethodArr.push({
                 source: el,
                 target: m,
-                value: this.tempName(tempTrigger),
-                id: uuidv4()
+                value: this.tempName(tempTrigger)
               })
             })
           })
+        })
+      })
+      tempTrigMethodArr = lodash.uniqWith(tempTrigMethodArr, lodash.isEqual)
+      tempTrigMethodArr.forEach(item => {
+        seriesLinks.push({
+          ...item,
+          id: uuidv4()
         })
       })
 
