@@ -201,7 +201,7 @@ export default {
       newData: [],
       columns: [],
       newAxis: {},
-      selectedKeys: [],
+      selectedKeys: [this.treeData[0].key],
       instance: null,
       newOption: null,
       isShowSection: false,

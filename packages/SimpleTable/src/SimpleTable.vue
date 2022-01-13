@@ -101,6 +101,10 @@ const dateI18n = {
 
 export default {
   name: 'SimpleTable',
+  components: {
+    HotTable,
+    HotColumn,
+  },
   props: {
     isVisible: {
       type: Boolean,
@@ -134,32 +138,14 @@ export default {
       default() {
         return []
       }
+    },
+    mouseRightContextMenu: {
+      type: Array,
+      required: false,
+      default: () => {
+        return []
+      }
     }
-  },
-  components: {
-    HotTable,
-    HotColumn,
-  },
-  beforeMount() {
-    // 准备数据
-    const data = lodash.cloneDeep(this.tableData)
-    this.prepareData(data)
-  },
-  mounted() {
-    this.getHotInstance()
-    this.$nextTick(() => {
-      this.initSingleDropdownHtml()
-      this.changeSingleDropdown()
-    })
-    window.addEventListener('resize', this.updateShow)
-  },
-  updated() {
-    this.getHotInstance()
-    this.$nextTick(() => {
-      this.initSingleDropdownHtml()
-      this.changeSingleDropdown()
-    })
-    window.addEventListener('resize', this.updateShow)
   },
   data() {
     return {
@@ -187,15 +173,15 @@ export default {
           items: {
             saveFile: {
               name: '数据下载',
+              hidden: () => this.saveFileHidden(),
               callback: () => {
-                this.selectedRange = null
                 this.handleSaveFileCallback()
               },
             },
             separator1: '---------',
             interpolation: {
               name: '内插',
-              hidden: () => this.handleInterpolationScaleSameIncreaseDecreaseHidden(),
+              hidden: () => this.interpolation_scale_sameIncreaseDecrease_Hidden('interpolation'),
               callback: () => {
                 this.selectedRange = null
                 this.handleInterpolationCallback()
@@ -203,7 +189,7 @@ export default {
             },
             scale: {
               name: '倍比缩放',
-              hidden: () => this.handleInterpolationScaleSameIncreaseDecreaseHidden(),
+              hidden: () => this.interpolation_scale_sameIncreaseDecrease_Hidden('scale'),
               callback: () => {
                 this.selectedRange = null
                 this.handleScaleCallback()
@@ -211,7 +197,7 @@ export default {
             },
             sameIncreaseDecrease: {
               name: '同增同减',
-              hidden: () => this.handleInterpolationScaleSameIncreaseDecreaseHidden(),
+              hidden: () => this.interpolation_scale_sameIncreaseDecrease_Hidden('sameIncreaseDecrease'),
               callback: () => {
                 this.selectedRange = null
                 this.handleSameIncreaseDecreaseCallback()
@@ -220,14 +206,14 @@ export default {
             separator2: '---------',
             mergeCells: {
               name: '批量设置',
-              hidden: () => this.handleMergeUnmergeCellsHidden(),
+              hidden: () => this.handleMergeUnmergeCellsHidden('mergeCells'),
               submenu: {
                 items: []
               }
             },
             unmergeCells: {
               name: '批量还原',
-              hidden: () => this.handleMergeUnmergeCellsHidden(),
+              hidden: () => this.handleMergeUnmergeCellsHidden('unmergeCells'),
               callback: () => {
                 this.selectedRange = null
                 this.handleUnmergeCellsCallback()
@@ -317,10 +303,10 @@ export default {
       })
       // console.log(this.defaultHotSettings)
       return Object.assign(
-          {},
-          this.defaultHotSettings,
-          this.setting,
-          { rowHeaders, hiddenRows }
+        {},
+        this.defaultHotSettings,
+        this.setting,
+        { rowHeaders, hiddenRows }
       )
     },
     columns() {
@@ -354,6 +340,55 @@ export default {
       })
     },
   },
+  watch: {
+    tableData: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.isRefresh = false
+        const data = lodash.cloneDeep(val)
+        this.prepareData(data)
+        this.$nextTick(() => {
+          this.isRefresh = true
+        })
+      },
+    },
+    columns: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.refresh()
+      },
+    },
+    targetChartIndex: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.reset()
+      },
+    },
+  },
+  beforeMount() {
+    // 准备数据
+    const data = lodash.cloneDeep(this.tableData)
+    this.prepareData(data)
+  },
+  mounted() {
+    this.getHotInstance()
+    this.$nextTick(() => {
+      this.initSingleDropdownHtml()
+      this.changeSingleDropdown()
+    })
+    window.addEventListener('resize', this.updateShow)
+  },
+  updated() {
+    this.getHotInstance()
+    this.$nextTick(() => {
+      this.initSingleDropdownHtml()
+      this.changeSingleDropdown()
+    })
+    window.addEventListener('resize', this.updateShow)
+  },
   methods: {
     initMergeCellSubItems() {
       this.defaultHotSettings.contextMenu.items.mergeCells.submenu.items = []
@@ -386,7 +421,6 @@ export default {
         return Error('field为必填参数！')
       }
     },
-
     updateWidth(newWidth) {
       // console.log(this.hotInstance, newWidth);
       this.hotInstance.updateSettings({
@@ -869,8 +903,12 @@ export default {
       }
       this.$emit('moveDone', this.hotData)
     },
+    saveFileHidden() {
+      return !this.mouseRightContextMenu.includes('saveFile')
+    },
     handleSaveFileCallback() {
       // console.log('数据下载')
+      this.selectedRange = null
       this.saveFileModalVisible = true
       this.saveFileInput = ''
     },
@@ -885,13 +923,28 @@ export default {
         rowHeaders: true,
       })
     },
-    handleInterpolationScaleSameIncreaseDecreaseHidden() {
+    interpolation_scale_sameIncreaseDecrease_Hidden(type) {
       let isHidden
-      let selected = this.hotInstance.getSelected()
-      if (selected[0][1] === selected[0][3]){
-        if (!this.tableColumns[selected[0][1]].type) {
-          isHidden = this.tableColumns[selected[0][1]].readOnly;
+      // 是否配置
+      if (this.mouseRightContextMenu.includes(type)) {
+        isHidden = false
+
+        let selected = this.hotInstance.getSelected()
+        // 排除跨列选择
+        if (selected[0][1] === selected[0][3]){
+          isHidden = false
+          // 排除 columns 中有 type readOnly
+          if (this.tableColumns[selected[0][1]].readOnly) {
+            isHidden = true
+          }
+          if (this.tableColumns[selected[0][1]].type) {
+            isHidden = true
+          }
         } else {
+          isHidden = true
+        }
+        // 排除 setting readOnly
+        if (this.setting.readOnly) {
           isHidden = true
         }
       } else {
@@ -1134,11 +1187,23 @@ export default {
         this.hotTableRandomKey = uuidv4()
       }
     },
-    handleMergeUnmergeCellsHidden() {
+    handleMergeUnmergeCellsHidden(type) {
       let isHidden
-      let selected = this.hotInstance.getSelected()
-      if (selected[0][1] === selected[0][3]){
-        isHidden = !this.tableColumns[selected[0][1]].sourceRight;
+      // 是否配置
+      if (this.mouseRightContextMenu.includes(type)) {
+        isHidden = false
+
+        let selected = this.hotInstance.getSelected()
+        // 排除跨列选择
+        if (selected[0][1] === selected[0][3]){
+          isHidden = false
+          // 排除没有sourceRight
+          if (!this.tableColumns[selected[0][1]].sourceRight) {
+            isHidden = true
+          }
+        } else {
+          isHidden = true
+        }
       } else {
         isHidden = true
       }
@@ -1269,34 +1334,6 @@ export default {
     getOriginCellData(row,prop){
       return this.$refs.hotTableRef.hotInstance.getDataAtRowProp(row,prop)
     }
-  },
-  watch: {
-    tableData: {
-      immediate: true,
-      deep: true,
-      handler(val) {
-        this.isRefresh = false
-        const data = lodash.cloneDeep(val)
-        this.prepareData(data)
-        this.$nextTick(() => {
-          this.isRefresh = true
-        })
-      },
-    },
-    columns: {
-      immediate: true,
-      deep: true,
-      handler(val) {
-        this.refresh()
-      },
-    },
-    targetChartIndex: {
-      immediate: true,
-      deep: true,
-      handler(val) {
-          this.reset()
-      },
-    },
   },
 }
 </script>
