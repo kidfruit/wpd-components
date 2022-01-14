@@ -10,6 +10,7 @@
       :mouseRightContextMenu="mouseRightContextMenu"
       @cellEditDone="cellEditDone"
       @moveDone="moveDone"
+      @stoplogStatusEdit="stoplogStatusEdit"
     ></simple-table>
     <button @click="getData">获取数据</button>
     <button @click="getChangedData">获取编辑数据</button>
@@ -40,7 +41,12 @@ export default {
       // saveFile数据下载
       // interpolation内插 scale倍比缩放 sameIncreaseDecrease同增同减
       // mergeCells批量设置 unmergeCells批量还原
-      mouseRightContextMenu: ['saveFile', 'interpolation', 'scale', 'sameIncreaseDecrease', 'mergeCells', 'unmergeCells'],
+      mouseRightContextMenu: [
+        'saveFile',
+        'interpolation', 'scale', 'sameIncreaseDecrease',
+        'mergeCells', 'unmergeCells',
+        'stoplogStatusEdit'
+      ],
       setting: {
         rowHeaders: true,
       },
@@ -90,6 +96,9 @@ export default {
       console.log('cellEditDone', value)
       this.tableData[rowIndex][field] = newValue
       console.log(this.tableData)
+    },
+    stoplogStatusEdit(value) {
+      console.log(value)
     },
     moveDone(value) {
       console.log('moveDone', value)

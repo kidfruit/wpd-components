@@ -82,10 +82,66 @@
         @pressEnter="sameIncreaseDecrease"
       />
     </a-modal>
+    <a-modal
+      title="叠梁门状态编辑"
+      okText="确定"
+      cancelText="取消"
+      v-model="stoplogStatusEditModalVisible"
+      :destroyOnClose="true"
+      @ok="stoplogStatusEdit"
+    >
+      <a-form layout="horizontal">
+        <a-form-item
+          style="display: flex"
+          label="开始落门时间："
+        >
+          <a-date-picker
+            style="margin-left: 20px;"
+            format="YYYY-MM-DD HH:mm"
+            :showTime="{ format: 'HH:mm' }"
+            v-model="droptime"
+          />
+        </a-form-item>
+        <a-form-item
+          style="display: flex"
+          label="完成落门时间："
+        >
+          <a-date-picker
+            style="margin-left: 20px;"
+            format="YYYY-MM-DD HH:mm"
+            :showTime="{ format: 'HH:mm' }"
+            v-model="cdroptime"
+          />
+        </a-form-item>
+        <a-form-item
+          style="display: flex"
+          label="开始提门时间："
+        >
+          <a-date-picker
+            style="margin-left: 20px;"
+            format="YYYY-MM-DD HH:mm"
+            :showTime="{ format: 'HH:mm' }"
+            v-model="sraisetime"
+          />
+        </a-form-item>
+        <a-form-item
+          style="display: flex"
+          label="完成提门时间："
+        >
+          <a-date-picker
+            style="margin-left: 20px;"
+            format="YYYY-MM-DD HH:mm"
+            :showTime="{ format: 'HH:mm' }"
+            v-model="craisetime"
+          />
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 <script>
 import lodash from 'lodash'
+import moment from 'moment'
 import { v4 as uuidv4 } from 'uuid'
 import { HotTable, HotColumn } from '@handsontable/vue'
 import { registerLanguageDictionary, zhCN } from 'handsontable/i18n'
@@ -98,6 +154,7 @@ const dateI18n = {
   weekdays      : ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
   weekdaysShort : ['日','一','二','三','四','五','六']
 }
+const timeFormat = 'YYYY-MM-DD HH:mm'
 
 export default {
   name: 'SimpleTable',
@@ -173,7 +230,7 @@ export default {
           items: {
             saveFile: {
               name: '数据下载',
-              hidden: () => this.saveFileHidden(),
+              hidden: () => !this.mouseRightContextMenu.includes('saveFile'),
               callback: () => {
                 this.handleSaveFileCallback()
               },
@@ -218,6 +275,14 @@ export default {
                 this.selectedRange = null
                 this.handleUnmergeCellsCallback()
               }
+            },
+            separator3: '---------',
+            stoplogStatusEdit: {
+              name: '状态编辑',
+              hidden: () => !this.mouseRightContextMenu.includes('stoplogStatusEdit'),
+              callback: () => {
+                this.handleStoplogStatusEditCallback()
+              }
             }
           },
         },
@@ -254,6 +319,11 @@ export default {
       scaleInput: '',
       sameIncreaseDecreaseModalVisible: false,
       sameIncreaseDecreaseInput: '',
+      stoplogStatusEditModalVisible: false,
+      droptime: moment(new Date(), timeFormat),
+      cdroptime: moment(new Date(), timeFormat),
+      sraisetime: moment(new Date(), timeFormat),
+      craisetime: moment(new Date(), timeFormat),
       hotTableRandomKey: uuidv4(),
     }
   },
@@ -290,14 +360,16 @@ export default {
       this.tableColumns.forEach(item => {
         if (item.sourceRight) {
           item.sourceRight.forEach(el => {
-            this.defaultHotSettings.contextMenu.items.mergeCells.submenu.items.push({
-              name: el.name,
-              key: `mergeCells:${el.name}`,
-              callback: (val) => {
-                this.selectedRange = null
-                this.handleMergeCellsCallback(val, item)
-              }
-            })
+            if (this.mouseRightContextMenu.length > 0) {
+              this.defaultHotSettings.contextMenu.items.mergeCells.submenu.items.push({
+                name: el.name,
+                key: `mergeCells:${el.name}`,
+                callback: (val) => {
+                  this.selectedRange = null
+                  this.handleMergeCellsCallback(val, item)
+                }
+              })
+            }
           })
         }
       })
@@ -391,7 +463,9 @@ export default {
   },
   methods: {
     initMergeCellSubItems() {
-      this.defaultHotSettings.contextMenu.items.mergeCells.submenu.items = []
+      if (this.mouseRightContextMenu.length > 0) {
+        this.defaultHotSettings.contextMenu.items.mergeCells.submenu.items = []
+      }
     },
     preheatSwitch() {
       if (this.splitIndex >= 0) {
@@ -428,6 +502,9 @@ export default {
       })
     },
     prepareData(data) {
+      if (this.mouseRightContextMenu.length === 0) {
+        this.defaultHotSettings.contextMenu = false
+      }
       // mergeCells
       this.tableColumns.forEach((item, index) => {
         if (item.sourceRightLink) {
@@ -649,9 +726,9 @@ export default {
                   newValue: this.dropdownHash[element[1]].find((p) => {
                     return p.name === element[3]
                   }).id,
-                  oldValue: this.dropdownHash[element[1]].find((p) => {
-                    return p.name === element[2]
-                  }).id,
+                  oldValue:
+                    this.dropdownHash[element[1]].find((p) => p.name === element[2])
+                    && this.dropdownHash[element[1]].find((p) =>p.name === element[2]).id,
                 })
               } else {
                 this.$emit('cellEditDone', {
@@ -902,9 +979,6 @@ export default {
         }
       }
       this.$emit('moveDone', this.hotData)
-    },
-    saveFileHidden() {
-      return !this.mouseRightContextMenu.includes('saveFile')
     },
     handleSaveFileCallback() {
       // console.log('数据下载')
@@ -1327,6 +1401,25 @@ export default {
       this.hotSettings.mergeCells = mergeCells.mergedCellsCollection.mergedCells
       this.hotTableRandomKey = uuidv4()
       // console.log(this.hotData)
+    },
+    handleStoplogStatusEditCallback() {
+      this.stoplogStatusEditModalVisible = true
+      this.droptime = moment(new Date(), timeFormat)
+      this.cdroptime = moment(new Date(), timeFormat)
+      this.sraisetime = moment(new Date(), timeFormat)
+      this.craisetime = moment(new Date(), timeFormat)
+    },
+    stoplogStatusEdit() {
+      this.stoplogStatusEditModalVisible = false
+      let selected = this.hotInstance.getSelected()[0]
+      // console.log(selected)
+      this.$emit('stoplogStatusEdit', {
+        droptime: moment(this.droptime).format(timeFormat),
+        cdroptime: moment(this.cdroptime).format(timeFormat),
+        sraisetime: moment(this.sraisetime).format(timeFormat),
+        craisetime: moment(this.craisetime).format(timeFormat),
+        selected
+      })
     },
     getOriginRowData(row){
       return this.$refs.hotTableRef.hotInstance.getDataAtRow(row)
