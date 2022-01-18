@@ -2,61 +2,69 @@
   <div>
     <!-- 上下结构 -->
     <div v-if="this.structure === 'Upanddown'||!tableShow">
-      <a-row type="flex"
-             justify="center"
-             :gutter="16">
+      <a-row
+        type="flex"
+        justify="center"
+        :gutter="16"
+      >
         <a-col :span="24">
-          <div ref="chartRef"
-               v-if="chartShow"
-               :class="classNames"
-               :id="id"></div>
+          <div
+            ref="chartRef"
+            v-if="chartShow"
+            :class="classNames"
+            :id="id"
+          />
         </a-col>
       </a-row>
-      <a-row type="flex"
-             justify="center"
-             :gutter="16">
+      <a-row
+        type="flex"
+        justify="center"
+        :gutter="16"
+      >
         <a-col :span="24">
-          <simple-table v-if="tableShow"
-                        ref="tableChart"
-                        :tableData="chartData"
-                        :tableColumns="tableColumns"></simple-table>
+          <simple-table
+            v-if="tableShow"
+            ref="tableChart"
+            :tableData="chartData"
+            :tableColumns="tableColumns"
+          />
         </a-col>
       </a-row>
     </div>
     <div v-if="this.structure === 'about' && tableShow">
-      <a-row type="flex"
-             justify="center">
+      <a-row type="flex" justify="center">
         <a-col :span="12">
-          <div ref="chartRef"
-               v-if="chartShow"
-               :class="classNames"
-               :id="id"></div>
+          <div
+            ref="chartRef"
+            v-if="chartShow"
+            :class="classNames"
+            :id="id"
+          />
         </a-col>
         <a-col :span="12">
-          <simple-table v-if="tableShow"
-                        style="margin-top: 40px;"
-                        ref="tableChart"
-                        :tableData="chartData"
-                        :tableColumns="tableColumns"></simple-table>
+          <simple-table
+            v-if="tableShow"
+            style="margin-top: 40px;"
+            ref="tableChart"
+            :tableData="chartData"
+            :tableColumns="tableColumns"
+          />
         </a-col>
       </a-row>
-      <!-- <a-row type="flex"
-             justify="center"
-             >
-
-      </a-row> -->
     </div>
     <div v-if="interpolateCalcShow">
-      <a-row type="flex"
-             justify="center"
-             :gutter="16">
+      <a-row type="flex" justify="center" :gutter="16">
         <a-col :span="1.5">
-          <a-select :default-value="handleselect"
-                    style="width: 120px"
-                    @change="handleChange">
-            <a-select-option v-for="i in dropdown"
-                             :key="i.id"
-                             :value="i.id">
+          <a-select
+            :default-value="handleselect"
+            style="width: 120px"
+            @change="handleChange"
+          >
+            <a-select-option
+              v-for="i in dropdown"
+              :key="i.id"
+              :value="i.id"
+            >
               {{ i.title }}
             </a-select-option>
           </a-select>
@@ -64,16 +72,13 @@
         <a-col :span="1.5">
           <a-input v-model="value" />
         </a-col>
-        <a-col :span="1.5"
-               style="padding-top: 5px">
+        <a-col :span="1.5" style="padding-top: 5px">
           <span style="margin-top: 5px;">插值结果：</span>
         </a-col>
         <a-col :span="1.5">
-          <a-input v-model="value2"
-                   disabled />
+          <a-input v-model="value2" disabled />
         </a-col>
-        <a-col :span="1.5"
-               style="padding-top: 3px">
+        <a-col :span="1.5" style="padding-top: 3px">
           <button @click="calculation">计算</button>
         </a-col>
 

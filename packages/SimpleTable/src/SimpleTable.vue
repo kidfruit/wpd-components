@@ -99,7 +99,7 @@
             style="margin-left: 20px;"
             format="YYYY-MM-DD HH:mm"
             :showTime="{ format: 'HH:mm' }"
-            v-model="droptime"
+            v-model="sdroptime"
           />
         </a-form-item>
         <a-form-item
@@ -175,6 +175,9 @@ export default {
     setting: {
       type: Object,
       required: false,
+      default: () => {
+        return {}
+      }
     },
     tableData: {
       type: Array,
@@ -200,7 +203,7 @@ export default {
       type: Array,
       required: false,
       default: () => {
-        return []
+        return ['saveFile','interpolation', 'scale', 'sameIncreaseDecrease']
       }
     }
   },
@@ -300,7 +303,7 @@ export default {
 
           // console.log(this.setting)
           // setting-cell
-          this.setting && this.setting.cell && this.setting.cell.forEach(item => {
+          this.setting.cell && this.setting.cell.forEach(item => {
             if (item.row === row && item.col === col) {
               cellProperties.className = cellProperties.className + ' ' + item.className
             }
@@ -320,7 +323,7 @@ export default {
       sameIncreaseDecreaseModalVisible: false,
       sameIncreaseDecreaseInput: '',
       stoplogStatusEditModalVisible: false,
-      droptime: moment(new Date(), timeFormat),
+      sdroptime: moment(new Date(), timeFormat),
       cdroptime: moment(new Date(), timeFormat),
       sraisetime: moment(new Date(), timeFormat),
       craisetime: moment(new Date(), timeFormat),
@@ -334,7 +337,7 @@ export default {
     hotSettings() {
       let rowHeaders = false
       // console.log(this.setting.rowHeaders)
-      if (this.setting && this.setting.rowHeaders) {
+      if (this.setting.rowHeaders) {
         rowHeaders = (index) => {
           let newIndex = index - this.splitIndex
           if (newIndex < 0) {
@@ -1404,7 +1407,7 @@ export default {
     },
     handleStoplogStatusEditCallback() {
       this.stoplogStatusEditModalVisible = true
-      this.droptime = moment(new Date(), timeFormat)
+      this.sdroptime = moment(new Date(), timeFormat)
       this.cdroptime = moment(new Date(), timeFormat)
       this.sraisetime = moment(new Date(), timeFormat)
       this.craisetime = moment(new Date(), timeFormat)
@@ -1414,7 +1417,7 @@ export default {
       let selected = this.hotInstance.getSelected()[0]
       // console.log(selected)
       this.$emit('stoplogStatusEdit', {
-        droptime: moment(this.droptime).format(timeFormat),
+        sdroptime: moment(this.sdroptime).format(timeFormat),
         cdroptime: moment(this.cdroptime).format(timeFormat),
         sraisetime: moment(this.sraisetime).format(timeFormat),
         craisetime: moment(this.craisetime).format(timeFormat),

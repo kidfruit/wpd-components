@@ -777,6 +777,7 @@ export default {
     },
     updateRelationshipMap() {
       this.$refs.DispatchRuleRelationshipMap.setRelationshipMapOption()
+      this.$emit('getCurrentRuleData', this.currentRuleData)
     },
     deleteRow(method, type, dispatch, requirement, i, j, idx, key) {
       // console.log('=========================================')

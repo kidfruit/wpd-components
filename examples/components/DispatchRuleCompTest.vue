@@ -7,6 +7,7 @@
       :editable="true"
       :selectId="'62301780'"
       @getData="getData"
+      @getCurrentRuleData="getCurrentRuleData"
     />
   </div>
 </template>
@@ -31,6 +32,9 @@ export default {
   methods: {
     getData(data){
       console.log(data)
+    },
+    getCurrentRuleData(value) {
+      console.log(value)
     }
   }
 };
