@@ -18,7 +18,6 @@
         <a-row v-if="!isShowSection && isShowTab" class="radio-button" style="margin-bottom: 10px;display: flex">
           <a-radio-group
             default-value="a"
-            button-style="solid"
             @change="handleChangeButton"
           >
             <a-radio-button value="a">
