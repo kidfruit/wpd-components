@@ -224,7 +224,7 @@ export default {
         rowHeaders: false,
         colHeaders: true,
         autoColumnSize: true,
-        outsideClickDeselects: false,
+        outsideClickDeselects: false, // 外部点击是否取消选择
         columnSorting: true,
         // colWidths: "100px",
         stretchH: 'all',
@@ -505,6 +505,10 @@ export default {
       })
     },
     prepareData(data) {
+      if (this.setting.cell == null) {
+        this.setting.cell = []
+      }
+
       if (this.mouseRightContextMenu.length === 0) {
         this.defaultHotSettings.contextMenu = false
       }
@@ -683,6 +687,11 @@ export default {
               newValue: e.target.value,
               oldValue
             })
+            this.setting.cell.push({
+              row: selected[0],
+              col: selected[1],
+              className: 'edited-column',
+            })
             // console.log(this.hotData)
           })
         }
@@ -707,9 +716,6 @@ export default {
               col = index
             }
           })
-          if (this.setting.cell == null) {
-            this.setting.cell = []
-          }
           this.setting.cell.push({
             row: changes[0][0],
             col: col,
@@ -1031,6 +1037,7 @@ export default {
     },
     handleInterpolationCallback() {
       let selectedRange = this.hotInstance.getSelectedRange()
+      console.log(selectedRange)
       let firstRow = selectedRange[0].from.row
       let endRow = selectedRange[0].to.row
       if (firstRow === -1) {
@@ -1058,6 +1065,11 @@ export default {
                   oldValue,
                 })
                 this.hotData[firstRow + i + 1][field] = newValue
+                this.setting.cell.push({
+                  row: rowIndex,
+                  col: selectedRange[0].from.col,
+                  className: 'edited-column',
+                })
               }
             } else {
               for (let i = 0; i < selectedMidRows - 1; i++) {
@@ -1072,6 +1084,11 @@ export default {
                   oldValue,
                 })
                 this.hotData[firstRow + i + 1][field] = newValue
+                this.setting.cell.push({
+                  row: rowIndex,
+                  col: selectedRange[0].from.col,
+                  className: 'edited-column',
+                })
               }
             }
           } else {
@@ -1088,6 +1105,11 @@ export default {
                   oldValue,
                 })
                 this.hotData[firstRow - i - 1][field] = newValue
+                this.setting.cell.push({
+                  row: rowIndex,
+                  col: selectedRange[0].from.col,
+                  className: 'edited-column',
+                })
               }
             } else {
               for (let i = 0; i < selectedMidRows - 1; i++) {
@@ -1102,6 +1124,11 @@ export default {
                   oldValue,
                 })
                 this.hotData[firstRow - i - 1][field] = newValue
+                this.setting.cell.push({
+                  row: rowIndex,
+                  col: selectedRange[0].from.col,
+                  className: 'edited-column',
+                })
               }
             }
           }
@@ -1145,6 +1172,11 @@ export default {
             oldValue,
           })
           this.hotData[selectedRange[0].from.row + i][field] = newValue
+          this.setting.cell.push({
+            row: rowIndex,
+            col: selectedRange[0].from.col,
+            className: 'edited-column',
+          })
         }
       } else {
         for (let i = 0; i < stepNumber; i++) {
@@ -1160,6 +1192,11 @@ export default {
             oldValue,
           })
           this.hotData[selectedRange[0].from.row - i][field] = newValue
+          this.setting.cell.push({
+            row: rowIndex,
+            col: selectedRange[0].from.col,
+            className: 'edited-column',
+          })
         }
       }
       this.hotTableRandomKey = uuidv4()
@@ -1201,6 +1238,11 @@ export default {
             oldValue,
           })
           this.hotData[selectedRange[0].from.row + i][field] = newValue
+          this.setting.cell.push({
+            row: rowIndex,
+            col: selectedRange[0].from.col,
+            className: 'edited-column',
+          })
         }
       } else {
         for (let i = 0; i < stepNumber; i++) {
@@ -1217,6 +1259,11 @@ export default {
             oldValue,
           })
           this.hotData[selectedRange[0].from.row - i][field] = newValue
+          this.setting.cell.push({
+            row: rowIndex,
+            col: selectedRange[0].from.col,
+            className: 'edited-column',
+          })
         }
       }
       this.hotTableRandomKey = uuidv4()
@@ -1246,6 +1293,11 @@ export default {
               oldValue: this.dropdownHash[field].find(p => p.name === oldValue).id
             })
             this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
+            this.setting.cell.push({
+              row: rowIndex,
+              col: selectedRange[0].from.col,
+              className: 'edited-column',
+            })
           }
         } else {
           for (let i = 0; i < rowLength - currentRow - 1; i++) {
@@ -1259,6 +1311,11 @@ export default {
               oldValue,
             })
             this.hotData[selectedRange[0].from.row + i + 1][field] = newValue
+            this.setting.cell.push({
+              row: rowIndex,
+              col: selectedRange[0].from.col,
+              className: 'edited-column',
+            })
           }
         }
         this.hotTableRandomKey = uuidv4()
@@ -1324,6 +1381,11 @@ export default {
               newValue: mergeItem.sourceRight.find(p => p.name === mergeVal.split(':')[1]).id,
               oldValue: oldValue == null ? null : this.dropdownHash[field].find(p => p.name === oldValue).id
             })
+            this.setting.cell.push({
+              row: i,
+              col: selected[0][1],
+              className: 'edited-column',
+            })
           } else {
             if (i === selected[0][0]) {
               this.$emit('cellEditDone', {
@@ -1332,12 +1394,22 @@ export default {
                 newValue: this.hotData[i][field],
                 oldValue
               })
+              this.setting.cell.push({
+                row: i,
+                col: selected[0][1],
+                className: 'edited-column',
+              })
             } else {
               this.$emit('cellEditDone', {
                 rowIndex: i,
                 field,
                 newValue: 0,
                 oldValue
+              })
+              this.setting.cell.push({
+                row: i,
+                col: selected[0][1],
+                className: 'edited-column',
               })
             }
           }
@@ -1375,6 +1447,11 @@ export default {
                 newValue: this.dropdownHash[field].find(p => p.name === this.hotData[selected[0][0]][field]).id,
                 oldValue: this.dropdownHash[field].find(p => p.name === oldValue) && this.dropdownHash[field].find(p => p.name === oldValue).id
               })
+              this.setting.cell.push({
+                row: item.row + i,
+                col: selected[0][1],
+                className: 'edited-column',
+              })
             } else {
               this.hotData[(item.row + i)][field] = 0
               if (selected[0][0] === item.row + i) {
@@ -1384,12 +1461,22 @@ export default {
                   newValue: 0,
                   oldValue
                 })
+                this.setting.cell.push({
+                  row: item.row + i,
+                  col: selected[0][1],
+                  className: 'edited-column',
+                })
               } else {
                 this.$emit('cellEditDone', {
                   rowIndex: item.row + i,
                   field,
                   newValue: 0,
                   oldValue
+                })
+                this.setting.cell.push({
+                  row: item.row + i,
+                  col: selected[0][1],
+                  className: 'edited-column',
                 })
               }
             }

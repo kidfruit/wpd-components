@@ -4,10 +4,14 @@
       <a-tree
         v-model="checkedNode"
         :treeData="treeData"
-        defaultExpandAll
         :checkable = "isEdit"
+        :defaultExpandAll="true"
+        :showLine="isShowIconLine"
         @check="_onTreeCheck"
-      />
+      >
+        <a-icon v-if="isShowIconLine" slot="switcherIcon" type="down-circle" style="font-size: 18px"/>
+        <a-icon v-if="isShowIconLine" slot="child" type="environment" style="font-size: 16px"/>
+      </a-tree>
     </div>
     <div class="table-container" :style="tableStyle">
       <MultiOptionTable
@@ -79,6 +83,10 @@ export default {
       default(){
         return true
       }
+    },
+    isShowIconLine: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -96,7 +104,21 @@ export default {
     },
   },
   methods: {
+    recursiveTreeData(data) {
+      if (data.children) {
+        data.children.forEach(item => {
+          this.recursiveTreeData(item)
+        })
+      } else {
+        data.scopedSlots = { switcherIcon: 'child' }
+      }
+    },
     initDefaultData() {
+      // tree 是否显示icon line
+      this.treeData.forEach(item => {
+        this.recursiveTreeData(item)
+      })
+
       /**
        * 初始化进来先选中所有 treeNode
        */
