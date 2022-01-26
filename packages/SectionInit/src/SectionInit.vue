@@ -36,7 +36,7 @@
             :chartOption="newOption"
             :isRefresh="isRefresh"
             :chartAxis="newAxis"
-            :chartData="newData"
+            :chartData="chartData"
           />
         </a-row>
         <a-row class="table-container">
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import lodash from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import StandardChart from '../../StandardChart/src/StandardChart.vue'
 import SimpleTable from '../../SimpleTable/src/SimpleTable.vue'
@@ -198,6 +199,7 @@ export default {
     return {
       randomKey: uuidv4(),
       newData: [],
+      chartData: [],
       columns: [],
       newAxis: {},
       selectedKeys: [this.treeData[0].key],
@@ -224,6 +226,8 @@ export default {
   },
   methods: {
     initqzChartTable() {
+      this.newData = []
+      this.chartData = []
       this.newOption = Object.assign({}, this.chartOption, { grid: rGrid, legend: { bottom: 0} })
       this.columns = rCols
       const eidtDataCols = []
@@ -290,7 +294,7 @@ export default {
         })
       })
 
-
+      this.chartData = lodash.cloneDeep(this.newData)
       setTimeout(() => {
         this.$refs.chartRef.setDynamicOption()
       }, 10)
@@ -299,6 +303,8 @@ export default {
       }
     },
     initSectionInfo() {
+      this.newData = []
+      this.chartData = []
       // 清除殘留的圖表數據
       this.$refs.chartRef.clear()
 
@@ -323,9 +329,12 @@ export default {
           zbArray: item.zbArray[index],
         })
       })
+      this.chartData = lodash.cloneDeep(this.newData)
       this.updateShow()
     },
     initSectionContaminants() {
+      this.newData = []
+      this.chartData = []
       // console.log(this.selectedKeys)
       // 清除殘留的圖表數據
       this.$refs.chartRef.clear()
@@ -413,6 +422,7 @@ export default {
           item[val.dataId] = val.data[index]
         })
       })
+      this.chartData = lodash.cloneDeep(this.newData)
       // console.log(this.newData)
     },
     handleSelect(keys, e) {
@@ -424,20 +434,16 @@ export default {
     handleData() {
       this.isShowSection = this.selectedKeys.length === 0 || this.selectedKeys[0] === this.rawData.riverReachId
       if (this.isShowSection) {
-        this.newData = []
         this.initqzChartTable()
       } else {
-        this.newData = []
         this.initSectionInfo()
       }
     },
     handleChangeButton(e) {
       // console.log(e, e.target.value)
       if (e.target.value === 'a') {
-        this.newData = []
         this.initSectionInfo()
       } else {
-        this.newData = []
         this.initSectionContaminants()
       }
     },
@@ -448,7 +454,7 @@ export default {
       // console.log(this.selectedKeys[0])
       // console.log(val)
       // console.log(this.newData)
-      this.newData[val.rowIndex][val.field] = +val.newValue
+      this.chartData[val.rowIndex][val.field] = +val.newValue
       this.$refs.chartRef.setDynamicOption()
       if (this.selectedKeys[0]) {
         let nodeId = null

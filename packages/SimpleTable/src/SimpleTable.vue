@@ -716,6 +716,9 @@ export default {
               col = index
             }
           })
+          if (this.setting.cell == null) {
+            this.setting.cell = []
+          }
           this.setting.cell.push({
             row: changes[0][0],
             col: col,
